@@ -9,7 +9,7 @@ export function ExploreTopics() {
         <SectionHeading title="Explore by Topic" href="/guides" linkText="View All Topics" />
         
         {/* 3-column grid for 6 topics = 2 complete rows, perfect desktop symmetry */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:gap-5">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 xl:gap-5">
           {topics.map((topic) => (
             <TopicCard key={topic.title} topic={topic} />
           ))}

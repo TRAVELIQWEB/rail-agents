@@ -14,12 +14,12 @@ const features = [
   {
     icon: MessageCircle,
     title: "Helpful, clear guidance",
-    subtitle: "Get simple and accurate answers",
+    subtitle: "Get simple, clear explanations",
   },
   {
     icon: Headphones,
     title: "A real team, ready to help",
-    subtitle: "Support from railway experts",
+    subtitle: "Help finding useful information",
   },
   {
     icon: Zap,
@@ -52,7 +52,7 @@ export function QueryPage() {
             <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-8 xl:gap-12">
 
               {/* ══ LEFT COLUMN: Heading & Features (5 Cols) ══ */}
-              <div className="flex flex-col items-start lg:col-span-5 pt-2">
+              <div className="flex flex-col items-center text-center md:items-start md:pt-2 md:text-left lg:col-span-5">
                 {/* Top Badge */}
                 <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#f5d0be] bg-white/90 px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-wider text-[#ea580c] shadow-sm backdrop-blur-sm">
                   <span className="h-2 w-2 rounded-full bg-[#f97316]" />
@@ -82,15 +82,15 @@ export function QueryPage() {
                 </h1>
 
                 {/* Subtitle */}
-                <p className="mt-5 max-w-md text-sm leading-relaxed text-slate-600 sm:text-base">
-                  From agent registration to day-to-day railway booking questions,
-                  share what&apos;s on your mind and get pointed in the right direction.
+                <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-slate-600 sm:text-base md:mx-0">
+                  From IRCTC agent registration and railway bookings to bus, air,
+                  hotel, and other travel questions, tell us what you need help understanding.
                 </p>
 
                 {/* 3 Feature Rows */}
                 <div className="mt-8 space-y-4">
                   {features.map(({ icon: Icon, title, subtitle }) => (
-                    <div key={title} className="flex items-center gap-3.5">
+                    <div key={title} className="flex flex-col items-center gap-2 text-center md:flex-row md:items-center md:gap-3.5 md:text-left">
                       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#ffe8d6] text-[#ea580c] shadow-sm">
                         <Icon className="h-5 w-5" />
                       </div>
@@ -115,7 +115,7 @@ export function QueryPage() {
             {/* ══ BOTTOM BANNER: ASK WITH CONFIDENCE ══ */}
             <div className="mt-10 sm:mt-12">
               <div className="mx-auto flex flex-col gap-4 rounded-2xl border border-[#fee4d0] bg-white/95 p-4 shadow-sm backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:p-5">
-                <div className="flex items-center gap-3.5">
+                <div className="flex flex-col items-center gap-3.5 text-center sm:flex-row sm:text-left">
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#fff3e8] text-[#f97316]">
                     <Lightbulb className="h-5 w-5" />
                   </span>
@@ -124,8 +124,8 @@ export function QueryPage() {
                       ASK WITH CONFIDENCE
                     </p>
                     <p className="mt-0.5 text-xs text-slate-600 sm:text-sm">
-                      Tell us a little about your question. We&apos;re here to make
-                      railway agent information easier to understand.
+                      Tell us a little about your question. We&apos;ll help you find
+                      useful information about travel and railway topics.
                     </p>
                   </div>
                 </div>
@@ -133,7 +133,7 @@ export function QueryPage() {
                 <Link
                   href="/ask-nihal"
                   prefetch={false}
-                  className="inline-flex shrink-0 items-center gap-1.5 text-sm font-extrabold text-[#0f2747] transition-colors hover:text-[#f97316]"
+                  className="inline-flex shrink-0 items-center gap-1.5 self-center text-sm font-extrabold text-[#0f2747] transition-colors hover:text-[#f97316] sm:self-auto"
                 >
                   RailAgents <ArrowRight className="h-4 w-4 text-[#f97316]" />
                 </Link>
@@ -147,5 +147,3 @@ export function QueryPage() {
     </div>
   );
 }
-
-

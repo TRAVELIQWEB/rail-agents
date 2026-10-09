@@ -111,12 +111,12 @@ export default function IrctcAgentPage() {
           </svg>
 
           <div className="site-container relative z-10 w-full">
-            <div className="mx-auto flex max-w-5xl flex-col items-start text-left">
+            <div className="mx-auto flex max-w-5xl flex-col items-center text-center md:items-start md:text-left">
               <span className="inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/90 px-4 py-2 text-xs font-[800] uppercase tracking-[0.12em] text-[#e96713] shadow-[0_3px_12px_rgba(15,39,71,0.08)] backdrop-blur-sm">
                 <ShieldCheck aria-hidden="true" className="h-4 w-4" />
                 IRCTC Agent Guidance
               </span>
-              <h1 className="mt-5 max-w-[1000px] text-[clamp(2.25rem,5.6vw,4.5rem)] font-[850] leading-[1.06] tracking-[-0.05em] text-[var(--navy)]">
+              <h1 className="mt-5 max-w-[1000px] text-center text-[clamp(2.25rem,5.6vw,4.5rem)] font-[850] leading-[1.06] tracking-[-0.05em] text-[var(--navy)] md:text-left">
                 Understand the process
                 <span className="mt-1 block">
                   <span className="relative inline-block text-[var(--primary)]">
@@ -127,12 +127,12 @@ export default function IrctcAgentPage() {
                   </span>.
                 </span>
               </h1>
-              <p className="mt-6 max-w-2xl text-[15px] leading-7 text-slate-600 sm:text-base sm:leading-8">
+              <p className="mx-auto mt-6 max-w-2xl text-[15px] leading-7 text-slate-600 sm:text-base sm:leading-8 md:mx-0">
                 RailAgents helps agents and travellers make sense of IRCTC-related
                 information, travel terms, booking questions, and where to
                 verify current requirements.
               </p>
-              <div className="mt-7 flex w-full flex-col justify-start gap-3 min-[420px]:w-auto min-[420px]:flex-row">
+              <div className="mt-7 flex w-full flex-col items-center gap-3 min-[420px]:w-auto min-[420px]:flex-row min-[420px]:justify-center md:justify-start">
                 <Link
                   href="/contact"
                   className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--primary)] px-6 py-3 text-sm font-[700] text-white shadow-[0_8px_22px_rgba(249,115,22,0.25)] transition-all motion-safe:hover:-translate-y-0.5 hover:bg-[#e85d04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] motion-reduce:transition-none"
@@ -156,7 +156,7 @@ export default function IrctcAgentPage() {
         <section aria-label="How RailAgents can help" className="relative border-b border-[#f0e1d5] bg-white py-6 sm:py-7">
           <div className="site-container grid grid-cols-2 gap-y-5 md:grid-cols-4 md:gap-y-0">
             {valueItems.map(({ icon: Icon, title, detail }, index) => (
-              <div key={title} className={`flex items-center gap-3 px-2 sm:px-4 md:justify-center md:px-3 lg:px-5 ${index % 2 === 0 ? "border-r border-[#f0e1d5]" : ""} ${index < 2 ? "border-b border-[#f0e1d5] pb-4 md:border-b-0 md:pb-0" : "pt-1 md:pt-0"} ${index < 3 ? "md:border-r" : "md:border-r-0"}`}>
+              <div key={title} className={`flex flex-col items-center gap-2 px-2 text-center md:flex-row md:gap-3 md:text-left md:justify-center md:px-3 lg:px-5 ${index % 2 === 0 ? "border-r border-[#f0e1d5]" : ""} ${index < 2 ? "border-b border-[#f0e1d5] pb-4 md:border-b-0 md:pb-0" : "pt-1 md:pt-0"} ${index < 3 ? "md:border-r" : "md:border-r-0"}`}>
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#fff1e7] text-[var(--primary)] sm:h-11 sm:w-11">
                   <Icon aria-hidden="true" className="h-5 w-5" />
                 </span>
@@ -182,16 +182,16 @@ export default function IrctcAgentPage() {
             </div>
             <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {supportAreas.map(({ icon: Icon, number, title, body }) => (
-                <article key={number} className="group relative overflow-hidden rounded-[22px] border border-[#f0e1d5] bg-gradient-to-br from-white to-[#fffaf5] p-5 shadow-[0_6px_22px_rgba(15,39,71,0.045)] transition-all duration-200 motion-safe:hover:-translate-y-1 hover:border-orange-200 hover:shadow-[0_12px_30px_rgba(249,115,22,0.11)] motion-reduce:transition-none sm:p-6">
+                <article key={number} className="group relative overflow-hidden rounded-[22px] border border-[#f0e1d5] bg-gradient-to-br from-white to-[#fffaf5] p-5 text-center shadow-[0_6px_22px_rgba(15,39,71,0.045)] transition-all duration-200 motion-safe:hover:-translate-y-1 hover:border-orange-200 hover:shadow-[0_12px_30px_rgba(249,115,22,0.11)] motion-reduce:transition-none md:text-left sm:p-6">
                   <div aria-hidden="true" className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-orange-100/55 blur-2xl transition-colors group-hover:bg-orange-200/60 motion-reduce:transition-none" />
-                  <div className="relative flex items-start justify-between gap-3">
+                  <div className="relative flex items-start justify-center gap-3 md:justify-between">
                     <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#fff1e7] text-[var(--primary)] transition-colors group-hover:bg-[#ffe5d1] motion-reduce:transition-none">
                       <Icon aria-hidden="true" className="h-5 w-5" />
                     </span>
-                    <span className="text-sm font-[800] tracking-[0.1em] text-orange-300">{number}</span>
+                    <span className="absolute right-0 top-0 text-sm font-[800] tracking-[0.1em] text-orange-300">{number}</span>
                   </div>
                   <h3 className="relative mt-5 text-lg font-[800] leading-snug text-[var(--navy)]">{title}</h3>
-                  <p className="relative mt-2 text-sm leading-6 text-slate-600">{body}</p>
+                  <p className="relative mx-auto mt-2 max-w-sm text-sm leading-6 text-slate-600">{body}</p>
                 </article>
               ))}
             </div>
@@ -201,19 +201,19 @@ export default function IrctcAgentPage() {
         <section className="border-y border-[#f0e1d5] bg-white py-11 sm:py-14">
           <div className="site-container">
             <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-[800] uppercase tracking-[0.12em] text-[var(--primary-dark)]">A RailAgents guidance flow</p>
+              <p className="text-xs font-[800] uppercase tracking-[0.12em] text-[var(--primary-dark)]">A helpful way to explore the process</p>
               <h2 className="mt-2 text-2xl font-[850] tracking-[-0.03em] text-[var(--navy)] sm:text-3xl">Start with the right questions</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">A simple way to approach your enquiry—not an official IRCTC registration process.</p>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Start with your question, check current requirements, and follow up with the relevant provider for next steps.</p>
             </div>
             <div className="relative mx-auto mt-8 max-w-5xl">
               <span aria-hidden="true" className="pointer-events-none absolute bottom-6 left-6 top-6 border-l border-dashed border-orange-200 md:bottom-auto md:left-[16.66%] md:right-[16.66%] md:top-6 md:border-l-0 md:border-t" />
               <ol className="relative grid gap-5 md:grid-cols-3 md:gap-4">
                 {guidanceSteps.map((step) => (
-                  <li key={step.number} className="relative flex items-start gap-4 md:flex-col md:items-center md:text-center">
+                  <li key={step.number} className="relative flex flex-col items-center gap-3 text-center md:gap-4">
                     <span className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-4 border-white bg-[var(--primary)] text-sm font-[800] text-white shadow-[0_3px_12px_rgba(249,115,22,0.25)]">{step.number}</span>
-                    <span className="pt-1 md:pt-0">
+                    <span>
                       <span className="block text-base font-[800] text-[var(--navy)]">{step.title}</span>
-                      <span className="mt-1 block max-w-xs text-sm leading-6 text-slate-600">{step.detail}</span>
+                      <span className="mx-auto mt-1 block max-w-xs text-sm leading-6 text-slate-600">{step.detail}</span>
                     </span>
                   </li>
                 ))}
@@ -235,14 +235,14 @@ export default function IrctcAgentPage() {
             </div>
             <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {guideLinks.map((guide) => (
-                <Link key={guide.href} href={guide.href} className="group relative flex h-full flex-col overflow-hidden rounded-[22px] border border-[#f0e1d5] bg-white p-5 shadow-[0_5px_18px_rgba(15,39,71,0.04)] transition-all duration-200 motion-safe:hover:-translate-y-1 hover:border-orange-200 hover:shadow-[0_12px_28px_rgba(15,39,71,0.09)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] motion-reduce:transition-none sm:p-6">
+                <Link key={guide.href} href={guide.href} className="group relative flex h-full flex-col items-center overflow-hidden rounded-[22px] border border-[#f0e1d5] bg-white p-5 text-center shadow-[0_5px_18px_rgba(15,39,71,0.04)] transition-all duration-200 motion-safe:hover:-translate-y-1 hover:border-orange-200 hover:shadow-[0_12px_28px_rgba(15,39,71,0.09)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] motion-reduce:transition-none sm:p-6 md:items-start md:text-left">
                   <span aria-hidden="true" className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-orange-300 via-[var(--primary)] to-amber-300" />
                   <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-[#fff3e8] px-3 py-1 text-[11px] font-[800] uppercase tracking-[0.08em] text-[var(--primary-dark)]">
                     <BookOpen aria-hidden="true" className="h-3.5 w-3.5" /> IRCTC Agent
                   </span>
                   <h3 className="mt-4 text-lg font-[800] leading-snug text-[var(--navy)] transition-colors group-hover:text-[var(--primary-dark)]">{guide.title}</h3>
                   <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">{guide.description}</p>
-                  <div className="mt-5 flex items-center justify-between gap-3 border-t border-[#f2e9e1] pt-4">
+                  <div className="mt-5 flex w-full flex-col items-center gap-2 border-t border-[#f2e9e1] pt-4 sm:flex-row sm:justify-between sm:gap-3">
                     <span className="text-xs font-medium text-slate-500">Quick guide</span>
                     <span className="inline-flex items-center gap-1.5 text-sm font-[700] text-[var(--primary-dark)]">
                       Read guide <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -256,9 +256,9 @@ export default function IrctcAgentPage() {
 
         <section className="bg-white py-2 sm:py-4">
           <div className="site-container">
-            <div className="mx-auto flex max-w-5xl items-start gap-4 rounded-2xl border border-orange-100 bg-[#fff8f2] p-5 sm:p-6">
+            <div className="mx-auto flex max-w-5xl flex-col items-center gap-3 rounded-2xl border border-orange-100 bg-[#fff8f2] p-5 sm:flex-row sm:items-start sm:gap-4 sm:p-6">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-[var(--primary)] shadow-sm"><Info aria-hidden="true" className="h-5 w-5" /></span>
-              <div className="min-w-0">
+              <div className="min-w-0 text-left">
                 <h2 className="text-base font-[800] text-[var(--navy)]">Important to know</h2>
                 <p className="mt-1.5 text-sm leading-6 text-slate-600">
                   Registration requirements, documents, charges, and booking rules may change. RailAgents shares general information to help you understand what to check; confirm current details directly with the relevant authorized provider or official source. We do not issue agent IDs or represent an official registration authority.
@@ -278,14 +278,14 @@ export default function IrctcAgentPage() {
               <div aria-hidden="true" className="pointer-events-none absolute right-[32%] top-1/2 -z-10 hidden -translate-y-1/2 text-orange-300/20 lg:block">
                 <Train className="h-32 w-32" strokeWidth={1} />
               </div>
-              <div className="max-w-2xl">
+              <div className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">
                 <p className="text-xs font-[800] uppercase tracking-[0.12em] text-[var(--primary-dark)]">Here to help you find clarity</p>
                 <h2 className="mt-2 text-2xl font-[850] tracking-[-0.03em] text-[var(--navy)] sm:text-3xl">Have an IRCTC agent question?</h2>
                 <p className="mt-2 text-sm leading-6 text-slate-600 sm:text-base">
                   Tell us what you need help understanding and we’ll point you toward the information you should check.
                 </p>
               </div>
-              <div className="mt-5 flex flex-col gap-3 sm:flex-row lg:mt-0">
+              <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-center md:justify-start lg:mt-0">
                 <Link href="/contact" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--primary)] px-5 py-3 text-sm font-[700] text-white shadow-[0_7px_18px_rgba(249,115,22,0.2)] transition-colors hover:bg-[#e85d04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]">
                   Ask us a question <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Link>

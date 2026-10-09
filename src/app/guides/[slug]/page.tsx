@@ -51,14 +51,14 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
         </nav>
 
         <article className="mx-auto max-w-4xl overflow-hidden rounded-3xl border border-[#f0e1d5] bg-white shadow-[0_12px_36px_rgba(15,39,71,0.06)]">
-          <header className="border-b border-[#f2e9e1] bg-gradient-to-br from-white to-[#fff8f2] px-5 py-7 sm:px-9 sm:py-9">
+          <header className="border-b border-[#f2e9e1] bg-gradient-to-br from-white to-[#fff8f2] px-5 py-7 text-center sm:px-9 sm:py-9 sm:text-left">
             <span className="inline-flex rounded-full bg-[#fff1e7] px-3 py-1 text-xs font-[800] uppercase tracking-[0.07em] text-[#d95e0d]">
               {guide.category}
             </span>
             <h1 className="mt-4 text-[clamp(1.8rem,5vw,2.75rem)] font-[850] leading-[1.12] tracking-[-0.04em] text-[var(--navy)]">
               {guide.title}
             </h1>
-            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">{guide.summary}</p>
+            <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-slate-600 sm:mx-0">{guide.summary}</p>
             <p className="mt-4 text-xs font-medium text-slate-500">
               {guide.readTime} min read <span aria-hidden="true">·</span> Updated {new Date(`${guide.updatedAt}T00:00:00`).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })}
             </p>
@@ -102,7 +102,7 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
             <aside className="mt-10 rounded-2xl border border-[#f0e1d5] bg-[#fff9f5] p-5 sm:p-6">
               <h2 className="text-lg font-[800] text-[var(--navy)]">Need help with your next step?</h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">Ask a question or explore more practical learning resources.</p>
-              <div className="mt-4 flex flex-wrap gap-3">
+              <div className="mt-4 flex flex-wrap justify-center gap-3 sm:justify-start">
                 <Link href="/videos" className="inline-flex min-h-10 items-center rounded-full border border-[#e8d7c8] bg-white px-4 py-2 text-sm font-[700] text-[var(--navy)] hover:border-orange-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]">Watch video guides</Link>
                 <Link href="/ask-nihal" className="inline-flex min-h-10 items-center rounded-full bg-[var(--primary)] px-4 py-2 text-sm font-[700] text-white hover:bg-[#e85d04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]">Ask Nihal Singh</Link>
                 <Link href="/contact" className="inline-flex min-h-10 items-center rounded-full border border-[#e8d7c8] bg-white px-4 py-2 text-sm font-[700] text-[var(--navy)] hover:border-orange-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]">Contact RailAgents</Link>

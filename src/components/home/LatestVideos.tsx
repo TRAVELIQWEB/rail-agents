@@ -30,7 +30,7 @@ export async function LatestVideos() {
         ========================== */}
 
         <div className="mb-5 sm:mb-6">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/70 px-3.5 py-2 text-[0.75rem] font-[800] uppercase tracking-[0.12em] text-[#e96713] shadow-sm backdrop-blur-md">
+          <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/70 px-3.5 py-2 text-[0.75rem] font-[800] uppercase tracking-[0.12em] text-[#e96713] shadow-sm backdrop-blur-md min-[520px]:mx-0">
             <PlayCircle className="h-4 w-4" />
             Video Learning
           </div>

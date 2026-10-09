@@ -24,12 +24,12 @@ export function Logo({ variant = "default", size = "default" }: LogoProps) {
         quality={100}
         priority
         className={`${
-          isSmall ? "h-8 w-8" : "h-9 w-9 sm:h-11 sm:w-11 lg:h-8 lg:w-8 2xl:h-12 2xl:w-12"
+          isSmall ? "h-8 w-8" : "h-9 w-9 sm:h-11 sm:w-11 min-[1180px]:h-9 min-[1180px]:w-9 2xl:h-12 2xl:w-12"
         } shrink-0 object-contain drop-shadow-sm transition-transform duration-200 group-hover:-translate-y-px`}
       />
       <span
         className={`whitespace-nowrap font-[800] leading-none tracking-[-0.055em] ${
-          isSmall ? "text-[1.25rem]" : "text-[1.55rem] sm:text-[1.875rem] lg:text-[1.25rem] 2xl:text-[1.875rem] wide:text-[2rem]"
+          isSmall ? "text-[1.25rem]" : "text-[1.55rem] sm:text-[1.75rem] min-[1180px]:text-[1.25rem] xl:text-[1.5rem] 2xl:text-[1.875rem] wide:text-[2rem]"
         }`}
       >
         <span className={isLight ? "text-white" : "text-[var(--navy)]"}>Rail</span>

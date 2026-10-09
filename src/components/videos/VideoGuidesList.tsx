@@ -12,10 +12,10 @@ export function VideoGuidesList({ videos }: { videos: Video[] }) {
 
   return (
     <>
-      <p className="mb-4 text-sm text-slate-600" aria-live="polite">
+      <p className="mb-4 text-center text-sm text-slate-600 sm:text-left" aria-live="polite">
         Showing {visibleVideos.length} of {videos.length} videos
       </p>
-      <div className="grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 wide:gap-8">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-stretch gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3 xl:gap-6">
         {visibleVideos.map((video) => (
           <VideoCard key={video.id} video={video} />
         ))}

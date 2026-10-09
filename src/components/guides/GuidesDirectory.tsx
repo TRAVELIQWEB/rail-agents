@@ -36,7 +36,7 @@ export function GuidesDirectory() {
         <label htmlFor="guide-search" className="sr-only">
           Search guides, topics or questions
         </label>
-        <div className="relative max-w-2xl">
+        <div className="relative mx-auto max-w-2xl md:mx-0">
           <Search aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
           <input
             id="guide-search"
@@ -86,11 +86,11 @@ export function GuidesDirectory() {
       </p>
 
       {visibleGuides.length > 0 ? (
-        <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+        <div className="grid min-w-0 grid-cols-1 items-stretch gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3 xl:gap-6">
           {visibleGuides.map((guide) => (
             <article
               key={guide.slug}
-              className="flex h-full flex-col rounded-2xl border border-[#f0e1d5] bg-white p-5 shadow-[0_5px_18px_rgba(15,39,71,0.045)] transition-shadow hover:shadow-[0_10px_28px_rgba(15,39,71,0.09)] sm:p-6"
+              className="flex h-full flex-col items-center rounded-2xl border border-[#f0e1d5] bg-white p-5 text-center shadow-[0_5px_18px_rgba(15,39,71,0.045)] transition-shadow hover:shadow-[0_10px_28px_rgba(15,39,71,0.09)] sm:items-start sm:text-left sm:p-6"
             >
               <span className="mb-3 inline-flex w-fit rounded-full bg-[#fff1e7] px-3 py-1 text-[0.7rem] font-[800] uppercase tracking-[0.07em] text-[#d95e0d]">
                 {guide.category}
@@ -101,7 +101,7 @@ export function GuidesDirectory() {
               <p className="mt-2 flex-1 text-sm leading-6 text-slate-600">
                 {guide.summary}
               </p>
-              <div className="mt-5 flex items-center justify-between gap-3 border-t border-[#f2e9e1] pt-4">
+              <div className="mt-5 flex w-full flex-col items-center gap-2 border-t border-[#f2e9e1] pt-4 sm:flex-row sm:justify-between sm:gap-3">
                 <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
                   <BookOpen aria-hidden="true" className="h-4 w-4" />
                   {guide.readTime} min read

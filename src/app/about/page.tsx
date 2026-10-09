@@ -101,21 +101,21 @@ export default function AboutPage() {
           </svg>
 
           <div className="site-container relative grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12 xl:gap-16">
-            <div className="max-w-2xl">
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/85 px-3.5 py-2 text-xs font-[800] uppercase tracking-[0.12em] text-[#e96713] shadow-sm backdrop-blur-sm">
+            <div className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">
+              <span className="mx-auto inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/85 px-3.5 py-2 text-xs font-[800] uppercase tracking-[0.12em] text-[#e96713] shadow-sm backdrop-blur-sm md:mx-0">
                 <BookOpen aria-hidden="true" className="h-4 w-4" />
                 About RailAgents
               </span>
-              <h1 className="mt-5 text-[clamp(2.2rem,5.5vw,4rem)] font-[850] leading-[1.08] tracking-[-0.045em] text-[var(--navy)]">
+              <h1 className="mt-5 text-center text-[clamp(2.2rem,5.5vw,4rem)] font-[850] leading-[1.08] tracking-[-0.045em] text-[var(--navy)] md:text-left">
                 Clear travel guidance,
                 <span className="block text-[var(--primary)]">when you need it.</span>
               </h1>
-              <p className="mt-5 max-w-xl text-[15px] leading-7 text-slate-600 sm:text-base sm:leading-8">
+              <p className="mx-auto mt-5 max-w-xl text-[15px] leading-7 text-slate-600 sm:text-base sm:leading-8 md:mx-0">
                 RailAgents is here to help travel agents and travellers better
                 understand their rights, travel terms and conditions, and the
                 information they need to make sense of a journey.
               </p>
-              <div className="mt-7 flex flex-col gap-3 min-[420px]:flex-row">
+              <div className="mt-7 flex flex-col items-center gap-3 min-[420px]:flex-row min-[420px]:justify-center md:justify-start">
                 <Link
                   href="/contact"
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--primary)] px-6 py-3 text-sm font-[700] text-white shadow-[0_8px_20px_rgba(249,115,22,0.22)] transition-all hover:-translate-y-0.5 hover:bg-[#e85d04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
@@ -172,7 +172,6 @@ export default function AboutPage() {
                     <span className="text-xs font-[700] leading-5 text-[var(--navy)] sm:text-sm">Ask your question</span>
                   </div>
                 </div>
-                <span aria-hidden="true" className="absolute -right-3 top-[42%] flex h-9 w-9 items-center justify-center rounded-full border border-orange-100 bg-white text-[var(--primary)] shadow-md"><Train className="h-4 w-4" /></span>
               </div>
               <span className="absolute -left-3 top-[25%] hidden rounded-full border border-[#f0e1d5] bg-white px-3 py-2 text-xs font-[700] text-[var(--navy)] shadow-md sm:inline-flex">For agents &amp; travellers</span>
             </div>
@@ -181,10 +180,10 @@ export default function AboutPage() {
 
         <section className="relative bg-white py-12 sm:py-16 lg:py-20">
           <div className="site-container grid items-start gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
-            <div className="max-w-xl">
+            <div className="mx-auto max-w-xl text-center md:mx-0 md:text-left">
               <p className="text-xs font-[800] uppercase tracking-[0.12em] text-[var(--primary-dark)]">What we are here for</p>
               <h2 className="mt-3 text-2xl font-[850] leading-tight tracking-[-0.03em] text-[var(--navy)] sm:text-3xl">Helping you understand the journey ahead.</h2>
-              <p className="mt-4 text-[15px] leading-7 text-slate-600 sm:text-base">
+              <p className="mx-auto mt-4 max-w-xl text-[15px] leading-7 text-slate-600 sm:text-base md:mx-0">
                 Travel information can be difficult to follow. We aim to make it
                 easier with clear explanations and useful direction for your
                 situation.
@@ -192,7 +191,7 @@ export default function AboutPage() {
             </div>
             <div className="grid gap-3">
               {purposeItems.map(({ number, icon: Icon, title, description }) => (
-                <article key={number} className="group flex items-start gap-4 rounded-2xl border border-[#f0e1d5] bg-[#fffdfa] p-4 shadow-[0_4px_16px_rgba(15,39,71,0.035)] transition-shadow hover:shadow-[0_8px_24px_rgba(15,39,71,0.07)] sm:p-5">
+                <article key={number} className="group flex flex-col items-center gap-3 rounded-2xl border border-[#f0e1d5] bg-[#fffdfa] p-4 text-center shadow-[0_4px_16px_rgba(15,39,71,0.035)] transition-shadow hover:shadow-[0_8px_24px_rgba(15,39,71,0.07)] sm:flex-row sm:items-start sm:gap-4 sm:text-left sm:p-5">
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#fff0e3] text-[var(--primary)]"><Icon aria-hidden="true" className="h-5 w-5" /></span>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
@@ -210,7 +209,7 @@ export default function AboutPage() {
         <section aria-label="Our values" className="border-y border-[#f0e1d5] bg-[#fff8f2] py-7 sm:py-8">
           <div className="site-container grid grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-4 md:gap-3">
             {values.map(({ icon: Icon, title, detail }) => (
-              <div key={title} className="flex items-center gap-3 md:justify-center">
+              <div key={title} className="flex flex-col items-center gap-2 text-center md:flex-row md:justify-center md:text-left">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-[var(--primary)] shadow-sm"><Icon aria-hidden="true" className="h-5 w-5" /></span>
                 <div className="min-w-0">
                   <p className="text-sm font-[800] leading-snug text-[var(--navy)]">{title}</p>
@@ -228,9 +227,9 @@ export default function AboutPage() {
               <h2 className="mt-3 text-2xl font-[850] tracking-[-0.03em] text-[var(--navy)] sm:text-3xl">Guidance for the way you travel</h2>
               <p className="mt-3 text-[15px] leading-7 text-slate-600 sm:text-base">Whether you work in travel or are planning a trip, reach out with questions about rail, bus, air, or other travel topics.</p>
             </div>
-            <div className="mx-auto mt-7 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mx-auto mt-7 grid max-w-5xl gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {travelModes.map(({ label, icon: Icon, description }) => (
-                <article key={label} className="flex items-start gap-4 rounded-2xl border border-[#f0e1d5] bg-white p-5 shadow-[0_5px_18px_rgba(15,39,71,0.04)] transition-transform hover:-translate-y-0.5 sm:p-6">
+                <article key={label} className="flex flex-col items-center gap-3 rounded-2xl border border-[#f0e1d5] bg-white p-5 text-center shadow-[0_5px_18px_rgba(15,39,71,0.04)] transition-transform hover:-translate-y-0.5 sm:flex-row sm:items-start sm:text-left sm:p-6">
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#fff1e7] text-[var(--primary)]"><Icon aria-hidden="true" className="h-5 w-5" /></span>
                   <div>
                     <h3 className="text-base font-[800] text-[var(--navy)]">{label}</h3>
@@ -244,7 +243,7 @@ export default function AboutPage() {
 
         <section className="bg-white pb-12 sm:pb-16 lg:pb-20">
           <div className="site-container">
-            <div className="mx-auto flex max-w-5xl items-start gap-3 rounded-2xl border border-orange-100 bg-[#fff8f2] p-4 sm:p-5">
+            <div className="mx-auto flex max-w-5xl flex-col items-center gap-3 rounded-2xl border border-orange-100 bg-[#fff8f2] p-4 sm:flex-row sm:items-start sm:p-5">
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-[var(--primary)] shadow-sm"><Info aria-hidden="true" className="h-5 w-5" /></span>
               <p className="text-sm leading-6 text-slate-600">
                 Travel rules and terms can vary by provider and change over
@@ -260,12 +259,12 @@ export default function AboutPage() {
           <div className="site-container">
             <div className="relative isolate overflow-hidden rounded-[28px] border border-[#f3dfcf] bg-gradient-to-br from-white via-[#fffaf5] to-[#ffeddd] px-5 py-8 shadow-[0_12px_38px_rgba(15,39,71,0.06)] sm:px-8 sm:py-9 lg:flex lg:items-center lg:justify-between lg:gap-8 lg:px-10">
               <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-24 -z-10 h-72 w-72 rounded-full bg-orange-200/45 blur-3xl" />
-              <div className="max-w-2xl">
+              <div className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">
                 <p className="text-xs font-[800] uppercase tracking-[0.12em] text-[var(--primary-dark)]">We’re here to help</p>
                 <h2 className="mt-2 text-2xl font-[850] tracking-[-0.03em] text-[var(--navy)] sm:text-3xl">Still have a question?</h2>
                 <p className="mt-3 text-[15px] leading-7 text-slate-600 sm:text-base">Tell us what you need help with and we’ll point you in the right direction.</p>
               </div>
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row lg:mt-0">
+              <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-start lg:mt-0">
                 <Link
                   href="/contact"
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--primary)] px-5 py-3 text-sm font-[700] text-white shadow-[0_7px_18px_rgba(249,115,22,0.2)] transition-colors hover:bg-[#e85d04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"

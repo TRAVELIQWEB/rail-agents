@@ -18,7 +18,7 @@ export function SearchForm({ mobile = false }: SearchFormProps) {
       role="search"
       onSubmit={handleSubmit}
       className={`flex min-h-[42px] items-center gap-2 rounded-full border border-[#f0deca] bg-white px-3.5 py-1.5 shadow-[0_2px_8px_rgba(15,39,71,0.04)] transition-all duration-200 hover:border-[#fdba74] ${
-        mobile ? "w-full" : "w-[145px] xl:w-[190px] 2xl:w-[270px] wide:w-[320px]"
+        mobile ? "w-full" : "w-[120px] min-[1280px]:w-[170px] 2xl:w-[220px] wide:w-[270px]"
       } focus-within:border-[var(--primary)] focus-within:shadow-[0_0_12px_rgba(249,115,22,0.2)]`}
     >
       <Search className="h-4 w-4 shrink-0 text-slate-400" />

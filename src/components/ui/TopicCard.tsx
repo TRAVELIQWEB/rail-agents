@@ -22,12 +22,12 @@ export function TopicCard({ topic }: TopicCardProps) {
     <InternalLink
       href={topic.href}
       prefetch={false}
-      className="group relative flex min-h-[92px] items-center justify-between gap-3 overflow-hidden rounded-2xl border border-[#f2e5d8] bg-gradient-to-b from-white via-[#fffcf9] to-[#fff8f2]/90 p-4 shadow-[0_4px_16px_rgba(15,39,71,0.04),inset_0_1px_0_rgba(255,255,255,1)] transition-all duration-300 hover:-translate-y-1 hover:border-[#f97316]/40 hover:shadow-[0_12px_28px_rgba(249,115,22,0.12),inset_0_1px_0_rgba(255,255,255,1)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:p-4.5"
+      className="group relative flex min-h-[112px] flex-col items-center justify-center gap-2 overflow-hidden rounded-2xl border border-[#f2e5d8] bg-gradient-to-b from-white via-[#fffcf9] to-[#fff8f2]/90 p-4 text-center shadow-[0_4px_16px_rgba(15,39,71,0.04),inset_0_1px_0_rgba(255,255,255,1)] transition-all duration-300 hover:-translate-y-1 hover:border-[#f97316]/40 hover:shadow-[0_12px_28px_rgba(249,115,22,0.12),inset_0_1px_0_rgba(255,255,255,1)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:min-h-[92px] sm:flex-row sm:justify-between sm:gap-3 sm:text-left sm:p-4.5"
     >
       {/* Top subtle hover accent bar */}
       <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-      <div className="flex min-w-0 items-center gap-3.5">
+      <div className="flex min-w-0 flex-col items-center gap-2 sm:flex-row sm:gap-3.5">
         {/* Soft 3D elevated icon box */}
         <div
           className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl shadow-[0_3px_10px_rgba(0,0,0,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)] transition-transform duration-300 group-hover:scale-105 ${topic.iconClassName}`}

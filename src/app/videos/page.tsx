@@ -31,7 +31,7 @@ export default async function VideoGuidesPage() {
 
       <div className="site-container relative">
         <div className="mb-8">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/70 px-3.5 py-2 text-xs font-[800] uppercase tracking-[0.12em] text-[#e96713] shadow-sm backdrop-blur-md">
+          <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/70 px-3.5 py-2 text-xs font-[800] uppercase tracking-[0.12em] text-[#e96713] shadow-sm backdrop-blur-md min-[520px]:mx-0">
             <PlayCircle aria-hidden="true" className="h-4 w-4" />
             Video Learning
           </div>
@@ -41,7 +41,7 @@ export default async function VideoGuidesPage() {
             external
             linkText={channelVideosUrl ? "Visit YouTube Channel" : undefined}
           />
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base">
+          <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-6 text-slate-600 min-[520px]:mx-0 min-[520px]:text-left sm:text-base">
             Watch simple, practical video guides for railway and travel agents.
             Learn about IRCTC agent services, booking workflows, and common
             customer questions with clear, step-by-step explanations. Pick a

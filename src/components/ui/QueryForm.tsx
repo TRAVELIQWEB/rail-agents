@@ -50,7 +50,7 @@ export function QueryForm() {
     }
 
     const message = encodeURIComponent(
-      `Hi RailAgents,\n\nMy name is ${cleanName} and my mobile number is ${mobile}.\n\nMy railway agent services query is:\n${cleanQuery}\n\nPlease guide me with the next steps.`,
+      `Hi RailAgents,\n\nMy name is ${cleanName} and my mobile number is ${mobile}.\n\nMy travel-related question is:\n${cleanQuery}\n\nPlease guide me with the next steps.`,
     );
     const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${message}`;
 
@@ -69,7 +69,7 @@ export function QueryForm() {
     <div className="relative isolate w-full rounded-[32px] border border-[#fee4d0] bg-white p-6 shadow-[0_20px_50px_rgba(249,115,22,0.08),0_4px_16px_rgba(15,39,71,0.04)] sm:p-8">
       <div aria-hidden="true" className="pointer-events-none absolute -right-12 -top-12 -z-10 h-64 w-64 rounded-full bg-orange-100/60 blur-3xl" />
 
-      <div className="mb-6 flex items-start gap-4">
+      <div className="mb-6 flex flex-col items-center gap-3 text-center md:flex-row md:items-start md:gap-4 md:text-left">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#f97316] to-[#ff8c38] text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)]">
           <MessageCircle aria-hidden="true" className="h-6 w-6 fill-white/20 text-white" />
         </div>
@@ -161,7 +161,7 @@ export function QueryForm() {
               aria-invalid={Boolean(errors.query)}
               aria-describedby={errors.query ? "query-error" : "query-count"}
               placeholder="Write your question here..."
-              className="ml-3 min-h-[110px] w-full resize-y bg-transparent text-base leading-relaxed text-[#0f2747] outline-none placeholder:text-slate-400"
+              className="ml-3 min-h-[110px] min-w-0 flex-1 resize-y bg-transparent text-base leading-relaxed text-[#0f2747] outline-none placeholder:text-slate-400"
             />
             <span id="query-count" className="absolute bottom-2.5 right-3.5 select-none text-[11px] font-medium text-slate-400">{query.length}/500</span>
           </div>

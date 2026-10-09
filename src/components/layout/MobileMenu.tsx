@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, MessageCircle, X } from "lucide-react";
 import { SearchForm } from "@/components/layout/SearchForm";
 import { InternalLink } from "@/components/ui/InternalLink";
 
@@ -37,7 +37,16 @@ export function MobileMenu() {
   }, [isOpen]);
 
   return (
-    <div className="relative lg:hidden" ref={menuRef}>
+    <div className="relative flex items-center gap-2 min-[1180px]:hidden" ref={menuRef}>
+      <InternalLink
+        href="/contact"
+        prefetch={false}
+        aria-label="Contact RailAgents"
+        title="Contact Us"
+        className="flex h-11 w-11 items-center justify-center rounded-lg border border-[var(--primary-border)] text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+      >
+        <MessageCircle aria-hidden="true" className="h-5 w-5" />
+      </InternalLink>
       <button
         type="button"
         aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}

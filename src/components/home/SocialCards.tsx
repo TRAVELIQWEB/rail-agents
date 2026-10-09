@@ -54,7 +54,7 @@ export function SocialCards() {
           <div className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-red-200/40 blur-2xl transition-opacity group-hover:opacity-80" />
 
           {/* Top Bar: 3D App Icon + Category Badge */}
-          <div className="relative z-10 flex items-center justify-between gap-3">
+          <div className="relative z-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
             {/* 3D Icon Box */}
             <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff4d4d] via-[#ff0000] to-[#cc0000] text-white shadow-[0_8px_20px_rgba(255,0,0,0.35),inset_0_2px_4px_rgba(255,255,255,0.4)]">
               {/* Spark accents on top */}
@@ -71,7 +71,7 @@ export function SocialCards() {
           {/* Card Body & Graphics Container */}
           <div className="relative z-10 mt-6 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
             {/* Left Content */}
-            <div className="sm:col-span-7 flex flex-col items-start">
+            <div className="sm:col-span-7 flex flex-col items-center text-center sm:items-start sm:text-left">
               <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--navy)]">
                 Watch on <span className="text-[#ff0000]">YouTube</span>
               </h3>
@@ -138,7 +138,7 @@ export function SocialCards() {
           <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-fuchsia-200/40 blur-2xl transition-opacity group-hover:opacity-80" />
 
           {/* Top Bar: 3D App Icon + Category Badge */}
-          <div className="relative z-10 flex items-center justify-between gap-3">
+          <div className="relative z-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
             {/* 3D Icon Box */}
             <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white shadow-[0_8px_20px_rgba(238,42,123,0.35),inset_0_2px_4px_rgba(255,255,255,0.4)]">
               {/* Spark accents on top */}
@@ -155,7 +155,7 @@ export function SocialCards() {
           {/* Card Body & Graphics Container */}
           <div className="relative z-10 mt-6 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
             {/* Left Content */}
-            <div className="sm:col-span-7 flex flex-col items-start">
+            <div className="sm:col-span-7 flex flex-col items-center text-center sm:items-start sm:text-left">
               <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--navy)]">
                 Follow on <span className="bg-gradient-to-r from-[#e1306c] to-[#c13584] bg-clip-text text-transparent">Instagram</span>
               </h3>
@@ -232,7 +232,7 @@ export function SocialCards() {
           <div className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-sky-200/40 blur-2xl transition-opacity group-hover:opacity-80" />
 
           {/* Top Bar: 3D App Icon + Category Badge */}
-          <div className="relative z-10 flex items-center justify-between gap-3">
+          <div className="relative z-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
             {/* 3D Icon Box */}
             <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-b from-[#3b82f6] via-[#1d4ed8] to-[#1e40af] text-white shadow-[0_8px_20px_rgba(29,78,216,0.35),inset_0_2px_4px_rgba(255,255,255,0.4)]">
               {/* Spark accents on top */}
@@ -249,7 +249,7 @@ export function SocialCards() {
           {/* Card Body & Graphics Container */}
           <div className="relative z-10 mt-6 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
             {/* Left Content */}
-            <div className="sm:col-span-7 flex flex-col items-start">
+            <div className="sm:col-span-7 flex flex-col items-center text-center sm:items-start sm:text-left">
               <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--navy)]">
                 Join on <span className="text-[#1877f2]">Facebook</span>
               </h3>

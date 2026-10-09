@@ -21,7 +21,7 @@ const questions = [
 
 const trustItems = [
   { icon: BookOpen, lines: ["Simple", "Explanations"] },
-  { icon: ShieldCheck, lines: ["Verified", "Information"] },
+  { icon: ShieldCheck, lines: ["Practical", "Information"] },
   { icon: Users, lines: ["For Railway Agents", "& Regular Users"] },
 ];
 
@@ -30,9 +30,9 @@ export function Hero() {
     /*
      * Mobile  (<768):  single-column flow with a cropped portrait
      * Tablet  (768+):  text and card above a cropped portrait
-     * Desktop (1024+): 3 cols (text | Nihal | card)
+     * Desktop (1280+): 3 cols (text | Nihal | card)
      */
-    <section className="relative flex flex-col overflow-hidden bg-[#faf8f5] min-h-[460px] md:h-auto md:min-h-0 lg:h-[calc(100svh-72px)] lg:min-h-[500px] lg:max-h-[640px] xl:max-h-[660px] 2xl:max-h-[680px] wide:max-h-[700px]">
+    <section className="relative flex flex-col overflow-hidden bg-[#faf8f5] min-h-[460px] md:h-auto md:min-h-0 xl:h-[calc(100svh-72px)] xl:min-h-[560px] xl:max-h-[660px] 2xl:max-h-[680px] wide:max-h-[700px]">
 
       {/* Railway background */}
       <div aria-hidden="true" className="hero-railway-backdrop absolute inset-0" />
@@ -54,23 +54,23 @@ export function Hero() {
          * Grid:
          *  mobile  (<768px):  1 col, items stack
          *  tablet  (768px+):  2 cols [text | card], portrait follows
-         *  desktop (1024px+): 3 cols via lg:grid-cols-12 with col-spans
+         *  desktop (1280px+): 3 cols via xl:grid-cols-12 with col-spans
          */}
-        <div className="grid grid-cols-1 items-center gap-0 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:grid-cols-12 lg:items-center">
+        <div className="grid grid-cols-1 items-center gap-0 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] xl:grid-cols-12 xl:items-center">
 
           {/* ══ COL 1: LEFT TEXT ══ */}
-          <div className="flex min-w-0 flex-col items-center justify-center py-4 pr-0 text-center sm:py-5 md:items-start md:py-4 md:pr-5 md:text-left lg:col-span-5 xl:col-span-5 lg:py-4 lg:pr-4 xl:pr-6 2xl:pr-8 wide:pr-10">
+          <div className="flex min-w-0 flex-col items-center justify-center py-4 pr-0 text-center sm:py-5 md:items-start md:py-4 md:pr-5 md:text-left xl:col-span-5 xl:py-4 xl:pr-6 2xl:pr-8 wide:pr-10">
 
             {/* Badge */}
             <span className="mb-4 inline-flex w-fit max-w-full items-center gap-2.5 rounded-full border border-[#f0deca] bg-[#fff8f2] py-[7px] pl-[7px] pr-4 text-[0.75rem] font-[700] text-[var(--navy)] shadow-[0_2px_10px_rgba(249,115,22,0.10)] sm:text-[0.8125rem] lg:text-[0.875rem]">
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[var(--primary)] text-white shadow-[0_2px_6px_rgba(249,115,22,0.35)]">
                 <Train className="h-3.5 w-3.5" />
               </span>
-              Your Partner in Travel Business
+              Travel Information & Guidance
             </span>
 
             {/* H1 */}
-            <h1 className="max-w-[500px] text-[clamp(1.75rem,7vw,2.5rem)] font-[800] leading-[1.06] tracking-[-0.045em] text-[var(--navy)] md:max-w-full md:text-[clamp(1.9rem,3.8vw,2.8rem)] lg:text-[clamp(2rem,4vw,2.9rem)] xl:max-w-[720px] xl:text-[clamp(3.1rem,3.4vw,4rem)] wide:max-w-[820px] wide:text-[clamp(3.5rem,3.4vw,4rem)]">
+            <h1 className="max-w-[500px] text-[clamp(2rem,7vw,2.5rem)] font-[800] leading-[1.06] tracking-[-0.045em] text-[var(--navy)] md:max-w-full md:text-[clamp(2rem,4vw,2.8rem)] xl:max-w-[720px] xl:text-[clamp(3.1rem,3.4vw,4rem)] wide:max-w-[820px] wide:text-[3.25rem]">
               Everything a
               <span className="block text-[var(--primary)]">
                 Travel Agent Needs
@@ -128,7 +128,7 @@ export function Hero() {
           </div>
 
           {/* ══ COL 2: NIHAL SINGH — ATTRACTIVE LAYERED HERO BACKDROP ══ */}
-          <div className="relative order-2 mx-auto mt-3 h-[290px] w-full max-w-[310px] overflow-hidden md:col-span-2 md:row-start-2 md:mt-0 md:h-[370px] md:max-w-[440px] lg:order-none lg:col-span-3 lg:row-auto lg:mt-0 lg:h-auto lg:max-w-none lg:self-stretch lg:flex lg:items-end lg:justify-center">
+          <div className="relative order-2 mx-auto mt-3 h-[290px] w-full max-w-[310px] overflow-hidden md:col-span-2 md:row-start-2 md:mt-0 md:h-[370px] md:max-w-[440px] xl:order-none xl:col-start-6 xl:col-span-3 xl:row-auto xl:mt-0 xl:h-auto xl:max-w-none xl:self-stretch xl:flex xl:items-end xl:justify-center">
             {/* Outer warm ambient glow */}
             <div
               aria-hidden="true"
@@ -158,7 +158,7 @@ export function Hero() {
             </div>
 
             {/* Nihal image — crisp, clear, natural colors with soft shadow */}
-            <div className="absolute inset-x-0 top-0 bottom-[-105px] z-10 md:bottom-[-125px] lg:bottom-[-20%]">
+            <div className="absolute inset-x-0 top-0 bottom-[-105px] z-10 md:bottom-[-125px] xl:bottom-[-20%]">
               <Image
                 src="/images/nihal-singh-cutout.png"
                 alt="Nihal Singh"
@@ -181,18 +181,18 @@ export function Hero() {
           </div>
 
           {/* ══ COL 3: ASK NIHAL CARD ══ */}
-          <div className="order-3 pb-8 sm:pb-10 md:order-none md:col-start-2 md:row-start-1 md:col-span-1 md:pb-6 lg:col-span-4 lg:row-auto lg:flex lg:items-center lg:justify-end lg:pb-0 lg:pl-3 xl:pl-4 2xl:pl-6">
-            <div className="w-full max-w-sm rounded-2xl bg-white p-4 shadow-[0_8px_32px_rgba(15,39,71,0.09),0_2px_8px_rgba(15,39,71,0.04)] sm:p-5 md:max-w-[340px] lg:max-w-none wide:rounded-3xl wide:p-8">
+          <div className="order-3 min-w-0 pb-8 sm:pb-10 md:order-none md:col-start-2 md:row-start-1 md:col-span-1 md:pb-6 xl:col-start-9 xl:col-span-4 xl:row-auto xl:flex xl:items-center xl:justify-end xl:pb-0 xl:pl-4 2xl:pl-6">
+            <div className="mx-auto w-full min-w-0 max-w-sm rounded-2xl bg-white p-4 shadow-[0_8px_32px_rgba(15,39,71,0.09),0_2px_8px_rgba(15,39,71,0.04)] min-[380px]:p-5 sm:p-5 md:max-w-[340px] xl:max-w-none wide:rounded-3xl wide:p-8">
 
               {/* Card header */}
               <div className="mb-3 flex items-start justify-between gap-3">
-                <div>
-                  <p className="text-[1.15rem] font-[800] leading-[1.18] tracking-[-0.03em] text-[var(--navy)] sm:text-[1.25rem] wide:text-[1.75rem]">
+                <div className="min-w-0 flex-1">
+                  <p className="text-[1.375rem] font-[800] leading-[1.18] tracking-[-0.03em] text-[var(--navy)] sm:text-[1.25rem] wide:text-[1.75rem]">
                     Namaste!{" "}
                     <span className="text-[1.1rem]">👋</span>
                     <span className="mt-0.5 block">I&apos;m Nihal Singh</span>
                   </p>
-                  <p className="mt-2 text-[0.75rem] leading-[1.58] text-[#5c6b80] sm:text-[0.7813rem] lg:text-[0.8125rem] xl:text-[0.875rem] wide:text-base">
+                  <p className="mt-2 text-[0.9375rem] leading-relaxed text-[#5c6b80] sm:text-[0.7813rem] lg:text-[0.8125rem] xl:text-[0.875rem] wide:text-base">
                     Ask Nihal Singh anything about railway ticket booking. Here
                     are some common questions:
                   </p>
@@ -203,21 +203,21 @@ export function Hero() {
               </div>
 
               {/* Question rows */}
-              <div className="space-y-1.5 wide:space-y-2.5">
+              <div className="space-y-2 wide:space-y-2.5">
                 {questions.map((question, i) => (
                   <InternalLink
                     key={question}
                     href={`/ask-nihal?q=${encodeURIComponent(question)}`}
                     prefetch={false}
-                    className={`group flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2 text-left text-[0.75rem] font-[500] leading-snug transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] sm:text-[0.7813rem] lg:text-[0.8125rem] xl:text-[0.875rem] wide:min-h-12 wide:px-4 wide:text-base ${
+                    className={`group flex min-h-[52px] w-full items-center justify-between gap-3 rounded-xl px-3 py-3 text-left text-[0.875rem] font-[500] leading-snug transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] sm:min-h-0 sm:py-2 sm:text-[0.7813rem] lg:text-[0.8125rem] xl:text-[0.875rem] wide:min-h-12 wide:px-4 wide:text-base ${
                       i === 1
                         ? "bg-[#fff3e8] text-[#7c3a0a] hover:bg-[#ffe8d0]"
                         : "bg-[#f4f5f7] text-[var(--navy)] hover:bg-[#fff3e8]"
                     }`}
                   >
-                    <span>{question}</span>
+                    <span className="min-w-0 flex-1 break-words">{question}</span>
                     <span
-                      className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full transition-transform duration-200 group-hover:translate-x-0.5 ${
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-transform duration-200 group-hover:translate-x-0.5 sm:h-6 sm:w-6 ${
                         i === 1
                           ? "bg-[var(--primary)] text-white"
                           : "bg-white text-[var(--primary)] shadow-[0_1px_4px_rgba(0,0,0,0.1)]"

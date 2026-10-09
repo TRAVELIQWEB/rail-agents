@@ -11,7 +11,7 @@ const testimonials = [
     location: "Travel Agent, Delhi",
     initials: "RV",
     quote:
-      "Very helpful guides and clear explanations. IRCTC registration process became so easy!",
+      "The clear guides helped me understand the IRCTC registration process.",
   },
   {
     name: "Pooja Sharma",
@@ -57,6 +57,8 @@ export function Testimonials() {
                   group
                   relative
                   flex
+                  items-center
+                  text-center
                   min-h-[270px]
                   flex-col
                   overflow-hidden
@@ -73,6 +75,8 @@ export function Testimonials() {
                   hover:shadow-[0_16px_38px_rgba(15,39,71,0.08)]
                   wide:min-h-[320px]
                   wide:p-7
+                  sm:items-stretch
+                  sm:text-left
                 "
               >
                 {/* decorative orange glow */}
@@ -92,8 +96,8 @@ export function Testimonials() {
                 />
 
                 {/* TOP PROFILE */}
-                <div className="relative z-10 flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
+              <div className="relative z-10 flex w-full flex-col items-center justify-between gap-3 sm:flex-row sm:items-start">
+                  <div className="flex flex-col items-center gap-3 sm:flex-row">
                     <span
                       className="
                         flex
@@ -123,12 +127,12 @@ export function Testimonials() {
                     </div>
                   </div>
 
-                  <Quote className="h-7 w-7 shrink-0 text-[#ffe0c2]" />
+                  <Quote className="hidden h-7 w-7 shrink-0 text-[#ffe0c2] sm:block" />
                 </div>
 
                 {/* STARS */}
                 <div
-                  className="relative z-10 mt-4 flex gap-1 text-[#f59e0b]"
+                  className="relative z-10 mt-4 flex justify-center gap-1 text-[#f59e0b] sm:justify-start"
                   aria-label="5 out of 5 stars"
                 >
                   {Array.from({ length: 5 }, (_, index) => (
@@ -154,13 +158,13 @@ export function Testimonials() {
                     py-4
                   "
                 >
-                  <p className="text-[0.92rem] leading-[1.65] text-slate-600">
+                  <p className="text-center text-[0.92rem] leading-[1.65] text-slate-600 sm:text-left">
                     “{testimonial.quote}”
                   </p>
                 </div>
 
                 {/* BOTTOM DECORATIVE LINE */}
-                <div className="relative z-10 mt-4 h-[3px] w-10 rounded-full bg-[var(--primary)] transition-all duration-300 group-hover:w-16" />
+              <div className="relative z-10 mx-auto mt-4 h-[3px] w-10 rounded-full bg-[var(--primary)] transition-all duration-300 group-hover:w-16 sm:mx-0" />
               </article>
             ))}
           </div>
@@ -181,8 +185,12 @@ export function Testimonials() {
             border-[#ffe1c2]
             bg-[linear-gradient(115deg,#fffaf4_0%,#ffead7_100%)]
             p-7
+            items-center
+            text-center
             shadow-[0_12px_35px_rgba(249,115,22,0.08)]
+            lg:items-start
             lg:p-8
+            lg:text-left
             wide:min-h-[400px]
             wide:p-10
           "
@@ -212,19 +220,19 @@ export function Testimonials() {
           />
 
           <p className="mb-3 text-[0.8125rem] font-[800] uppercase tracking-[0.12em] text-[#e96713]">
-            Ready to Get Started?
+            Explore IRCTC Agent Information
           </p>
 
           <h2 className="max-w-[360px] text-[2rem] font-[800] leading-[1.1] tracking-[-0.045em] text-[var(--navy)] wide:max-w-[460px] wide:text-[2.5rem]">
-            Become an IRCTC Agent Today
+            Understand the IRCTC Agent Process
           </h2>
 
-          <p className="mt-4 max-w-[390px] text-[0.92rem] leading-[1.65] text-slate-600 wide:max-w-[480px] wide:text-lg">
-            Start your travel business with step-by-step guides and official
-            IRCTC agent registration guidance.
+          <p className="mx-auto mt-4 max-w-[390px] text-[0.92rem] leading-[1.65] text-slate-600 lg:mx-0 wide:max-w-[480px] wide:text-lg">
+            Explore practical guides about the registration process, documents,
+            and details to verify with the relevant authorized provider.
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
             <InternalLink
               href="/irctc-agent-registration"
               prefetch={false}
@@ -245,7 +253,7 @@ export function Testimonials() {
                 hover:bg-[var(--primary-hover)]
               "
             >
-              Start Registration
+              Understand the Process
               <ArrowRight className="h-4 w-4" />
             </InternalLink>
 
