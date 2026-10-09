@@ -3,21 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { siteConfig } from "@/config/site";
 import { SearchForm } from "@/components/layout/SearchForm";
 import { InternalLink } from "@/components/ui/InternalLink";
 
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "Ask Nihal Singh", href: "/ask-nihal" },
+  { label: "About", href: "/about" },
+  { label: "IRCTC Agent", href: "/irctc-agent-registration" },
   { label: "Video Guides", href: "/videos" },
   { label: "Guides", href: "/guides" },
-  { label: "IRCTC Agent", href: "/irctc-agent-registration" },
-  { label: "FAQ", href: "/faq" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
 ];
-
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -67,7 +62,7 @@ export function MobileMenu() {
                 prefetch={false}
                 current={pathname === item.href || (item.href !== "/" && pathname.startsWith(`${item.href}/`))}
                 onClick={() => setIsOpen(false)}
-                className={`rounded-lg px-3 py-2.5 text-base font-medium transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${
+                className={`rounded-lg px-3 py-2.5 text-base font-[600] transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${
                   pathname === item.href ||
                   (item.href !== "/" && pathname.startsWith(`${item.href}/`))
                     ? "bg-[var(--primary-soft)] text-[var(--primary-dark)]"
@@ -83,17 +78,14 @@ export function MobileMenu() {
             <SearchForm mobile />
           </div>
 
-          {siteConfig.social.youtube ? (
-            <a
-              href={siteConfig.social.youtube}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setIsOpen(false)}
-              className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-full bg-[var(--primary)] px-4 py-2.5 text-[0.9375rem] font-semibold text-white shadow-[0_10px_22px_rgba(249,115,22,0.22)] transition-all duration-200 hover:-translate-y-px hover:bg-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
-            >
-              Subscribe
-            </a>
-          ) : null}
+          <InternalLink
+            href="/contact"
+            prefetch={false}
+            onClick={() => setIsOpen(false)}
+            className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-full bg-[var(--primary)] px-4 py-2.5 text-[0.9375rem] font-semibold text-white shadow-[0_10px_22px_rgba(249,115,22,0.22)] transition-all duration-200 hover:-translate-y-px hover:bg-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+          >
+            Contact Us
+          </InternalLink>
         </div>
       ) : null}
     </div>

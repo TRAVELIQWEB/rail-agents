@@ -91,7 +91,7 @@ export async function getLatestVideos(
 
     // 2. Get latest videos
     const playlistResponse = await fetch(
-      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=${limit}&key=${apiKey}`,
+      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=${Math.min(limit, 50)}&key=${apiKey}`,
       {
         next: {
           revalidate: 3600,

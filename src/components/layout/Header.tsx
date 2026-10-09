@@ -1,10 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { ChevronDown } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
-import { siteConfig } from "@/config/site";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { Logo } from "@/components/layout/Logo";
 import { SearchForm } from "@/components/layout/SearchForm";
@@ -12,44 +8,13 @@ import { InternalLink } from "@/components/ui/InternalLink";
 
 const navItems = [
   { label: "Home", href: "/" },
-  { label: "Ask Nihal Singh", href: "/ask-nihal" },
+  { label: "About", href: "/about" },
+  { label: "IRCTC Agent", href: "/irctc-agent-registration" },
   { label: "Video Guides", href: "/videos" },
   { label: "Guides", href: "/guides" },
-  { label: "IRCTC Agent", href: "/irctc-agent-registration" },
 ];
-const moreItems = [
-  { label: "FAQ", href: "/faq" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
-const whatsappMessage = encodeURIComponent(siteConfig.whatsapp.message);
-const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${whatsappMessage}`;
-
 export function Header() {
-  const [moreOpen, setMoreOpen] = useState(false);
-  const moreRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-
-  useEffect(() => {
-    function closeOnOutsideClick(event: PointerEvent) {
-      if (!moreRef.current?.contains(event.target as Node)) {
-        setMoreOpen(false);
-      }
-    }
-
-    function closeOnEscape(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        setMoreOpen(false);
-      }
-    }
-
-    document.addEventListener("pointerdown", closeOnOutsideClick);
-    document.addEventListener("keydown", closeOnEscape);
-    return () => {
-      document.removeEventListener("pointerdown", closeOnOutsideClick);
-      document.removeEventListener("keydown", closeOnEscape);
-    };
-  }, []);
 
   return (
     <header className="sticky top-0 z-40 border-b border-[#f4e4d4]/80 bg-[#fffdfa]/95 backdrop-blur-md shadow-[0_2px_15px_rgba(249,115,22,0.04)]">
@@ -60,7 +25,7 @@ export function Header() {
 
         <nav
           aria-label="Main navigation"
-          className="hidden min-w-0 items-center gap-0.5 justify-self-center lg:flex xl:gap-2 wide:gap-4"
+          className="hidden min-w-0 items-center justify-self-center gap-2 lg:flex"
         >
           {navItems.map((item) => {
             const isActive =
@@ -73,7 +38,7 @@ export function Header() {
                 href={item.href}
                 prefetch={false}
                 current={isActive}
-                className={`whitespace-nowrap rounded-full px-1.5 py-1.5 text-xs font-[700] transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:px-2.5 xl:text-[0.875rem] ${
+                className={`whitespace-nowrap rounded-full px-2 py-2 text-[15px] font-[600] leading-none transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:px-3 xl:text-[16px] min-[1440px]:text-[17px] ${
                   isActive
                     ? "bg-[#ffefe6] text-[var(--primary)] shadow-sm"
                     : "text-[var(--navy)] hover:bg-[#fff7f0] hover:text-[var(--primary)]"
@@ -84,61 +49,17 @@ export function Header() {
             );
           })}
 
-          <div className="relative" ref={moreRef}>
-            <button
-              type="button"
-              aria-expanded={moreOpen}
-              aria-haspopup="true"
-              aria-controls="more-navigation"
-              aria-label="More navigation"
-              onClick={() => setMoreOpen((open) => !open)}
-              className="inline-flex items-center gap-1 whitespace-nowrap rounded-full px-1.5 py-1.5 text-xs font-[700] text-[var(--navy)] transition-all duration-200 hover:bg-[#fff7f0] hover:text-[var(--primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:px-2.5 xl:text-[0.875rem]"
-            >
-              More
-              <ChevronDown
-                className={`h-3.5 w-3.5 transition-transform ${moreOpen ? "rotate-180" : ""}`}
-              />
-            </button>
-
-            {moreOpen ? (
-              <div
-                id="more-navigation"
-                className="absolute right-0 top-[calc(100%+14px)] z-50 w-44 rounded-xl border border-[#f0deca] bg-white p-1.5 shadow-[0_16px_36px_rgba(15,39,71,0.14),0_4px_12px_rgba(249,115,22,0.08)]"
-              >
-                {moreItems.map((item) => (
-                  <InternalLink
-                    key={item.href}
-                    href={item.href}
-                    prefetch={false}
-                    current={pathname === item.href || pathname.startsWith(`${item.href}/`)}
-                    onClick={() => setMoreOpen(false)}
-                    className={`block rounded-lg px-3 py-2 text-sm font-[600] transition-colors hover:bg-[#fff3e8] hover:text-[var(--primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${
-                      pathname === item.href ||
-                      pathname.startsWith(`${item.href}/`)
-                        ? "bg-[#fff3e8] text-[var(--primary)]"
-                        : "text-[var(--navy)]"
-                    }`}
-                  >
-                    {item.label}
-                  </InternalLink>
-                ))}
-              </div>
-            ) : null}
-          </div>
         </nav>
 
         <div className="hidden shrink-0 items-center gap-2 justify-self-end lg:flex xl:gap-3">
           <SearchForm />
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Chat with RailAgents on WhatsApp"
-            className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full bg-[#25D366] px-3 py-2 text-xs font-[700] text-white shadow-[0_4px_16px_rgba(37,211,102,0.24)] transition-all duration-200 hover:scale-105 hover:bg-[#20bd5a] hover:shadow-[0_6px_22px_rgba(37,211,102,0.32)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366] xl:min-h-[42px] xl:gap-2 xl:px-5 xl:text-[0.875rem] wide:min-h-[48px] wide:px-7 wide:text-base"
+          <InternalLink
+            href="/contact"
+            prefetch={false}
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-[var(--primary)] px-3 py-2 text-[15px] font-[600] leading-none text-white shadow-[0_4px_16px_rgba(249,115,22,0.24)] transition-all duration-200 hover:scale-105 hover:bg-[#e85d04] hover:shadow-[0_6px_22px_rgba(249,115,22,0.32)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:gap-2 xl:px-5 xl:text-[16px] min-[1440px]:text-[17px]"
           >
-            <FaWhatsapp aria-hidden="true" className="h-4 w-4" />
-            WhatsApp Us
-          </a>
+            Contact Us
+          </InternalLink>
         </div>
 
         <MobileMenu />

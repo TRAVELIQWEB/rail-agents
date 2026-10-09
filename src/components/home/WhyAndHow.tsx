@@ -53,9 +53,9 @@ export function WhyAndHow() {
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#fffdfa]/60 to-[#fffdfa]" />
         </div>
 
-        <div className="site-container relative z-10 grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8 xl:gap-12 wide:gap-14">
+        <div className="site-container relative z-10 grid grid-cols-1 items-center gap-10 lg:gap-12 xl:grid-cols-12 xl:gap-12 wide:gap-14">
           {/* LEFT CONTENT COLUMN */}
-          <div className="flex flex-col items-start lg:col-span-5">
+          <div className="flex flex-col items-start xl:col-span-5">
             {/* Top Tag */}
             <div className="mb-4 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.14em] text-[#ea580c] wide:text-sm">
               <span className="h-2 w-2 rounded-full bg-[#f97316] wide:h-2.5 wide:w-2.5" />
@@ -101,7 +101,7 @@ export function WhyAndHow() {
           </div>
 
           {/* RIGHT CARDS COLUMN */}
-          <div className="relative lg:col-span-7 wide:max-w-[1050px] wide:ml-auto">
+          <div className="relative xl:col-span-7 wide:max-w-[1050px] wide:ml-auto">
             {/* Background Railway Track Line */}
             <svg
               className="pointer-events-none absolute inset-0 hidden h-full w-full stroke-[#fdba74]/35 sm:block"
@@ -127,7 +127,7 @@ export function WhyAndHow() {
             <div className="pointer-events-none absolute bottom-4 right-1/3 h-2 w-2 rounded-full bg-teal-400 wide:h-3 wide:w-3" />
 
             {/* 2x2 Cards Grid */}
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:gap-7 wide:gap-8">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:gap-7 xl:grid-cols-1 2xl:grid-cols-2 wide:gap-8">
               {/* CARD 1: EASY EXPLANATIONS */}
               <div className="group relative flex items-start justify-between gap-3 overflow-hidden rounded-[24px] border border-[#fee6d3] bg-white p-5 shadow-[0_10px_30px_rgba(249,115,22,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#fdba74] hover:shadow-[0_16px_36px_rgba(249,115,22,0.12)] sm:-rotate-2 sm:p-6 hover:rotate-0 wide:rounded-[28px] wide:p-7">
                 <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#fff2e6] blur-xl wide:h-40 wide:w-40" />

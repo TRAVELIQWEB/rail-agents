@@ -27,7 +27,7 @@ export function SearchForm({ mobile = false }: SearchFormProps) {
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         placeholder="Search guides, videos..."
-        className="min-w-0 flex-1 border-0 bg-transparent text-[0.875rem] text-[var(--navy)] outline-none placeholder:text-slate-400 focus-visible:ring-0"
+        className="min-w-0 flex-1 border-0 bg-transparent text-base text-[var(--navy)] outline-none placeholder:text-slate-400 focus-visible:ring-0"
       />
       <button
         type="submit"

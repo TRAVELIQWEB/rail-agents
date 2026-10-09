@@ -90,7 +90,7 @@ export function QueryForm() {
 
       <form noValidate onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="name-input" className="mb-1.5 block text-xs font-bold text-[#0f2747] sm:text-sm">Name</label>
+          <label htmlFor="name-input" className="mb-1.5 block text-sm font-bold text-[#0f2747]">Name</label>
           <div className="flex min-h-[48px] items-center gap-3 rounded-2xl border border-slate-200/80 bg-[#fffdfa] px-4 py-2.5 shadow-inner transition-all focus-within:border-[var(--primary)] focus-within:ring-4 focus-within:ring-orange-100">
             <UserRound aria-hidden="true" className="h-4 w-4 shrink-0 text-slate-400" />
             <input
@@ -105,14 +105,14 @@ export function QueryForm() {
               aria-invalid={Boolean(errors.name)}
               aria-describedby={errors.name ? "name-error" : undefined}
               placeholder="Your full name"
-              className="w-full min-w-0 bg-transparent text-sm text-[#0f2747] outline-none placeholder:text-slate-400"
+              className="w-full min-w-0 bg-transparent text-base text-[#0f2747] outline-none placeholder:text-slate-400"
             />
           </div>
           {errors.name ? <p id="name-error" className="mt-1 text-xs text-red-700">{errors.name}</p> : null}
         </div>
 
         <div>
-          <label htmlFor="mobile-input" className="mb-1.5 block text-xs font-bold text-[#0f2747] sm:text-sm">Mobile Number</label>
+          <label htmlFor="mobile-input" className="mb-1.5 block text-sm font-bold text-[#0f2747]">Mobile Number</label>
           <div className="flex min-h-[48px] items-center gap-3 rounded-2xl border border-slate-200/80 bg-[#fffdfa] px-4 py-2.5 shadow-inner transition-all focus-within:border-[var(--primary)] focus-within:ring-4 focus-within:ring-orange-100">
             <Phone aria-hidden="true" className="h-4 w-4 shrink-0 text-slate-400" />
             <div aria-hidden="true" className="flex shrink-0 items-center gap-1 border-r border-slate-200 pr-2.5 text-xs font-bold text-slate-600">
@@ -139,14 +139,14 @@ export function QueryForm() {
               aria-invalid={Boolean(errors.mobile)}
               aria-describedby={errors.mobile ? "mobile-error" : undefined}
               placeholder="Your mobile number"
-              className="w-full min-w-0 bg-transparent text-sm text-[#0f2747] outline-none placeholder:text-slate-400"
+              className="w-full min-w-0 bg-transparent text-base text-[#0f2747] outline-none placeholder:text-slate-400"
             />
           </div>
           {errors.mobile ? <p id="mobile-error" className="mt-1 text-xs text-red-700">{errors.mobile}</p> : null}
         </div>
 
         <div>
-          <label htmlFor="query-input" className="mb-1.5 block text-xs font-bold text-[#0f2747] sm:text-sm">Your Query</label>
+          <label htmlFor="query-input" className="mb-1.5 block text-sm font-bold text-[#0f2747]">Your Query</label>
           <div className="relative flex rounded-2xl border border-slate-200/80 bg-[#fffdfa] p-3.5 shadow-inner transition-all focus-within:border-[var(--primary)] focus-within:ring-4 focus-within:ring-orange-100">
             <FileText aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
             <textarea
@@ -161,7 +161,7 @@ export function QueryForm() {
               aria-invalid={Boolean(errors.query)}
               aria-describedby={errors.query ? "query-error" : "query-count"}
               placeholder="Write your question here..."
-              className="ml-3 min-h-[110px] w-full resize-y bg-transparent text-sm leading-relaxed text-[#0f2747] outline-none placeholder:text-slate-400"
+              className="ml-3 min-h-[110px] w-full resize-y bg-transparent text-base leading-relaxed text-[#0f2747] outline-none placeholder:text-slate-400"
             />
             <span id="query-count" className="absolute bottom-2.5 right-3.5 select-none text-[11px] font-medium text-slate-400">{query.length}/500</span>
           </div>

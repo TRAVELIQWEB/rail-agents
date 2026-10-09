@@ -46,7 +46,7 @@ export function SocialCards() {
       {/* =========================
           3 SOCIAL CARDS GRID
       ========================== */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+      <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2 lg:gap-8 2xl:grid-cols-3">
         
         {/* CARD 1: YOUTUBE */}
         <div className="group relative flex flex-col justify-between overflow-hidden rounded-[28px] border border-[#fecaca] bg-gradient-to-br from-white via-[#fff8f8] to-[#fff0f0] p-6 sm:p-7 shadow-[0_10px_30px_rgba(239,68,68,0.05)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(239,68,68,0.12)]">
