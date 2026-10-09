@@ -1,6 +1,9 @@
+const siteUrl = "https://railagents.in";
+
 export const siteConfig = {
   name: "RailAgents",
-  url: "https://railagents.in",
+  url: siteUrl,
+  socialImage: `${siteUrl}/images/contactpage.png`,
   whatsapp: {
     number: "917835025025",
     message:

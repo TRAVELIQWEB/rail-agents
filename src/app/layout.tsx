@@ -24,6 +24,19 @@ export const metadata: Metadata = {
     description:
       "Clear railway agent guidance, IRCTC agent information, and practical resources for railway services from RailAgents.",
     url: siteConfig.url,
+    images: [
+      {
+        url: siteConfig.socialImage,
+        alt: "RailAgents railway guidance with Nihal Singh",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "RailAgents | Railway Agent Guidance & IRCTC Resources",
+    description:
+      "Clear railway agent guidance, IRCTC agent information, and practical resources for railway services from RailAgents.",
+    images: [siteConfig.socialImage],
   },
 };
 

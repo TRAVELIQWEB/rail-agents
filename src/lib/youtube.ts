@@ -54,8 +54,6 @@ export async function getLatestVideos(
     const channelId = process.env.YOUTUBE_CHANNEL_ID;
 
     if (!apiKey || !channelId) {
-      console.error("Missing YouTube API configuration");
-
       return [];
     }
 

@@ -15,6 +15,19 @@ export const metadata = {
   description:
     "Explore practical railway agent guidance, IRCTC registration information, ticket booking help, and video tutorials from RailAgents.",
   alternates: { canonical: siteConfig.url },
+  openGraph: {
+    title: "Railway Agent Guidance, IRCTC Help & Video Guides | RailAgents",
+    description:
+      "Explore practical railway agent guidance, IRCTC registration information, ticket booking help, and video tutorials from RailAgents.",
+    url: siteConfig.url,
+    images: [siteConfig.socialImage],
+  },
+  twitter: {
+    title: "Railway Agent Guidance, IRCTC Help & Video Guides | RailAgents",
+    description:
+      "Explore practical railway agent guidance, IRCTC registration information, ticket booking help, and video tutorials from RailAgents.",
+    images: [siteConfig.socialImage],
+  },
 };
 
 export default function Home() {
