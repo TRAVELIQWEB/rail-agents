@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
 import { siteConfig } from "@/config/site";
 
@@ -5,6 +8,12 @@ const message = encodeURIComponent(siteConfig.whatsapp.message);
 const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${message}`;
 
 export function FloatingWhatsApp() {
+  const pathname = usePathname();
+
+  // Do not show floating WhatsApp on admin pages
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
   return (
     <div className="group fixed bottom-4 right-4 z-[60] md:bottom-6 md:right-6">
       <span

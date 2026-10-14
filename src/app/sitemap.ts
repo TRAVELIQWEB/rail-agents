@@ -1,10 +1,16 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
 import { guides } from "@/data/guides";
+import { getPublishedPosts } from "@/lib/posts";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 3600; // revalidate sitemap every hour
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const publishedPosts = await getPublishedPosts();
+
   return [
     { url: siteConfig.url, changeFrequency: "weekly", priority: 1 },
+    { url: `${siteConfig.url}/blog`, changeFrequency: "daily", priority: 0.9 },
     { url: `${siteConfig.url}/ask-nihal`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${siteConfig.url}/contact`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteConfig.url}/about`, changeFrequency: "monthly", priority: 0.7 },
@@ -15,6 +21,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteConfig.url}/guides/${guide.slug}`,
       changeFrequency: "monthly" as const,
       priority: 0.6,
+    })),
+    ...publishedPosts.map((post) => ({
+      url: `${siteConfig.url}/blog/${post.slug}`,
+      changeFrequency: "monthly" as const,
+      lastModified: new Date(post.updatedAt),
+      priority: 0.7,
     })),
   ];
 }
