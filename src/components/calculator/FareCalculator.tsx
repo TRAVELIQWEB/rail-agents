@@ -452,7 +452,7 @@ export function FareCalculator() {
             </div>
 
             {/* Distinct, Separated Total Payable Amount Card */}
-            <div className="rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-amber-600 p-4 sm:p-5 text-white shadow-[0_4px_16px_rgba(249,115,22,0.25),inset_0_1px_1px_rgba(255,255,255,0.35)] border border-orange-400/40">
+            <div className="mt-3.5 sm:mt-4 rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-amber-600 p-4 sm:p-5 text-white shadow-[0_4px_16px_rgba(249,115,22,0.25),inset_0_1px_1px_rgba(255,255,255,0.35)] border border-orange-400/40">
               <div className="flex items-baseline justify-between gap-3">
                 <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-orange-100">
                   Total Payable Amount
