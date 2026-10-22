@@ -10,6 +10,15 @@ const nextConfig: NextConfig = {
     ],
   },
   reactCompiler: true,
+  async redirects() {
+    return [
+      {
+        source: "/fare-calculator",
+        destination: "/train-ticket-agent-fare-calculator",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

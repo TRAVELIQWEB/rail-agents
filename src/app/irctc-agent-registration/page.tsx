@@ -4,6 +4,7 @@ import Link from "next/link";
 import {
   ArrowRight,
   BookOpen,
+  Calculator,
   CircleHelp,
   FileCheck2,
   Info,
@@ -250,6 +251,38 @@ export default function IrctcAgentPage() {
                   </div>
                 </Link>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white py-4 sm:py-6">
+          <div className="site-container">
+            <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 rounded-2xl border border-orange-200 bg-gradient-to-r from-[#fff7ed] to-orange-50/70 p-5 sm:flex-row sm:p-6 shadow-sm">
+              <div className="flex items-start gap-3.5">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--primary)] text-white shadow-sm">
+                  <Calculator aria-hidden="true" className="h-6 w-6" />
+                </span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-base font-[800] text-[var(--navy)]">
+                      IRCTC Agent Ticket Fare Calculator
+                    </h2>
+                    <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-bold text-[var(--primary-dark)]">
+                      Live Tool
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs sm:text-sm text-slate-600 max-w-xl">
+                    Calculate exact ticket totals with automatic Payment Gateway (PG) logic (₹0.75 for ≤₹2,000, 1% above), agent service charges, and printable customer quotation slips.
+                  </p>
+                </div>
+              </div>
+
+              <Link
+                href="/train-ticket-agent-fare-calculator"
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-[var(--primary)] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-[#e85d04]"
+              >
+                Open Calculator <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </section>

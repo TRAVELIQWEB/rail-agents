@@ -36,14 +36,19 @@ export function AdminShell({ children, email }: AdminShellProps) {
   const handleLogout = async () => {
     setLoggingOut(true);
     await fetch("/api/admin/logout", { method: "POST" });
-    router.push("/admin/login");
+    router.push("/");
     router.refresh();
   };
 
   const renderNavItems = () => (
     <nav className="flex flex-col gap-1 px-3">
       {NAV.map(({ href, icon: Icon, label }) => {
-        const active = pathname === href || (href !== "/admin/dashboard" && pathname.startsWith(href));
+        const active =
+          href === "/admin/posts/new"
+            ? pathname === "/admin/posts/new"
+            : href === "/admin/posts"
+            ? pathname === "/admin/posts" || (pathname.startsWith("/admin/posts/") && pathname !== "/admin/posts/new")
+            : pathname === href;
         return (
           <Link
             key={href}

@@ -12,6 +12,7 @@ import { InternalLink } from "@/components/ui/InternalLink";
 const quickLinks = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
+  { label: "Fare Calculator", href: "/train-ticket-agent-fare-calculator" },
   { label: "Video Guides", href: "/videos" },
   { label: "Explore Topics", href: "/guides" },
   { label: "Contact Us", href: "/contact" },
@@ -19,6 +20,7 @@ const quickLinks = [
 
 const supportLinks = [
   { label: "IRCTC Agent Information", href: "/irctc-agent-registration" },
+  { label: "Fare Calculator", href: "/train-ticket-agent-fare-calculator" },
   { label: "Ask Nihal Singh", href: "/ask-nihal" },
   { label: "Video Guides", href: "/videos" },
 ];

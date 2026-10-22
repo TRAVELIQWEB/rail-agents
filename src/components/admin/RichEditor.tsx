@@ -12,6 +12,7 @@ import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import { Table, TableRow, TableCell, TableHeader } from "@tiptap/extension-table";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
+import Youtube from "@tiptap/extension-youtube";
 import CodeMirror from "@uiw/react-codemirror";
 import { html } from "@codemirror/lang-html";
 import { EditorView } from "@codemirror/view";
@@ -20,7 +21,7 @@ import {
   Bold, Italic, Underline as UnderlineIcon, Strikethrough,
   AlignLeft, AlignCenter, AlignRight, AlignJustify,
   List, ListOrdered, Quote, Code, Code2,
-  Link as LinkIcon, Image as ImageIcon, Table as TableIcon,
+  Link as LinkIcon, Image as ImageIcon, Table as TableIcon, Video,
   Minus, Undo, Redo, RemoveFormatting, Highlighter, Copy, Check, RotateCcw,
 } from "lucide-react";
 
@@ -36,12 +37,12 @@ type EditorMode = "visual" | "html" | "split";
 const ALLOWED_HTML_TAGS = new Set([
   "p", "br", "strong", "b", "em", "i", "u", "s", "del", "h1", "h2", "h3", "h4", "h5", "h6",
   "ul", "ol", "li", "blockquote", "pre", "code", "a", "img", "table", "thead", "tbody", "tr", "th", "td",
-  "hr", "figure", "figcaption", "mark", "span", "div",
+  "hr", "figure", "figcaption", "mark", "span", "div", "iframe",
 ]);
 const VOID_HTML_TAGS = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"]);
-const BLOCKED_HTML_TAGS = new Set(["script", "style", "iframe", "object", "embed", "form", "input", "button", "textarea", "select"]);
+const BLOCKED_HTML_TAGS = new Set(["script", "style", "object", "embed", "form", "input", "button", "textarea", "select"]);
 const ALLOWED_HTML_ATTRIBUTES = new Set([
-  "href", "target", "rel", "title", "src", "alt", "width", "height", "loading", "colspan", "rowspan", "class", "style",
+  "href", "target", "rel", "title", "src", "alt", "width", "height", "loading", "colspan", "rowspan", "class", "style", "allowfullscreen", "allow", "frameborder",
 ]);
 
 function sanitizeSourceForEditor(source: string) {
@@ -204,6 +205,12 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
       TableCell,
       TableHeader,
       HorizontalRule,
+      Youtube.configure({
+        inline: false,
+        width: 640,
+        height: 360,
+        allowFullscreen: true,
+      }),
     ],
     content: value,
     immediatelyRender: true,
@@ -300,6 +307,17 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
     editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
   };
 
+  const insertYoutube = () => {
+    const url = window.prompt("Enter YouTube Video URL (e.g. https://www.youtube.com/watch?v=...):");
+    if (url?.trim()) {
+      editor.commands.setYoutubeVideo({
+        src: url.trim(),
+        width: 640,
+        height: 360,
+      });
+    }
+  };
+
   const updateHtmlSource = (nextSource: string) => {
     setSource(nextSource);
     setSourceDirty(true);
@@ -343,24 +361,35 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
   };
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xs">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-3 py-2.5 sm:px-4">
-        <div className="inline-flex rounded-lg border border-slate-200 bg-white p-1" role="group" aria-label="Editor view">
+    <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-slate-50/80 px-3.5 py-2.5 sm:px-4">
+        <div className="inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-2xs" role="group" aria-label="Editor view">
           {(["visual", "html", "split"] as EditorMode[]).map((editorMode) => (
             <button
               key={editorMode}
               type="button"
               aria-pressed={mode === editorMode}
               onClick={() => setMode(editorMode)}
-              className={`rounded-md px-3 py-1.5 text-xs font-bold capitalize transition ${mode === editorMode ? "bg-orange-500 text-white shadow-sm" : "text-slate-600 hover:bg-slate-100"}`}
+              className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition ${
+                mode === editorMode
+                  ? "bg-orange-600 text-white shadow-sm shadow-orange-600/20"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+              }`}
             >
-              {editorMode === "html" ? "HTML" : editorMode === "split" ? "Split View" : "Visual"}
+              {editorMode === "html" ? "</> Edit HTML" : editorMode === "split" ? "Split View" : "Visual Editor"}
             </button>
           ))}
         </div>
-        <span className={`text-[11px] font-semibold ${sourceDirty ? "text-amber-700" : "text-emerald-700"}`} aria-live="polite">
-          {sourceDirty ? "HTML changes pending" : "Editors in sync"}
-        </span>
+        <div className="flex items-center gap-2">
+          {mode !== "visual" && (
+            <span className="rounded-md bg-orange-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-orange-800">
+              Direct HTML Editing Active
+            </span>
+          )}
+          <span className={`text-[11px] font-semibold ${sourceDirty ? "text-amber-700" : "text-emerald-700"}`} aria-live="polite">
+            {sourceDirty ? "• HTML changes ready to apply" : "• Editors in sync"}
+          </span>
+        </div>
       </div>
 
       {/* Sticky Toolbar */}
@@ -473,12 +502,15 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
 
         <Divider />
 
-        {/* Link, Image, Table, HR */}
+        {/* Link, Image, Video, Table, HR */}
         <ToolbarButton onClick={setLink} active={editor.isActive("link")} title="Insert Link">
           <LinkIcon size={15} />
         </ToolbarButton>
         <ToolbarButton onClick={insertImage} title="Insert Image">
           <ImageIcon size={15} />
+        </ToolbarButton>
+        <ToolbarButton onClick={insertYoutube} title="Insert YouTube Video">
+          <Video size={15} />
         </ToolbarButton>
         <ToolbarButton onClick={insertTable} title="Insert Table">
           <TableIcon size={15} />

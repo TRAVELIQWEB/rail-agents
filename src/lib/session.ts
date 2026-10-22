@@ -11,7 +11,7 @@ export async function requireAdminSession() {
   const cookieStore = await cookies();
   const session = await getAdminIronSession(cookieStore);
   if (!session.admin?.isLoggedIn) {
-    redirect("/admin/login");
+    redirect("/");
   }
   return session.admin;
 }

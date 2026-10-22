@@ -11,7 +11,10 @@ export function isAdminUiPreviewEnabled() {
 }
 
 export const sessionOptions: SessionOptions = {
-  password: process.env.SESSION_SECRET as string,
+  password:
+    (process.env.SESSION_SECRET ||
+      process.env.ADMIN_SESSION_PASSWORD ||
+      "railagents_default_development_secret_must_be_at_least_32_characters_long") as string,
   cookieName: "railagents_admin_session",
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",

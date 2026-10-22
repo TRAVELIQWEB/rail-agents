@@ -4,6 +4,8 @@ const availableInternalRoutes = new Set([
   "/contact",
   "/about",
   "/irctc-agent-registration",
+  "/fare-calculator",
+  "/train-ticket-agent-fare-calculator",
   "/videos",
   "/guides",
 ]);

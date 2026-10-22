@@ -13,15 +13,8 @@ const ALLOWED_TAGS = [
   "table", "thead", "tbody", "tr", "th", "td",
   "hr", "figure", "figcaption",
   "mark", "span", "div",
+  "iframe",
 ];
-
-const ALLOWED_ATTRS = {
-  a: ["href", "target", "rel", "title"],
-  img: ["src", "alt", "width", "height", "loading"],
-  th: ["colspan", "rowspan", "style"],
-  td: ["colspan", "rowspan", "style"],
-  "*": ["class", "style"],
-};
 
 export function sanitizeHtml(dirty: string): string {
   return DOMPurify.sanitize(dirty, {
@@ -31,11 +24,12 @@ export function sanitizeHtml(dirty: string): string {
       "src", "alt", "width", "height", "loading",
       "colspan", "rowspan",
       "class", "style",
+      "allowfullscreen", "allow", "frameborder",
     ],
     // Force links to be safe
     ADD_ATTR: ["target"],
-    // Remove script/iframe etc.
-    FORBID_TAGS: ["script", "iframe", "object", "embed", "form", "input"],
+    // Remove script, object, embed, form, input
+    FORBID_TAGS: ["script", "object", "embed", "form", "input"],
     FORBID_ATTR: ["onerror", "onload", "onclick", "onmouseover"],
   });
 }

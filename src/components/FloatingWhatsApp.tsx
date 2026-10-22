@@ -14,8 +14,16 @@ export function FloatingWhatsApp() {
   if (pathname.startsWith("/admin")) {
     return null;
   }
+  const isFareCalc =
+    pathname === "/train-ticket-agent-fare-calculator" ||
+    pathname === "/fare-calculator";
+
   return (
-    <div className="group fixed bottom-4 right-4 z-[60] md:bottom-6 md:right-6">
+    <div
+      className={`group fixed right-4 z-[60] md:bottom-6 md:right-6 print:hidden transition-all ${
+        isFareCalc ? "bottom-18 md:bottom-6" : "bottom-4 md:bottom-6"
+      }`}
+    >
       <span
         aria-hidden="true"
         className="whatsapp-pulse pointer-events-none absolute inset-0 rounded-full"

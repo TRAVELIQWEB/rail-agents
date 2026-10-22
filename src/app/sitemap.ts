@@ -15,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteConfig.url}/contact`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteConfig.url}/about`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${siteConfig.url}/irctc-agent-registration`, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${siteConfig.url}/train-ticket-agent-fare-calculator`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${siteConfig.url}/videos`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${siteConfig.url}/guides`, changeFrequency: "weekly", priority: 0.8 },
     ...guides.map((guide) => ({
