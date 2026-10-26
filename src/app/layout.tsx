@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full bg-[var(--background)] text-[var(--navy)]">
         {children}
         <FloatingWhatsApp />
+        <GoogleTagManager gtmId="GTM-P3CML7MM" />
       </body>
     </html>
   );
