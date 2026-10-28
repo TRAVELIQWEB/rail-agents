@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Printer, X, Info, Check, Copy } from "lucide-react";
 import { CalculationResult, formatINR } from "@/lib/fare-calculator";
+import { InteractiveButton } from "@/components/ui/InteractiveButton";
 
 interface PrintEstimateModalProps {
   isOpen: boolean;
@@ -45,8 +46,130 @@ export function PrintEstimateModal({
   });
 
   const handlePrint = () => {
-    window.print();
+    // If the browser supports window.print directly:
+    if (!slipRef.current) {
+      window.print();
+      return;
+    }
+
+    try {
+      // Create an isolated hidden iframe for 100% reliable printing without page chrome interference
+      const iframe = document.createElement("iframe");
+      iframe.style.position = "fixed";
+      iframe.style.right = "0";
+      iframe.style.bottom = "0";
+      iframe.style.width = "0";
+      iframe.style.height = "0";
+      iframe.style.border = "0";
+      document.body.appendChild(iframe);
+
+      const iframeDoc = iframe.contentWindow?.document || iframe.contentDocument;
+      if (!iframeDoc) {
+        window.print();
+        return;
+      }
+
+      const slipHtml = slipRef.current.innerHTML;
+
+      iframeDoc.open();
+      iframeDoc.write(`
+        <!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <title>Fare Estimate Slip - ${referenceId}</title>
+            <style>
+              * { box-sizing: border-box; margin: 0; padding: 0; }
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                color: #0f172a;
+                background: #ffffff;
+                padding: 16px 20px;
+                font-size: 13px;
+                line-height: 1.5;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+              }
+              .slip-container {
+                max-width: 680px;
+                margin: 0 auto;
+                border: 1px solid #cbd5e1;
+                border-radius: 8px;
+                padding: 20px;
+              }
+              table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 12px 0;
+              }
+              th, td {
+                padding: 8px 10px;
+                border-bottom: 1px solid #e2e8f0;
+                text-align: left;
+                font-size: 12px;
+              }
+              th {
+                background-color: #f8fafc;
+                font-weight: 600;
+                color: #475569;
+              }
+              .text-right { text-align: right; }
+              .text-center { text-align: center; }
+              .font-bold { font-weight: 700; }
+              .font-semibold { font-weight: 600; }
+              .font-black { font-weight: 900; }
+              .text-xs { font-size: 11px; }
+              .text-sm { font-size: 13px; }
+              .text-lg { font-size: 18px; }
+              .text-amber { color: #b45309; }
+              .bg-amber { background-color: #fffbeb; }
+              .disclaimer-box {
+                margin-top: 14px;
+                padding: 10px 12px;
+                background-color: #fffbeb;
+                border: 1px solid #fde68a;
+                border-radius: 6px;
+                font-size: 11px;
+                color: #92400e;
+              }
+              .footer-sign {
+                margin-top: 18px;
+                padding-top: 12px;
+                border-top: 1px dashed #cbd5e1;
+                display: flex;
+                justify-content: space-between;
+                font-size: 11px;
+                color: #64748b;
+              }
+              @page {
+                margin: 10mm;
+                size: auto;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="slip-container">
+              ${slipHtml}
+            </div>
+            <script>
+              window.onload = function() {
+                window.focus();
+                window.print();
+                setTimeout(function() {
+                  window.frameElement && window.frameElement.remove();
+                }, 1000);
+              };
+            </script>
+          </body>
+        </html>
+      `);
+      iframeDoc.close();
+    } catch {
+      // Fallback to standard window.print if iframe isolation errors
+      window.print();
+    }
   };
+
 
   const handleCopyText = async () => {
     const text = [
@@ -121,19 +244,20 @@ export function PrintEstimateModal({
                 </>
               )}
             </button>
-            <button
+            <InteractiveButton
+              as="button"
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--primary)] px-3 py-1.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#e85d04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--primary)]"
-            >
-              <Printer className="h-3.5 w-3.5" />
-              <span>Print Slip</span>
-            </button>
+              label="Print Slip"
+              icon={<Printer className="h-3.5 w-3.5 text-white" />}
+              size="sm"
+              variant="orange"
+            />
             <button
               type="button"
               onClick={onClose}
               aria-label="Close estimate modal"
-              className="ml-1 rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+              className="icon-action ml-1 p-1.5 text-slate-500"
             >
               <X className="h-5 w-5" />
             </button>

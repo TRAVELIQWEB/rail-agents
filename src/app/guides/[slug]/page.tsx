@@ -18,10 +18,31 @@ export async function generateMetadata({ params }: GuidePageProps): Promise<Meta
   const { slug } = await params;
   const guide = getGuideBySlug(slug);
   if (!guide) return {};
+  const canonicalUrl = `${siteConfig.url}/guides/${guide.slug}`;
   return {
     title: guide.title,
     description: guide.summary,
-    openGraph: { title: guide.title, description: guide.summary, type: "article" },
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      title: guide.title,
+      description: guide.summary,
+      url: canonicalUrl,
+      siteName: siteConfig.name,
+      locale: "en_IN",
+      type: "article",
+      images: [
+        {
+          url: siteConfig.socialImage,
+          alt: `${guide.title} | RailAgents`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: guide.title,
+      description: guide.summary,
+      images: [siteConfig.socialImage],
+    },
   };
 }
 
@@ -34,9 +55,34 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
     `Hi RailAgents, I have a question about: ${guide.title}. Please guide me.`,
   );
   const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${whatsappMessage}`;
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Guides",
+        item: `${siteConfig.url}/guides`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: guide.title,
+        item: `${siteConfig.url}/guides/${guide.slug}`,
+      },
+    ],
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-[#fff9f5]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Header />
       <main className="flex-1 bg-[#fff9f5] py-9 sm:py-12">
       <div className="site-container">
@@ -55,10 +101,10 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
             <span className="inline-flex rounded-full bg-[#fff1e7] px-3 py-1 text-xs font-[800] uppercase tracking-[0.07em] text-[#d95e0d]">
               {guide.category}
             </span>
-            <h1 className="mt-4 text-[clamp(1.8rem,5vw,2.75rem)] font-[850] leading-[1.12] tracking-[-0.04em] text-[var(--navy)]">
+            <h1 className="page-hero-title mt-4">
               {guide.title}
             </h1>
-            <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-slate-600 sm:mx-0">{guide.summary}</p>
+            <p className="page-hero-description mx-auto mt-3 max-w-2xl sm:mx-0">{guide.summary}</p>
             <p className="mt-4 text-xs font-medium text-slate-500">
               {guide.readTime} min read <span aria-hidden="true">·</span> Updated {new Date(`${guide.updatedAt}T00:00:00`).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" })}
             </p>

@@ -13,6 +13,7 @@ import {
   formatINR,
 } from "@/lib/fare-calculator";
 import { PrintEstimateModal } from "./PrintEstimateModal";
+import { InteractiveButton } from "@/components/ui/InteractiveButton";
 
 export function FareCalculator() {
   const [form, setForm] = useState<CalculatorFormState>(INITIAL_CALCULATOR_STATE);
@@ -343,18 +344,18 @@ export function FareCalculator() {
             </div>
 
             {/* Action Toolbar: 3-column grid on mobile, flex on desktop */}
-            <div className="pt-2 sm:pt-2.5 border-t border-[#f0e3d5] grid grid-cols-3 sm:flex sm:items-center sm:justify-between gap-1.5 sm:gap-2">
+            <div className="pt-2 sm:pt-2.5 border-t border-[#f0e3d5] grid grid-cols-2 sm:flex sm:items-center sm:justify-between gap-1.5 sm:gap-2">
               <button
                 type="button"
                 onClick={handleReset}
                 aria-label="Reset fare calculator to defaults"
-                className="col-span-1 inline-flex items-center justify-center gap-1 sm:gap-1.5 rounded-lg border border-[#e4d5c4] bg-white px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold text-stone-700 shadow-2xs hover:bg-[#faf6f0] hover:border-orange-300 hover:text-orange-700 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 transition-all duration-150 cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500"
+                className="col-span-2 inline-flex min-h-10 items-center justify-center gap-1 sm:gap-1.5 rounded-lg border border-[#e4d5c4] bg-white px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-bold text-stone-700 shadow-2xs hover:bg-[#faf6f0] hover:border-orange-300 hover:text-orange-700 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 transition-all duration-150 cursor-pointer group focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500 sm:col-span-1"
                 title="Reset calculation to default"
               >
                 <RotateCcw className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-stone-500 group-hover:-rotate-45 transition-transform duration-200" />
                 <span>Reset</span>
               </button>
-              <div className="col-span-2 grid grid-cols-2 gap-1.5 sm:flex sm:items-center sm:gap-2">
+              <div className="col-span-2 grid grid-cols-2 gap-1.5 sm:col-span-1 sm:flex sm:items-center sm:gap-2">
                 <button
                   type="button"
                   onClick={handleCopySummary}
@@ -363,14 +364,15 @@ export function FareCalculator() {
                 >
                   {copiedSummary ? "Copied" : "Copy"}
                 </button>
-                <button
+                <InteractiveButton
+                  as="button"
                   type="button"
                   onClick={() => setIsPrintModalOpen(true)}
                   aria-label="Open print quotation modal"
-                  className="w-full sm:w-auto text-center rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 px-1.5 sm:px-4 py-1.5 text-[11px] sm:text-xs font-bold text-white shadow-[0_2px_8px_rgba(249,115,22,0.3)] hover:from-orange-600 hover:to-amber-600 hover:shadow-[0_4px_12px_rgba(249,115,22,0.4)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-150 cursor-pointer truncate focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500"
-                >
-                  Print Slip
-                </button>
+                  label="Print Slip"
+                  size="sm"
+                  variant="orange"
+                />
               </div>
             </div>
           </div>

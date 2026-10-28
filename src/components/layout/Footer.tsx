@@ -13,16 +13,19 @@ const quickLinks = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Fare Calculator", href: "/train-ticket-agent-fare-calculator" },
-  { label: "Video Guides", href: "/videos" },
-  { label: "Explore Topics", href: "/guides" },
+  { label: "Blog", href: "/blog" },
+  { label: "Guides", href: "/guides" },
   { label: "Contact Us", href: "/contact" },
 ];
 
 const supportLinks = [
   { label: "IRCTC Agent Information", href: "/irctc-agent-registration" },
+  { label: "Agent Rules & Regulations", href: "/irctc-agent-rules-regulations" },
   { label: "Fare Calculator", href: "/train-ticket-agent-fare-calculator" },
+  { label: "Blog Articles", href: "/blog" },
+  { label: "Railway Guides", href: "/guides" },
   { label: "Ask Nihal Singh", href: "/ask-nihal" },
-  { label: "Video Guides", href: "/videos" },
+  { label: "Contact & Support", href: "/contact" },
 ];
 
 const socialLinks = [
@@ -92,7 +95,17 @@ export function Footer() {
 
         <div className="mt-6 flex flex-col items-center gap-2 border-t border-white/15 pt-4 text-center text-[0.8125rem] text-white/65 sm:flex-row sm:justify-between sm:text-left">
           <p>&copy; {currentYear} RailAgents. All rights reserved.</p>
-          <p>Made with care for railway agents across India</p>
+          <div className="flex items-center gap-4">
+            <p>Made with care for railway agents across India</p>
+            <span className="text-white/30">•</span>
+            <InternalLink
+              href="/admin/login"
+              prefetch={false}
+              className="text-xs text-white/50 transition-colors hover:text-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+            >
+              Admin Login
+            </InternalLink>
+          </div>
         </div>
       </div>
     </footer>

@@ -21,6 +21,7 @@ export function VideoCard({ video }: VideoCardProps) {
           alt=""
           fill
           sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw"
+          quality={60}
           className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
         />
           <span className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/15">

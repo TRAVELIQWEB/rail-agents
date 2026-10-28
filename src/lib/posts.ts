@@ -1,83 +1,43 @@
-// Blog post persistence layer
-// Dev: reads/writes a local JSON file at data/posts.json
-// Prod: reads/writes via Vercel Blob
 
 import { randomUUID } from "crypto";
 import type { BlogPost, CreatePostInput, UpdatePostInput } from "@/types/blog";
+import clientPromise from "@/lib/mongodb";
+import type { Collection } from "mongodb";
 
-// ─── local dev file path ───────────────────────────────────────
-import path from "path";
-import fs from "fs";
+let isIndexEnsured = false;
 
-const LOCAL_FILE = path.join(process.cwd(), "data", "posts.json");
+async function getPostsCollection(): Promise<Collection<BlogPost>> {
+  const client = await clientPromise;
+  const collection = client.db("railagents").collection<BlogPost>("blogs");
 
-function readLocalPosts(): BlogPost[] {
-  try {
-    if (!fs.existsSync(LOCAL_FILE)) return [];
-    const raw = fs.readFileSync(LOCAL_FILE, "utf-8");
-    return JSON.parse(raw) as BlogPost[];
-  } catch {
-    return [];
+  if (!isIndexEnsured) {
+    try {
+      await collection.createIndex({ slug: 1 }, { unique: true });
+      isIndexEnsured = true;
+    } catch (err) {
+      console.error("Failed to ensure unique index on blogs.slug:", err);
+    }
   }
-}
 
-function writeLocalPosts(posts: BlogPost[]) {
-  const dir = path.dirname(LOCAL_FILE);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(LOCAL_FILE, JSON.stringify(posts, null, 2), "utf-8");
-}
-
-// ─── Vercel Blob helpers ────────────────────────────────────────
-const BLOB_PATHNAME = "railagents/posts.json";
-
-async function readBlobPosts(): Promise<BlogPost[]> {
-  const { list, head } = await import("@vercel/blob");
-  try {
-    const blobs = await list({ prefix: BLOB_PATHNAME });
-    const match = blobs.blobs.find((b) => b.pathname === BLOB_PATHNAME);
-    if (!match) return [];
-    const res = await fetch(match.url, { cache: "no-store" });
-    if (!res.ok) return [];
-    return (await res.json()) as BlogPost[];
-  } catch {
-    return [];
-  }
-}
-
-async function writeBlobPosts(posts: BlogPost[]) {
-  const { put } = await import("@vercel/blob");
-  await put(BLOB_PATHNAME, JSON.stringify(posts), {
-    access: "public",
-    addRandomSuffix: false,
-    contentType: "application/json",
-    token: process.env.BLOB_READ_WRITE_TOKEN,
-  });
-}
-
-// ─── Public API ────────────────────────────────────────────────
-
-function isProduction() {
-  return (
-    process.env.NODE_ENV === "production" &&
-    !!process.env.BLOB_READ_WRITE_TOKEN
-  );
+  return collection;
 }
 
 export async function getAllPosts(): Promise<BlogPost[]> {
-  if (isProduction()) return readBlobPosts();
-  return readLocalPosts();
+  const collection = await getPostsCollection();
+  return collection.find({}, { projection: { _id: 0 } }).toArray();
 }
 
 export async function getPublishedPosts(): Promise<BlogPost[]> {
   const all = await getAllPosts();
   const now = new Date();
+
   return all
     .filter(
-      (p) =>
-        p.status === "published" ||
-        (p.status === "scheduled" &&
-          p.scheduledAt &&
-          new Date(p.scheduledAt) <= now)
+      (post) =>
+        post.status === "published" ||
+        (post.status === "scheduled" &&
+          post.scheduledAt &&
+          new Date(post.scheduledAt) <= now)
     )
     .sort((a, b) => {
       const aDate = a.publishedAt ?? a.scheduledAt ?? a.createdAt;
@@ -87,24 +47,24 @@ export async function getPublishedPosts(): Promise<BlogPost[]> {
 }
 
 export async function getPostById(id: string): Promise<BlogPost | null> {
-  const all = await getAllPosts();
-  return all.find((p) => p.id === id) ?? null;
+  const collection = await getPostsCollection();
+  return collection.findOne({ id }, { projection: { _id: 0 } });
 }
 
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
-  const all = await getAllPosts();
-  return all.find((p) => p.slug === slug) ?? null;
+  const collection = await getPostsCollection();
+  return collection.findOne({ slug }, { projection: { _id: 0 } });
 }
 
 export async function createPost(input: CreatePostInput): Promise<BlogPost> {
-  const all = await getAllPosts();
+  const collection = await getPostsCollection();
 
-  // Unique slug check
-  if (all.some((p) => p.slug === input.slug)) {
+  if (await collection.findOne({ slug: input.slug })) {
     throw new Error(`A post with slug "${input.slug}" already exists.`);
   }
 
   const now = new Date().toISOString();
+
   const post: BlogPost = {
     ...input,
     id: randomUUID(),
@@ -114,10 +74,7 @@ export async function createPost(input: CreatePostInput): Promise<BlogPost> {
       input.status === "published" ? (input.publishedAt ?? now) : input.publishedAt,
   };
 
-  all.push(post);
-  if (isProduction()) await writeBlobPosts(all);
-  else writeLocalPosts(all);
-
+  await collection.insertOne(post);
   return post;
 }
 
@@ -125,16 +82,20 @@ export async function updatePost(
   id: string,
   input: UpdatePostInput
 ): Promise<BlogPost> {
-  const all = await getAllPosts();
-  const idx = all.findIndex((p) => p.id === id);
-  if (idx === -1) throw new Error("Post not found.");
+  const collection = await getPostsCollection();
+  const existing = await collection.findOne({ id });
 
-  // Slug uniqueness check (allow same slug for same post)
-  if (input.slug && all.some((p) => p.slug === input.slug && p.id !== id)) {
+  if (!existing) {
+    throw new Error("Post not found.");
+  }
+
+  if (
+    input.slug &&
+    (await collection.findOne({ slug: input.slug, id: { $ne: id } }))
+  ) {
     throw new Error(`A post with slug "${input.slug}" already exists.`);
   }
 
-  const existing = all[idx];
   const now = new Date().toISOString();
 
   const updated: BlogPost = {
@@ -143,30 +104,32 @@ export async function updatePost(
     id: existing.id,
     createdAt: existing.createdAt,
     updatedAt: now,
-    // Set publishedAt when transitioning to published
     publishedAt:
-      input.status === "published" && !existing.publishedAt
+      input.publishedAt !== undefined
+        ? input.publishedAt
+        : input.status === "published" && !existing.publishedAt
         ? now
-        : (input.publishedAt ?? existing.publishedAt),
+        : existing.publishedAt,
   };
 
-  all[idx] = updated;
-  if (isProduction()) await writeBlobPosts(all);
-  else writeLocalPosts(all);
-
+  await collection.replaceOne({ id }, updated);
   return updated;
 }
 
 export async function deletePost(id: string): Promise<void> {
-  const all = await getAllPosts();
-  const filtered = all.filter((p) => p.id !== id);
-  if (filtered.length === all.length) throw new Error("Post not found.");
-  if (isProduction()) await writeBlobPosts(filtered);
-  else writeLocalPosts(filtered);
+  const collection = await getPostsCollection();
+  const result = await collection.deleteOne({ id });
+
+  if (result.deletedCount === 0) {
+    throw new Error("Post not found.");
+  }
 }
 
-export async function slugExists(slug: string, excludeId?: string): Promise<boolean> {
-  const all = await getAllPosts();
-  return all.some((p) => p.slug === slug && p.id !== excludeId);
+export async function slugExists(
+  slug: string,
+  excludeId?: string
+): Promise<boolean> {
+  const collection = await getPostsCollection();
+  const filter = excludeId ? { slug, id: { $ne: excludeId } } : { slug };
+  return (await collection.findOne(filter)) !== null;
 }
-

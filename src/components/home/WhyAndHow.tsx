@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { InternalLink } from "@/components/ui/InternalLink";
+import { InteractiveButton } from "@/components/ui/InteractiveButton";
 import {
   ArrowRight,
   BadgeCheck,
@@ -36,14 +36,10 @@ const steps = [
 export function WhyAndHow() {
   return (
     <>
-      {/* =========================================================
-          SECTION 1: WHY RAILAGENTS (ULTRA-WIDE ENHANCED FOR 2560px)
-      ========================================================== */}
-      <section className="relative overflow-hidden bg-[#fffdfa] py-8 sm:py-12 lg:py-14 2xl:py-16 wide:py-16">
-        {/* Train graphic in bottom left */}
-        <div className="pointer-events-none absolute -bottom-6 left-0 -z-0 h-60 w-1/2 max-w-lg opacity-25 sm:opacity-35 wide:h-80 wide:max-w-xl">
+      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(251,146,60,0.14),_transparent_32%),linear-gradient(180deg,_#fffdfb_0%,_#fffaf5_100%)] py-8 sm:py-12 lg:py-14 2xl:py-16 wide:py-16">
+        <div className="pointer-events-none absolute -bottom-6 left-0 -z-0 h-60 w-1/2 max-w-lg opacity-20 sm:opacity-25 wide:h-80 wide:max-w-xl">
           <Image
-            src="/images/hero-railway-bg.png"
+            src="/images/hero-railway-bg.webp"
             alt=""
             fill
             sizes="50vw"
@@ -54,20 +50,16 @@ export function WhyAndHow() {
         </div>
 
         <div className="site-container relative z-10 grid grid-cols-1 items-center gap-10 lg:gap-12 xl:grid-cols-12 xl:gap-12 wide:gap-14">
-          {/* LEFT CONTENT COLUMN */}
           <div className="flex flex-col items-center text-center md:items-start md:text-left xl:col-span-5">
-            {/* Top Tag */}
-            <div className="mb-4 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.14em] text-[#ea580c] wide:text-sm">
-              <span className="h-2 w-2 rounded-full bg-[#f97316] wide:h-2.5 wide:w-2.5" />
-              WHY RAILAGENTS
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/80 px-3.5 py-1.5 text-[11px] font-[800] uppercase tracking-[0.14em] text-[var(--primary-dark)] shadow-sm">
+              <span className="h-2 w-2 rounded-full bg-[#f97316]" />
+              Why RailAgents
             </div>
 
-            {/* Main Heading */}
-            <h2 className="text-3xl sm:text-4xl lg:text-[2.65rem] xl:text-[3.1rem] font-extrabold leading-[1.12] tracking-tight text-[#0f2747] wide:text-[3.5rem] wide:leading-[1.1]">
+            <h2 className="text-[clamp(1.5rem,3vw,2.25rem)] font-[800] leading-[1.12] tracking-[-0.04em] text-[#0f2747] wide:text-[2.25rem]">
               Your guide to{" "}
-              <span className="relative inline-block text-[#f97316]">
+              <span className="relative inline-block text-[var(--primary-dark)]">
                 railway agent information
-                {/* Decorative underline accent stroke */}
                 <svg
                   className="absolute -bottom-2 left-0 h-3 w-full text-[#f97316]/30 wide:h-4"
                   viewBox="0 0 200 12"
@@ -83,28 +75,24 @@ export function WhyAndHow() {
               </span>
             </h2>
 
-            {/* Subtitle Paragraph */}
-            <p className="mt-5 max-w-md text-sm leading-relaxed text-slate-600 sm:text-base wide:max-w-xl wide:text-lg wide:leading-relaxed">
-              Clear explanations and practical guides for common IRCTC agent
-              questions, railway bookings, and travel topics.
+            <p className="mt-4 max-w-md text-sm leading-relaxed text-slate-600 sm:text-base wide:max-w-xl">
+              Clear explanations and practical guides for common IRCTC agent questions, railway bookings, and travel topics.
             </p>
 
-            {/* CTA Button */}
-            <InternalLink
-              href="/about"
-              prefetch={false}
-              className="group mt-7 inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#ff5500] to-[#f97316] px-7 py-3.5 text-sm font-bold text-white shadow-[0_8px_22px_rgba(249,115,22,0.32)] transition-all duration-200 hover:scale-105 hover:shadow-[0_12px_28px_rgba(249,115,22,0.42)] active:scale-100 sm:text-base wide:px-8 wide:py-4 wide:text-base"
-            >
-              Know More About Us
-              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 wide:h-5 wide:w-5" />
-            </InternalLink>
+            <div className="mt-7">
+              <InteractiveButton
+                as="link"
+                href="/about"
+                label="Know More About Us"
+                size="md"
+                variant="orange"
+              />
+            </div>
           </div>
 
-          {/* RIGHT CARDS COLUMN */}
           <div className="relative xl:col-span-7 wide:max-w-[1050px] wide:ml-auto">
-            {/* Background Railway Track Line */}
             <svg
-              className="pointer-events-none absolute inset-0 hidden h-full w-full stroke-[#fdba74]/35 sm:block"
+              className="pointer-events-none absolute inset-0 hidden h-full w-full stroke-[#fdba74]/30 sm:block"
               viewBox="0 0 600 480"
               fill="none"
             >
@@ -116,9 +104,8 @@ export function WhyAndHow() {
               />
             </svg>
 
-            {/* Decorative Sparkles & Floating Dots */}
             <div className="pointer-events-none absolute -top-5 right-12 text-[#f97316] wide:-top-8 wide:right-16">
-              <svg className="h-6 w-6 wide:h-8 wide:w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M12 2v4M18.36 5.64l-2.83 2.83M22 12h-4" />
               </svg>
             </div>
@@ -126,18 +113,17 @@ export function WhyAndHow() {
             <div className="pointer-events-none absolute bottom-16 left-4 h-3 w-3 rounded-full bg-orange-400 wide:h-4 wide:w-4" />
             <div className="pointer-events-none absolute bottom-4 right-1/3 h-2 w-2 rounded-full bg-teal-400 wide:h-3 wide:w-3" />
 
-            {/* 2x2 Cards Grid */}
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:gap-7 xl:grid-cols-1 2xl:grid-cols-2 wide:gap-8">
               {/* CARD 1: EASY EXPLANATIONS */}
               <div className="group relative flex flex-col items-center gap-5 overflow-hidden rounded-[24px] border border-[#fee6d3] bg-white p-5 text-center shadow-[0_10px_30px_rgba(249,115,22,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#fdba74] hover:shadow-[0_16px_36px_rgba(249,115,22,0.12)] sm:-rotate-2 sm:flex-row sm:items-start sm:justify-between sm:text-left sm:p-6 hover:rotate-0 wide:rounded-[28px] wide:p-7">
                 <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#fff2e6] blur-xl wide:h-40 wide:w-40" />
 
                 <div className="relative z-10 flex max-w-full flex-col items-center text-center sm:max-w-[58%] sm:items-start sm:text-left">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#ffebd6] text-[#f97316] shadow-sm wide:h-13 wide:w-13">
-                    <BookOpen className="h-5 w-5 wide:h-6 wide:w-6" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ffebd6] text-[#f97316] shadow-sm">
+                    <BookOpen className="h-[18px] w-[18px]" />
                   </div>
 
-                  <h3 className="mt-3 text-base font-extrabold text-[#0f2747] sm:text-lg wide:text-xl">
+                  <h3 className="mt-3 text-base font-extrabold text-[#0f2747] sm:text-lg">
                     Easy Explanations
                   </h3>
                   <p className="mt-1 text-xs leading-relaxed text-slate-500 wide:text-sm">
@@ -150,7 +136,7 @@ export function WhyAndHow() {
                 </div>
 
                 <div className="relative z-10 flex w-full shrink-0 items-center justify-center pt-1 sm:w-auto">
-                  <div className="absolute -top-3 right-2 text-xs font-bold text-orange-400 select-none wide:text-sm">
+                  <div className="absolute -top-3 right-2 text-xs font-bold text-[var(--primary-dark)] select-none wide:text-sm">
                     \|/
                   </div>
                   <div className="relative w-24 rounded-xl border border-orange-100 bg-gradient-to-br from-white to-[#fff8f0] p-3 shadow-md rotate-6 sm:w-28 wide:w-32 wide:p-3.5">
@@ -167,11 +153,11 @@ export function WhyAndHow() {
                 <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#eef2ff] blur-xl wide:h-40 wide:w-40" />
 
                 <div className="relative z-10 flex max-w-full flex-col items-center text-center sm:max-w-[58%] sm:items-start sm:text-left">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#eef2ff] text-[#6366f1] shadow-sm wide:h-13 wide:w-13">
-                    <ListChecks className="h-5 w-5 wide:h-6 wide:w-6" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#eef2ff] text-[#6366f1] shadow-sm">
+                    <ListChecks className="h-[18px] w-[18px]" />
                   </div>
 
-                  <h3 className="mt-3 text-base font-extrabold text-[#0f2747] sm:text-lg wide:text-xl">
+                  <h3 className="mt-3 text-base font-extrabold text-[#0f2747] sm:text-lg">
                     Step-by-Step Guides
                   </h3>
                   <p className="mt-1 text-xs leading-relaxed text-slate-500 wide:text-sm">
@@ -206,11 +192,11 @@ export function WhyAndHow() {
                 <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#fff7ed] blur-xl wide:h-40 wide:w-40" />
 
                 <div className="relative z-10 flex max-w-full flex-col items-center text-center sm:max-w-[58%] sm:items-start sm:text-left">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#ffedd5] text-[#d97706] shadow-sm wide:h-13 wide:w-13">
-                    <BadgeCheck className="h-5 w-5 wide:h-6 wide:w-6" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ffedd5] text-[#d97706] shadow-sm">
+                    <BadgeCheck className="h-[18px] w-[18px]" />
                   </div>
 
-                  <h3 className="mt-3 text-base font-extrabold text-[#0f2747] sm:text-lg wide:text-xl">
+                  <h3 className="mt-3 text-base font-extrabold text-[#0f2747] sm:text-lg">
                     Check Current Sources
                   </h3>
                   <p className="mt-1 text-xs leading-relaxed text-slate-500 wide:text-sm">
@@ -242,11 +228,11 @@ export function WhyAndHow() {
                 <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#f0fdf4] blur-xl wide:h-40 wide:w-40" />
 
                 <div className="relative z-10 flex max-w-full flex-col items-center text-center sm:max-w-[58%] sm:items-start sm:text-left">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#ccfbf1] text-[#0d9488] shadow-sm wide:h-13 wide:w-13">
-                    <UsersRound className="h-5 w-5 wide:h-6 wide:w-6" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ccfbf1] text-[#0d9488] shadow-sm">
+                    <UsersRound className="h-[18px] w-[18px]" />
                   </div>
 
-                  <h3 className="mt-3 text-base font-extrabold text-[#0f2747] sm:text-lg wide:text-xl">
+                  <h3 className="mt-3 text-base font-extrabold text-[#0f2747] sm:text-lg">
                     For Agents & Travellers
                   </h3>
                   <p className="mt-1 text-xs leading-relaxed text-slate-500 wide:text-sm">
@@ -281,7 +267,7 @@ export function WhyAndHow() {
       <section className="relative isolate overflow-hidden py-8 sm:py-10 lg:py-12 2xl:py-14 wide:py-14">
         <div className="pointer-events-none absolute inset-y-0 right-0 -z-10 w-2/5 opacity-[0.08]">
           <Image
-            src="/images/hero-railway-bg.png"
+            src="/images/hero-railway-bg.webp"
             alt=""
             fill
             sizes="40vw"
@@ -291,11 +277,11 @@ export function WhyAndHow() {
         </div>
         <div className="site-container">
           <div className="mx-auto max-w-[720px] text-center md:mx-0 md:text-left wide:max-w-[850px]">
-            <p className="mb-3 inline-flex items-center gap-2 text-sm font-extrabold uppercase tracking-[0.12em] text-[#c2410c] wide:text-base">
-              <ShieldCheck className="h-4 w-4 wide:h-5 wide:w-5" />
+            <p className="mb-3 inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.12em] text-[#c2410c] sm:text-sm">
+              <ShieldCheck className="h-4 w-4" />
               How It Works
             </p>
-            <h2 className="text-[clamp(2rem,4vw,2.5rem)] font-extrabold leading-tight tracking-[-0.04em] text-[var(--navy)] wide:text-[3.25rem]">
+            <h2 className="text-[clamp(1.5rem,3vw,2.25rem)] font-extrabold leading-[1.12] tracking-[-0.04em] text-[var(--navy)] wide:text-[2.25rem]">
               Get answers in three simple steps
             </h2>
           </div>
@@ -308,18 +294,18 @@ export function WhyAndHow() {
             {steps.map(({ title, description, icon: Icon, color }, index) => (
               <article key={title} className="relative z-10 flex min-w-0 flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:text-left xl:block xl:text-left">
                 <div
-                  className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full text-white ring-8 ring-white ${color} wide:h-20 wide:w-20`}
+                  className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-white ring-4 ring-white ${color}`}
                 >
-                  <Icon className="h-7 w-7 wide:h-8 wide:w-8" />
+                  <Icon className="h-5 w-5" />
                 </div>
                 <div className="min-w-0 pt-1 xl:pt-5 wide:pt-6">
                   <p className="text-sm font-bold uppercase tracking-[0.1em] text-[#c2410c] wide:text-base">
                     Step 0{index + 1}
                   </p>
-                  <h3 className="mt-1 text-xl font-bold leading-snug text-[var(--navy)] wide:text-2xl">
+                  <h3 className="mt-1 text-base font-bold leading-snug text-[var(--navy)] sm:text-lg">
                     {title}
                   </h3>
-                  <p className="mt-2 max-w-[350px] text-base leading-relaxed text-slate-600 wide:max-w-[380px] wide:text-lg">
+                  <p className="mt-2 max-w-[350px] text-sm leading-relaxed text-slate-600 wide:max-w-[380px]">
                     {description}
                   </p>
                 </div>

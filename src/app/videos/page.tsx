@@ -1,15 +1,39 @@
 import type { Metadata } from "next";
-import { PlayCircle } from "lucide-react";
+import Link from "next/link";
+import { PlayCircle, ArrowRight } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { VideoGuidesList } from "@/components/videos/VideoGuidesList";
 import { getLatestVideos, getYouTubeChannelVideosUrl } from "@/lib/youtube";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Video Guides",
+  title: "Railway & IRCTC Agent Video Guides",
   description:
-    "Watch RailAgents video guides for practical railway and IRCTC agent information.",
+    "Watch practical railway and IRCTC agent video guides from RailAgents, with clear walkthroughs of booking rules, registration, and common questions.",
+  alternates: { canonical: `${siteConfig.url}/videos` },
+  openGraph: {
+    title: "Railway & IRCTC Agent Video Guides | RailAgents",
+    description:
+      "Watch practical railway and IRCTC agent video guides from RailAgents, with clear walkthroughs of booking rules, registration, and common questions.",
+    url: `${siteConfig.url}/videos`,
+    siteName: siteConfig.name,
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: siteConfig.socialImage,
+        alt: "RailAgents railway and IRCTC agent video guides",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Railway & IRCTC Agent Video Guides | RailAgents",
+    description:
+      "Watch practical railway and IRCTC agent video guides from RailAgents, with clear walkthroughs of booking rules, registration, and common questions.",
+    images: [siteConfig.socialImage],
+  },
 };
 
 export default async function VideoGuidesPage() {
@@ -19,7 +43,7 @@ export default async function VideoGuidesPage() {
   return (
     <div className="flex min-h-screen flex-col bg-[#fff9f5]">
       <Header />
-      <main className="relative flex-1 overflow-hidden bg-[#fff9f5] py-10 sm:py-14 lg:py-16">
+      <main className="relative flex-1 overflow-hidden bg-[#fff9f5] py-7 sm:py-9 lg:py-10">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -left-24 top-20 h-72 w-72 rounded-full bg-orange-100/50 blur-[90px]"
@@ -30,22 +54,37 @@ export default async function VideoGuidesPage() {
       />
 
       <div className="site-container relative">
-        <div className="mb-8">
-          <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/70 px-3.5 py-2 text-xs font-[800] uppercase tracking-[0.12em] text-[#e96713] shadow-sm backdrop-blur-md min-[520px]:mx-0">
-            <PlayCircle aria-hidden="true" className="h-4 w-4" />
+        <div className="mb-6 sm:mb-8">
+          <div className="mx-auto mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/70 px-3.5 py-1 text-xs font-[800] uppercase tracking-[0.12em] text-[#e96713] shadow-sm backdrop-blur-md min-[520px]:mx-0">
+            <PlayCircle aria-hidden="true" className="h-3.5 w-3.5" />
             Video Learning
           </div>
-          <SectionHeading
-            title="Video Guides"
-            href={channelVideosUrl ?? undefined}
-            external
-            linkText={channelVideosUrl ? "Visit YouTube Channel" : undefined}
-          />
-          <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-6 text-slate-600 min-[520px]:mx-0 min-[520px]:text-left sm:text-base">
+          <div className="mb-4 flex flex-col items-center justify-between gap-3 text-center min-[520px]:flex-row min-[520px]:items-end min-[520px]:text-left sm:mb-6">
+            <h1 className="page-hero-title min-w-0 text-center min-[520px]:text-left">
+              Video <span className="hero-accent">Guides &amp; Tutorials</span>
+            </h1>
+            {channelVideosUrl ? (
+              <a
+                href={channelVideosUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex shrink-0 items-center gap-1.5 rounded-sm text-xs font-semibold text-[var(--primary-dark)] transition-colors duration-200 hover:text-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--primary)] sm:text-sm"
+              >
+                Visit YouTube Channel
+                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+              </a>
+            ) : null}
+          </div>
+          <p className="page-hero-description mx-auto mt-2 max-w-2xl text-center min-[520px]:mx-0 min-[520px]:text-left">
             Watch simple, practical video guides for railway and travel agents.
-            Learn about IRCTC agent services, booking workflows, and common
-            customer questions with clear, step-by-step explanations. Pick a
-            video below and learn at your own pace.
+            Looking for comprehensive step-by-step reading? Explore our{" "}
+            <Link href="/guides" className="font-semibold text-orange-600 underline underline-offset-2 hover:text-orange-700">
+              Railway Agent Guides
+            </Link>{" "}
+            or check out the latest updates in our{" "}
+            <Link href="/blog" className="font-semibold text-orange-600 underline underline-offset-2 hover:text-orange-700">
+              Blog & Articles
+            </Link>.
           </p>
         </div>
 

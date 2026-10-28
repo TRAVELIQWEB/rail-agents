@@ -19,9 +19,15 @@ export function SectionHeading({
 
   return (
     <div className="mb-6 flex flex-col items-center justify-between gap-3 text-center min-[520px]:flex-row min-[520px]:items-end min-[520px]:text-left sm:mb-8">
-      <h2 className="min-w-0 text-center text-[clamp(1.65rem,6vw,2.5rem)] font-extrabold leading-[1.15] tracking-[-0.045em] text-[var(--navy)] min-[520px]:text-left wide:text-[3.25rem]">
-        {title}
-      </h2>
+      <div className="min-w-0">
+        <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-[#fffaf6] px-3 py-1.5 text-[11px] font-[800] uppercase tracking-[0.14em] text-[#d46a0b] shadow-sm">
+          <span className="h-2 w-2 rounded-full bg-[#f97316]" aria-hidden="true" />
+          RailAgents
+        </div>
+        <h2 className="text-center text-[clamp(1.5rem,3.5vw,2.125rem)] font-[800] leading-[1.12] tracking-[-0.04em] text-[var(--navy)] min-[520px]:text-left wide:text-[2.25rem]">
+          {title}
+        </h2>
+      </div>
       {linkText ? (
         external ? (
           <a

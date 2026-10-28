@@ -1,54 +1,124 @@
-// POST /api/upload — upload an image to Vercel Blob (admin only)
-// Returns { url } on success
+
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { ObjectId, GridFSBucket } from "mongodb";
 import { getAdminIronSession } from "@/lib/auth";
+import clientPromise from "@/lib/mongodb";
+import { isAdminSessionValid } from "@/lib/admin-session-validation";
+
+export const runtime = "nodejs";
 
 const MAX_SIZE_MB = 5;
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+
+const ALLOWED_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+]);
+
+const EXTENSION_BY_TYPE: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/gif": "gif",
+};
 
 export async function POST(req: Request) {
-  const cookieStore = await cookies();
-  const session = await getAdminIronSession(cookieStore);
-  if (!session.admin?.isLoggedIn) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  try {
+    // Verify that the administrator is logged in.
+    const cookieStore = await cookies();
+    const session = await getAdminIronSession(cookieStore);
 
-  const formData = await req.formData();
-  const file = formData.get("file") as File | null;
+    if (!(await isAdminSessionValid(session.admin))) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+    // Read the uploaded form.
+    let formData: FormData;
 
-  if (!file) return NextResponse.json({ error: "No file provided." }, { status: 400 });
-  if (!ALLOWED_TYPES.includes(file.type)) {
-    return NextResponse.json({ error: "Only JPEG, PNG, WebP and GIF images are allowed." }, { status: 415 });
-  }
-  if (file.size > MAX_SIZE_MB * 1024 * 1024) {
-    return NextResponse.json({ error: `Image must be under ${MAX_SIZE_MB}MB.` }, { status: 413 });
-  }
+    try {
+      formData = await req.formData();
+    } catch {
+      return NextResponse.json(
+        { error: "Invalid upload form." },
+        { status: 400 }
+      );
+    }
 
-  // In production with Blob configured
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
-    const { put } = await import("@vercel/blob");
-    const ext = file.name.split(".").pop() ?? "jpg";
-    const filename = `railagents/blog/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-    const blob = await put(filename, file, {
-      access: "public",
-      token: process.env.BLOB_READ_WRITE_TOKEN,
+    const file = formData.get("file");
+
+    if (!(file instanceof File) || file.size === 0) {
+      return NextResponse.json(
+        { error: "Please select a non-empty image file." },
+        { status: 400 }
+      );
+    }
+
+    // Validate the image type.
+    if (!ALLOWED_TYPES.has(file.type)) {
+      return NextResponse.json(
+        {
+          error:
+            "Only JPEG, PNG, WebP and GIF images are allowed.",
+        },
+        { status: 415 }
+      );
+    }
+
+    // Enforce the 5 MB limit.
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      return NextResponse.json(
+        { error: `Image must be under ${MAX_SIZE_MB}MB.` },
+        { status: 413 }
+      );
+    }
+
+    // Connect to the RailAgents MongoDB database.
+    const client = await clientPromise;
+    const db = client.db("railagents");
+
+    const bucket = new GridFSBucket(db, {
+      bucketName: "blogImages",
     });
-    return NextResponse.json({ url: blob.url });
+
+    // Generate a unique GridFS file ID.
+    const imageId = new ObjectId();
+
+    const filename = `${imageId.toHexString()}.${EXTENSION_BY_TYPE[file.type]
+      }`;
+
+    const bytes = Buffer.from(await file.arrayBuffer());
+
+    // Store the image and its metadata in MongoDB GridFS.
+    await new Promise<void>((resolve, reject) => {
+      const upload = bucket.openUploadStream(filename, {
+        id: imageId,
+        metadata: {
+          originalName: file.name,
+          contentType: file.type,
+          uploadedBy: session.admin?.email,
+          uploadedAt: new Date(),
+        },
+      });
+
+      upload.once("error", reject);
+      upload.once("finish", resolve);
+      upload.end(bytes);
+    });
+
+    // Return the URL that the editor can save in the blog post.
+    return NextResponse.json({
+      url: `/api/images/${imageId.toHexString()}`,
+    });
+  } catch (error) {
+    console.error("GridFS image upload failed:", error);
+
+    return NextResponse.json(
+      { error: "Image upload failed. Please try again." },
+      { status: 500 }
+    );
   }
-
-  // Dev fallback: save to /public/uploads/
-  const { writeFile, mkdir } = await import("fs/promises");
-  const path = await import("path");
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
-  await mkdir(uploadDir, { recursive: true });
-
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  const ext = file.name.split(".").pop() ?? "jpg";
-  const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-  await writeFile(path.join(uploadDir, filename), buffer);
-
-  return NextResponse.json({ url: `/uploads/${filename}` });
 }
-

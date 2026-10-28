@@ -11,7 +11,7 @@ import { siteConfig } from "@/config/site";
 export const revalidate = 3600;
 
 export const metadata = {
-  title: "Railway Agent Guidance, IRCTC Help & Video Guides",
+  title: "Railway Agent Guidance, IRCTC Help & Video Guides | RailAgents",
   description:
     "Explore practical railway agent guidance, IRCTC registration information, ticket booking help, and video tutorials from RailAgents.",
   alternates: { canonical: siteConfig.url },
@@ -19,7 +19,7 @@ export const metadata = {
     title: "Railway Agent Guidance, IRCTC Help & Video Guides | RailAgents",
     description:
       "Explore practical railway agent guidance, IRCTC registration information, ticket booking help, and video tutorials from RailAgents.",
-    url: siteConfig.url,
+    url: `${siteConfig.url}/`,
     images: [siteConfig.socialImage],
   },
   twitter: {

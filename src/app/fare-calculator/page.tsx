@@ -13,17 +13,17 @@ import { CalculatorFAQ } from "@/components/calculator/CalculatorFAQ";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Train Ticket Fare Calculator | RailAgents",
+  title: "Train Ticket Fare Calculator",
   description:
     "Calculate train ticket costs with a clear fare breakdown, including applicable IRCTC fees, authorized agent service charges, and automatic payment gateway charges.",
   alternates: {
-    canonical: `${siteConfig.url}/fare-calculator`,
+    canonical: `${siteConfig.url}/train-ticket-agent-fare-calculator`,
   },
   openGraph: {
     title: "Train Ticket Fare Calculator | RailAgents",
     description:
       "Calculate train ticket costs with a clear fare breakdown, including applicable IRCTC fees, authorized agent service charges, and automatic payment gateway charges.",
-    url: `${siteConfig.url}/fare-calculator`,
+    url: `${siteConfig.url}/train-ticket-agent-fare-calculator`,
     siteName: siteConfig.name,
     locale: "en_IN",
     type: "website",
@@ -52,17 +52,17 @@ export default function FareCalculatorPage() {
 
       <main className="flex-1">
         {/* Warm Premium Hero Header Section */}
-        <section className="relative overflow-hidden border-b border-[#f2e6d9] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] py-3 sm:py-7">
+        <section className="relative overflow-hidden border-b border-[#f2e6d9] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pb-6 pt-[66px] sm:pb-7 sm:pt-[78px] lg:pt-[84px]">
           {/* Subtle Ambient Radial Glows */}
           <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-72 w-[600px] rounded-full bg-gradient-to-br from-orange-200/35 via-amber-100/20 to-transparent blur-3xl" />
           <div className="pointer-events-none absolute -bottom-16 right-10 h-48 w-48 rounded-full bg-orange-100/40 blur-2xl" />
 
           <div className="site-container relative z-10">
             <div className="mx-auto max-w-2xl text-center">
-              <h1 className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight">
-                IRCTC Agent <span className="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-500 bg-clip-text text-transparent">Ticket Fare Calculator</span>
+              <h1 className="page-hero-title">
+                IRCTC Agent <span className="text-[var(--primary)]">Ticket Fare Calculator</span>
               </h1>
-              <p className="hidden sm:block mt-1.5 text-xs sm:text-sm text-stone-600 max-w-lg mx-auto leading-relaxed">
+              <p className="page-hero-description mx-auto mt-1.5 hidden max-w-lg sm:block">
                 Accurate ticket estimates with automated PG charges and instant print slips.
               </p>
             </div>

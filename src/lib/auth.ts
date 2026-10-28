@@ -4,17 +4,24 @@ import { getIronSession, type CookieStore, type SessionOptions } from "iron-sess
 export interface AdminSession {
   isLoggedIn: boolean;
   email: string;
+  sessionVersion: number;
 }
-
 export function isAdminUiPreviewEnabled() {
   return process.env.NODE_ENV === "development" && process.env.ADMIN_UI_PREVIEW === "true";
 }
 
 export const sessionOptions: SessionOptions = {
-  password:
-    (process.env.SESSION_SECRET ||
-      process.env.ADMIN_SESSION_PASSWORD ||
-      "railagents_default_development_secret_must_be_at_least_32_characters_long") as string,
+  password: (() => {
+    const secret = process.env.SESSION_SECRET;
+
+    if (!secret || secret.length < 32) {
+      throw new Error(
+        "SESSION_SECRET must be configured and at least 32 characters long."
+      );
+    }
+
+    return secret;
+  })(),
   cookieName: "railagents_admin_session",
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",
