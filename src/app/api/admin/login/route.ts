@@ -1,10 +1,8 @@
-
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
 import { getAdminIronSession } from "@/lib/auth";
-import clientPromise from "@/lib/mongodb";
 import { checkRateLimit, resetRateLimit } from "@/lib/rate-limit";
+
 export async function POST(req: Request) {
   const cookieStore = await cookies();
   const forwarded = req.headers.get("x-forwarded-for");
@@ -54,52 +52,21 @@ export async function POST(req: Request) {
   }
 
   const normalizedEmail = email.trim().toLowerCase();
+  const expectedEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  const expectedPassword = process.env.ADMIN_PASSWORD;
 
-  let adminEmail: string | null = null;
-  let isAuthenticated = false;
-  let sessionVersion = 0;
-
-  try {
-    const client = await clientPromise;
-    const db = client.db("railagents");
-
-    const admin = await db.collection("login").findOne<{
-      email: string;
-      passwordHash: string;
-      role: string;
-      sessionVersion?: number;
-    }>({
-      email: normalizedEmail,
-      role: "admin",
-    });
-
-    if (
-      admin &&
-      typeof admin.passwordHash === "string" &&
-      admin.passwordHash.length > 0
-    ) {
-      isAuthenticated = await bcrypt.compare(
-        password,
-        admin.passwordHash
-      );
-
-      if (isAuthenticated) {
-        adminEmail = admin.email;
-        sessionVersion = admin.sessionVersion ?? 0;
-      }
-    }
-  } catch (error) {
-    console.error("Admin login database verification failed:", error);
-
+  if (!expectedEmail || !expectedPassword) {
+    console.error("ADMIN_EMAIL or ADMIN_PASSWORD is not configured in environment variables.");
     return NextResponse.json(
-      {
-        error: "Unable to verify login right now. Please try again.",
-      },
+      { error: "Server configuration error. Contact administrator." },
       { status: 500 }
     );
   }
 
-  if (!isAuthenticated || !adminEmail) {
+  const isAuthenticated =
+    normalizedEmail === expectedEmail && password === expectedPassword;
+
+  if (!isAuthenticated) {
     return NextResponse.json(
       {
         error: "Invalid email or password.",
@@ -115,8 +82,8 @@ export async function POST(req: Request) {
 
   session.admin = {
     isLoggedIn: true,
-    email: adminEmail,
-    sessionVersion,
+    email: normalizedEmail,
+    sessionVersion: 1,
   };
 
   await session.save();
