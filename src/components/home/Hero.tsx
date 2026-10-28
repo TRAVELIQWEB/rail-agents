@@ -33,23 +33,26 @@ export function Hero() {
      * Tablet  (768+):  text and card above a cropped portrait
      * Desktop (1280+): 3 cols (text | Nihal | card)
      */
-    <section className="relative flex flex-col overflow-hidden bg-[#faf8f5] min-h-[460px] md:h-auto md:min-h-0 xl:h-[calc(100svh-72px)] xl:min-h-[560px] xl:max-h-[660px] 2xl:max-h-[680px] wide:max-h-[700px]">
+    <section className="relative flex flex-col overflow-hidden bg-[#faf8f5] min-h-[460px] md:h-auto md:min-h-0 xl:h-auto xl:min-h-[500px] xl:max-h-none">
 
       {/* Railway background */}
-      <div aria-hidden="true" className="hero-railway-backdrop absolute inset-0" />
+      <div aria-hidden="true" className="absolute inset-0">
+        <Image
+          src="/images/hero-railway-bg.webp"
+          alt=""
+          fill
+          loading="eager"
+          fetchPriority="high"
+          unoptimized
+          className="object-cover object-right"
+        />
+      </div>
 
       {/* Gradient overlay */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(to right, #faf8f4 0%, #faf8f4 26%, rgba(250,248,244,0.92) 40%, rgba(250,248,244,0.55) 56%, rgba(250,248,244,0.1) 70%, transparent 80%)",
-        }}
-      />
+      <div aria-hidden="true" className="hero-railway-backdrop pointer-events-none absolute inset-0" />
 
       {/* ── MAIN CONTAINER ── */}
-      <div className="site-container relative z-10 flex flex-1 flex-col justify-center py-4 sm:py-5 lg:py-5 wide:py-6">
+      <div className="site-container relative z-10 flex flex-1 flex-col justify-start pb-4 pt-4 sm:pb-5 sm:pt-5 lg:pb-5 lg:pt-8 wide:pb-6 wide:pt-8">
 
         {/*
          * Grid:
@@ -57,10 +60,10 @@ export function Hero() {
          *  tablet  (768px+):  2 cols [text | card], portrait follows
          *  desktop (1280px+): 3 cols via xl:grid-cols-12 with col-spans
          */}
-        <div className="grid grid-cols-1 items-center gap-0 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] xl:grid-cols-12 xl:items-center">
+        <div className="grid grid-cols-1 items-start gap-0 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] xl:grid-cols-12">
 
           {/* ══ COL 1: LEFT TEXT ══ */}
-          <div className="flex min-w-0 flex-col items-center justify-center py-4 pr-0 text-center sm:py-5 md:items-start md:py-4 md:pr-5 md:text-left xl:col-span-5 2xl:col-span-5 wide:col-span-5 xl:py-4 xl:pr-6 2xl:pr-8 wide:pr-10">
+          <div className="flex min-w-0 flex-col items-center py-0 pr-0 text-center md:items-start md:pr-5 md:text-left xl:col-span-5 2xl:col-span-5 wide:col-span-5 xl:pr-6 2xl:pr-8 wide:pr-10">
 
             {/* Badge */}
             <span className="mb-4 inline-flex w-fit max-w-full items-center gap-2 rounded-full border border-[#f0deca] bg-[#fff8f2] py-1.5 pl-1.5 pr-3.5 text-xs font-[700] text-[var(--navy)] shadow-[0_2px_10px_rgba(249,115,22,0.10)] sm:text-[0.8125rem]">
@@ -164,7 +167,7 @@ export function Hero() {
                 src="/images/nihal-singh-cutout.png"
                 alt="Nihal Singh"
                 fill
-                priority
+                loading="eager"
                 sizes="(min-width: 1920px) 400px, (min-width: 1536px) 360px, (min-width: 1280px) 320px, 280px"
                 className="object-contain object-bottom drop-shadow-[0_10px_25px_rgba(15,39,71,0.12)]"
               />

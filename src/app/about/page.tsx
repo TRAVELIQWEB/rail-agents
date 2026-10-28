@@ -245,7 +245,7 @@ export default function AboutPage() {
         {/* =========================================================
             SECTION 1: STRONG PERSONAL HERO
         ========================================================== */}
-        <section className="relative overflow-hidden border-b border-[#f4e4d4] bg-gradient-to-b from-[#fffaf4] via-[#fffdfa] to-white py-8 sm:py-10 lg:py-12">
+        <section className="relative overflow-hidden border-b border-[#f4e4d4] bg-gradient-to-b from-[#fffaf4] via-[#fffdfa] to-white py-3 sm:py-6 lg:py-12">
           {/* Subtle Ambient Decorative Gradients */}
           <div
             aria-hidden="true"
@@ -257,7 +257,7 @@ export default function AboutPage() {
           />
 
           <div className="site-container relative z-10">
-            <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-12">
+            <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-12">
               
               {/* Left Column: Text & CTAs */}
               <div className="text-center md:text-left lg:col-span-7">

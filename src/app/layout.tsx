@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
-import { GoogleTagManager } from "@next/third-parties/google";
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -85,7 +85,19 @@ export default function RootLayout({
         />
         {children}
         <FloatingWhatsApp />
-        <GoogleTagManager gtmId="GTM-P3CML7MM" />
+        <Script
+          id="next-gtm-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(w,l){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});})(window,'dataLayer');",
+          }}
+        />
+        <Script
+          id="next-gtm"
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-P3CML7MM"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

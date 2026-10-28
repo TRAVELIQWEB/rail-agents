@@ -133,11 +133,7 @@ input[type="number"] {
       rgba(255, 252, 248, 0.94) 42%,
       rgba(255, 247, 237, 0.78) 68%,
       rgba(255, 247, 237, 0.42) 100%
-    ),
-    url("/images/hero-railway-bg.webp");
-  background-position: center right;
-  background-repeat: no-repeat;
-  background-size: cover;
+    );
 }
 
 @media (max-width: 767px) {
@@ -147,8 +143,7 @@ input[type="number"] {
         rgba(255, 253, 251, 0.995) 0%,
         rgba(255, 252, 248, 0.985) 62%,
         rgba(255, 247, 237, 0.94) 100%
-      ),
-      url("/images/hero-railway-bg.webp");
+        );
   }
 }
 

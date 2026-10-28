@@ -112,6 +112,7 @@ export function SocialCards() {
                     src="/images/nihal-singh-cutout.png"
                     alt="Nihal Singh YouTube Preview"
                     fill
+                    sizes="(min-width: 640px) 128px, 112px"
                     className="object-cover object-top"
                   />
                   {/* Play Button overlay */}
@@ -202,6 +203,7 @@ export function SocialCards() {
                     src="/images/nihal-singh-cutout.png"
                     alt="Nihal Singh Instagram Post"
                     fill
+                    sizes="(min-width: 640px) 128px, 112px"
                     className="object-cover object-top"
                   />
                   {/* Play Overlay */}
@@ -296,6 +298,7 @@ export function SocialCards() {
                     src="/images/nihal-singh-cutout.png"
                     alt="Nihal Singh Facebook Community"
                     fill
+                    sizes="(min-width: 640px) 128px, 112px"
                     className="object-cover object-top"
                   />
                   {/* Thumbs up overlay badge */}
