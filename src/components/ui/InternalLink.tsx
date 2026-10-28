@@ -10,6 +10,7 @@ type InternalLinkProps = {
   prefetch?: boolean;
   current?: boolean;
   title?: string;
+  "aria-label"?: string;
 };
 
 export function InternalLink({
@@ -20,6 +21,7 @@ export function InternalLink({
   prefetch = false,
   current,
   title,
+  "aria-label": ariaLabel,
 }: InternalLinkProps) {
   if (!isInternalRouteAvailable(href)) {
     const disabledClassName = className
@@ -44,8 +46,10 @@ export function InternalLink({
       href={href}
       prefetch={prefetch}
       aria-current={current ? "page" : undefined}
+      aria-label={ariaLabel}
       onClick={onClick as MouseEventHandler<HTMLAnchorElement> | undefined}
       className={className}
+      title={title}
     >
       {children}
     </Link>

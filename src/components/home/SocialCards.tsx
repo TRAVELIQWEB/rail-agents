@@ -11,18 +11,18 @@ export function SocialCards() {
       ========================== */}
       <div className="text-center mb-6 sm:mb-8">
         {/* Top Pill Badge */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#ffd5c2] bg-[#fff3ec] px-4 py-1.5 text-xs font-bold text-[#f97316] shadow-sm mb-3">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[#ffd5c2] bg-[#fff3ec] px-4 py-1.5 text-xs font-bold text-[var(--primary-dark)] shadow-sm mb-3">
           <span className="text-sm">👥</span> Stay Connected
         </div>
 
         {/* Heading */}
-        <h2 className="text-2xl sm:text-4xl lg:text-[2.6rem] font-extrabold text-[var(--navy)] tracking-tight">
+        <h2 className="text-[clamp(1.5rem,3vw,2.125rem)] font-extrabold leading-[1.12] tracking-tight text-[var(--navy)] wide:text-[2.25rem]">
           Follow Us for{" "}
           <span className="relative inline-block text-[var(--primary)]">
             Daily Updates
             {/* Top right spark accents */}
             <svg
-              className="absolute -top-3 -right-6 w-6 h-6 text-[#f97316]"
+              className="absolute -top-3 -right-6 hidden h-6 w-6 text-[#f97316] lg:block"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -35,7 +35,7 @@ export function SocialCards() {
         </h2>
 
         {/* Subtitle */}
-        <p className="mt-3 max-w-2xl mx-auto text-sm sm:text-base text-slate-600 leading-relaxed px-4">
+        <p className="mt-3 max-w-2xl mx-auto px-4 text-sm leading-relaxed text-slate-600 sm:text-base">
           Get the latest railway updates, helpful tips, video guides and community support across all our social media channels.
         </p>
 
@@ -56,10 +56,10 @@ export function SocialCards() {
           {/* Top Bar: 3D App Icon + Category Badge */}
           <div className="relative z-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
             {/* 3D Icon Box */}
-            <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff4d4d] via-[#ff0000] to-[#cc0000] text-white shadow-[0_8px_20px_rgba(255,0,0,0.35),inset_0_2px_4px_rgba(255,255,255,0.4)]">
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff4d4d] via-[#ff0000] to-[#cc0000] text-white shadow-[0_8px_20px_rgba(255,0,0,0.35),inset_0_2px_4px_rgba(255,255,255,0.4)]">
               {/* Spark accents on top */}
               <div className="absolute -top-2 -right-1 text-red-500 text-xs font-bold leading-none select-none">✨</div>
-              <FaYoutube className="h-6 w-6" />
+              <FaYoutube className="h-5 w-5" />
             </div>
 
             {/* Category Tag */}
@@ -140,10 +140,10 @@ export function SocialCards() {
           {/* Top Bar: 3D App Icon + Category Badge */}
           <div className="relative z-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
             {/* 3D Icon Box */}
-            <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white shadow-[0_8px_20px_rgba(238,42,123,0.35),inset_0_2px_4px_rgba(255,255,255,0.4)]">
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white shadow-[0_8px_20px_rgba(238,42,123,0.35),inset_0_2px_4px_rgba(255,255,255,0.4)]">
               {/* Spark accents on top */}
               <div className="absolute -top-2 -right-1 text-pink-500 text-xs font-bold leading-none select-none">✨</div>
-              <FaInstagram className="h-6 w-6" />
+              <FaInstagram className="h-5 w-5" />
             </div>
 
             {/* Category Tag */}
@@ -234,14 +234,14 @@ export function SocialCards() {
           {/* Top Bar: 3D App Icon + Category Badge */}
           <div className="relative z-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
             {/* 3D Icon Box */}
-            <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-b from-[#3b82f6] via-[#1d4ed8] to-[#1e40af] text-white shadow-[0_8px_20px_rgba(29,78,216,0.35),inset_0_2px_4px_rgba(255,255,255,0.4)]">
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-b from-[#3b82f6] via-[#1d4ed8] to-[#1e40af] text-white shadow-[0_8px_20px_rgba(29,78,216,0.35),inset_0_2px_4px_rgba(255,255,255,0.4)]">
               {/* Spark accents on top */}
               <div className="absolute -top-2 -right-1 text-blue-500 text-xs font-bold leading-none select-none">✨</div>
-              <FaFacebookF className="h-6 w-6" />
+              <FaFacebookF className="h-5 w-5" />
             </div>
 
             {/* Category Tag */}
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#bae6fd] bg-[#e0f2fe] px-3 py-1 text-xs font-bold text-[#0284c7]">
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#bae6fd] bg-[#e0f2fe] px-3 py-1 text-xs font-bold text-[#075985]">
               <span>👥</span> Community
             </div>
           </div>
@@ -273,7 +273,7 @@ export function SocialCards() {
             <div className="sm:col-span-5 relative flex flex-col items-center sm:items-end justify-center mt-4 sm:mt-0">
               {/* Annotation Label + Curved Arrow */}
               <div className="absolute -top-7 right-2 z-20 flex flex-col items-center select-none pointer-events-none">
-                <span className="text-[11px] font-black text-[#0284c7] tracking-tight -rotate-3 whitespace-nowrap drop-shadow-sm">
+                <span className="text-[11px] font-black text-[#075985] tracking-tight -rotate-3 whitespace-nowrap drop-shadow-sm">
                   Be Part of Our Community
                 </span>
                 <svg className="w-8 h-6 text-[#0284c7] -mt-0.5 transform rotate-12" viewBox="0 0 40 30" fill="none">

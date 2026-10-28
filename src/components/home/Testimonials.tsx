@@ -37,11 +37,11 @@ export function Testimonials() {
         <div>
           <div className="mb-5 flex items-end justify-between gap-4">
             <div>
-              <p className="mb-2 text-[0.8125rem] font-[800] uppercase tracking-[0.12em] text-[#e96713]">
+              <p className="mb-2 text-[0.8125rem] font-[800] uppercase tracking-[0.12em] text-[var(--primary-dark)]">
                 What Our Users Say
               </p>
 
-              <h2 className="max-w-[760px] text-[clamp(2rem,3.5vw,3.25rem)] font-extrabold leading-[1.08] tracking-[-0.045em] text-[var(--navy)] wide:max-w-[900px] wide:text-[3.75rem]">
+              <h2 className="max-w-[760px] text-[clamp(1.5rem,3vw,2.25rem)] font-extrabold leading-[1.12] tracking-[-0.04em] text-[var(--navy)] wide:max-w-[900px] wide:text-[2.25rem]">
                 What Travel Agents Say About RailAgents
               </h2>
             </div>
@@ -132,13 +132,15 @@ export function Testimonials() {
 
                 {/* STARS */}
                 <div
-                  className="relative z-10 mt-4 flex justify-center gap-1 text-[#f59e0b] sm:justify-start"
+                  className="relative z-10 mt-4 flex justify-center gap-1 text-[#a16207] sm:justify-start"
+                  role="img"
                   aria-label="5 out of 5 stars"
                 >
                   {Array.from({ length: 5 }, (_, index) => (
                     <Star
                       key={index}
                       className="h-3.5 w-3.5 fill-current"
+                      aria-hidden="true"
                     />
                   ))}
                 </div>
@@ -219,15 +221,15 @@ export function Testimonials() {
             "
           />
 
-          <p className="mb-3 text-[0.8125rem] font-[800] uppercase tracking-[0.12em] text-[#e96713]">
+          <p className="mb-3 text-[0.8125rem] font-[800] uppercase tracking-[0.12em] text-[var(--primary-dark)]">
             Explore IRCTC Agent Information
           </p>
 
-          <h2 className="max-w-[360px] text-[2rem] font-[800] leading-[1.1] tracking-[-0.045em] text-[var(--navy)] wide:max-w-[460px] wide:text-[2.5rem]">
+          <h2 className="max-w-[360px] text-[1.75rem] font-[800] leading-[1.12] tracking-[-0.04em] text-[var(--navy)] wide:max-w-[460px] wide:text-[2.125rem]">
             Understand the IRCTC Agent Process
           </h2>
 
-          <p className="mx-auto mt-4 max-w-[390px] text-[0.92rem] leading-[1.65] text-slate-600 lg:mx-0 wide:max-w-[480px] wide:text-lg">
+          <p className="mx-auto mt-4 max-w-[390px] text-sm leading-[1.65] text-slate-600 lg:mx-0 wide:max-w-[480px] lg:text-base">
             Explore practical guides about the registration process, documents,
             and details to verify with the relevant authorized provider.
           </p>
@@ -277,7 +279,7 @@ export function Testimonials() {
                 hover:bg-white
               "
             >
-              Learn More
+              Learn more about RailAgents
             </InternalLink>
           </div>
         </aside>
@@ -293,7 +295,7 @@ function ImageTrainBackdrop() {
         className="
           absolute
           inset-0
-          bg-[url('/images/hero-railway-bg.png')]
+          bg-[url('/images/hero-railway-bg.webp')]
           bg-cover
           bg-center
           opacity-80

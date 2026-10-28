@@ -7,16 +7,19 @@ import Link from "next/link";
 import {
   Save, Send, Eye, Clock, Trash2, ChevronDown, ChevronUp,
   Upload, X, Tag, Globe, User, Calendar, AlertCircle,
-  CheckCircle2, RotateCcw, AlertTriangle, ArrowUpRight,
+  CheckCircle2, RotateCcw, AlertTriangle, ArrowUpRight, ArrowRight, Video,
+  Plus, Key, Sparkles,
 } from "lucide-react";
 import { BLOG_CATEGORIES } from "@/types/blog";
 import type { BlogPost, PostStatus } from "@/types/blog";
 import { sanitizeHtml } from "@/lib/sanitize";
+import { extractYouTubeId } from "@/lib/youtube-parser";
+import { InteractiveButton } from "@/components/ui/InteractiveButton";
 
 // Dynamically import the editor (Tiptap is client-only)
 const RichEditor = dynamic(
   () => import("./RichEditor").then((m) => m.RichEditor),
-  { ssr: false, loading: () => <div className="min-h-[400px] rounded-2xl border border-slate-200 bg-slate-50 animate-pulse" /> }
+  { ssr: false, loading: () => <div className="w-full flex-1 min-h-[380px] bg-slate-50/70 animate-pulse" /> }
 );
 
 function slugify(text: string): string {
@@ -53,6 +56,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [showSeo, setShowSeo] = useState(true);
   const [showLivePreview, setShowLivePreview] = useState(false);
+  const [showPublishModal, setShowPublishModal] = useState(false);
+  const [publishedSuccessData, setPublishedSuccessData] = useState<{
+    title: string;
+    slug: string;
+    status: PostStatus;
+    id: string;
+  } | null>(null);
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(post?.featuredImage ?? null);
   const [tagInput, setTagInput] = useState("");
@@ -69,9 +79,15 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
   const [publishedAt, setPublishedAt] = useState(post?.publishedAt ? post.publishedAt.slice(0, 16) : "");
   const [scheduledAt, setScheduledAt] = useState(post?.scheduledAt ? post.scheduledAt.slice(0, 16) : "");
   const [featuredImage, setFeaturedImage] = useState<string | null>(post?.featuredImage ?? null);
+  const [featuredVideoUrl, setFeaturedVideoUrl] = useState<string>(post?.featuredVideoUrl ?? "");
+  const [coverMediaType, setCoverMediaType] = useState<"image" | "video">(
+    post?.featuredVideoUrl ? "video" : "image"
+  );
   const [seoTitle, setSeoTitle] = useState(post?.seoTitle ?? "");
   const [metaDescription, setMetaDescription] = useState(post?.metaDescription ?? "");
   const [focusKeyphrase, setFocusKeyphrase] = useState(post?.focusKeyphrase ?? "");
+  const [keyphraseInput, setKeyphraseInput] = useState("");
+  const [showAllKeyphrases, setShowAllKeyphrases] = useState(false);
   const [canonicalUrl, setCanonicalUrl] = useState(post?.canonicalUrl ?? "");
   const [allowIndexing, setAllowIndexing] = useState(post?.allowIndexing ?? true);
   const [featuredImageAlt, setFeaturedImageAlt] = useState(post?.featuredImageAlt ?? "");
@@ -82,10 +98,10 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
 
   const saveDraft = useCallback(() => {
     if (typeof window === "undefined") return;
-    const draft = { title, slug, excerpt, content, category, tags, author, featuredImage, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds };
+    const draft = { title, slug, excerpt, content, category, tags, author, featuredImage, featuredVideoUrl, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds };
     localStorage.setItem(draftKey, JSON.stringify(draft));
     setSaveStatus("saved");
-  }, [title, slug, excerpt, content, category, tags, author, featuredImage, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds, draftKey]);
+  }, [title, slug, excerpt, content, category, tags, author, featuredImage, featuredVideoUrl, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds, draftKey]);
 
   // Window beforeunload guard against accidental data loss
   useEffect(() => {
@@ -99,15 +115,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [saveStatus]);
 
-  useEffect(() => {
-    setSaveStatus("unsaved");
-    if (autosaveTimer.current) clearTimeout(autosaveTimer.current);
-    autosaveTimer.current = setTimeout(() => {
-      setSaveStatus("saving");
-      saveDraft();
-    }, 15_000);
-    return () => { if (autosaveTimer.current) clearTimeout(autosaveTimer.current); };
-  }, [title, slug, excerpt, content, category, tags, author, featuredImage, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds, saveDraft]);
+  const isDraftLoadedRef = useRef(false);
 
   // Load autosaved draft (create mode only)
   useEffect(() => {
@@ -123,6 +131,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
           if (d.tags?.length) setTags(d.tags);
           if (d.author) setAuthor(d.author);
           if (d.featuredImage) { setFeaturedImage(d.featuredImage); setImagePreview(d.featuredImage); }
+          if (d.featuredVideoUrl) { setFeaturedVideoUrl(d.featuredVideoUrl); setCoverMediaType("video"); }
           if (d.seoTitle) setSeoTitle(d.seoTitle);
           if (d.metaDescription) setMetaDescription(d.metaDescription);
           if (d.focusKeyphrase) setFocusKeyphrase(d.focusKeyphrase);
@@ -134,7 +143,20 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
         } catch {}
       }
     }
+    isDraftLoadedRef.current = true;
   }, [draftKey, mode]);
+
+  useEffect(() => {
+    // Avoid autosaving empty initial state before draft has had a chance to restore
+    if (!isDraftLoadedRef.current && mode === "create") return;
+    setSaveStatus("unsaved");
+    if (autosaveTimer.current) clearTimeout(autosaveTimer.current);
+    autosaveTimer.current = setTimeout(() => {
+      setSaveStatus("saving");
+      saveDraft();
+    }, 15_000);
+    return () => { if (autosaveTimer.current) clearTimeout(autosaveTimer.current); };
+  }, [title, slug, excerpt, content, category, tags, author, featuredImage, featuredVideoUrl, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds, saveDraft, mode]);
 
   const handleImageUpload = async (file: File) => {
     setUploadingImage(true);
@@ -165,12 +187,57 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
 
   const removeTag = (tag: string) => setTags((prev) => prev.filter((t) => t !== tag));
 
+  // Multi-selector keyphrases (LinkedIn / job portal style chip selector)
+  const currentKeyphrases = focusKeyphrase
+    ? focusKeyphrase.split(",").map((k) => k.trim()).filter(Boolean)
+    : [];
+
+  const addKeyphrase = (phrase: string) => {
+    const cleaned = phrase.trim().replace(/^,+|,+$/g, "");
+    if (!cleaned) return;
+    const exists = currentKeyphrases.some((k) => k.toLowerCase() === cleaned.toLowerCase());
+    if (!exists) {
+      const updated = [...currentKeyphrases, cleaned];
+      setFocusKeyphrase(updated.join(", "));
+    }
+    setKeyphraseInput("");
+  };
+
+  const removeKeyphrase = (phraseToRemove: string) => {
+    const updated = currentKeyphrases.filter(
+      (k) => k.toLowerCase() !== phraseToRemove.toLowerCase()
+    );
+    setFocusKeyphrase(updated.join(", "));
+  };
+
+  const SUGGESTED_KEYPHRASES = [
+    "IRCTC Agent Registration",
+    "Tatkal Booking Rules",
+    "Train Ticket Commission",
+    "Authorized Rail Agent",
+    "Ticket Cancellation OTP",
+    "Railway Travel Business",
+    "IRCTC Principal Service Provider",
+    "ERS Printout Rules",
+    "AC Tatkal Opening Timings",
+    "Sleeper Tatkal Rules",
+    "IRCTC Agent Login Portal",
+    "TDR Refund Guidelines",
+    "Sub-Agent ID Activation",
+    "Agent Monthly Income",
+    "Vande Bharat Booking Rules",
+    "IRCTC DSC Token Setup",
+    "Tatkal Software Ban Rules",
+    "Ticket Booking Limits",
+  ];
+
   const buildPayload = () => ({
     title: title.trim(),
     slug: slug.trim(),
     excerpt: excerpt.trim(),
     content,
     featuredImage,
+    featuredVideoUrl: featuredVideoUrl.trim() || null,
     category,
     tags,
     author: author.trim(),
@@ -186,23 +253,47 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
     scheduledAt: status === "scheduled" ? (scheduledAt ? new Date(scheduledAt).toISOString() : null) : null,
   });
 
+  // Validate all starmark / mandatory fields
+  const validateMandatoryFields = (): string | null => {
+    if (!title.trim()) return "Article Title is required.";
+    if (!slug.trim()) return "Permalink / Slug is required.";
+    if (!content || content.trim() === "" || content === "<p></p>") {
+      return "Article Content Body is required.";
+    }
+    const hasCoverImage = Boolean(featuredImage && featuredImage.trim());
+    const hasCoverVideo = Boolean(featuredVideoUrl && featuredVideoUrl.trim());
+    if (!hasCoverImage && !hasCoverVideo) {
+      return "Featured Cover (Cover Image or YouTube Video URL) is required.";
+    }
+    if (!category || !category.trim()) {
+      return "Category is required.";
+    }
+    if (!author || !author.trim()) {
+      return "Author is required.";
+    }
+    return null;
+  };
+
   const validate = (targetStatus?: PostStatus) => {
     const effectiveStatus = targetStatus ?? status;
-    if (!title.trim()) return "Article title is required.";
-    if (!slug.trim()) return "URL slug is required.";
-    if (effectiveStatus !== "draft" && (!content || content === "<p></p>")) {
-      return "Article content cannot be empty for publishing.";
-    }
-    if (effectiveStatus !== "draft" && !featuredImage) {
-      return "A featured cover image is required before publishing.";
-    }
-    if (effectiveStatus !== "draft" && !author.trim()) {
-      return "Please select an author for the article.";
-    }
+    const mandatoryErr = validateMandatoryFields();
+    if (mandatoryErr) return mandatoryErr;
+
     if (effectiveStatus === "scheduled" && !scheduledAt) {
       return "Please set a scheduled publication date & time.";
     }
     return null;
+  };
+
+  const handleNextStep = () => {
+    const err = validateMandatoryFields();
+    if (err) {
+      setError(err);
+      setSuccessMessage(null);
+      return;
+    }
+    setError(null);
+    setShowPublishModal(true);
   };
 
   const handleSave = async (targetStatus?: PostStatus) => {
@@ -230,6 +321,15 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
       if (typeof window !== "undefined") localStorage.removeItem(draftKey);
       setSaveStatus("saved");
       setStatus(chosenStatus);
+      setShowPublishModal(false);
+
+      // Show rich modal on publish or update
+      setPublishedSuccessData({
+        title: payload.title,
+        slug: payload.slug,
+        status: chosenStatus,
+        id: data.id ?? post?.id ?? "",
+      });
 
       if (mode === "create") {
         router.push(`/admin/posts/${data.id}/edit`);
@@ -270,10 +370,10 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
   };
 
   return (
-    <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
+    <div className="w-full px-4 py-5 sm:px-6 lg:px-8 max-w-none">
       {/* Top Notification Banners */}
       {successMessage && (
-        <div className="mb-5 flex items-center justify-between gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-800 shadow-xs">
+        <div className="mb-5 flex items-center justify-between gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-800 shadow-xs">
           <div className="flex items-center gap-2">
             <CheckCircle2 size={16} className="text-emerald-600" />
             <span>{successMessage}</span>
@@ -293,24 +393,48 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
       )}
 
       {error && (
-        <div className="mb-5 flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 p-4 text-xs font-semibold text-red-700 shadow-xs">
+        <div className="mb-5 flex items-start gap-2.5 rounded-2xl border border-red-200 bg-red-50 p-4 text-xs font-semibold text-red-700 shadow-xs">
           <AlertCircle size={16} className="mt-0.5 flex-shrink-0 text-red-500" />
           <span>{error}</span>
         </div>
       )}
+
+      {/* Breadcrumb Navigation */}
+      <nav aria-label="Breadcrumb" className="mb-3 text-xs text-slate-500 font-medium">
+        <ol className="flex items-center gap-1.5">
+          <li>
+            <Link href="/admin/dashboard" className="hover:text-orange-600 transition">Admin</Link>
+          </li>
+          <li aria-hidden="true" className="text-slate-300">/</li>
+          <li>
+            <Link href="/admin/posts" className="hover:text-orange-600 transition">Posts</Link>
+          </li>
+          <li aria-hidden="true" className="text-slate-300">/</li>
+          <li className="text-slate-800 font-bold" aria-current="page">
+            {mode === "create" ? "Create Article" : "Edit Article"}
+          </li>
+        </ol>
+      </nav>
+
       {/* Top Header Card */}
-      <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-4 flex flex-col gap-4 rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2.5">
             <h1 className="text-xl font-black tracking-tight text-slate-900 sm:text-2xl">
-              {mode === "create" ? "Write New Article" : "Edit Article"}
+              {mode === "create" ? "Create Article" : "Edit Article"}
             </h1>
-            <span className="rounded-full bg-orange-50 px-2.5 py-0.5 text-xs font-bold text-orange-700 border border-orange-200/60">
-              {mode === "create" ? "Draft Mode" : post?.status}
+            <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold uppercase border ${
+              status === "published"
+                ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                : status === "scheduled"
+                ? "bg-blue-50 text-blue-700 border-blue-200"
+                : "bg-orange-50 text-orange-700 border-orange-200/60"
+            }`}>
+              {mode === "create" ? "Draft" : status}
             </span>
           </div>
           <div className="mt-1 flex items-center gap-2 text-xs text-slate-500">
-            <span>Compose guides and railway news articles</span>
+            <span>Unified editorial publishing desk</span>
             {saveStatus !== "idle" && (
               <>
                 <span>•</span>
@@ -323,52 +447,69 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center gap-2">
           <Link
             href="/admin/posts"
             className="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
           >
             Back to Posts
           </Link>
-          <button
-            type="button"
-            onClick={() => setShowLivePreview(true)}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 transition hover:border-orange-200 hover:bg-orange-50/50 hover:text-orange-700"
-          >
-            <Eye size={14} /> Preview
-          </button>
-          <button
-            type="button"
-            onClick={() => { setSaveStatus("saving"); saveDraft(); }}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
-          >
-            <Save size={14} />
-            Save Draft
-          </button>
-          <button
-            type="button"
-            onClick={() => handleSave("published")}
-            disabled={isSubmitting}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-orange-600 px-4 py-2 text-xs font-bold text-white shadow-sm shadow-orange-600/30 transition hover:bg-orange-700 disabled:opacity-60"
-          >
-            <Send size={14} />
-            {isSubmitting ? "Publishing..." : mode === "edit" && post?.status === "published" ? "Update Article" : "Publish Now"}
-          </button>
         </div>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-3">
+      {/* 3-Step Editorial Workflow Bar: Write, Enhance, Publish */}
+      <div className="mb-5 flex items-center justify-between rounded-xl border border-slate-200/90 bg-white p-1.5 shadow-2xs">
+        <div className="flex flex-1 items-center divide-x divide-slate-100 text-xs font-bold">
+          <div className="flex flex-1 items-center justify-center gap-2 py-1 px-3 text-slate-900 bg-slate-50 rounded-lg">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-white text-[10px] font-black">1</span>
+            <span>Write</span>
+            <span className="hidden sm:inline text-[11px] font-normal text-slate-400">(Title, Slug &amp; Body)</span>
+          </div>
+
+          <div className="flex flex-1 items-center justify-center gap-2 py-1 px-3 text-slate-700">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-100 text-orange-700 text-[10px] font-black">2</span>
+            <span>Enhance</span>
+            <span className="hidden sm:inline text-[11px] font-normal text-slate-400">(Cover, Category, Tags)</span>
+          </div>
+
+          <div className="flex flex-1 items-center justify-center gap-2 py-1 px-3 text-slate-700">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 text-blue-700 text-[10px] font-black">3</span>
+            <span>Publish</span>
+            <span className="hidden sm:inline text-[11px] font-normal text-slate-400">(SEO, Preview &amp; Status)</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Two-Column Layout: Left Editor & Right Settings Panel */}
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(320px,380px)] gap-6 items-stretch">
         {/* Main Column */}
-        <div className="space-y-6 xl:col-span-2">
-          {/* Article Info Card */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs sm:p-6 space-y-5">
+        <div className="flex flex-col space-y-6 min-w-0">
+          {/* Box 1: Article Basic Details Card */}
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-4 flex-shrink-0 transition hover:border-slate-300">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 font-bold border border-blue-100/80">
+                  <Sparkles size={14} />
+                </span>
+                <div>
+                  <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+                    Article Details &amp; Slug
+                  </h2>
+                  <p className="text-[10px] text-slate-400 font-normal">Core headline and URL configuration</p>
+                </div>
+              </div>
+              <span className="text-[10px] font-bold text-orange-600 bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-200/70 uppercase tracking-wider">
+                Required
+              </span>
+            </div>
+
             {/* Title */}
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                   Article Title <span className="text-orange-600">*</span>
                 </label>
-                <span className="text-[11px] text-slate-400">{title.length} characters</span>
+                <span className="text-[10px] font-semibold text-slate-400">{title.length} characters</span>
               </div>
               <input
                 type="text"
@@ -379,401 +520,629 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   if (!slugManuallyEdited && mode === "create") setSlug(slugify(nextTitle));
                   setSaveStatus("unsaved");
                 }}
-                placeholder="e.g. How to Become an Authorized IRCTC Agent: Complete Guide"
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base font-semibold text-slate-900 outline-none transition placeholder:font-normal placeholder:text-slate-400 hover:border-orange-300 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
+                placeholder="Enter article headline..."
+                className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-3 py-1.5 text-xs font-semibold text-slate-900 outline-none transition placeholder:font-normal placeholder:text-slate-400 hover:border-blue-300 focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100"
               />
             </div>
 
             {/* Slug */}
             <div>
-              <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-700">
+              <label className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                 Permalink / Slug <span className="text-orange-600">*</span>
               </label>
-              <div className="flex items-center overflow-hidden rounded-xl border border-slate-300 bg-white hover:border-orange-300 focus-within:border-orange-500 focus-within:ring-4 focus-within:ring-orange-500/15">
-                <span className="flex-shrink-0 bg-slate-50 border-r border-slate-200 px-3.5 py-2.5 text-xs font-semibold text-slate-500">
+              <div className="flex items-center overflow-hidden rounded-lg border border-slate-200 bg-slate-50/40 hover:border-blue-300 focus-within:border-blue-600 focus-within:bg-white focus-within:ring-1 focus-within:ring-blue-100 transition">
+                <span className="flex-shrink-0 bg-slate-100/80 border-r border-slate-200 px-2.5 py-1 text-[11px] font-semibold text-slate-500">
                   railagents.in/blog/
                 </span>
                 <input
                   type="text"
                   value={slug}
                   onChange={(e) => { setSlug(e.target.value); setSlugManuallyEdited(true); }}
-                  placeholder="how-to-become-irctc-agent"
-                  className="flex-1 px-3 py-2.5 text-xs font-mono font-medium text-slate-900 outline-none"
+                  placeholder="article-permalink-slug"
+                  className="flex-1 px-2.5 py-1 text-xs font-mono font-medium text-slate-900 outline-none bg-transparent"
                 />
               </div>
             </div>
 
             {/* Excerpt */}
             <div>
-              <label className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-700">
+              <label className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                 Article Summary / Excerpt
               </label>
               <textarea
                 value={excerpt}
                 onChange={(e) => setExcerpt(e.target.value)}
                 rows={2}
-                placeholder="A concise overview of the article for summaries and search cards..."
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 hover:border-orange-300 focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
+                placeholder="Brief summary for cards and search snippets..."
+                className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-3 py-1.5 text-xs text-slate-800 outline-none transition placeholder:text-slate-400 hover:border-blue-300 focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100"
               />
             </div>
           </div>
 
-          {/* Article Content / Editor Card */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs sm:p-6">
-            <div className="mb-3 flex items-center justify-between">
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
-                  Article Content <span className="text-orange-600">*</span>
-                </label>
-                <p className="text-[11px] text-slate-500 mt-0.5">
-                  Use the visual editor, or switch to <strong className="text-orange-700">HTML</strong> / <strong className="text-orange-700">Split View</strong> to write and edit raw HTML code directly.
-                </p>
-              </div>
-            </div>
-            <RichEditor
-              value={content}
-              onChange={setContent}
-              placeholder="Start writing your article here..."
-              savedValue={post?.content ?? ""}
-            />
-          </div>
-
-          {/* SEO Section (collapsible) */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white shadow-xs overflow-hidden">
-            <button
-              type="button"
-              onClick={() => setShowSeo((v) => !v)}
-              className="flex w-full items-center justify-between bg-slate-50/70 px-5 py-4 text-xs font-bold uppercase tracking-wider text-slate-700 transition hover:bg-slate-100"
-            >
-              <div className="flex items-center gap-2">
-                <Globe size={15} className="text-orange-600" />
-                <span>Search Optimization (SEO & Social Snippet)</span>
-              </div>
-              {showSeo ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </button>
-            {showSeo && (
-              <div className="space-y-4 border-t border-slate-100 p-5 sm:p-6">
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="block text-xs font-bold text-slate-700">Custom SEO Title</label>
-                    <span className="text-[11px] text-slate-400">{(seoTitle || title).length}/60 chars</span>
-                  </div>
-                  <input
-                    type="text"
-                    maxLength={60}
-                    value={seoTitle}
-                    onChange={(e) => setSeoTitle(e.target.value)}
-                    placeholder={title || "SEO optimized title"}
-                    className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
-                  />
-                </div>
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="block text-xs font-bold text-slate-700">Meta Description</label>
-                    <span className="text-[11px] text-slate-400">{(metaDescription || excerpt).length}/160 chars</span>
-                  </div>
-                  <textarea
-                    value={metaDescription}
-                    onChange={(e) => setMetaDescription(e.target.value)}
-                    maxLength={160}
-                    rows={2}
-                    placeholder={excerpt || "Search engine summary snippet..."}
-                    className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
-                  />
-                </div>
-                <div>
-                  <label className="mb-1.5 block text-xs font-bold text-slate-700">Focus Keyphrase</label>
-                  <input
-                    type="text"
-                    value={focusKeyphrase}
-                    onChange={(e) => setFocusKeyphrase(e.target.value)}
-                    placeholder="e.g. IRCTC agent registration guide"
-                    className="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
-                  />
-                </div>
-                <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3">
-                  <input
-                    type="checkbox"
-                    checked={allowIndexing}
-                    onChange={(e) => setAllowIndexing(e.target.checked)}
-                    className="h-4 w-4 accent-orange-600 rounded"
-                  />
-                  <span className="text-xs font-semibold text-slate-700">
-                    Index in search engines (Google, Bing)
-                  </span>
-                </label>
-                <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
-                  <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Google SERP Preview</p>
-                  <p className="truncate text-sm font-semibold text-blue-700">{seoTitle || title || "Your article title"}</p>
-                  <p className="truncate text-[11px] text-emerald-700">https://railagents.in/blog/{slug || "article-slug"}</p>
-                  <p className="mt-1 line-clamp-2 text-xs text-slate-600">{metaDescription || excerpt || "Your article snippet will appear here in search engine result pages."}</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Sidebar Column */}
-        <div className="space-y-6">
-          {/* Publication Card */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
-            <h2 className="mb-3.5 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-700">
-              <Clock size={14} className="text-orange-600" />
-              <span>Publishing Status</span>
-            </h2>
-            <div className="grid grid-cols-3 gap-2 mb-4">
-              {(["draft", "published", "scheduled"] as PostStatus[]).map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => setStatus(s)}
-                  className={`rounded-xl py-2 px-1 text-xs font-bold capitalize transition border ${
-                    status === s
-                      ? "border-orange-500 bg-orange-50 text-orange-700 shadow-xs"
-                      : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
-                  }`}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-
-            {status === "scheduled" && (
-              <div className="mb-4 rounded-xl border border-blue-100 bg-blue-50/60 p-3">
-                <label className="mb-1 block text-xs font-bold text-blue-900">Schedule Date & Time *</label>
-                <input
-                  type="datetime-local"
-                  value={scheduledAt}
-                  onChange={(e) => setScheduledAt(e.target.value)}
-                  className="w-full rounded-lg border border-blue-200 bg-white px-3 py-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none"
-                />
-              </div>
-            )}
-
-            {status === "published" && (
-              <div className="mb-4 rounded-xl border border-emerald-100 bg-emerald-50/60 p-3">
-                <label className="mb-1 block text-xs font-bold text-emerald-950">Publication Date (Optional)</label>
-                <input
-                  type="datetime-local"
-                  value={publishedAt}
-                  onChange={(e) => setPublishedAt(e.target.value)}
-                  className="w-full rounded-lg border border-emerald-200 bg-white px-3 py-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none"
-                />
-              </div>
-            )}
-
-            <div className="space-y-2">
-              <button
-                type="button"
-                onClick={() => handleSave("draft")}
-                disabled={isSubmitting}
-                className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 py-2.5 text-xs font-bold text-slate-700 transition hover:bg-slate-100 disabled:opacity-60"
-              >
-                <Save size={14} />
-                Save as Draft
-              </button>
-
-              {mode === "edit" && post?.status === "published" && (
-                <button
-                  type="button"
-                  onClick={handleUnpublish}
-                  disabled={isSubmitting}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-amber-300 bg-amber-50/80 py-2 text-xs font-bold text-amber-900 transition hover:bg-amber-100 disabled:opacity-60"
-                >
-                  <RotateCcw size={14} className="text-amber-700" />
-                  Unpublish to Draft
-                </button>
-              )}
-
-              <button
-                type="button"
-                onClick={() => handleSave(status === "scheduled" ? "scheduled" : "published")}
-                disabled={isSubmitting}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-orange-600 py-2.5 text-xs font-bold text-white shadow-sm shadow-orange-600/30 transition hover:bg-orange-700 disabled:opacity-60"
-              >
-                <Send size={14} />
-                {status === "scheduled"
-                  ? "Schedule Publication"
-                  : mode === "edit" && post?.status === "published"
-                  ? "Update Post"
-                  : "Publish Live"}
-              </button>
-            </div>
-          </div>
-
-          {/* Featured Image */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
-            <h2 className="mb-3.5 flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-700">
-              <span className="flex items-center gap-2">
-                <Upload size={14} className="text-orange-600" />
-                Featured Image
-              </span>
-              <span className="text-[11px] font-semibold text-orange-600">* Required</span>
-            </h2>
-
-            {imagePreview ? (
-              <div className="relative group">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={imagePreview} alt={featuredImageAlt || title || "Featured"} className="w-full rounded-xl object-cover border border-slate-200" style={{ aspectRatio: "16/9" }} />
-                <button
-                  type="button"
-                  onClick={() => { setFeaturedImage(null); setImagePreview(null); }}
-                  className="absolute right-2 top-2 rounded-full bg-white/95 p-1.5 shadow-md hover:bg-red-50 text-slate-600 hover:text-red-600 transition"
-                  title="Remove image"
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            ) : (
-              <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50/80 py-7 text-center transition hover:border-orange-300 hover:bg-orange-50/50">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 text-orange-600 mb-2">
-                  <Upload size={18} />
-                </div>
-                <span className="text-xs font-bold text-slate-700">
-                  {uploadingImage ? "Uploading file..." : "Upload Cover Image"}
+          {/* Box 2: Article Content / Editor Card */}
+          <div className="flex-1 flex flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs transition hover:border-slate-300">
+            <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/70 px-4 py-2.5 flex-shrink-0">
+              <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-800">
+                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-50 text-blue-600 font-bold border border-blue-100/80">
+                  <CheckCircle2 size={13} />
                 </span>
-                <span className="mt-0.5 text-[11px] text-slate-400">JPG, PNG, WebP up to 5MB</span>
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  className="sr-only"
-                  disabled={uploadingImage}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) handleImageUpload(file);
-                  }}
-                />
+                <span>Article Content Body <span className="text-orange-600">*</span></span>
               </label>
-            )}
-
-            <div className="mt-3">
-              <input
-                type="url"
-                placeholder="Or paste external image URL..."
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-800 outline-none focus:border-orange-500"
-                onBlur={(e) => {
-                  if (e.target.value.trim()) {
-                    setFeaturedImage(e.target.value.trim());
-                    setImagePreview(e.target.value.trim());
-                    e.target.value = "";
-                  }
+              <p className="text-[11px] font-semibold text-slate-500">
+                Visual Editor · <span className="text-blue-600 font-bold">HTML</span> / <span className="text-blue-600 font-bold">Split View</span>
+              </p>
+            </div>
+            <div className="flex-1 flex flex-col min-h-0 bg-white">
+              <RichEditor
+                value={content}
+                onChange={setContent}
+                placeholder="Start writing your article here..."
+                savedValue={post?.content ?? ""}
+                onUploadImage={async (file: File) => {
+                  const fd = new FormData();
+                  fd.append("file", file);
+                  const res = await fetch("/api/upload", { method: "POST", body: fd });
+                  const data = await res.json();
+                  if (!res.ok) throw new Error(data.error ?? "Upload failed");
+                  return data.url;
                 }}
               />
             </div>
+          </div>
+        </div>
 
-            <div className="mt-3">
-              <label className="mb-1 block text-xs font-semibold text-slate-600">Alt text (SEO & Accessibility)</label>
-              <input
-                type="text"
-                value={featuredImageAlt}
-                onChange={(e) => setFeaturedImageAlt(e.target.value)}
-                placeholder="Describe image content..."
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-xs text-slate-800 outline-none focus:border-orange-500"
-              />
+        {/* Sidebar Column: Distinct boxed cards for settings */}
+        <div className="space-y-6 min-w-0">
+
+          {/* Box 3: Featured Media (Cover Image or YouTube Video) */}
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-3.5 transition hover:border-slate-300">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-900">
+                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-orange-50 text-orange-600 border border-orange-100">
+                  {coverMediaType === "video" ? <Video size={13} className="text-red-600" /> : <Upload size={13} />}
+                </span>
+                <span>Featured Cover</span>
+              </h2>
+              <span className="text-[10px] font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-200/70">Required *</span>
             </div>
+
+            {/* Media Type Switcher Tabs */}
+            <div className="flex rounded-xl bg-slate-100/80 p-1 border border-slate-200/70">
+              <button
+                type="button"
+                onClick={() => setCoverMediaType("image")}
+                className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                  coverMediaType === "image"
+                    ? "bg-white text-slate-900 shadow-xs border border-slate-200/60"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
+              >
+                <Upload size={12} className={coverMediaType === "image" ? "text-blue-600" : "text-slate-400"} />
+                Cover Image
+              </button>
+              <button
+                type="button"
+                onClick={() => setCoverMediaType("video")}
+                className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                  coverMediaType === "video"
+                    ? "bg-white text-red-600 shadow-xs border border-slate-200/60"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
+              >
+                <Video size={12} className={coverMediaType === "video" ? "text-red-600" : "text-slate-400"} />
+                YouTube Video
+              </button>
+            </div>
+
+            {coverMediaType === "video" ? (
+              /* YouTube Video Option */
+              <div className="space-y-2.5 pt-1">
+                <div>
+                  <label className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                    YouTube Link or Video ID <span className="text-red-500">*</span>
+                  </label>
+                  <div className="flex gap-1.5">
+                    <input
+                      type="text"
+                      value={featuredVideoUrl}
+                      onChange={(e) => setFeaturedVideoUrl(e.target.value)}
+                      placeholder="Paste YouTube watch URL or ID..."
+                      className="flex-1 rounded-lg border border-slate-200 bg-slate-50/40 px-3 py-1.5 text-xs font-medium text-slate-900 outline-none focus:border-red-500 focus:bg-white focus:ring-1 focus:ring-red-100 transition"
+                    />
+                    {featuredVideoUrl && (
+                      <button
+                        type="button"
+                        onClick={() => setFeaturedVideoUrl("")}
+                        className="rounded-lg border border-slate-200 px-2 text-xs font-semibold text-slate-500 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
+                        title="Clear link"
+                      >
+                        <X size={13} />
+                      </button>
+                    )}
+                  </div>
+                  <p className="mt-1 text-[10px] text-slate-400">
+                    Supports youtube.com, youtu.be, or embed link.
+                  </p>
+                </div>
+
+                {/* Quick Sample / Template Helper */}
+                {!featuredVideoUrl.trim() && (
+                  <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-2 text-xs">
+                    <p className="font-bold text-slate-700 mb-1 text-[10px] uppercase tracking-wider">Quick template:</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setFeaturedVideoUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ")}
+                        className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10.5px] font-semibold text-slate-700 hover:border-red-400 hover:text-red-600 cursor-pointer shadow-2xs"
+                      >
+                        + Use Sample Demo Video
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Interactive Video Preview Box */}
+                {(() => {
+                  const videoId = extractYouTubeId(featuredVideoUrl);
+
+                  if (videoId) {
+                    return (
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-[10.5px] font-bold text-slate-600">
+                          <span>Live Video Preview</span>
+                          <span className="text-emerald-600 flex items-center gap-1 font-mono text-[10px]">
+                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                            {videoId}
+                          </span>
+                        </div>
+                        <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-950 shadow-md">
+                          <iframe
+                            src={`https://www.youtube.com/embed/${videoId}`}
+                            title="YouTube video preview"
+                            className="h-full w-full border-0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          />
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-red-200 bg-red-50/30 py-3.5 px-3 text-center">
+                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-red-100 text-red-600 mb-1">
+                        <Video size={14} />
+                      </div>
+                      <p className="text-xs font-bold text-slate-800">No Video Added</p>
+                      <p className="mt-0.5 text-[10px] text-slate-400 leading-tight">
+                        Paste a YouTube video link above to show live preview.
+                      </p>
+                    </div>
+                  );
+                })()}
+              </div>
+            ) : (
+              /* Featured Image Option */
+              <div className="space-y-2.5 pt-1">
+                {imagePreview ? (
+                  <div className="relative group">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={imagePreview} alt={featuredImageAlt || title || "Featured"} className="w-full rounded-xl object-cover border border-slate-200" style={{ aspectRatio: "16/9" }} />
+                    <button
+                      type="button"
+                      onClick={() => { setFeaturedImage(null); setImagePreview(null); }}
+                      className="absolute right-2 top-2 rounded-full bg-white/95 p-1 shadow-md hover:bg-red-50 text-slate-600 hover:text-red-600 transition"
+                      title="Remove image"
+                    >
+                      <X size={13} />
+                    </button>
+                  </div>
+                ) : (
+                  <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50/50 py-3.5 text-center transition hover:border-blue-400 hover:bg-blue-50/40">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-50 text-blue-600 mb-1 border border-blue-100">
+                      <Upload size={14} />
+                    </div>
+                    <span className="text-[11px] font-bold text-slate-700">
+                      {uploadingImage ? "Uploading file..." : "Upload Cover Image"}
+                    </span>
+                    <span className="text-[9.5px] text-slate-400">JPG, PNG, WebP up to 5MB</span>
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      className="sr-only"
+                      disabled={uploadingImage}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleImageUpload(file);
+                      }}
+                    />
+                  </label>
+                )}
+
+                <div>
+                  <input
+                    type="url"
+                    placeholder="Or paste image URL..."
+                    className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-2.5 py-1.5 text-xs text-slate-800 outline-none focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100 transition"
+                    onBlur={(e) => {
+                      if (e.target.value.trim()) {
+                        setFeaturedImage(e.target.value.trim());
+                        setImagePreview(e.target.value.trim());
+                        e.target.value = "";
+                      }
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-0.5 block text-[10px] font-bold uppercase tracking-wider text-slate-600">Alt text (SEO & Accessibility)</label>
+                  <input
+                    type="text"
+                    value={featuredImageAlt}
+                    onChange={(e) => setFeaturedImageAlt(e.target.value)}
+                    placeholder="Brief description of the image..."
+                    className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-2.5 py-1.5 text-xs text-slate-800 outline-none focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100 transition"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Categorization & Author */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-4">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700">
-              Taxonomy & Author
-            </h2>
-
-            <div>
-              <label className="mb-1.5 block text-xs font-semibold text-slate-700">Category <span className="text-orange-600">*</span></label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-xs font-semibold text-slate-800 outline-none focus:border-orange-500"
-              >
-                {BLOG_CATEGORIES.map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
+          {/* Box 4: Categorization & Author */}
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-3 transition hover:border-slate-300">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-900">
+                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-50 text-blue-600 border border-blue-100">
+                  <Tag size={13} />
+                </span>
+                <span>Taxonomy &amp; Author</span>
+              </h2>
+              <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200/70">Organization</span>
             </div>
 
-            <div>
-              <label className="mb-1.5 block text-xs font-semibold text-slate-700">Author <span className="text-orange-600">*</span></label>
-              <select
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
-                className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-xs font-semibold text-slate-800 outline-none focus:border-orange-500"
-              >
-                <option value="">Select author</option>
-                {authorOptions.map((option) => <option key={option} value={option}>{option}</option>)}
-              </select>
-            </div>
+            <div className="space-y-2.5">
+              <div>
+                <label className="mb-1 block text-[10.5px] font-bold uppercase tracking-wider text-slate-700">Category <span className="text-orange-600">*</span></label>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-2.5 py-1.5 text-xs font-semibold text-slate-800 outline-none focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100 transition"
+                >
+                  {BLOG_CATEGORIES.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
 
-            <div>
-              <label className="mb-1.5 block text-xs font-semibold text-slate-700">
-                Tags <span className="font-normal text-slate-400">(press Enter to add)</span>
-              </label>
-              <div className="flex flex-wrap gap-1.5 rounded-xl border border-slate-300 bg-white p-2 focus-within:border-orange-500">
-                {tags.map((tag) => (
-                  <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 text-[11px] font-bold text-orange-800">
-                    <Tag size={10} />
-                    {tag}
-                    <button type="button" onClick={() => removeTag(tag)} className="ml-0.5 text-orange-500 hover:text-orange-800">
-                      <X size={10} />
-                    </button>
-                  </span>
-                ))}
-                <input
-                  type="text"
-                  value={tagInput}
-                  onChange={(e) => setTagInput(e.target.value)}
-                  onKeyDown={addTag}
-                  placeholder={tags.length === 0 ? "e.g. irctc, booking..." : ""}
-                  className="flex-1 min-w-[70px] bg-transparent text-xs font-medium text-slate-800 outline-none placeholder:text-slate-400"
-                />
+              <div>
+                <label className="mb-1 block text-[10.5px] font-bold uppercase tracking-wider text-slate-700">Author <span className="text-orange-600">*</span></label>
+                <select
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-2.5 py-1.5 text-xs font-semibold text-slate-800 outline-none focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100 transition"
+                >
+                  <option value="">Select author</option>
+                  {authorOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-1 block text-[10.5px] font-bold uppercase tracking-wider text-slate-700">
+                  Tags <span className="font-normal text-slate-400 normal-case">(press Enter to add)</span>
+                </label>
+                <div className="flex flex-wrap gap-1 rounded-lg border border-slate-200 bg-slate-50/40 p-1.5 focus-within:border-blue-600 focus-within:bg-white focus-within:ring-1 focus-within:ring-blue-100 transition">
+                  {tags.map((tag) => (
+                    <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[10.5px] font-bold text-blue-800 border border-blue-200/70">
+                      <Tag size={9} className="text-blue-500" />
+                      {tag}
+                      <button type="button" onClick={() => removeTag(tag)} className="ml-0.5 text-blue-400 hover:text-blue-800 cursor-pointer">
+                        <X size={9} />
+                      </button>
+                    </span>
+                  ))}
+                  <input
+                    type="text"
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={addTag}
+                    placeholder={tags.length === 0 ? "Add tag..." : ""}
+                    className="flex-1 min-w-[60px] bg-transparent py-0.5 px-1 text-xs font-medium text-slate-800 outline-none placeholder:text-slate-400"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Related articles */}
-          <div className="rounded-2xl border border-slate-200 bg-white p-5">
-            <h3 className="mb-1 text-xs font-extrabold uppercase tracking-wider text-slate-500">Related Posts</h3>
-            <p className="mb-3 text-xs text-slate-500">Select relevant existing articles.</p>
+          {/* Box 5: Related Articles */}
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-3 transition hover:border-slate-300">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-900">
+                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100">
+                  <Sparkles size={13} />
+                </span>
+                <span>Related Posts</span>
+              </h3>
+              <span className="text-[10px] font-semibold text-slate-400">Optional</span>
+            </div>
+            <p className="text-[11px] text-slate-500">Select relevant existing articles to recommend.</p>
             {availablePosts.filter((item) => item.id !== post?.id).length ? (
-              <div className="max-h-56 space-y-2 overflow-y-auto">
+              <div className="max-h-48 space-y-1.5 overflow-y-auto pr-1">
                 {availablePosts.filter((item) => item.id !== post?.id).map((item) => (
-                  <label key={item.id} className="flex cursor-pointer items-start gap-2.5 rounded-lg p-2 hover:bg-slate-50">
+                  <label key={item.id} className="flex cursor-pointer items-start gap-2 rounded-xl p-2 transition hover:bg-slate-50 border border-transparent hover:border-slate-200">
                     <input
                       type="checkbox"
                       checked={relatedPostIds.includes(item.id)}
                       onChange={(e) => setRelatedPostIds((current) => e.target.checked ? [...current, item.id] : current.filter((id) => id !== item.id))}
-                      className="mt-0.5 h-4 w-4 accent-orange-500"
+                      className="mt-0.5 h-3.5 w-3.5 accent-blue-600"
                     />
                     <span className="min-w-0">
-                      <span className="block truncate text-xs font-semibold text-slate-700">{item.title}</span>
+                      <span className="block truncate text-xs font-semibold text-slate-800">{item.title}</span>
                       <span className="block truncate text-[10px] text-slate-400">/blog/{item.slug} · {item.status}</span>
                     </span>
                   </label>
                 ))}
               </div>
             ) : (
-              <p className="rounded-lg bg-slate-50 px-3 py-4 text-xs text-slate-500">No other articles are available yet.</p>
+              <p className="rounded-xl bg-slate-50 border border-slate-200/60 px-3 py-2.5 text-xs text-slate-500">No other articles are available yet.</p>
             )}
           </div>
 
-          {/* Danger Zone (edit mode only) */}
+          {/* Box 6: Danger Zone / Delete Post (edit mode only) */}
           {mode === "edit" && post && (
-            <div className="rounded-2xl border border-red-100 bg-red-50/50 p-5">
-              <h3 className="mb-3 text-xs font-extrabold uppercase tracking-wider text-red-400">Danger Zone</h3>
+            <div className="rounded-2xl border border-red-200 bg-red-50/30 p-4 shadow-xs">
               <button
                 type="button"
                 onClick={async () => {
-                  if (!confirm("Permanently delete this post?")) return;
+                  if (!confirm("Are you sure you want to permanently delete this post?")) return;
                   await fetch(`/api/posts/${post.id}`, { method: "DELETE" });
                   router.push("/admin/posts");
                 }}
-                className="flex items-center gap-2 text-sm font-bold text-red-600 hover:text-red-700"
+                className="w-full flex items-center justify-center gap-2 rounded-xl border border-red-300 bg-white hover:bg-red-50 text-red-700 py-2.5 text-xs font-bold transition-all cursor-pointer shadow-xs"
               >
-                <Trash2 size={14} />
-                Delete this post
+                <Trash2 size={13} className="text-red-500" />
+                <span>Delete This Article</span>
               </button>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Box 7: Search Optimization (SEO & Social Snippet) Section */}
+      <div className="mt-6 rounded-2xl border border-slate-200/90 bg-white shadow-xs overflow-hidden transition hover:border-slate-300">
+        <button
+          type="button"
+          onClick={() => setShowSeo((v) => !v)}
+          className="flex w-full items-center justify-between bg-slate-50/80 px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-slate-800 transition hover:bg-slate-100/80 cursor-pointer"
+        >
+          <div className="flex items-center gap-2">
+            <Globe size={15} className="text-blue-600" />
+            <span className="text-xs font-bold text-slate-900">Search Optimization (SEO, Meta & Keyphrases)</span>
+          </div>
+          <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+            <span>{currentKeyphrases.length} keyphrases</span>
+            {showSeo ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          </div>
+        </button>
+
+        {showSeo && (
+          <div className="p-5 border-t border-slate-100 space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              {/* Custom SEO Title */}
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-[10.5px] font-bold uppercase tracking-wider text-slate-700">Custom SEO Title</label>
+                  <span className="text-[10px] text-slate-400">{(seoTitle || title).length}/60 chars</span>
+                </div>
+                <input
+                  type="text"
+                  maxLength={60}
+                  value={seoTitle}
+                  onChange={(e) => setSeoTitle(e.target.value)}
+                  placeholder={title || "SEO title for search results..."}
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-3 py-1.5 text-xs font-medium text-slate-900 outline-none focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100 transition"
+                />
+              </div>
+
+              {/* Meta Description */}
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-[10.5px] font-bold uppercase tracking-wider text-slate-700">Meta Description</label>
+                  <span className="text-[10px] text-slate-400">{(metaDescription || excerpt).length}/160 chars</span>
+                </div>
+                <input
+                  type="text"
+                  value={metaDescription}
+                  onChange={(e) => setMetaDescription(e.target.value)}
+                  maxLength={160}
+                  placeholder={excerpt || "Search engine snippet summary..."}
+                  className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-3 py-1.5 text-xs font-medium text-slate-900 outline-none focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100 transition"
+                />
+              </div>
+            </div>
+
+            {/* Focus Keyphrase Multi-Selector */}
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="flex items-center gap-1.5 text-[10.5px] font-bold uppercase tracking-wider text-slate-700">
+                  <Key size={12} className="text-blue-600" />
+                  Focus Keyphrases
+                  <span className="text-[10px] font-normal text-slate-400 normal-case">
+                    (Click suggestions or type custom keywords & press Enter)
+                  </span>
+                </label>
+                <span className="text-[10.5px] font-bold text-slate-500">
+                  {currentKeyphrases.length} selected
+                </span>
+              </div>
+
+              {/* Multi-Select Pills Container */}
+              <div className="min-h-[34px] flex flex-wrap items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50/40 p-1.5 transition focus-within:border-blue-600 focus-within:bg-white focus-within:ring-1 focus-within:ring-blue-100">
+                {currentKeyphrases.map((phrase) => (
+                  <span
+                    key={phrase}
+                    className="inline-flex items-center gap-1 rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 text-[11px] font-bold text-blue-900 shadow-2xs animate-in fade-in zoom-in-95 duration-150"
+                  >
+                    <Sparkles size={9} className="text-blue-500 shrink-0" />
+                    <span>{phrase}</span>
+                    <button
+                      type="button"
+                      onClick={() => removeKeyphrase(phrase)}
+                      className="rounded p-0.5 text-blue-400 hover:bg-blue-200/60 hover:text-blue-900 transition-colors cursor-pointer"
+                      title="Remove keyphrase"
+                      aria-label={`Remove ${phrase}`}
+                    >
+                      <X size={10} />
+                    </button>
+                  </span>
+                ))}
+
+                {/* Inline Type-to-Add Input */}
+                <div className="flex flex-1 items-center min-w-[120px]">
+                  <input
+                    type="text"
+                    value={keyphraseInput}
+                    onChange={(e) => setKeyphraseInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === ",") {
+                        e.preventDefault();
+                        addKeyphrase(keyphraseInput);
+                      }
+                      if (e.key === "Backspace" && !keyphraseInput && currentKeyphrases.length > 0) {
+                        removeKeyphrase(currentKeyphrases[currentKeyphrases.length - 1]);
+                      }
+                    }}
+                    placeholder={currentKeyphrases.length === 0 ? "Type keyphrase and press Enter..." : "Add keyword..."}
+                    className="w-full bg-transparent text-xs font-semibold text-slate-800 outline-none placeholder:font-normal placeholder:text-slate-400"
+                  />
+                  {keyphraseInput.trim() && (
+                    <button
+                      type="button"
+                      onClick={() => addKeyphrase(keyphraseInput)}
+                      className="ml-1 inline-flex items-center gap-1 rounded-md bg-blue-600 px-2 py-0.5 text-[10.5px] font-bold text-white hover:bg-blue-700 cursor-pointer"
+                    >
+                      <Plus size={10} />
+                      Add
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Suggested Railway Keyphrases with compact sizes (+1-2px larger) and show less / show more */}
+              <div className="mt-2">
+                {(() => {
+                  const unselected = SUGGESTED_KEYPHRASES.filter(
+                    (suggestion) => !currentKeyphrases.some((k) => k.toLowerCase() === suggestion.toLowerCase())
+                  );
+                  const displayed = showAllKeyphrases ? unselected : unselected.slice(0, 6);
+
+                  if (unselected.length === 0) return null;
+
+                  return (
+                    <>
+                      <div className="flex items-center justify-between mb-1.5">
+                        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
+                          <span>Suggested Features &amp; Keyphrases (Click to add)</span>
+                        </p>
+                        {unselected.length > 6 && (
+                          <button
+                            type="button"
+                            onClick={() => setShowAllKeyphrases((prev) => !prev)}
+                            className="text-[11px] font-bold text-orange-600 hover:text-orange-700 cursor-pointer transition-colors"
+                          >
+                            {showAllKeyphrases ? "Show less" : `Show all (${unselected.length})`}
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {displayed.map((suggestion) => (
+                          <button
+                            key={suggestion}
+                            type="button"
+                            onClick={() => addKeyphrase(suggestion)}
+                            className="inline-flex items-center gap-1 rounded-[5px] border border-slate-200/90 bg-white px-2 py-0.5 font-medium text-slate-600 shadow-2xs hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 transition-colors cursor-pointer"
+                            style={{ fontSize: "11.5px", lineHeight: "16px" }}
+                          >
+                            <Plus size={9.5} className="text-slate-400 shrink-0" />
+                            <span>{suggestion}</span>
+                          </button>
+                        ))}
+
+                        {!showAllKeyphrases && unselected.length > 6 && (
+                          <button
+                            type="button"
+                            onClick={() => setShowAllKeyphrases(true)}
+                            className="inline-flex items-center gap-1 rounded-[5px] border border-dashed border-orange-300 bg-orange-50/70 px-2 py-0.5 font-bold text-orange-700 hover:bg-orange-100 transition-colors cursor-pointer"
+                            style={{ fontSize: "11.5px", lineHeight: "16px" }}
+                          >
+                            <span>+{unselected.length - 6} more</span>
+                          </button>
+                        )}
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-[auto_1fr] items-center">
+              <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-slate-200 bg-slate-50/70 px-3.5 py-2.5">
+                <input
+                  type="checkbox"
+                  checked={allowIndexing}
+                  onChange={(e) => setAllowIndexing(e.target.checked)}
+                  className="h-4 w-4 accent-orange-600 rounded"
+                />
+                <span className="text-xs font-semibold text-slate-700">
+                  Index in search engines (Google, Bing)
+                </span>
+              </label>
+
+              <div className="rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-2.5">
+                <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Google SERP Preview</p>
+                <p className="truncate text-xs font-bold text-blue-700">{seoTitle || title || "Your article title"}</p>
+                <p className="truncate text-[10px] text-emerald-700">https://railagents.in/blog/{slug || "article-slug"}</p>
+                <p className="mt-0.5 line-clamp-1 text-[11px] text-slate-600">{metaDescription || excerpt || "Your article snippet will appear here in search engine result pages."}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Bottom Submit Navigation Bar */}
+      <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm">
+        <div className="flex items-center gap-2.5 text-xs text-slate-500">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 font-bold border border-emerald-200 shrink-0">✓</span>
+          <span>Ready with all details? Click <strong className="text-slate-800 font-bold">Next</strong> to select Draft, Publish, or Schedule options.</span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto justify-end">
+          {/* Nearby Alert for Missing Required Fields */}
+          {error && (
+            <div className="flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 animate-in fade-in duration-150">
+              <AlertCircle size={14} className="text-red-600 shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          <button
+            type="button"
+            onClick={() => setShowLivePreview(true)}
+            className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-2xs"
+          >
+            Preview Article
+          </button>
+
+          <InteractiveButton
+            as="button"
+            type="button"
+            onClick={handleNextStep}
+            disabled={isSubmitting}
+            label="Next"
+            icon={<ArrowRight size={14} className="text-white" />}
+            size="sm"
+            variant="orange"
+          />
         </div>
       </div>
       {showLivePreview && (
@@ -794,6 +1163,224 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
               <p className="mt-4 text-base leading-7 text-slate-600">{excerpt || "Your article summary will appear here."}</p>
               <div className="mt-8 border-t border-slate-100 pt-6 blog-content" dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }} />
             </article>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {publishedSuccessData && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-xs animate-in fade-in duration-200" role="dialog" aria-modal="true">
+          <div className="relative w-full max-w-lg overflow-hidden rounded-3xl bg-white p-6 shadow-2xl sm:p-8 border border-slate-100">
+            {/* Header badge / icon */}
+            <div className="flex items-center justify-between">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 ring-8 ring-emerald-50/50">
+                <CheckCircle2 size={32} />
+              </div>
+              <button
+                type="button"
+                onClick={() => setPublishedSuccessData(null)}
+                className="rounded-xl p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+                aria-label="Close success dialog"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="mt-5">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-xs font-extrabold text-emerald-800">
+                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                {publishedSuccessData.status === "published"
+                  ? "Article Live on Website"
+                  : publishedSuccessData.status === "scheduled"
+                  ? "Article Scheduled"
+                  : "Draft Saved"}
+              </span>
+
+              <h3 className="mt-3 text-xl font-black text-slate-900 sm:text-2xl leading-snug">
+                {publishedSuccessData.status === "published"
+                  ? "Blog Published Successfully!"
+                  : "Changes Saved Successfully!"}
+              </h3>
+
+              <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                Your post <strong className="text-slate-900 font-bold">&ldquo;{publishedSuccessData.title}&rdquo;</strong> has been saved and synchronized across all readers.
+              </p>
+            </div>
+
+            {/* URL Box */}
+            <div className="mt-6 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-3.5">
+              <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Public URL</p>
+              <p className="mt-1 font-mono text-xs text-orange-600 truncate font-semibold">
+                https://railagents.in/blog/{publishedSuccessData.slug}
+              </p>
+            </div>
+
+            {/* Actions */}
+            <div className="mt-6 flex flex-col-reverse sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setPublishedSuccessData(null);
+                  router.push("/admin/posts");
+                }}
+                className="flex-1 rounded-xl border border-slate-200 py-3 text-xs font-extrabold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer text-center"
+              >
+                Go to All Posts
+              </button>
+              {publishedSuccessData.status === "published" && (
+                <Link
+                  href={`/blog/${publishedSuccessData.slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 py-3 text-xs font-extrabold text-white shadow-md shadow-orange-500/20 hover:bg-orange-700 transition-colors cursor-pointer text-center"
+                >
+                  <span>View Public Post</span>
+                  <ArrowUpRight size={15} />
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Publish Options Modal */}
+      {showPublishModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
+                  <Send size={18} />
+                </span>
+                <div>
+                  <h3 className="text-base font-bold text-slate-900">
+                    {mode === "edit" ? "Update Article" : "Ready to Publish?"}
+                  </h3>
+                  <p className="text-xs text-slate-500">Choose how you want to save this blog</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowPublishModal(false)}
+                className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Status Selection Pills */}
+            <div className="mt-5">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+                Choose Status
+              </label>
+              <div className="grid grid-cols-3 gap-2 p-1.5 rounded-2xl bg-slate-100 border border-slate-200/80">
+                {(["draft", "published", "scheduled"] as PostStatus[]).map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => setStatus(s)}
+                    className={`rounded-xl py-2 px-2 text-xs font-bold capitalize transition-all cursor-pointer ${
+                      status === s
+                        ? "bg-white text-orange-700 shadow-sm border border-orange-200"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Scheduled Date Picker */}
+            {status === "scheduled" && (
+              <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50/70 p-3.5">
+                <label className="mb-1.5 block text-xs font-bold text-blue-900">
+                  Select Scheduled Date & Time *
+                </label>
+                <input
+                  type="datetime-local"
+                  value={scheduledAt}
+                  onChange={(e) => setScheduledAt(e.target.value)}
+                  className="w-full rounded-xl border border-blue-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:border-blue-500 focus:outline-none"
+                />
+              </div>
+            )}
+
+            {/* Published Date (Optional) */}
+            {status === "published" && (
+              <div className="mt-4 rounded-2xl border border-emerald-100 bg-emerald-50/70 p-3.5">
+                <label className="mb-1.5 block text-xs font-bold text-emerald-950">
+                  Custom Publication Date (Optional)
+                </label>
+                <input
+                  type="datetime-local"
+                  value={publishedAt}
+                  onChange={(e) => setPublishedAt(e.target.value)}
+                  className="w-full rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:border-emerald-500 focus:outline-none"
+                />
+                <p className="mt-1 text-[11px] text-emerald-800/80">
+                  Leave empty to publish with current timestamp.
+                </p>
+              </div>
+            )}
+
+            {/* Draft notice */}
+            {status === "draft" && (
+              <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-3.5 text-xs text-slate-600">
+                This post will be saved as a private draft and will not be visible on the public website.
+              </div>
+            )}
+
+            {/* Modal Actions */}
+            <div className="mt-6 flex flex-col gap-2.5">
+              <div className="flex justify-center">
+                <InteractiveButton
+                  as="button"
+                  type="button"
+                  onClick={() => handleSave(status)}
+                  disabled={isSubmitting}
+                  label={
+                    isSubmitting
+                      ? "Saving..."
+                      : status === "published"
+                      ? mode === "edit"
+                        ? "Update & Publish"
+                        : "Confirm & Publish"
+                      : status === "scheduled"
+                      ? "Schedule Post"
+                      : "Save as Draft"
+                  }
+                  icon={<Send size={14} className="text-white" />}
+                  size="md"
+                  variant="orange"
+                  className="w-full max-w-full"
+                />
+              </div>
+
+              {mode === "edit" && post?.status === "published" && (
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await handleUnpublish();
+                    setShowPublishModal(false);
+                  }}
+                  disabled={isSubmitting}
+                  className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-amber-300 bg-amber-50/80 py-2.5 text-xs font-bold text-amber-900 transition hover:bg-amber-100 disabled:opacity-60 cursor-pointer"
+                >
+                  <RotateCcw size={14} className="text-amber-700" />
+                  Unpublish to Draft
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setShowPublishModal(false)}
+                className="w-full rounded-xl border border-slate-200 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50 transition cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}

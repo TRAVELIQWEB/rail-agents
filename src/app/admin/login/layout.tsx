@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Admin Portal Sign In | RailAgents",
+  title: "Admin Portal Sign In",
   description:
     "Secure authorized portal login for RailAgents content editors and administrators.",
   robots: {

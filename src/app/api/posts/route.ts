@@ -2,15 +2,19 @@
 // POST /api/posts — create a new post (admin only)
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getAdminIronSession } from "@/lib/auth";
+import { getAdminIronSession, isAdminUiPreviewEnabled } from "@/lib/auth";
+import { isAdminSessionValid } from "@/lib/admin-session-validation";
 import { getAllPosts, createPost, getPublishedPosts } from "@/lib/posts";
 import { sanitizeHtml, sanitizeText } from "@/lib/sanitize";
 import type { CreatePostInput } from "@/types/blog";
 
 async function isAdmin() {
+  if (isAdminUiPreviewEnabled()) return true;
+
   const cookieStore = await cookies();
   const session = await getAdminIronSession(cookieStore);
-  return !!session.admin?.isLoggedIn;
+
+  return isAdminSessionValid(session.admin);
 }
 
 export async function GET(req: Request) {
@@ -24,8 +28,8 @@ export async function GET(req: Request) {
 
   // Public: return only published posts with summary fields
   const published = await getPublishedPosts();
-  const summaries = published.map(({ id, title, slug, excerpt, featuredImage, category, tags, author, status, publishedAt, createdAt, updatedAt }) => ({
-    id, title, slug, excerpt, featuredImage, category, tags, author, status, publishedAt, createdAt, updatedAt,
+  const summaries = published.map(({ id, title, slug, excerpt, featuredImage, featuredVideoUrl, category, tags, author, status, publishedAt, createdAt, updatedAt }) => ({
+    id, title, slug, excerpt, featuredImage, featuredVideoUrl, category, tags, author, status, publishedAt, createdAt, updatedAt,
   }));
   return NextResponse.json(summaries);
 }
@@ -50,6 +54,7 @@ export async function POST(req: Request) {
   body.metaDescription = sanitizeText(body.metaDescription ?? "");
   body.focusKeyphrase = sanitizeText(body.focusKeyphrase ?? "");
   body.featuredImageAlt = sanitizeText(body.featuredImageAlt ?? "");
+  body.featuredVideoUrl = typeof body.featuredVideoUrl === "string" ? sanitizeText(body.featuredVideoUrl) : null;
   body.relatedPostIds = Array.isArray(body.relatedPostIds)
     ? body.relatedPostIds.filter((id): id is string => typeof id === "string").map((id) => id.trim()).filter(Boolean)
     : [];
@@ -67,7 +72,7 @@ export async function POST(req: Request) {
 
   if (!body.title?.trim()) return NextResponse.json({ error: "Title is required." }, { status: 422 });
   if (!body.slug?.trim()) return NextResponse.json({ error: "Slug is required." }, { status: 422 });
-  if (!body.featuredImage) return NextResponse.json({ error: "Featured image is required." }, { status: 422 });
+  if (!body.featuredImage && !body.featuredVideoUrl) return NextResponse.json({ error: "A featured image or YouTube video is required." }, { status: 422 });
   if (!body.category?.trim()) return NextResponse.json({ error: "Category is required." }, { status: 422 });
   if (!body.author?.trim()) return NextResponse.json({ error: "Author is required." }, { status: 422 });
 

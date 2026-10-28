@@ -30,7 +30,7 @@ export function VideoGuidesList({ videos }: { videos: Video[] }) {
                   Math.max(VIDEOS_PER_PAGE, current - VIDEOS_PER_PAGE),
                 )
               }
-              className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#eadbce] bg-white px-6 py-2.5 text-sm font-[700] text-[var(--navy)] shadow-sm transition-colors hover:border-orange-300 hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+              className="single-line-btn inline-flex min-h-11 items-center justify-center rounded-full border border-[#eadbce] bg-white px-6 py-2.5 text-sm font-[700] text-[var(--navy)] shadow-sm transition-colors hover:border-orange-300 hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
             >
               Show Fewer Videos
             </button>
@@ -43,7 +43,7 @@ export function VideoGuidesList({ videos }: { videos: Video[] }) {
                 Math.min(current + VIDEOS_PER_PAGE, videos.length),
               )
             }
-            className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--primary)] px-6 py-2.5 text-sm font-[700] text-white shadow-[0_8px_20px_rgba(249,115,22,0.18)] transition-colors hover:bg-[#e85d04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+            className="single-line-btn inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--primary)] px-6 py-2.5 text-sm font-[700] text-white shadow-[0_8px_20px_rgba(249,115,22,0.18)] transition-colors hover:bg-[#e85d04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
           >
             Load More Videos
           </button>

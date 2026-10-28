@@ -9,6 +9,7 @@ export interface BlogPost {
   excerpt: string;
   content: string; // HTML from Tiptap
   featuredImage: string | null;
+  featuredVideoUrl?: string | null;
   category: string;
   tags: string[];
   author: string;
@@ -33,6 +34,7 @@ export type BlogPostSummary = Pick<
   | "slug"
   | "excerpt"
   | "featuredImage"
+  | "featuredVideoUrl"
   | "category"
   | "tags"
   | "author"
@@ -57,4 +59,3 @@ export const BLOG_CATEGORIES = [
 ] as const;
 
 export type BlogCategory = (typeof BLOG_CATEGORIES)[number];
-

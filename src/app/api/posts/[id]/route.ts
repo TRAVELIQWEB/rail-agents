@@ -3,16 +3,19 @@
 // DELETE /api/posts/[id] — delete post (admin only)
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getAdminIronSession } from "@/lib/auth";
+import { getAdminIronSession, isAdminUiPreviewEnabled } from "@/lib/auth";
+import { isAdminSessionValid } from "@/lib/admin-session-validation";
 import { getPostById, updatePost, deletePost } from "@/lib/posts";
 import { sanitizeHtml, sanitizeText } from "@/lib/sanitize";
 
 async function isAdmin() {
+  if (isAdminUiPreviewEnabled()) return true;
+
   const cookieStore = await cookies();
   const session = await getAdminIronSession(cookieStore);
-  return !!session.admin?.isLoggedIn;
-}
 
+  return isAdminSessionValid(session.admin);
+}
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const post = await getPostById(id);
@@ -47,6 +50,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if (typeof body.metaDescription === "string") body.metaDescription = sanitizeText(body.metaDescription);
   if (typeof body.focusKeyphrase === "string") body.focusKeyphrase = sanitizeText(body.focusKeyphrase);
   if (typeof body.featuredImageAlt === "string") body.featuredImageAlt = sanitizeText(body.featuredImageAlt);
+  if (typeof body.featuredVideoUrl === "string") body.featuredVideoUrl = sanitizeText(body.featuredVideoUrl);
   if (typeof body.canonicalUrl === "string") body.canonicalUrl = sanitizeText(body.canonicalUrl);
   if (Array.isArray(body.relatedPostIds)) {
     body.relatedPostIds = body.relatedPostIds.filter((id): id is string => typeof id === "string").map((id) => id.trim()).filter(Boolean);

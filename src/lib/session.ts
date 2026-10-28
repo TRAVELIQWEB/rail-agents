@@ -1,6 +1,8 @@
+
 // Server-side session auth helper — use in API routes & server components
 import { cookies } from "next/headers";
 import { getAdminIronSession, isAdminUiPreviewEnabled } from "@/lib/auth";
+import { isAdminSessionValid } from "@/lib/admin-session-validation";
 import { redirect } from "next/navigation";
 
 export async function requireAdminSession() {
@@ -10,10 +12,13 @@ export async function requireAdminSession() {
 
   const cookieStore = await cookies();
   const session = await getAdminIronSession(cookieStore);
-  if (!session.admin?.isLoggedIn) {
-    redirect("/");
+  const admin = session.admin;
+
+  if (!(await isAdminSessionValid(admin))) {
+    redirect("/admin/login");
   }
-  return session.admin;
+
+  return admin!;
 }
 
 export async function getAdminSession() {
@@ -23,6 +28,10 @@ export async function getAdminSession() {
 
   const cookieStore = await cookies();
   const session = await getAdminIronSession(cookieStore);
-  return session.admin ?? null;
-}
 
+  if (!(await isAdminSessionValid(session.admin))) {
+    return null;
+  }
+
+  return session.admin!;
+}

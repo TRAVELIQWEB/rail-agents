@@ -10,6 +10,7 @@ import {
   Users,
 } from "lucide-react";
 import { InternalLink } from "@/components/ui/InternalLink";
+import { InteractiveButton } from "@/components/ui/InteractiveButton";
 
 const questions = [
   "How does Tatkal booking work?",
@@ -59,50 +60,50 @@ export function Hero() {
         <div className="grid grid-cols-1 items-center gap-0 md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] xl:grid-cols-12 xl:items-center">
 
           {/* ══ COL 1: LEFT TEXT ══ */}
-          <div className="flex min-w-0 flex-col items-center justify-center py-4 pr-0 text-center sm:py-5 md:items-start md:py-4 md:pr-5 md:text-left xl:col-span-5 xl:py-4 xl:pr-6 2xl:pr-8 wide:pr-10">
+          <div className="flex min-w-0 flex-col items-center justify-center py-4 pr-0 text-center sm:py-5 md:items-start md:py-4 md:pr-5 md:text-left xl:col-span-5 2xl:col-span-5 wide:col-span-5 xl:py-4 xl:pr-6 2xl:pr-8 wide:pr-10">
 
             {/* Badge */}
-            <span className="mb-4 inline-flex w-fit max-w-full items-center gap-2.5 rounded-full border border-[#f0deca] bg-[#fff8f2] py-[7px] pl-[7px] pr-4 text-[0.75rem] font-[700] text-[var(--navy)] shadow-[0_2px_10px_rgba(249,115,22,0.10)] sm:text-[0.8125rem] lg:text-[0.875rem]">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[var(--primary)] text-white shadow-[0_2px_6px_rgba(249,115,22,0.35)]">
-                <Train className="h-3.5 w-3.5" />
+            <span className="mb-4 inline-flex w-fit max-w-full items-center gap-2 rounded-full border border-[#f0deca] bg-[#fff8f2] py-1.5 pl-1.5 pr-3.5 text-xs font-[700] text-[var(--navy)] shadow-[0_2px_10px_rgba(249,115,22,0.10)] sm:text-[0.8125rem]">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-[var(--primary)] text-white shadow-[0_2px_6px_rgba(249,115,22,0.35)]">
+                <Train className="h-3 w-3" />
               </span>
               Travel Information & Guidance
             </span>
 
             {/* H1 */}
-            <h1 className="max-w-[500px] text-[clamp(2rem,7vw,2.5rem)] font-[800] leading-[1.06] tracking-[-0.045em] text-[var(--navy)] md:max-w-full md:text-[clamp(2rem,4vw,2.8rem)] xl:max-w-[720px] xl:text-[clamp(3.1rem,3.4vw,4rem)] wide:max-w-[820px] wide:text-[3.25rem]">
-              Everything a
-              <span className="block text-[var(--primary)]">
-                Travel Agent Needs
+            <h1 className="page-hero-title home-hero-title w-full max-w-[620px] md:max-w-full xl:max-w-[780px] wide:max-w-[860px]">
+              <span className="block">
+                Everything a <span className="hero-accent">Travel</span>
+              </span>{" "}
+              <span className="block">
+                <span className="hero-accent">Agent</span> Needs to Know.
               </span>
-              to Know.
             </h1>
 
             {/* Description */}
-            <p className="mt-3.5 max-w-[420px] text-[0.875rem] leading-[1.68] text-[#5c6b80] md:max-w-full lg:text-base xl:max-w-[520px] xl:text-[1.025rem] wide:max-w-[700px] wide:text-lg">
+            <p className="page-hero-description mt-3.5 max-w-[420px] md:max-w-full xl:max-w-[520px] wide:max-w-[700px]">
               Get clear answers, step-by-step guides and video tutorials for IRCTC
               agent registration, ticket booking, Tatkal, cancellation, refunds,
               TDR and more.
             </p>
 
             {/* CTA Buttons */}
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-3 wide:mt-7 md:justify-start">
-              <InternalLink
+            <div className="mt-5 flex max-w-full flex-col items-stretch gap-3.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center md:justify-start wide:mt-7">
+              <InteractiveButton
+                as="link"
                 href="/ask-nihal"
-                prefetch={false}
-                className="group inline-flex min-h-[46px] items-center gap-2.5 rounded-full bg-[var(--primary)] px-5 py-2.5 text-[0.9rem] font-[600] text-white shadow-[0_4px_18px_rgba(249,115,22,0.36)] transition-all duration-200 hover:bg-[var(--primary-hover)] hover:shadow-[0_6px_24px_rgba(249,115,22,0.46)] hover:-translate-y-px active:translate-y-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] lg:text-[0.95rem] xl:text-base wide:min-h-[54px] wide:px-7"
-              >
-                <MessageCircle className="h-[17px] w-[17px]" />
-                Ask Nihal Singh
-                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
-              </InternalLink>
+                label="Ask Nihal Singh"
+                icon={<MessageCircle className="h-4 w-4" />}
+                size="md"
+                variant="orange"
+              />
 
               <InternalLink
                 href="/videos"
                 prefetch={false}
-                className="inline-flex min-h-[46px] items-center gap-2.5 rounded-full border-2 border-[var(--primary)] bg-white px-5 py-2.5 text-[0.9rem] font-[600] text-[var(--primary)] transition-all duration-200 hover:bg-[#fff7f0] hover:-translate-y-px active:translate-y-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] lg:text-[0.95rem] xl:text-base wide:min-h-[54px] wide:px-7"
+                className="single-line-btn inline-flex min-h-[50px] items-center gap-2.5 rounded-full border border-[#fed7aa] bg-white px-5 py-2.5 text-sm font-[700] text-[var(--primary-dark)] shadow-[0_8px_18px_rgba(15,23,42,0.06)] transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-300 hover:bg-[#fffaf6] hover:shadow-[0_12px_22px_rgba(15,23,42,0.08)] active:translate-y-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
               >
-                <CirclePlay className="h-[17px] w-[17px]" />
+                <CirclePlay className="h-4 w-4" />
                 Watch Video Guides
               </InternalLink>
             </div>
@@ -114,8 +115,8 @@ export function Hero() {
                   key={lines[0]}
                   className="flex flex-col items-center justify-center rounded-xl border border-[#f0e4d8] bg-white/95 px-2 py-2.5 text-center shadow-[0_2px_8px_rgba(249,115,22,0.06)] transition-all hover:border-[var(--primary-border)] hover:shadow-md wide:px-4 wide:py-4"
                 >
-                  <span className="mb-1.5 flex h-8 w-8 items-center justify-center rounded-lg bg-[#fff3e8] text-[var(--primary)] wide:h-10 wide:w-10">
-                    <Icon className="h-4 w-4 wide:h-5 wide:w-5" />
+                  <span className="mb-1.5 flex h-8 w-8 items-center justify-center rounded-lg bg-[#fff3e8] text-[var(--primary)]">
+                    <Icon className="h-4 w-4" />
                   </span>
                   <span className="text-[0.6875rem] font-[600] leading-[1.3] text-[var(--navy)] lg:text-xs xl:text-[0.8125rem] wide:text-sm">
                     {lines[0]}

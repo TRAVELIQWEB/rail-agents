@@ -13,17 +13,17 @@ import { CalculatorFAQ } from "@/components/calculator/CalculatorFAQ";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Train Ticket Fare Calculator | RailAgents",
+  title: "Train Ticket Fare Calculator",
   description:
     "Calculate train ticket costs with a clear fare breakdown, including applicable IRCTC fees, authorized agent service charges, and automatic payment gateway charges.",
   alternates: {
-    canonical: `${siteConfig.url}/fare-calculator`,
+    canonical: `${siteConfig.url}/train-ticket-agent-fare-calculator`,
   },
   openGraph: {
     title: "Train Ticket Fare Calculator | RailAgents",
     description:
       "Calculate train ticket costs with a clear fare breakdown, including applicable IRCTC fees, authorized agent service charges, and automatic payment gateway charges.",
-    url: `${siteConfig.url}/fare-calculator`,
+    url: `${siteConfig.url}/train-ticket-agent-fare-calculator`,
     siteName: siteConfig.name,
     locale: "en_IN",
     type: "website",
@@ -59,10 +59,10 @@ export default function FareCalculatorPage() {
 
           <div className="site-container relative z-10">
             <div className="mx-auto max-w-2xl text-center">
-              <h1 className="text-xl sm:text-3xl lg:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight">
-                IRCTC Agent <span className="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-500 bg-clip-text text-transparent">Ticket Fare Calculator</span>
+              <h1 className="page-hero-title">
+                IRCTC Agent <span className="text-[var(--primary)]">Ticket Fare Calculator</span>
               </h1>
-              <p className="hidden sm:block mt-1.5 text-xs sm:text-sm text-stone-600 max-w-lg mx-auto leading-relaxed">
+              <p className="page-hero-description mx-auto mt-1.5 hidden max-w-lg sm:block">
                 Accurate ticket estimates with automated PG charges and instant print slips.
               </p>
             </div>
