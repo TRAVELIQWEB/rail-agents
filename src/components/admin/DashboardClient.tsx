@@ -32,56 +32,74 @@ export function DashboardClient({ stats, recentPosts }: Props) {
   const router = useRouter();
   const [deleting, setDeleting] = useState<string | null>(null);
   const [confirmId, setConfirmId] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const handleDelete = async (id: string) => {
     setDeleting(id);
     setConfirmId(null);
+    setDeleteError(null);
     try {
-      await fetch(`/api/posts/${id}`, { method: "DELETE" });
+      const response = await fetch(`/api/posts/${id}`, { method: "DELETE" });
+      if (!response.ok) {
+        throw new Error("The article could not be deleted. Please try again.");
+      }
       router.refresh();
+    } catch (error) {
+      setDeleteError(error instanceof Error ? error.message : "The article could not be deleted. Please try again.");
     } finally {
       setDeleting(null);
     }
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
-      {/* Editorial Header Banner */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 shadow-xs">
-        <div>
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Publishing Overview
+    <div className="space-y-7 p-4 sm:p-6 lg:p-8">
+      <section
+        aria-labelledby="dashboard-heading"
+        className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-4 shadow-[0_12px_30px_rgba(15,23,42,0.14)] sm:px-6 sm:py-5 lg:px-7 lg:py-5"
+      >
+        <div aria-hidden="true" className="absolute -right-14 -top-20 -z-10 h-72 w-72 rounded-full border-[34px] border-white/[0.04]" />
+        <div aria-hidden="true" className="absolute -bottom-24 right-36 -z-10 h-52 w-52 rounded-full bg-orange-500/10 blur-3xl" />
+        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="max-w-2xl">
+            <p className="inline-flex items-center gap-2 rounded-full border border-orange-300/25 bg-orange-400/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-orange-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-orange-400" aria-hidden="true" />
+              RailAgents · Editorial control room
+            </p>
+            <h1 id="dashboard-heading" className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">
+              Your publishing desk
             </h1>
-            <span className="rounded-full bg-orange-50 px-2.5 py-0.5 text-[10.5px] font-extrabold text-orange-700 border border-orange-200/80 uppercase tracking-wider">
-              Live CMS
-            </span>
+            <p className="mt-1 max-w-xl text-xs leading-5 text-slate-300 sm:text-sm">
+              Keep your articles organized, check what is live, and pick up where you left off.
+            </p>
           </div>
-          <p className="mt-1 text-xs text-slate-500 font-medium">
-            Manage RailAgents articles, track drafts, and view recently updated guides.
-          </p>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href="/admin/posts"
+              className="inline-flex h-9 sm:h-10 items-center justify-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3.5 text-xs sm:text-sm font-semibold text-white transition hover:border-white/25 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-400"
+            >
+              <BookOpen size={16} aria-hidden="true" />
+              All articles
+            </Link>
+            <Link
+              href="/admin/posts/new"
+              className="inline-flex h-9 sm:h-10 items-center justify-center gap-1.5 rounded-lg bg-orange-500 px-3.5 text-xs sm:text-sm font-bold text-white shadow-lg shadow-orange-950/25 transition hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+            >
+              <PenSquare size={16} aria-hidden="true" />
+              Create article
+            </Link>
+          </div>
         </div>
+      </section>
 
-        <div className="flex items-center gap-2.5">
-          <Link
-            href="/admin/posts"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-2xs transition hover:bg-slate-50 active:scale-[0.98] cursor-pointer"
-          >
-            <BookOpen size={14} className="text-slate-500" />
-            <span>Manage Posts</span>
-          </Link>
-          <Link
-            href="/admin/posts/new"
-            className="inline-flex items-center gap-1.5 rounded-xl bg-orange-600 px-4 py-2 text-xs font-extrabold text-white shadow-sm shadow-orange-500/25 transition hover:bg-orange-700 active:scale-[0.98] cursor-pointer"
-          >
-            <PenSquare size={14} />
-            <span>Create Article</span>
-          </Link>
+      <section aria-labelledby="publishing-status-heading">
+        <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-orange-700">At a glance</p>
+            <h2 id="publishing-status-heading" className="mt-1 text-lg font-black tracking-tight text-slate-900">Publishing status</h2>
+          </div>
+          <p className="text-sm text-slate-500">A quick count of all articles in your workspace.</p>
         </div>
-      </div>
-
-      {/* Clean 4-Column Metric Cards */}
-      <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {[
           {
             label: "Total Articles",
@@ -90,25 +108,28 @@ export function DashboardClient({ stats, recentPosts }: Props) {
             color: "text-slate-900",
             bg: "bg-slate-100",
             border: "border-slate-200",
-            badge: "Database",
+            accent: "border-t-slate-400",
+            description: "All articles in your workspace",
           },
           {
-            label: "Published Live",
+            label: "Published",
             value: stats.published,
             icon: BookOpen,
             color: "text-emerald-700",
             bg: "bg-emerald-50",
             border: "border-emerald-200/80",
-            badge: "Public",
+            accent: "border-t-emerald-500",
+            description: "Visible on the public blog",
           },
           {
-            label: "Draft Articles",
+            label: "Drafts",
             value: stats.drafts,
             icon: Edit2,
             color: "text-orange-700",
             bg: "bg-orange-50",
             border: "border-orange-200/80",
-            badge: "In Progress",
+            accent: "border-t-orange-500",
+            description: "Saved, but not published",
           },
           {
             label: "Scheduled",
@@ -117,113 +138,83 @@ export function DashboardClient({ stats, recentPosts }: Props) {
             color: "text-blue-700",
             bg: "bg-blue-50",
             border: "border-blue-200/80",
-            badge: "Upcoming",
+            accent: "border-t-blue-500",
+            description: "Set to publish later",
           },
-        ].map(({ label, value, icon: Icon, color, bg, border, badge }) => (
+        ].map(({ label, value, icon: Icon, color, bg, border, accent, description }) => (
           <div
             key={label}
-            className={`rounded-2xl border ${border} bg-white p-4 sm:p-5 shadow-xs transition hover:border-slate-300 hover:shadow-sm`}
+            className={`rounded-2xl border border-t-4 ${border} ${accent} bg-white p-4 shadow-xs transition duration-200 hover:-translate-y-0.5 hover:shadow-md sm:p-5`}
           >
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
               <div className={`inline-flex h-8 w-8 items-center justify-center rounded-xl ${bg} ${color}`}>
-                <Icon size={16} />
+                <Icon size={16} aria-hidden="true" />
               </div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                {badge}
-              </span>
+              <p className="text-sm font-semibold text-slate-600">{label}</p>
             </div>
-            <p className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">{value}</p>
-            <p className="mt-0.5 text-xs font-semibold text-slate-500">{label}</p>
+            <p className="mt-4 text-4xl font-black leading-none tracking-tight text-slate-900">{value}</p>
+            <p className="mt-2 text-xs leading-5 text-slate-500">{description}</p>
           </div>
         ))}
-      </div>
-
-      {/* Quick Action Navigation Chips */}
-      <div className="rounded-2xl border border-slate-200/90 bg-white p-4 shadow-xs">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Quick Shortcuts:</span>
-            <div className="flex flex-wrap items-center gap-2">
-              <Link
-                href="/admin/posts/new"
-                className="inline-flex items-center gap-1.5 rounded-lg border border-orange-200/80 bg-orange-50/70 px-3 py-1.5 text-xs font-bold text-orange-800 transition hover:bg-orange-100 cursor-pointer"
-              >
-                <PenSquare size={13} className="text-orange-600" />
-                <span>Write New Guide</span>
-              </Link>
-              <Link
-                href="/admin/posts"
-                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-700 transition hover:bg-slate-100 cursor-pointer"
-              >
-                <FileText size={13} className="text-slate-500" />
-                <span>Filter All Posts</span>
-              </Link>
-              <a
-                href="/blog"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-600 transition hover:bg-slate-50 cursor-pointer"
-              >
-                <ExternalLink size={13} className="text-slate-400" />
-                <span>Open Public Blog</span>
-              </a>
-            </div>
-          </div>
-
-          <Link
-            href="/admin/posts"
-            className="text-xs font-bold text-slate-600 hover:text-slate-900 inline-flex items-center gap-1 transition"
-          >
-            <span>View all articles ({stats.totalPosts})</span>
-            <ArrowRight size={13} />
-          </Link>
         </div>
-      </div>
+      </section>
 
-      {/* Recently Updated Articles Card */}
-      <div className="rounded-2xl border border-slate-200/90 bg-white shadow-xs overflow-hidden">
-        <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+      <section aria-labelledby="recent-articles-heading" className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50/80 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div>
-            <h2 className="text-sm font-black text-slate-900 tracking-tight">Recently Modified Articles</h2>
-            <p className="text-xs text-slate-500">Latest 5 posts modified in the editorial workspace</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-orange-700">Your workspace</p>
+            <h2 id="recent-articles-heading" className="mt-1 text-lg font-black tracking-tight text-slate-900">Recently updated</h2>
+            <p className="mt-1 text-sm text-slate-500">Your five most recently edited articles.</p>
           </div>
-          <Link
-            href="/admin/posts"
-            className="text-xs font-bold text-orange-600 hover:text-orange-700 transition"
-          >
-            See Full Table →
-          </Link>
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href="/blog"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 transition hover:text-slate-900"
+            >
+              Public blog <ExternalLink size={14} aria-hidden="true" />
+            </a>
+            <Link
+              href="/admin/posts"
+              className="inline-flex items-center gap-1.5 text-sm font-bold text-orange-700 transition hover:text-orange-800"
+            >
+              All articles <ArrowRight size={15} aria-hidden="true" />
+            </Link>
+          </div>
         </div>
 
         {recentPosts.length === 0 ? (
-          <div className="p-12 text-center">
-            <FileText size={32} className="mx-auto mb-2 text-slate-300" />
-            <p className="text-sm font-bold text-slate-700">No articles found in the database</p>
-            <p className="mt-1 text-xs text-slate-400">Get started by authoring your first railway guide or news post.</p>
+          <div className="px-5 py-12 text-center sm:px-8">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
+              <FileText size={22} aria-hidden="true" />
+            </div>
+            <p className="mt-4 text-base font-bold text-slate-900">No articles yet</p>
+            <p className="mt-1 text-sm text-slate-500">Create your first article to start building the RailAgents blog.</p>
             <Link
               href="/admin/posts/new"
-              className="mt-4 inline-flex items-center gap-1.5 rounded-xl bg-orange-600 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-orange-700"
+              className="mt-5 inline-flex min-h-10 items-center gap-2 rounded-xl bg-orange-600 px-4 text-sm font-bold text-white shadow-xs transition hover:bg-orange-700"
             >
-              <PenSquare size={14} />
-              <span>Create Article</span>
+              <PenSquare size={15} aria-hidden="true" />
+              Create article
             </Link>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs" aria-label="Recently updated articles">
               <thead>
-                <tr className="border-b border-slate-100 bg-slate-50/70 text-slate-500 font-extrabold uppercase tracking-wider">
-                  <th scope="col" className="px-5 py-3">Article Title &amp; URL</th>
-                  <th scope="col" className="hidden sm:table-cell px-5 py-3">Category</th>
-                  <th scope="col" className="px-5 py-3">Status</th>
-                  <th scope="col" className="hidden md:table-cell px-5 py-3">Last Updated</th>
-                  <th scope="col" className="px-5 py-3 text-right">Actions</th>
+                <tr className="border-b border-slate-200 bg-white text-left text-[11px] font-bold uppercase tracking-wide text-slate-500">
+                  <th scope="col" className="px-5 py-3.5">Article</th>
+                  <th scope="col" className="hidden px-5 py-3.5 sm:table-cell">Category</th>
+                  <th scope="col" className="px-5 py-3.5">Status</th>
+                  <th scope="col" className="hidden px-5 py-3.5 md:table-cell">Last updated</th>
+                  <th scope="col" className="px-5 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {recentPosts.map((post) => (
-                  <tr key={post.id} className="transition hover:bg-slate-50/60">
-                    <td className="px-5 py-3.5 max-w-sm">
+                  <tr key={post.id} className="transition-colors odd:bg-white even:bg-slate-50/40 hover:bg-orange-50/50">
+                    <td className="max-w-sm px-5 py-3.5">
                       <Link
                         href={`/admin/posts/${post.id}/edit`}
                         className="font-bold text-slate-900 hover:text-orange-600 line-clamp-1 transition"
@@ -293,7 +284,13 @@ export function DashboardClient({ stats, recentPosts }: Props) {
             </table>
           </div>
         )}
-      </div>
+      </section>
+
+      {deleteError && (
+        <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800">
+          {deleteError}
+        </p>
+      )}
 
       {/* Delete Confirmation Modal */}
       {confirmId && (
@@ -326,4 +323,3 @@ export function DashboardClient({ stats, recentPosts }: Props) {
     </div>
   );
 }
-

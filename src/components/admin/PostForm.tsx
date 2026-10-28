@@ -613,11 +613,11 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 onClick={() => setCoverMediaType("image")}
                 className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-bold transition-all cursor-pointer ${
                   coverMediaType === "image"
-                    ? "bg-white text-slate-900 shadow-xs border border-slate-200/60"
+                    ? "bg-orange-600 text-white shadow-sm ring-1 ring-orange-700/20 font-semibold"
                     : "text-slate-500 hover:text-slate-900"
                 }`}
               >
-                <Upload size={12} className={coverMediaType === "image" ? "text-blue-600" : "text-slate-400"} />
+                <Upload size={12} className={coverMediaType === "image" ? "text-white" : "text-slate-500"} />
                 Cover Image
               </button>
               <button
@@ -625,11 +625,11 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 onClick={() => setCoverMediaType("video")}
                 className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-bold transition-all cursor-pointer ${
                   coverMediaType === "video"
-                    ? "bg-white text-red-600 shadow-xs border border-slate-200/60"
+                    ? "bg-orange-600 text-white shadow-sm ring-1 ring-orange-700/20 font-semibold"
                     : "text-slate-500 hover:text-slate-900"
                 }`}
               >
-                <Video size={12} className={coverMediaType === "video" ? "text-red-600" : "text-slate-400"} />
+                <Video size={12} className={coverMediaType === "video" ? "text-white" : "text-slate-500"} />
                 YouTube Video
               </button>
             </div>
