@@ -58,7 +58,7 @@ export default function GuidesPage() {
         {/* ══ 1. COMPACT HERO SECTION ══ */}
         <section
           aria-label="Guides introduction"
-          className="relative border-b border-[#f0e1d5] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] py-6 sm:py-8 lg:py-9"
+          className="relative border-b border-[#f0e1d5] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8"
         >
           <div className="site-container max-w-5xl">
             <div className="mx-auto text-center">

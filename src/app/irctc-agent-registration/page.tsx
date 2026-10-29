@@ -15,6 +15,7 @@ import {
   MessageCircle,
   Receipt,
   RotateCcw,
+  Scale,
   ShieldAlert,
   ShieldCheck,
   Train,
@@ -129,7 +130,7 @@ export default function IrctcAgentPage() {
       <main className="relative flex-1 overflow-hidden">
 
         {/* ══ 1. HERO SECTION ══ */}
-        <section className="relative isolate overflow-hidden border-b border-[#f0e1d5] bg-[#fffaf5] py-7 sm:py-9 lg:py-10">
+        <section className="relative isolate flex flex-col justify-between overflow-hidden border-b border-[#f0e1d5] bg-[#fffaf5] pt-8 pb-6 sm:pt-10 sm:pb-7 lg:min-h-[calc(100vh-74px)] lg:pt-11 lg:pb-7">
           <div aria-hidden="true" className="absolute inset-0 -z-20 hidden lg:block">
             <Image
               src="/images/hero-railway-bg.webp"
@@ -142,84 +143,146 @@ export default function IrctcAgentPage() {
           </div>
           <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(90deg,#fffaf5_0%,rgba(255,250,245,0.96)_40%,rgba(255,250,245,0.92)_70%,#fffaf5_100%)]" />
 
-          <div className="site-container relative z-10 w-full">
-            <div className="mx-auto flex max-w-5xl flex-col items-center text-center md:items-start md:text-left">
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/90 px-3.5 py-1 text-xs font-[800] uppercase tracking-[0.12em] text-[#e96713] shadow-[0_2px_8px_rgba(15,39,71,0.06)]">
-                <ShieldCheck aria-hidden="true" className="h-3.5 w-3.5" />
-                Railway Agent Compliance &amp; Operations
-              </span>
-
-              <h1 className="page-hero-title mt-3.5 max-w-[920px] text-center md:text-left">
-                IRCTC Agent Guidance &amp; Rules:{" "}
-                <span className="hero-accent relative inline-block">
-                  Practical Compliance Manual
+          <div className="site-container relative z-10 flex flex-1 flex-col justify-between w-full">
+            <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
+              {/* Left Column (7 Cols): Main Headline & CTAs */}
+              <div className="flex flex-col items-center text-center md:items-start md:text-left lg:col-span-7">
+                <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/90 px-3.5 py-1 text-xs font-[800] uppercase tracking-[0.12em] text-[#e96713] shadow-[0_2px_8px_rgba(15,39,71,0.06)]">
+                  <ShieldCheck aria-hidden="true" className="h-3.5 w-3.5" />
+                  Railway Agent Compliance &amp; Operations
                 </span>
-              </h1>
 
-              <p className="page-hero-description mx-auto mt-3 max-w-3xl md:mx-0">
-                A verified operational reference for authorized railway travel agents (RSPs). Learn mandatory
-                booking rules, strict Tatkal limits, lawful service charges, customer cancellation OTP procedures,
-                and legal protections under Indian Railways regulations.
-              </p>
+                <h1 className="page-hero-title max-w-[920px] text-center md:text-left">
+                  IRCTC Agent Guidance &amp; Rules:{" "}
+                  <span className="hero-accent relative inline-block">
+                    Practical Compliance Manual
+                  </span>
+                </h1>
 
-              <div className="mt-5 flex w-full flex-col items-center gap-3 min-[420px]:w-auto min-[420px]:flex-row min-[420px]:justify-center md:justify-start">
-                <a
-                  href="#dos-and-donts"
-                  className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--primary)] px-6 py-3 text-sm font-[700] text-white shadow-[0_6px_20px_rgba(249,115,22,0.22)] transition-all motion-safe:hover:-translate-y-0.5 hover:bg-[#e85d04]"
-                >
-                  View Do&apos;s &amp; Don&apos;ts <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </a>
-                <Link
-                  href="/train-ticket-agent-fare-calculator"
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#eadbce] bg-white/95 px-6 py-3 text-sm font-[700] text-[var(--navy)] shadow-xs transition-colors hover:border-orange-300 hover:bg-orange-50"
-                >
-                  <Calculator aria-hidden="true" className="h-4 w-4 text-[var(--primary)]" />
-                  Agent Fare Calculator
-                </Link>
+                <p className="page-hero-description mx-auto mt-3 max-w-2xl md:mx-0">
+                  A verified operational reference for authorized railway travel agents (RSPs). Learn mandatory
+                  booking rules, strict Tatkal limits, lawful service charges, customer cancellation OTP procedures,
+                  and legal protections under Indian Railways regulations.
+                </p>
+
+                <div className="mt-5 flex w-full flex-col items-center gap-3 min-[420px]:w-auto min-[420px]:flex-row min-[420px]:justify-center md:justify-start">
+                  <a
+                    href="#dos-and-donts"
+                    className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--primary)] px-6 py-3 text-sm font-[700] text-white shadow-[0_6px_20px_rgba(249,115,22,0.22)] transition-all motion-safe:hover:-translate-y-0.5 hover:bg-[#e85d04]"
+                  >
+                    View Do&apos;s &amp; Don&apos;ts <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </a>
+                  <Link
+                    href="/train-ticket-agent-fare-calculator"
+                    className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#eadbce] bg-white/95 px-6 py-3 text-sm font-[700] text-[var(--navy)] shadow-xs transition-colors hover:border-orange-300 hover:bg-orange-50"
+                  >
+                    <Calculator aria-hidden="true" className="h-4 w-4 text-[var(--primary)]" />
+                    Agent Fare Calculator
+                  </Link>
+                </div>
+
+                {/* Quick Section Jump Pills (Balances left & right column height + super useful navigation) */}
+                <div className="mt-5 w-full rounded-2xl border border-[#f0e1d5] bg-white/90 p-3.5 shadow-2xs">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5 text-xs text-slate-500">
+                    <div className="flex items-center gap-1.5 font-medium">
+                      <Clock className="h-3.5 w-3.5 text-slate-400" />
+                      <span>Last reviewed: <strong className="text-slate-800 font-semibold">{lastReviewedDate}</strong></span>
+                    </div>
+                    <div className="flex items-center gap-1.5 font-medium">
+                      <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+                      <span>IRCTC Master Policy &amp; Railways Act, 1989</span>
+                    </div>
+                  </div>
+
+                  <div className="mt-2.5 flex flex-wrap items-center gap-2">
+                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#ea580c] mr-1">
+                      Jump to:
+                    </span>
+                    {[
+                      { label: "Booking Rules", href: "#dos-and-donts" },
+                      { label: "Tatkal Timings", href: "#tatkal-rules" },
+                      { label: "Service Fees", href: "#service-charges" },
+                      { label: "OTP Refunds", href: "#cancellation-refunds" },
+                      { label: "Section 143", href: "#legal-compliance" },
+                    ].map((pill) => (
+                      <a
+                        key={pill.label}
+                        href={pill.href}
+                        className="inline-flex items-center gap-1 rounded-lg border border-[#eedcc9] bg-[#fffaf5] px-2.5 py-1 text-[11px] font-bold text-[var(--navy)] transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-[#ea580c]"
+                      >
+                        {pill.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              {/* Verified Status Banner */}
-              <div className="mt-8 flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs text-slate-500 border-t border-[#f0e1d5] pt-4 w-full">
-                <div className="flex items-center gap-1.5 font-medium">
-                  <Clock className="h-3.5 w-3.5 text-slate-400" />
-                  <span>Last reviewed: <strong className="text-slate-800 font-semibold">{lastReviewedDate}</strong></span>
-                </div>
-                <span aria-hidden="true" className="text-slate-300">•</span>
-                <div className="flex items-center gap-1.5 font-medium">
-                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>Referenced against IRCTC Master Policy &amp; Railways Act, 1989</span>
-                </div>
-                <span aria-hidden="true" className="text-slate-300">•</span>
-                <div className="flex items-center gap-1.5 font-medium">
-                  <BookOpen className="h-3.5 w-3.5 text-orange-600" />
-                  <span>Educational compliance manual</span>
+              {/* Right Column (5 Cols): Quick Operational Checklist Card */}
+              <div className="lg:col-span-5">
+                <div className="rounded-3xl border border-[#f2d6bf] bg-white/95 p-5 sm:p-6 shadow-[0_16px_40px_rgba(15,39,71,0.06)]">
+                  <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
+                    <div className="flex items-center gap-2.5">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                        <Scale className="h-4.5 w-4.5" />
+                      </span>
+                      <div>
+                        <p className="text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">Core RSP Standards</p>
+                        <p className="text-sm font-[900] text-[var(--navy)]">At-a-Glance Agent Rules</p>
+                      </div>
+                    </div>
+                    <span className="rounded-full bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700">
+                      Mandatory
+                    </span>
+                  </div>
+
+                  <div className="mt-4 space-y-2.5">
+                    {[
+                      { label: "Booking Credentials", value: "Only official RSP Agent ID (No personal IDs)" },
+                      { label: "Tatkal Window", value: "Opens 15 mins after public (10:15 AM / 11:15 AM)" },
+                      { label: "Max Service Fee", value: "₹20 Non-AC / ₹40 AC per PNR (+ PG charges)" },
+                      { label: "Refund Verification", value: "Customer mobile OTP mandatory for credit" },
+                    ].map((row) => (
+                      <div key={row.label} className="flex items-start gap-2.5 rounded-xl border border-slate-100 bg-[#fffcf9] px-3.5 py-2.5">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#ea580c]" />
+                        <div className="min-w-0">
+                          <p className="text-xs font-extrabold text-[var(--navy)]">{row.label}</p>
+                          <p className="text-[11px] text-slate-600">{row.value}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* ══ 2. VALUE STRIP ══ */}
-        <section aria-label="Key compliance areas" className="relative border-b border-[#f0e1d5] bg-white py-5 sm:py-6">
-          <div className="site-container grid grid-cols-2 gap-y-4 md:grid-cols-4 md:gap-y-0">
-            {valueItems.map(({ icon: Icon, title, detail }, index) => (
-              <div
-                key={title}
-                className={`flex flex-col items-center gap-2 px-2 text-center md:flex-row md:gap-3 md:text-left md:justify-center md:px-3 lg:px-5 ${
-                  index % 2 === 0 ? "border-r border-[#f0e1d5]" : ""
-                } ${index < 2 ? "border-b border-[#f0e1d5] pb-3 md:border-b-0 md:pb-0" : "pt-1 md:pt-0"} ${
-                  index < 3 ? "md:border-r" : "md:border-r-0"
-                }`}
-              >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#fff1e7] text-[var(--primary)] sm:h-11 sm:w-11">
-                  <Icon aria-hidden="true" className="h-5 w-5" />
+            {/* Bottom Docked Value Strip (Fills viewport cleanly with zero empty space) */}
+            <div aria-label="Key compliance areas" className="my-auto pt-4 border-t border-[#f0e1d5]">
+              <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                <span className="inline-flex items-center gap-1.5 text-[#c2410c]">
+                  <ShieldCheck className="h-3.5 w-3.5 text-[var(--primary)]" />
+                  Key Compliance Pillars Covered in This Manual
                 </span>
-                <span className="min-w-0">
-                  <span className="block text-xs font-[800] leading-snug text-[var(--navy)] sm:text-sm">{title}</span>
-                  <span className="mt-0.5 block text-[11px] leading-4 text-slate-600 sm:text-xs">{detail}</span>
+                <span className="hidden sm:inline text-slate-400">
+                  Authorized RSP Operational Reference
                 </span>
               </div>
-            ))}
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:gap-4">
+                {valueItems.map(({ icon: Icon, title, detail }) => (
+                  <div
+                    key={title}
+                    className="flex items-center gap-3 rounded-2xl border border-[#eedcc9] bg-white/95 px-4 py-3.5 shadow-[0_6px_18px_rgba(15,39,71,0.04)]"
+                  >
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#fff1e7] text-[var(--primary)] ring-1 ring-orange-200/60">
+                      <Icon aria-hidden="true" className="h-5 w-5" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block truncate text-xs sm:text-[13.5px] font-[800] text-[var(--navy)]">{title}</span>
+                      <span className="mt-0.5 block truncate text-[11.5px] font-medium text-slate-500">{detail}</span>
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
@@ -264,7 +327,7 @@ export default function IrctcAgentPage() {
               {/* ── 01. DO'S & DON'TS ── */}
               <section id="dos-and-donts" className="group rounded-3xl border border-orange-200/90 bg-white p-6 sm:p-8 shadow-[0_4px_24px_rgba(249,115,22,0.06)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(249,115,22,0.12)] hover:border-orange-300 scroll-mt-24">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-amber-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                     01
                   </span>
                   <div>
@@ -284,7 +347,7 @@ export default function IrctcAgentPage() {
                   {/* DO'S Column */}
                   <div className="flex flex-col rounded-2xl border-2 border-emerald-200 bg-emerald-50/30 p-5 sm:p-6 shadow-xs transition-colors duration-200 hover:bg-emerald-50/50">
                     <div className="flex items-center gap-2.5 pb-3 border-b border-emerald-200/80">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-xs">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white shadow-xs">
                         <CheckCircle2 className="h-4 w-4" />
                       </span>
                       <div>
@@ -349,7 +412,7 @@ export default function IrctcAgentPage() {
                   {/* DON'TS Column */}
                   <div className="flex flex-col rounded-2xl border-2 border-red-200 bg-red-50/30 p-5 sm:p-6 shadow-xs transition-colors duration-200 hover:bg-red-50/50">
                     <div className="flex items-center gap-2.5 pb-3 border-b border-red-200/80">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-600 text-white shadow-xs">
+                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-600 text-white shadow-xs">
                         <XCircle className="h-4 w-4" />
                       </span>
                       <div>
@@ -416,7 +479,7 @@ export default function IrctcAgentPage() {
               {/* ── 02. REGISTRATION & PSP ARCHITECTURE ── */}
               <section id="registration-overview" className="group rounded-3xl border border-blue-200/90 bg-gradient-to-br from-white to-blue-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(59,130,246,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(59,130,246,0.1)] hover:border-blue-300 scroll-mt-24">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                     02
                   </span>
                   <div>
@@ -471,7 +534,7 @@ export default function IrctcAgentPage() {
               {/* ── 03. BOOKING RULES ── */}
               <section id="booking-rules" className="group rounded-3xl border border-teal-200/90 bg-gradient-to-br from-white to-teal-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(20,184,166,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(20,184,166,0.1)] hover:border-teal-300 scroll-mt-24">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-teal-600 to-emerald-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-teal-600 to-emerald-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                     03
                   </span>
                   <div>
@@ -521,7 +584,7 @@ export default function IrctcAgentPage() {
               {/* ── 04. TATKAL REGULATIONS ── */}
               <section id="tatkal-regulations" className="group rounded-3xl border border-amber-200/90 bg-gradient-to-br from-white to-amber-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(245,158,11,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(245,158,11,0.1)] hover:border-amber-300 scroll-mt-24">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                     04
                   </span>
                   <div>
@@ -575,7 +638,7 @@ export default function IrctcAgentPage() {
               {/* ── 05. SERVICE CHARGES ── */}
               <section id="service-charges" className="group rounded-3xl border border-emerald-200/90 bg-gradient-to-br from-white to-emerald-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(16,185,129,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(16,185,129,0.1)] hover:border-emerald-300 scroll-mt-24">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                     05
                   </span>
                   <div>
@@ -613,7 +676,7 @@ export default function IrctcAgentPage() {
               {/* ── 06. CANCELLATIONS & REFUND OTPS ── */}
               <section id="cancellations-refunds" className="group rounded-3xl border border-rose-200/90 bg-gradient-to-br from-white to-rose-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(244,63,94,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(244,63,94,0.1)] hover:border-rose-300 scroll-mt-24">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 to-red-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rose-500 to-red-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                     06
                   </span>
                   <div>
@@ -653,7 +716,7 @@ export default function IrctcAgentPage() {
               {/* ── 07. TDR GUIDANCE ── */}
               <section id="tdr-guidance" className="group rounded-3xl border border-purple-200/90 bg-gradient-to-br from-white to-purple-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(168,85,247,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(168,85,247,0.1)] hover:border-purple-300 scroll-mt-24">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                     07
                   </span>
                   <div>
@@ -694,7 +757,7 @@ export default function IrctcAgentPage() {
               {/* ── 08. ACCOUNT SECURITY ── */}
               <section id="account-security" className="group rounded-3xl border border-sky-200/90 bg-gradient-to-br from-white to-sky-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(14,165,233,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(14,165,233,0.1)] hover:border-sky-300 scroll-mt-24">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-sky-600 to-cyan-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-600 to-cyan-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                     08
                   </span>
                   <div>
@@ -725,7 +788,7 @@ export default function IrctcAgentPage() {
               {/* ── 09. RECORD KEEPING ── */}
               <section id="audit-records" className="group rounded-3xl border border-indigo-200/90 bg-gradient-to-br from-white to-indigo-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(99,102,241,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(99,102,241,0.1)] hover:border-indigo-300 scroll-mt-24">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-blue-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-blue-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                     09
                   </span>
                   <div>
@@ -756,7 +819,7 @@ export default function IrctcAgentPage() {
               {/* ── 10. COMPLIANCE & PENALTIES ── */}
               <section id="compliance-penalties" className="group rounded-3xl border border-red-300 bg-gradient-to-br from-white to-red-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(239,68,68,0.06)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(239,68,68,0.12)] hover:border-red-400 scroll-mt-24">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-red-600 to-rose-700 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-red-600 to-rose-700 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                     10
                   </span>
                   <div>
@@ -787,7 +850,7 @@ export default function IrctcAgentPage() {
               {/* ── 11. DAILY COMPLIANCE CHECKLIST ── */}
               <section id="daily-checklist" className="group rounded-3xl border border-orange-300/90 bg-gradient-to-br from-white to-orange-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(249,115,22,0.06)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(249,115,22,0.12)] hover:border-orange-400 scroll-mt-24">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-orange-600 to-amber-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-600 to-amber-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                     11
                   </span>
                   <div>

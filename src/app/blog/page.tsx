@@ -1,5 +1,6 @@
 // Public /blog listing page — RailAgents Journal & Editorial Insights
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowDown, MessageSquare, ArrowRight } from "lucide-react";
 import { getPublishedPosts } from "@/lib/posts";
@@ -63,7 +64,7 @@ export default async function BlogPage() {
         {/* ══ 1. UNIQUE EDITORIAL HERO SECTION ══ */}
         <section
           aria-label="Journal introduction"
-          className="relative border-b border-[#f0e4d7] bg-gradient-to-b from-[#fffcf8] via-[#faf6f0] to-[#f6efe6] py-7 sm:py-9 lg:py-10"
+          className="relative border-b border-[#f0e4d7] bg-gradient-to-b from-[#fffcf8] via-[#faf6f0] to-[#f6efe6] pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8"
         >
           <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-3xl text-center">
@@ -109,7 +110,9 @@ export default async function BlogPage() {
         {/* ══ 2. EDITORIAL ARTICLES & TOPIC LISTING ══ */}
         <section aria-label="Journal articles and topics" className="py-12 sm:py-16">
           <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
-            <BlogList posts={posts} />
+            <Suspense fallback={<div className="min-h-[320px] animate-pulse rounded-3xl bg-white/60" />}>
+              <BlogList posts={posts} />
+            </Suspense>
 
             {/* Empty State fallback */}
             {posts.length === 0 && (

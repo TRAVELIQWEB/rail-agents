@@ -10,6 +10,7 @@ import {
   CheckCircle2, RotateCcw, AlertTriangle, ArrowUpRight, ArrowRight, Video,
   Plus, Key, Sparkles, Share2,
 } from "lucide-react";
+import { FaInstagram, FaFacebookF, FaYoutube } from "react-icons/fa6";
 import { BLOG_CATEGORIES } from "@/types/blog";
 import type { BlogPost, PostStatus } from "@/types/blog";
 import { sanitizeHtml } from "@/lib/sanitize";
@@ -1263,8 +1264,10 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           {/* Instagram Reel / Post URL */}
           <div>
-            <label className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-700">
-              <span className="h-2 w-2 rounded-full bg-gradient-to-tr from-amber-500 via-pink-600 to-purple-600" />
+            <label className="mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <span className="flex h-4 w-4 items-center justify-center rounded bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white">
+                <FaInstagram className="h-2.5 w-2.5" />
+              </span>
               <span>Instagram Reel / Post URL</span>
             </label>
             <div className="flex gap-1.5">
@@ -1290,8 +1293,10 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
 
           {/* Facebook Video / Reel URL */}
           <div>
-            <label className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-700">
-              <span className="h-2 w-2 rounded-full bg-blue-600" />
+            <label className="mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <span className="flex h-4 w-4 items-center justify-center rounded bg-[#1877f2] text-white">
+                <FaFacebookF className="h-2.5 w-2.5" />
+              </span>
               <span>Facebook Video / Reel URL</span>
             </label>
             <div className="flex gap-1.5">
@@ -1317,8 +1322,10 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
 
           {/* Additional YouTube / Shorts Link */}
           <div>
-            <label className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-slate-700">
-              <span className="h-2 w-2 rounded-full bg-red-600" />
+            <label className="mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <span className="flex h-4 w-4 items-center justify-center rounded bg-[#ff0000] text-white">
+                <FaYoutube className="h-2.5 w-2.5" />
+              </span>
               <span>YouTube Video / Short URL</span>
             </label>
             <div className="flex gap-1.5">

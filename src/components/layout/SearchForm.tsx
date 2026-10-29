@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import { Search, ArrowRight } from "lucide-react";
 
 type SearchFormProps = {
@@ -8,9 +9,17 @@ type SearchFormProps = {
 };
 
 export function SearchForm({ mobile = false }: SearchFormProps) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
+
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const trimmed = query.trim();
+    if (!trimmed) {
+      router.push("/blog");
+      return;
+    }
+    router.push(`/blog?q=${encodeURIComponent(trimmed)}#articles-section`);
   }
 
   return (
@@ -27,15 +36,13 @@ export function SearchForm({ mobile = false }: SearchFormProps) {
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         placeholder="Search guides, videos..."
-        className="min-w-0 flex-1 border-0 bg-transparent text-base text-[var(--navy)] outline-none placeholder:text-slate-400 focus-visible:ring-0"
+        className="min-w-0 flex-1 border-0 bg-transparent text-xs sm:text-sm text-[var(--navy)] outline-none placeholder:text-slate-400 focus-visible:ring-0"
       />
       <button
         type="submit"
         aria-label="Submit search"
-        aria-disabled="true"
-        title="Search is coming soon"
-        disabled
-        className="flex h-6 w-6 shrink-0 cursor-not-allowed items-center justify-center text-[#f97316]"
+        title="Search blog & guides"
+        className="flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-full text-[#f97316] transition hover:bg-orange-50 hover:text-orange-700"
       >
         <ArrowRight className="h-3.5 w-3.5" />
       </button>

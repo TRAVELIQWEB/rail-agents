@@ -245,7 +245,7 @@ export default function AboutPage() {
         {/* =========================================================
             SECTION 1: STRONG PERSONAL HERO
         ========================================================== */}
-        <section className="relative overflow-hidden border-b border-[#f4e4d4] bg-gradient-to-b from-[#fffaf4] via-[#fffdfa] to-white py-3 sm:py-6 lg:py-12">
+        <section className="relative flex flex-col justify-between overflow-hidden border-b border-[#f4e4d4] bg-gradient-to-b from-[#fffaf4] via-[#fffdfa] to-white pt-8 pb-6 sm:pt-10 sm:pb-7 lg:min-h-[calc(100vh-74px)] lg:pt-11 lg:pb-7">
           {/* Subtle Ambient Decorative Gradients */}
           <div
             aria-hidden="true"
@@ -256,7 +256,7 @@ export default function AboutPage() {
             className="pointer-events-none absolute -bottom-32 left-10 h-80 w-80 rounded-full bg-amber-50/70 blur-3xl"
           />
 
-          <div className="site-container relative z-10">
+          <div className="site-container relative z-10 flex flex-1 flex-col justify-between">
             <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-12">
               
               {/* Left Column: Text & CTAs */}
@@ -299,7 +299,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* CTAs */}
-                <div className="mt-8 flex flex-col items-center gap-3.5 sm:flex-row sm:justify-start">
+                <div className="mt-7 flex flex-col items-center gap-3.5 sm:flex-row sm:justify-start">
                   <Link
                     href="/ask-nihal"
                     className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-3.5 text-sm font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.32)] transition-all hover:bg-[#ea580c] hover:shadow-[0_8px_24px_rgba(249,115,22,0.4)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:w-auto"
@@ -315,6 +315,17 @@ export default function AboutPage() {
                     <BookOpen className="h-4 w-4 text-[#ea580c]" />
                     Explore Railway Agent Guides
                   </Link>
+                </div>
+
+                {/* Nihal's Core Guidance Quote Strip (Balances left & right column height) */}
+                <div className="mt-6 hidden lg:flex items-center gap-3.5 rounded-2xl border border-[#f3dfcc] bg-white/90 px-4 py-3 text-left shadow-2xs">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                    <ShieldCheck className="h-4.5 w-4.5" />
+                  </span>
+                  <p className="text-xs leading-relaxed text-slate-600">
+                    <strong className="font-extrabold text-[var(--navy)]">Independent Educational Guidance:</strong>{" "}
+                    Practical insights built on 20 years of field experience to help agents work safely and lawfully.
+                  </p>
                 </div>
               </div>
 
@@ -356,6 +367,60 @@ export default function AboutPage() {
                 </div>
               </div>
 
+            </div>
+
+            {/* Bottom Docked Experience & Guidance Strip (Fills viewport cleanly with zero empty space) */}
+            <div className="my-auto pt-4 border-t border-[#f0e1d2]">
+              <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                <span className="inline-flex items-center gap-1.5 text-[#c2410c]">
+                  <ShieldCheck className="h-3.5 w-3.5 text-[#ea580c]" />
+                  Core Pillars of RailAgents Guidance
+                </span>
+                <span className="hidden sm:inline text-slate-400">
+                  Learn from experience • Understand the rules • Work responsibly
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:gap-4">
+                {[
+                  {
+                    icon: Calendar,
+                    title: "20+ Years Experience",
+                    detail: "Hands-on railway ticketing work",
+                  },
+                  {
+                    icon: Scale,
+                    title: "Official Rule Clarity",
+                    detail: "IRCTC & Railways Act guidelines",
+                  },
+                  {
+                    icon: ShieldCheck,
+                    title: "Fraud & Risk Awareness",
+                    detail: "Safe & authorized agent practices",
+                  },
+                  {
+                    icon: Video,
+                    title: "Practical Video Guides",
+                    detail: "Simple step-by-step explanations",
+                  },
+                ].map(({ icon: Icon, title, detail }) => (
+                  <div
+                    key={title}
+                    className="flex items-center gap-3 rounded-2xl border border-[#eedcc9] bg-white/95 px-4 py-3.5 shadow-[0_6px_18px_rgba(15,39,71,0.04)]"
+                  >
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#fff3e8] text-[#ea580c] ring-1 ring-orange-200/60">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="truncate text-xs sm:text-[13.5px] font-[800] text-[var(--navy)]">
+                        {title}
+                      </p>
+                      <p className="mt-0.5 truncate text-[11.5px] font-medium text-slate-500">
+                        {detail}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -789,10 +854,10 @@ export default function AboutPage() {
                   Clear, upfront answers regarding our mission, background, and how we assist rail agents with practical field guidance.
                 </p>
 
-                {/* Helpful Contact Box */}
+                {/*Helpful Contact Box */}
                 <div className="mt-6 rounded-2xl border border-orange-200/90 bg-[#fff8f2] p-5 shadow-2xs">
                   <div className="flex items-center gap-2.5">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-100 text-[#ea580c]">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-[#ea580c]">
                       <MessageCircle className="h-4 w-4" />
                     </span>
                     <p className="text-sm font-bold text-[var(--navy)]">Have a different question?</p>

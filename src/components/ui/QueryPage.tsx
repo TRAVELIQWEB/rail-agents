@@ -42,7 +42,7 @@ export function QueryPage() {
         {/* =========================================================
             MAIN CONTACT / ASK NIHAL SECTION (CLEAN 2-COLUMN, NO STRETCH)
         ========================================================== */}
-        <section className="relative overflow-hidden bg-[radial-gradient(ellipse_at_top_right,_#ffecd6_0%,_#fff6eb_40%,_#fffdf9_80%)] py-7 sm:py-9 lg:py-11">
+        <section className="relative flex flex-col justify-between overflow-hidden bg-[radial-gradient(ellipse_at_top_right,_#ffecd6_0%,_#fff6eb_40%,_#fffdf9_80%)] pt-8 pb-6 sm:pt-10 sm:pb-7 lg:min-h-[calc(100vh-74px)] lg:pt-11 lg:pb-7">
           {/* Ambient Glow */}
           <div
             aria-hidden="true"
@@ -53,12 +53,12 @@ export function QueryPage() {
             className="pointer-events-none absolute -left-20 bottom-10 h-72 w-72 rounded-full bg-amber-100/50 blur-3xl"
           />
 
-          <div className="site-container relative z-10 max-w-5xl">
+          <div className="site-container relative z-10 flex flex-1 flex-col justify-between max-w-5xl w-full">
             {/* Focused 2-Column Grid Layout (Left Content: 5 cols | Right Form: 7 cols) */}
             <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-8 xl:gap-12">
 
               {/* ══ LEFT COLUMN: Heading & Features (5 Cols) ══ */}
-              <div className="flex flex-col items-center text-center md:pt-1 lg:col-span-5 lg:items-start lg:text-left">
+              <div className="flex flex-col items-center text-center lg:col-span-5 lg:items-start lg:text-left">
                 {/* Top Badge */}
                 <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#f5d0be] bg-white/90 px-3.5 py-1 text-xs font-extrabold uppercase tracking-wider text-[#ea580c] shadow-sm backdrop-blur-sm">
                   <span className="h-2 w-2 rounded-full bg-[#f97316]" />
@@ -94,7 +94,7 @@ export function QueryPage() {
                 </p>
 
                 {/* 3 Feature Rows */}
-                <div className="mt-8 space-y-4">
+                <div className="mt-7 space-y-3.5">
                   {features.map(({ icon: Icon, title, subtitle }) => (
                     <div key={title} className="flex flex-col items-center gap-2 text-center md:flex-row md:justify-center md:gap-3.5 md:text-left lg:justify-start">
                       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#ffe8d6] text-[#ea580c] shadow-sm">
@@ -112,17 +112,17 @@ export function QueryPage() {
               </div>
 
               {/* ══ RIGHT COLUMN: Contact Form Card (7 Cols) ══ */}
-              <div className="relative z-20 lg:col-span-7 lg:mt-[42px]">
+              <div className="relative z-20 lg:col-span-7">
                 <QueryForm />
               </div>
 
             </div>
 
             {/* ══ BOTTOM BANNER: ASK WITH CONFIDENCE ══ */}
-            <div className="mt-10 sm:mt-12">
-              <div className="mx-auto flex flex-col gap-4 rounded-2xl border border-[#fee4d0] bg-white/95 p-4 shadow-sm backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:p-5">
+            <div className="my-auto pt-4 border-t border-[#f3dfcc]">
+              <div className="mx-auto flex flex-col gap-4 rounded-2xl border border-[#fee4d0] bg-white/95 p-4 shadow-sm backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-3.5">
                 <div className="flex flex-col items-center gap-3.5 text-center sm:flex-row sm:text-left">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#fff3e8] text-[#f97316]">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#fff3e8] text-[#f97316]">
                     <Lightbulb className="h-5 w-5" />
                   </span>
                   <div>
@@ -147,7 +147,7 @@ export function QueryPage() {
                         rel="noopener noreferrer"
                         aria-label={`Follow RailAgents on ${label}`}
                         title={label}
-                        className="flex h-10 w-10 items-center justify-center rounded-full border border-orange-100 bg-[#fffaf5] transition-all hover:-translate-y-0.5 hover:border-orange-300 hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                        className="flex h-9 w-9 items-center justify-center rounded-full border border-orange-100 bg-[#fffaf5] transition-all hover:-translate-y-0.5 hover:border-orange-300 hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                       >
                         <Icon aria-hidden="true" className="h-4 w-4" style={{ color }} />
                       </a>

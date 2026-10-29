@@ -21,6 +21,7 @@ import {
   ShieldCheck,
   ChevronRight,
 } from "lucide-react";
+import { FaInstagram, FaFacebookF, FaYoutube } from "react-icons/fa6";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -471,17 +472,17 @@ export default async function BlogPostPage({ params }: Props) {
                           Follow this topic on our official social channels
                         </h2>
                       </div>
-                      <div className="flex flex-wrap items-center gap-2.5">
+                      <div className="flex flex-wrap items-center gap-3">
                         {post.socialLinks?.instagram && (
                           <a
                             href={post.socialLinks.instagram}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-tr from-amber-500 via-pink-600 to-purple-600 px-4 py-2.5 text-xs font-extrabold text-white shadow-sm transition hover:opacity-95"
+                            aria-label="Watch on Instagram"
+                            title="Watch on Instagram"
+                            className="group flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white shadow-[0_6px_16px_rgba(238,42,123,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:scale-105"
                           >
-                            <span>▶</span>
-                            <span>Watch on Instagram</span>
-                            <span>↗</span>
+                            <FaInstagram className="h-5 w-5 transition-transform group-hover:scale-110" />
                           </a>
                         )}
                         {post.socialLinks?.facebook && (
@@ -489,11 +490,11 @@ export default async function BlogPostPage({ params }: Props) {
                             href={post.socialLinks.facebook}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-extrabold text-white shadow-sm transition hover:bg-blue-700"
+                            aria-label="Watch on Facebook"
+                            title="Watch on Facebook"
+                            className="group flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-b from-[#3b82f6] via-[#1d4ed8] to-[#1e40af] text-white shadow-[0_6px_16px_rgba(29,78,216,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:scale-105"
                           >
-                            <span>▶</span>
-                            <span>Watch on Facebook</span>
-                            <span>↗</span>
+                            <FaFacebookF className="h-5 w-5 transition-transform group-hover:scale-110" />
                           </a>
                         )}
                         {post.socialLinks?.youtube && (
@@ -501,11 +502,11 @@ export default async function BlogPostPage({ params }: Props) {
                             href={post.socialLinks.youtube}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-xs font-extrabold text-white shadow-sm transition hover:bg-red-700"
+                            aria-label="Watch on YouTube"
+                            title="Watch on YouTube"
+                            className="group flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff4d4d] via-[#ff0000] to-[#cc0000] text-white shadow-[0_6px_16px_rgba(255,0,0,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:scale-105"
                           >
-                            <span>▶</span>
-                            <span>Watch on YouTube</span>
-                            <span>↗</span>
+                            <FaYoutube className="h-5 w-5 transition-transform group-hover:scale-110" />
                           </a>
                         )}
                       </div>

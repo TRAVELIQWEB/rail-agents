@@ -43,7 +43,7 @@ export default async function VideoGuidesPage() {
   return (
     <div className="flex min-h-screen flex-col bg-[#fff9f5]">
       <Header />
-      <main className="relative flex-1 overflow-hidden bg-[#fff9f5] py-7 sm:py-9 lg:py-10">
+      <main className="relative flex-1 overflow-hidden bg-[#fff9f5] pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -left-24 top-20 h-72 w-72 rounded-full bg-orange-100/50 blur-[90px]"
