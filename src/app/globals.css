@@ -1107,7 +1107,7 @@ input[type="number"] {
   color: #f87171 !important;
 }
 
-.admin-dark-theme input:not([type="checkbox"]),
+.admin-dark-theme input:not([type="checkbox"]):not(.bg-transparent),
 .admin-dark-theme textarea,
 .admin-dark-theme select {
   background-color: #111318 !important;
@@ -1115,10 +1115,20 @@ input[type="number"] {
   border-color: #282d37 !important;
 }
 
-.admin-dark-theme input:not([type="checkbox"]):focus,
+.admin-dark-theme input.bg-transparent {
+  background-color: transparent !important;
+  color: #f4f4f5 !important;
+}
+
+.admin-dark-theme input:not([type="checkbox"]):not(.bg-transparent):focus,
+.admin-dark-theme textarea.border-slate-200:focus,
 .admin-dark-theme textarea:focus,
-.admin-dark-theme select:focus {
+.admin-dark-theme select.border-slate-200:focus,
+.admin-dark-theme select:focus,
+.admin-dark-theme .border-slate-200.focus-within\:border-orange-500:focus-within,
+.admin-dark-theme .focus-within\:border-orange-500:focus-within {
   border-color: #ea580c !important;
+  outline: none !important;
   box-shadow: none !important;
 }
 
@@ -1193,4 +1203,66 @@ input[type="number"] {
 .admin-dark-theme .admin-rich-source .cm-activeLine,
 .admin-dark-theme .admin-rich-source .cm-activeLineGutter {
   background-color: #1a1e26 !important;
+}
+
+
+/* Blue & Amber status/modal boxes inside Matte Dark Admin Theme */
+.admin-dark-theme .bg-blue-50,
+.admin-dark-theme .bg-blue-50\/70 {
+  background-color: rgba(59, 130, 246, 0.12) !important;
+}
+
+.admin-dark-theme .border-blue-100,
+.admin-dark-theme .border-blue-200 {
+  border-color: rgba(59, 130, 246, 0.28) !important;
+}
+
+.admin-dark-theme .text-blue-900,
+.admin-dark-theme .text-blue-800,
+.admin-dark-theme .text-blue-700 {
+  color: #60a5fa !important;
+}
+
+.admin-dark-theme .bg-amber-50,
+.admin-dark-theme .bg-amber-50\/80,
+.admin-dark-theme .bg-amber-100 {
+  background-color: rgba(245, 158, 11, 0.12) !important;
+}
+
+.admin-dark-theme .border-amber-200,
+.admin-dark-theme .border-amber-300 {
+  border-color: rgba(245, 158, 11, 0.28) !important;
+}
+
+.admin-dark-theme .text-amber-900,
+.admin-dark-theme .text-amber-800,
+.admin-dark-theme .text-amber-700 {
+  color: #fbbf24 !important;
+}
+
+/* RichEditor lists, links, and code inside Matte Dark Admin Theme */
+.admin-dark-theme .tiptap p,
+.admin-dark-theme .tiptap li {
+  color: #e4e4e7 !important;
+}
+
+.admin-dark-theme .tiptap ul,
+.admin-dark-theme .tiptap ol {
+  padding-left: 1.5rem;
+}
+
+.admin-dark-theme .tiptap li::marker {
+  color: #fb923c !important;
+}
+
+.admin-dark-theme .tiptap a {
+  color: #fb923c !important;
+  text-decoration: underline;
+}
+
+.admin-dark-theme .tiptap code {
+  background-color: #1f242d !important;
+  color: #fb923c !important;
+  padding: 0.15em 0.4em;
+  border-radius: 0.35em;
 }

@@ -878,7 +878,7 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
         {/* Text color */}
         <div className="relative flex items-center" title="Text Color">
           <label className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-slate-600 hover:bg-slate-100">
-            <span className="relative text-xs font-black" style={{ color: editor.getAttributes("textStyle").color ?? "#334155" }}>A</span>
+            <span className="relative text-xs font-black" style={{ color: editor.getAttributes("textStyle").color ?? "#f4f4f5" }}>A</span>
             <input
               type="color"
               defaultValue="#334155"

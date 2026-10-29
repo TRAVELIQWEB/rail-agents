@@ -367,10 +367,18 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
     await handleSave("draft");
   };
 
+  // Live word count & reading time for the editor header
+  const wordCount = content
+    .replace(/<[^>]*>/g, "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+  const readingTime = Math.max(1, Math.round(wordCount / 200));
+
   const saveStatusColors: Record<SaveStatus, string> = {
     idle: "text-slate-400",
-    saving: "text-amber-600",
-    saved: "text-emerald-600",
+    saving: "text-amber-500",
+    saved: "text-emerald-500",
     unsaved: "text-slate-400",
   };
   const saveStatusText: Record<SaveStatus, string> = {
@@ -569,9 +577,11 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   <p className="text-[11px] text-slate-400 font-normal">Write or paste formatted content, headings, lists, and images</p>
                 </div>
               </div>
-              <p className="hidden sm:block text-[11px] font-semibold text-slate-500">
-                Visual Editor · <span className="text-orange-600 font-bold">HTML</span> / <span className="text-orange-600 font-bold">Split View</span>
-              </p>
+              <div className="hidden sm:flex items-center gap-2">
+                <span className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold text-slate-500">
+                  {wordCount} {wordCount === 1 ? "word" : "words"} · ~{readingTime} min read
+                </span>
+              </div>
             </div>
             <div className="flex-1 flex flex-col min-h-0 bg-white">
               <RichEditor
@@ -696,8 +706,8 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   }
 
                   return (
-                    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-orange-200 bg-orange-50/30 py-4 px-3 text-center">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-100 text-orange-600 mb-1.5">
+                    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50/50 py-5 px-3 text-center">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-50 text-orange-600 mb-1.5 border border-orange-100">
                         <Video size={15} />
                       </div>
                       <p className="text-xs font-bold text-slate-800">No YouTube Video Added</p>
@@ -1507,7 +1517,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     onClick={() => setStatus(s)}
                     className={`rounded-xl py-2 px-2 text-xs font-bold capitalize transition-all cursor-pointer ${
                       status === s
-                        ? "bg-white text-orange-700 shadow-sm border border-orange-200"
+                        ? "bg-orange-600 text-white shadow-sm"
                         : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
