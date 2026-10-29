@@ -65,7 +65,7 @@ export default async function BlogPage() {
           aria-label="Journal introduction"
           className="relative border-b border-[#f0e4d7] bg-gradient-to-b from-[#fffcf8] via-[#faf6f0] to-[#f6efe6] py-7 sm:py-9 lg:py-10"
         >
-          <div className="site-container max-w-5xl">
+          <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-3xl text-center">
               {/* Eyebrow */}
               <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#edd7c4] bg-white/80 px-3.5 py-1 text-xs font-[800] uppercase tracking-[0.14em] text-[var(--primary-dark)] shadow-2xs backdrop-blur-md">
@@ -108,7 +108,7 @@ export default async function BlogPage() {
 
         {/* ══ 2. EDITORIAL ARTICLES & TOPIC LISTING ══ */}
         <section aria-label="Journal articles and topics" className="py-12 sm:py-16">
-          <div className="site-container max-w-5xl">
+          <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
             <BlogList posts={posts} />
 
             {/* Empty State fallback */}

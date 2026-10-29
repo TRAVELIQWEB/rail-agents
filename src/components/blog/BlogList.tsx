@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { BlogPost } from "@/types/blog";
-import { extractYouTubeId } from "@/lib/youtube-parser";
+import { parseSocialVideoUrl } from "@/lib/youtube-parser";
 import {
   Calendar,
   Clock,
@@ -12,13 +12,192 @@ import {
   BookOpen,
   Sparkles,
   Play,
-  Video,
   X,
   User,
 } from "lucide-react";
 
 interface BlogListProps {
   posts: BlogPost[];
+}
+
+function PostMediaThumbnail({
+  post,
+  size = "large",
+}: {
+  post: BlogPost;
+  size?: "large" | "compact";
+}) {
+  const socialVideo = parseSocialVideoUrl(post.featuredVideoUrl);
+
+  const badgeDotColor =
+    socialVideo?.platform === "instagram"
+      ? "bg-pink-500"
+      : socialVideo?.platform === "facebook"
+      ? "bg-blue-500"
+      : "bg-red-500";
+
+  const playBtnColor =
+    socialVideo?.platform === "instagram"
+      ? "bg-gradient-to-tr from-amber-500 via-pink-600 to-purple-600"
+      : socialVideo?.platform === "facebook"
+      ? "bg-blue-600"
+      : "bg-red-600";
+
+  // Priority #1: Custom 16:9 Cover Image (if uploaded) — works for both regular posts AND video posts (eliminates vertical Shorts/Reels bars)
+  if (post.featuredImage) {
+    return (
+      <div className="relative h-full w-full overflow-hidden bg-slate-900">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={post.featuredImage}
+          alt={post.featuredImageAlt || post.title}
+          className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+        />
+        {socialVideo && (
+          <>
+            <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/60 via-black/15 to-transparent flex items-center justify-center">
+              <div
+                className={`flex ${
+                  size === "large" ? "h-14 w-14" : "h-11 w-11"
+                } items-center justify-center rounded-full ${playBtnColor} text-white shadow-xl transition-transform duration-300 group-hover:scale-110`}
+              >
+                <Play
+                  size={size === "large" ? 22 : 18}
+                  className="ml-0.5 fill-white"
+                />
+              </div>
+            </div>
+            <div
+              className={`absolute ${
+                size === "large"
+                  ? "bottom-3 right-3 px-2.5 py-1 text-[10px]"
+                  : "bottom-2.5 right-2.5 px-2 py-0.5 text-[9.5px]"
+              } z-30 rounded-md bg-black/85 font-black uppercase tracking-wider text-white backdrop-blur-xs flex items-center gap-1.5`}
+            >
+              <span
+                className={`h-1.5 w-1.5 rounded-full ${badgeDotColor} animate-pulse`}
+              />
+              <span>{socialVideo.label}</span>
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+
+  // Priority #2: Social Video with auto-thumbnail (YouTube)
+  if (socialVideo && socialVideo.thumbnailUrl) {
+    const youtubeThumb = socialVideo.thumbnailUrl;
+    const fallbackThumb = socialVideo.fallbackThumbnailUrl || "";
+    return (
+      <div className="relative h-full w-full overflow-hidden bg-slate-950">
+        {/* Blurred Ambient Backdrop (Eliminates YouTube Shorts black bars) */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={youtubeThumb}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover scale-125 blur-xl opacity-60 filter"
+        />
+        {/* Main Center Video Frame */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={youtubeThumb}
+          onError={(e) => {
+            if (fallbackThumb && e.currentTarget.src !== fallbackThumb) {
+              e.currentTarget.src = fallbackThumb;
+            }
+          }}
+          alt={post.title}
+          className="relative z-10 h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/60 via-black/10 to-transparent flex items-center justify-center">
+          <div
+            className={`flex ${
+              size === "large" ? "h-14 w-14" : "h-11 w-11"
+            } items-center justify-center rounded-full ${playBtnColor} text-white shadow-xl transition-transform duration-300 group-hover:scale-110`}
+          >
+            <Play
+              size={size === "large" ? 22 : 18}
+              className="ml-0.5 fill-white"
+            />
+          </div>
+        </div>
+        <div
+          className={`absolute ${
+            size === "large"
+              ? "bottom-3 right-3 px-2.5 py-1 text-[10px]"
+              : "bottom-2.5 right-2.5 px-2 py-0.5 text-[9.5px]"
+          } z-30 rounded-md bg-black/85 font-black uppercase tracking-wider text-white backdrop-blur-xs flex items-center gap-1.5`}
+        >
+          <span
+            className={`h-1.5 w-1.5 rounded-full ${badgeDotColor} animate-pulse`}
+          />
+          <span>{socialVideo.label}</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Priority #3: Instagram or Facebook Video without custom cover image
+  if (socialVideo) {
+    const gradientBg =
+      socialVideo.platform === "instagram"
+        ? "bg-gradient-to-br from-purple-900 via-pink-700 to-orange-500"
+        : "bg-gradient-to-br from-slate-900 via-blue-900 to-blue-600";
+
+    return (
+      <div
+        className={`relative h-full w-full overflow-hidden ${gradientBg} flex flex-col items-center justify-center p-6 text-center text-white`}
+      >
+        <div
+          className={`flex ${
+            size === "large" ? "h-14 w-14" : "h-11 w-11"
+          } items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-white shadow-xl ring-1 ring-white/40 transition-transform duration-300 group-hover:scale-110`}
+        >
+          <Play
+            size={size === "large" ? 22 : 18}
+            className="ml-0.5 fill-white"
+          />
+        </div>
+        <span className="mt-2.5 text-xs font-extrabold tracking-wide text-white/95 line-clamp-1 max-w-[85%]">
+          {post.title}
+        </span>
+        <div
+          className={`absolute ${
+            size === "large"
+              ? "bottom-3 right-3 px-2.5 py-1 text-[10px]"
+              : "bottom-2.5 right-2.5 px-2 py-0.5 text-[9.5px]"
+          } z-30 rounded-md bg-black/75 font-black uppercase tracking-wider text-white backdrop-blur-xs flex items-center gap-1.5`}
+        >
+          <span
+            className={`h-1.5 w-1.5 rounded-full ${badgeDotColor} animate-pulse`}
+          />
+          <span>{socialVideo.label}</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Priority #4: Default fallback journal graphic
+  return (
+    <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-[#fff7ed] to-[#fef3c7] p-6 text-center">
+      <BookOpen
+        className={`${
+          size === "large" ? "h-10 w-10 mb-2" : "h-8 w-8 mb-1"
+        } text-[var(--primary)]`}
+      />
+      <span
+        className={`${
+          size === "large" ? "text-xs" : "text-[11px]"
+        } font-bold text-orange-900/80`}
+      >
+        RailAgents Journal
+      </span>
+    </div>
+  );
 }
 
 export function BlogList({ posts }: BlogListProps) {
@@ -72,48 +251,12 @@ export function BlogList({ posts }: BlogListProps) {
           <article className="group rounded-3xl border border-[#ede1d3] bg-white p-6 sm:p-8 shadow-[0_4px_24px_rgba(15,39,71,0.04)] transition-all duration-300 hover:border-orange-200 hover:shadow-[0_8px_32px_rgba(15,39,71,0.08)]">
             <div className="grid gap-6 lg:grid-cols-12 lg:items-center">
               {/* Media Thumbnail */}
-              <div className="lg:col-span-5 overflow-hidden rounded-2xl bg-slate-900 aspect-[16/9] relative">
-                {featuredPost.featuredVideoUrl ? (
-                  <div className="relative h-full w-full">
-                    {(() => {
-                      const videoId = extractYouTubeId(featuredPost.featuredVideoUrl);
-                      const youtubeThumb = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : null;
-
-                      return youtubeThumb ? (
-                        <>
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={youtubeThumb}
-                            alt={featuredPost.title}
-                            className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent flex items-center justify-center">
-                            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-600 text-white shadow-xl transition-transform duration-300 group-hover:scale-110">
-                              <Play size={22} className="ml-1 fill-white" />
-                            </div>
-                          </div>
-                          <div className="absolute bottom-3 right-3 rounded-md bg-black/85 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-white backdrop-blur-xs flex items-center gap-1.5">
-                            <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
-                            <span>Featured YouTube Video</span>
-                          </div>
-                        </>
-                      ) : null;
-                    })()}
-                  </div>
-                ) : featuredPost.featuredImage ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={featuredPost.featuredImage}
-                    alt={featuredPost.featuredImageAlt || featuredPost.title}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-[#fff7ed] to-[#fef3c7] p-6 text-center">
-                    <BookOpen className="h-10 w-10 text-[var(--primary)] mb-2" />
-                    <span className="text-xs font-bold text-orange-900/80">RailAgents Journal</span>
-                  </div>
-                )}
-              </div>
+              <Link
+                href={`/blog/${featuredPost.slug}`}
+                className="lg:col-span-5 block overflow-hidden rounded-2xl bg-slate-900 aspect-[16/9] relative"
+              >
+                <PostMediaThumbnail post={featuredPost} size="large" />
+              </Link>
 
               {/* Text & Content */}
               <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
@@ -304,9 +447,9 @@ export function BlogList({ posts }: BlogListProps) {
             </button>
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className={`grid gap-6 ${articlesToShow.length === 1 ? "grid-cols-1" : articlesToShow.length === 2 ? "sm:grid-cols-2 lg:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3"}`}>
             {articlesToShow.map((post) => (
-              <ArticleEditorialCard key={post.id} post={post} />
+              <ArticleEditorialCard key={post.id} post={post} isWide={articlesToShow.length === 1} />
             ))}
           </div>
         )}
@@ -315,7 +458,7 @@ export function BlogList({ posts }: BlogListProps) {
   );
 }
 
-function ArticleEditorialCard({ post }: { post: BlogPost }) {
+function ArticleEditorialCard({ post, isWide = false }: { post: BlogPost; isWide?: boolean }) {
   const publishDate = post.publishedAt
     ? new Date(post.publishedAt).toLocaleDateString("en-IN", {
         day: "numeric",
@@ -329,63 +472,75 @@ function ArticleEditorialCard({ post }: { post: BlogPost }) {
     Math.round(post.content.replace(/<[^>]*>/g, "").split(/\s+/).length / 200),
   );
 
+  if (isWide) {
+    return (
+      <article className="group rounded-3xl border border-[#ede1d3] bg-white p-6 sm:p-8 shadow-[0_4px_24px_rgba(15,39,71,0.04)] transition-all duration-300 hover:border-orange-200 hover:shadow-[0_8px_32px_rgba(15,39,71,0.08)]">
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-center">
+          <Link
+            href={`/blog/${post.slug}`}
+            className="lg:col-span-5 block relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-slate-900"
+          >
+            <PostMediaThumbnail post={post} size="large" />
+          </Link>
+
+          <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
+            <div className="space-y-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-[800] uppercase tracking-wider text-[var(--primary-dark)]">
+                  {post.category}
+                </span>
+                {publishDate && (
+                  <span className="inline-flex items-center gap-1 text-xs text-slate-500 font-medium">
+                    <Calendar className="h-3.5 w-3.5" />
+                    {publishDate}
+                  </span>
+                )}
+                <span className="inline-flex items-center gap-1 text-xs text-slate-500 font-medium">
+                  <Clock className="h-3.5 w-3.5" />
+                  {readingTime}m read
+                </span>
+              </div>
+
+              <h3 className="text-xl sm:text-2xl font-[850] leading-snug tracking-[-0.02em] text-[var(--navy)] group-hover:text-[var(--primary-dark)] transition-colors">
+                <Link href={`/blog/${post.slug}`}>
+                  {post.title}
+                </Link>
+              </h3>
+
+              <p className="text-sm leading-relaxed text-slate-600 line-clamp-3">
+                {post.excerpt}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4">
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
+                <User className="h-3.5 w-3.5 text-orange-500" />
+                <span>{post.author}</span>
+              </div>
+              <Link
+                href={`/blog/${post.slug}`}
+                className="single-line-btn inline-flex items-center gap-1.5 whitespace-nowrap text-xs font-[800] text-[var(--primary-dark)] hover:text-[var(--primary-hover)] transition-colors"
+              >
+                <span>Read full article</span>
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
   return (
     <article className="group flex h-full flex-col justify-between rounded-2xl border border-[#ede1d3] bg-white overflow-hidden shadow-xs transition-all duration-200 hover:border-orange-200 hover:shadow-md">
       <div>
         <div className="relative aspect-[16/9] w-full overflow-hidden bg-slate-900">
-          {(() => {
-            if (post.featuredVideoUrl) {
-              const videoId = extractYouTubeId(post.featuredVideoUrl);
-
-              if (videoId) {
-                // High-resolution YouTube thumbnail with fallback
-                const youtubeThumb = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-                return (
-                  <div className="relative h-full w-full">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={youtubeThumb}
-                      alt={post.title}
-                      className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    {/* Cinema / YouTube video player overlay badge */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent flex items-center justify-center">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-red-600 text-white shadow-lg transition-transform duration-300 group-hover:scale-110">
-                        <Play size={18} className="ml-0.5 fill-white" />
-                      </div>
-                    </div>
-                    {/* YouTube Video Badge */}
-                    <div className="absolute bottom-2.5 right-2.5 rounded-md bg-black/80 px-2 py-0.5 text-[9.5px] font-black uppercase tracking-wider text-white backdrop-blur-xs flex items-center gap-1">
-                      <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
-                      <span>YouTube Video</span>
-                    </div>
-                  </div>
-                );
-              }
-            }
-
-            if (post.featuredImage) {
-              return (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={post.featuredImage}
-                  alt={post.featuredImageAlt || post.title}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              );
-            }
-
-            return (
-              <div className="flex h-full w-full flex-col items-center justify-center bg-[#fff8f2] p-5 text-center">
-                <BookOpen className="h-8 w-8 text-orange-400 mb-1" />
-                <span className="text-[11px] font-bold text-orange-800/80">RailAgents Journal</span>
-              </div>
-            );
-          })()}
+          <Link href={`/blog/${post.slug}`} className="block h-full w-full">
+            <PostMediaThumbnail post={post} size="compact" />
+          </Link>
 
           {/* Category Tag Pill */}
-          <div className="absolute left-3 top-3">
+          <div className="absolute left-3 top-3 z-30 pointer-events-none">
             <span className="inline-flex max-w-full items-center whitespace-nowrap rounded-full bg-white/95 px-2.5 py-0.5 text-[10px] font-[800] uppercase tracking-wider text-[var(--primary-dark)] shadow-xs">
               {post.category}
             </span>

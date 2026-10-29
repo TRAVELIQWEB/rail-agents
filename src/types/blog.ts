@@ -2,6 +2,12 @@
 
 export type PostStatus = "draft" | "published" | "scheduled";
 
+export interface PostSocialLinks {
+  instagram?: string | null;
+  facebook?: string | null;
+  youtube?: string | null;
+}
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -10,6 +16,7 @@ export interface BlogPost {
   content: string; // HTML from Tiptap
   featuredImage: string | null;
   featuredVideoUrl?: string | null;
+  socialLinks?: PostSocialLinks | null;
   category: string;
   tags: string[];
   author: string;
@@ -35,6 +42,7 @@ export type BlogPostSummary = Pick<
   | "excerpt"
   | "featuredImage"
   | "featuredVideoUrl"
+  | "socialLinks"
   | "category"
   | "tags"
   | "author"

@@ -258,9 +258,13 @@ input[type="number"] {
 
 /* ── Blog post content styles ──────────────────────────────── */
 .blog-content {
-  color: var(--body-text);
-  font-size: 1rem;
-  line-height: 1.8;
+  color: #334155;
+  font-size: 1.025rem;
+  line-height: 1.82;
+}
+
+.blog-content > *:first-child {
+  margin-top: 0 !important;
 }
 
 .blog-content h1,
@@ -268,52 +272,114 @@ input[type="number"] {
 .blog-content h3,
 .blog-content h4 {
   color: var(--navy);
-  font-weight: 800;
-  line-height: 1.25;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  line-height: 1.28;
   margin-top: 2rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.85rem;
+  overflow: hidden;
 }
 
-.blog-content h1 { font-size: 1.875rem; }
-.blog-content h2 { font-size: 1.5rem; border-bottom: 2px solid #fed7aa; padding-bottom: 0.5rem; }
-.blog-content h3 { font-size: 1.25rem; }
-.blog-content h4 { font-size: 1.1rem; }
+.blog-content h1 {
+  font-size: 1.75rem;
+}
 
-.blog-content p { margin-bottom: 1.25rem; }
+.blog-content h2 {
+  font-size: 1.375rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 2px solid #fde2c4;
+}
+
+@media (min-width: 640px) {
+  .blog-content h2 {
+    font-size: 1.5rem;
+  }
+}
+
+.blog-content h3 {
+  font-size: 1.2rem;
+  color: #1e3a5f;
+}
+
+.blog-content h4 {
+  font-size: 1.05rem;
+}
+
+.blog-content p {
+  margin-bottom: 1.2rem;
+  color: #334155;
+}
+
+.blog-content strong,
+.blog-content b {
+  color: var(--navy);
+  font-weight: 750;
+}
 
 .blog-content a {
   color: var(--primary);
   text-decoration: underline;
   text-underline-offset: 3px;
-  font-weight: 600;
+  font-weight: 650;
 }
 
-.blog-content a:hover { color: var(--primary-hover); }
+.blog-content a:hover {
+  color: var(--primary-hover);
+}
 
+/* Float-safe lists with proper hanging indentation so multi-line items align cleanly */
 .blog-content ul,
 .blog-content ol {
-  margin: 1rem 0 1.25rem 1.5rem;
-  padding-left: 1rem;
+  overflow: hidden;
+  margin: 0.9rem 0 1.4rem 0;
+  padding-left: 1.5rem;
 }
-.blog-content ul { list-style-type: disc; }
-.blog-content ol { list-style-type: decimal; }
-.blog-content li { margin-bottom: 0.4rem; }
+
+.blog-content ul {
+  list-style-type: disc;
+  list-style-position: outside;
+}
+
+.blog-content ol {
+  list-style-type: decimal;
+  list-style-position: outside;
+}
+
+.blog-content li {
+  margin-bottom: 0.55rem;
+  padding-left: 0.25rem;
+  line-height: 1.72;
+  color: #334155;
+}
+
+.blog-content li::marker {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.blog-content li > p {
+  display: inline;
+  margin: 0;
+}
 
 .blog-content blockquote {
+  overflow: hidden;
   border-left: 4px solid var(--primary);
-  background: #fff7ed;
+  background: linear-gradient(to right, #fff7ed, #fffdfa);
   padding: 1rem 1.25rem;
   margin: 1.5rem 0;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   color: #7c3d0f;
   font-style: italic;
+  box-shadow: 0 2px 10px rgba(249, 115, 22, 0.05);
 }
 
 .blog-content pre {
-  background: #1e293b;
+  overflow: hidden;
+  background: #0f172a;
   color: #e2e8f0;
   padding: 1.25rem;
-  border-radius: 0.75rem;
+  border-radius: 0.875rem;
   overflow-x: auto;
   margin: 1.5rem 0;
   font-size: 0.875rem;
@@ -321,11 +387,12 @@ input[type="number"] {
 }
 
 .blog-content code {
-  background: #f1f5f9;
+  background: #fff1e6;
   color: #c2410c;
-  padding: 0.15em 0.4em;
-  border-radius: 0.3em;
-  font-size: 0.85em;
+  padding: 0.15em 0.42em;
+  border-radius: 0.35em;
+  font-size: 0.86em;
+  font-weight: 600;
   font-family: ui-monospace, monospace;
 }
 
@@ -336,9 +403,10 @@ input[type="number"] {
 }
 
 .blog-content figure {
-  margin: 2rem auto;
+  margin: 1.75rem auto;
   max-width: 100%;
   display: block;
+  overflow: hidden;
 }
 
 .blog-content figure img {
@@ -355,24 +423,25 @@ input[type="number"] {
 
 .blog-content img {
   max-width: 100%;
-  border-radius: 0.75rem;
+  border-radius: 0.875rem;
   margin: 1.5rem auto;
   display: block;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
 }
 
 .blog-content iframe {
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: 0.75rem;
+  border-radius: 0.875rem;
   margin: 1.5rem auto;
   display: block;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
 }
 
 .blog-content hr {
+  overflow: hidden;
   border: none;
-  border-top: 2px solid #f1f5f9;
+  border-top: 1.5px solid #efe4d8;
   margin: 2rem 0;
 }
 
@@ -383,22 +452,25 @@ input[type="number"] {
   font-size: 0.9rem;
   overflow-x: auto;
   display: block;
+  border-radius: 0.75rem;
 }
 
 .blog-content th,
 .blog-content td {
-  border: 1px solid #e2e8f0;
-  padding: 0.6rem 0.9rem;
+  border: 1px solid #e6d7c7;
+  padding: 0.65rem 0.95rem;
   text-align: left;
 }
 
 .blog-content th {
   background: #fff7ed;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--navy);
 }
 
-.blog-content tr:nth-child(even) { background: #f8fafc; }
+.blog-content tr:nth-child(even) {
+  background: #fcfaf7;
+}
 
 /* Tiptap editor and placeholder */
 .tiptap {
@@ -892,4 +964,233 @@ input[type="number"] {
 @keyframes uiverseResetArrow {
   0% { transform: translateX(-40px); }
   100% { transform: translateX(0); }
+}
+
+
+/* ── Admin Matte Dark Theme Overrides ───────────────────────── */
+.admin-dark-theme {
+  color-scheme: dark;
+}
+
+.admin-dark-theme .bg-white,
+.admin-dark-theme .bg-white\/90,
+.admin-dark-theme .bg-white\/95 {
+  background-color: #161920 !important;
+}
+
+.admin-dark-theme .bg-slate-50,
+.admin-dark-theme .bg-slate-50\/40,
+.admin-dark-theme .bg-slate-50\/50,
+.admin-dark-theme .bg-slate-50\/60,
+.admin-dark-theme .bg-slate-50\/70,
+.admin-dark-theme .bg-slate-50\/80,
+.admin-dark-theme .bg-slate-100,
+.admin-dark-theme .bg-slate-100\/80,
+.admin-dark-theme .bg-slate-100\/90 {
+  background-color: #111318 !important;
+}
+
+.admin-dark-theme .border-slate-100,
+.admin-dark-theme .border-slate-200,
+.admin-dark-theme .border-slate-200\/60,
+.admin-dark-theme .border-slate-200\/70,
+.admin-dark-theme .border-slate-200\/80,
+.admin-dark-theme .border-slate-200\/90,
+.admin-dark-theme .border-slate-300 {
+  border-color: #262b35 !important;
+}
+
+.admin-dark-theme .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+.admin-dark-theme .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #262b35 !important;
+}
+
+.admin-dark-theme .text-slate-900,
+.admin-dark-theme .text-slate-800 {
+  color: #f4f4f5 !important;
+}
+
+.admin-dark-theme .text-slate-700,
+.admin-dark-theme .text-slate-600 {
+  color: #d4d4d8 !important;
+}
+
+.admin-dark-theme .text-slate-500,
+.admin-dark-theme .text-slate-400 {
+  color: #9ca3af !important;
+}
+
+/* Fix Hover States so buttons never turn blinding white or low-contrast */
+.admin-dark-theme .hover\:bg-slate-50:hover,
+.admin-dark-theme .hover\:bg-slate-50\/60:hover,
+.admin-dark-theme .hover\:bg-slate-100:hover,
+.admin-dark-theme .hover\:bg-slate-100\/80:hover,
+.admin-dark-theme .hover\:bg-slate-100\/90:hover {
+  background-color: #232832 !important;
+  color: #ffffff !important;
+}
+
+.admin-dark-theme .hover\:text-slate-900:hover,
+.admin-dark-theme .hover\:text-slate-800:hover,
+.admin-dark-theme .hover\:text-slate-700:hover {
+  color: #ffffff !important;
+}
+
+.admin-dark-theme .hover\:border-slate-300:hover {
+  border-color: #363d4a !important;
+}
+
+.admin-dark-theme .bg-orange-50,
+.admin-dark-theme .bg-orange-50\/30,
+.admin-dark-theme .bg-orange-50\/40,
+.admin-dark-theme .bg-orange-50\/50,
+.admin-dark-theme .bg-orange-50\/70,
+.admin-dark-theme .bg-orange-100 {
+  background-color: rgba(234, 88, 12, 0.12) !important;
+}
+
+.admin-dark-theme .hover\:bg-orange-50:hover,
+.admin-dark-theme .hover\:bg-orange-50\/20:hover,
+.admin-dark-theme .hover\:bg-orange-50\/30:hover,
+.admin-dark-theme .hover\:bg-orange-50\/40:hover,
+.admin-dark-theme .hover\:bg-orange-100:hover {
+  background-color: rgba(234, 88, 12, 0.2) !important;
+}
+
+.admin-dark-theme .border-orange-100,
+.admin-dark-theme .border-orange-200,
+.admin-dark-theme .border-orange-200\/60,
+.admin-dark-theme .border-orange-200\/70,
+.admin-dark-theme .border-orange-200\/80,
+.admin-dark-theme .border-orange-300 {
+  border-color: rgba(234, 88, 12, 0.28) !important;
+}
+
+.admin-dark-theme .text-orange-900,
+.admin-dark-theme .text-orange-800,
+.admin-dark-theme .text-orange-700,
+.admin-dark-theme .text-orange-600 {
+  color: #fb923c !important;
+}
+
+.admin-dark-theme .bg-emerald-50,
+.admin-dark-theme .bg-emerald-50\/70,
+.admin-dark-theme .bg-emerald-100 {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+}
+
+.admin-dark-theme .border-emerald-100,
+.admin-dark-theme .border-emerald-200 {
+  border-color: rgba(16, 185, 129, 0.28) !important;
+}
+
+.admin-dark-theme .text-emerald-950,
+.admin-dark-theme .text-emerald-800,
+.admin-dark-theme .text-emerald-700,
+.admin-dark-theme .text-emerald-600 {
+  color: #34d399 !important;
+}
+
+.admin-dark-theme .bg-red-50,
+.admin-dark-theme .bg-red-50\/30,
+.admin-dark-theme .bg-red-50\/50 {
+  background-color: rgba(239, 68, 68, 0.12) !important;
+}
+
+.admin-dark-theme .border-red-200,
+.admin-dark-theme .border-red-300 {
+  border-color: rgba(239, 68, 68, 0.28) !important;
+}
+
+.admin-dark-theme .text-red-700,
+.admin-dark-theme .text-red-600 {
+  color: #f87171 !important;
+}
+
+.admin-dark-theme input:not([type="checkbox"]),
+.admin-dark-theme textarea,
+.admin-dark-theme select {
+  background-color: #111318 !important;
+  color: #f4f4f5 !important;
+  border-color: #282d37 !important;
+}
+
+.admin-dark-theme input:not([type="checkbox"]):focus,
+.admin-dark-theme textarea:focus,
+.admin-dark-theme select:focus {
+  border-color: #ea580c !important;
+  box-shadow: none !important;
+}
+
+.admin-dark-theme .text-\[\#1a0dab\] {
+  color: #60a5fa !important;
+}
+
+/* InteractiveButton inside Matte Dark Admin Theme */
+.admin-dark-theme .uiverse-btn.uiverse-cta-orange {
+  background: #ea580c !important;
+  border-color: #f97316 !important;
+  box-shadow: none !important;
+}
+
+.admin-dark-theme .uiverse-btn.uiverse-cta-orange:hover {
+  background: #f97316 !important;
+}
+
+.admin-dark-theme .uiverse-cta-orange .uiverse-content {
+  color: #ffffff !important;
+}
+
+.admin-dark-theme .uiverse-cta-orange .uiverse-custom-icon {
+  background: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+}
+
+.admin-dark-theme .uiverse-cta-orange .uiverse-custom-icon > svg {
+  color: #ffffff !important;
+}
+
+/* RichEditor inside Matte Dark Admin Theme */
+.admin-dark-theme .tiptap {
+  color: #e4e4e7 !important;
+}
+
+.admin-dark-theme .tiptap h1,
+.admin-dark-theme .tiptap h2,
+.admin-dark-theme .tiptap h3,
+.admin-dark-theme .tiptap h4,
+.admin-dark-theme .tiptap strong {
+  color: #ffffff !important;
+}
+
+.admin-dark-theme .tiptap blockquote {
+  background-color: rgba(234, 88, 12, 0.1) !important;
+  border-left-color: #ea580c !important;
+  color: #fed7aa !important;
+}
+
+.admin-dark-theme .tiptap th {
+  background-color: #111318 !important;
+  color: #f4f4f5 !important;
+  border-color: #2c323e !important;
+}
+
+.admin-dark-theme .tiptap td {
+  border-color: #2c323e !important;
+}
+
+.admin-dark-theme .admin-rich-source .cm-editor {
+  background-color: #111318 !important;
+  color: #e4e4e7 !important;
+}
+
+.admin-dark-theme .admin-rich-source .cm-gutters {
+  background-color: #0f1115 !important;
+  border-right-color: #242933 !important;
+  color: #6b7280 !important;
+}
+
+.admin-dark-theme .admin-rich-source .cm-activeLine,
+.admin-dark-theme .admin-rich-source .cm-activeLineGutter {
+  background-color: #1a1e26 !important;
 }

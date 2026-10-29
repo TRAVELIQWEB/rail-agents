@@ -51,6 +51,14 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if (typeof body.focusKeyphrase === "string") body.focusKeyphrase = sanitizeText(body.focusKeyphrase);
   if (typeof body.featuredImageAlt === "string") body.featuredImageAlt = sanitizeText(body.featuredImageAlt);
   if (typeof body.featuredVideoUrl === "string") body.featuredVideoUrl = sanitizeText(body.featuredVideoUrl);
+  if (body.socialLinks && typeof body.socialLinks === "object") {
+    const sl = body.socialLinks as Record<string, unknown>;
+    body.socialLinks = {
+      instagram: typeof sl.instagram === "string" && sl.instagram.trim() ? sanitizeText(sl.instagram.trim()) : null,
+      facebook: typeof sl.facebook === "string" && sl.facebook.trim() ? sanitizeText(sl.facebook.trim()) : null,
+      youtube: typeof sl.youtube === "string" && sl.youtube.trim() ? sanitizeText(sl.youtube.trim()) : null,
+    };
+  }
   if (typeof body.canonicalUrl === "string") body.canonicalUrl = sanitizeText(body.canonicalUrl);
   if (Array.isArray(body.relatedPostIds)) {
     body.relatedPostIds = body.relatedPostIds.filter((id): id is string => typeof id === "string").map((id) => id.trim()).filter(Boolean);
@@ -88,4 +96,3 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     return NextResponse.json({ error: msg }, { status: 404 });
   }
 }
-
