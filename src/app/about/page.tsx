@@ -7,20 +7,16 @@ import {
   Calendar,
   CheckCircle2,
   FileCheck2,
-  FileText,
   HelpCircle,
   Info,
   MessageCircle,
-  PlayCircle,
   Scale,
-  Search,
   ShieldAlert,
   ShieldCheck,
   Train,
   UserCheck,
   Video,
   XCircle,
-  Zap,
 } from "lucide-react";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -228,6 +224,13 @@ export default function AboutPage() {
             "Ticket cancellation guidelines"
           ]
         },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": siteConfig.url },
+          { "@type": "ListItem", "position": 2, "name": "About", "item": `${siteConfig.url}/about` }
+        ]
       }
     ]
   };
@@ -237,7 +240,9 @@ export default function AboutPage() {
       {/* Search Engine Structured Data (JSON-LD) */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
       />
       <Header />
 
@@ -258,7 +263,7 @@ export default function AboutPage() {
 
           <div className="site-container relative z-10 flex flex-1 flex-col justify-between">
             <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-12">
-              
+
               {/* Left Column: Text & CTAs */}
               <div className="text-center md:text-left lg:col-span-7">
                 {/* Eyebrow */}
@@ -334,7 +339,7 @@ export default function AboutPage() {
                 <div className="relative w-full max-w-[420px] sm:max-w-[460px]">
                   {/* Subtle Background Backdrop Card */}
                   <div className="relative overflow-hidden rounded-3xl border border-[#fed7aa]/80 bg-gradient-to-b from-[#fff6ed] via-[#fff3e8] to-[#ffeedb] p-5 pt-6 text-center shadow-[0_16px_40px_rgba(15,39,71,0.06)] sm:p-6 sm:pt-7">
-                    
+
                     {/* Visual Frame */}
                     <div className="relative mx-auto aspect-[16/11] w-full overflow-hidden rounded-2xl border border-white/80 bg-white/60 shadow-xs sm:aspect-[4/3]">
                       <Image
@@ -431,7 +436,7 @@ export default function AboutPage() {
         <section className="bg-white py-12 sm:py-16 lg:py-20 border-b border-slate-100">
           <div className="site-container">
             <div className="grid gap-10 lg:grid-cols-12 lg:gap-12 xl:gap-14">
-              
+
               {/* Left Column: Story & Narrative (7 cols) */}
               <div className="lg:col-span-7">
                 <div className="mb-2.5 inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">
@@ -756,7 +761,7 @@ export default function AboutPage() {
         <section className="bg-white py-12 sm:py-16 lg:py-20 border-b border-slate-100">
           <div className="site-container">
             <div className="w-full rounded-3xl border border-slate-200/90 bg-[#fffdfa] p-6 sm:p-10 lg:p-12 shadow-xs">
-              
+
               <div className="grid gap-8 lg:grid-cols-12 lg:gap-12 items-start">
                 {/* Left Column (5 cols): Overview & Independent Disclaimer Callout */}
                 <div className="lg:col-span-5">
@@ -840,7 +845,7 @@ export default function AboutPage() {
         <section className="bg-[#fffdfa] py-12 sm:py-16 lg:py-20 border-b border-[#f4e4d4]">
           <div className="site-container">
             <div className="grid gap-10 lg:grid-cols-12 lg:gap-12 items-start">
-              
+
               {/* Left Column (5 cols): Sticky Sidebar */}
               <div className="lg:col-span-5 lg:sticky lg:top-24">
                 <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">
@@ -970,7 +975,7 @@ export default function AboutPage() {
         <section className="bg-[#fff8f2] py-12 sm:py-16 lg:py-20">
           <div className="site-container">
             <div className="relative isolate w-full overflow-hidden rounded-3xl border border-[#fed7aa] bg-gradient-to-br from-white via-[#fffaf5] to-[#ffeddd] p-8 text-center shadow-[0_12px_36px_rgba(15,39,71,0.06)] sm:p-12 lg:p-14">
-              
+
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-orange-200/40 blur-3xl"

@@ -12,14 +12,11 @@ import {
   HelpCircle,
   Clock,
   Train,
-  ArrowRight,
   ExternalLink,
   MessageCircle,
   Receipt,
   UserCheck,
   Building,
-  RotateCcw,
-  Zap,
   Info,
 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
@@ -133,9 +130,63 @@ export default function IrctcAgentRulesPage() {
   const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(
     "Hi RailAgents, I have a question regarding IRCTC agent rules, compliance, or booking regulations. Please guide me."
   )}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: "IRCTC Agent Rules & Regulations: Complete Guide",
+        description:
+          "Learn important IRCTC agent rules, booking dos and don'ts, service charges, customer records, cancellation and refund procedures, TDR guidance, and compliance responsibilities.",
+        url: `${siteConfig.url}/irctc-agent-rules-regulations`,
+        author: { "@type": "Person", name: "Nihal Singh", url: `${siteConfig.url}/about` },
+        publisher: {
+          "@type": "Organization",
+          "@id": `${siteConfig.url}/#organization`,
+          name: siteConfig.name,
+          url: siteConfig.url,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "IRCTC Agent",
+            item: `${siteConfig.url}/irctc-agent-registration`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: "Rules & Regulations",
+            item: `${siteConfig.url}/irctc-agent-rules-regulations`,
+          },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: FAQS.map((item) => ({
+          "@type": "Question",
+          name: item.q,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.a,
+          },
+        })),
+      },
+    ],
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-[#fffdfa] text-slate-800">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Header />
 
       {/* Breadcrumb Navigation */}
@@ -215,7 +266,7 @@ export default function IrctcAgentRulesPage() {
         ========================================================== */}
         <div className="site-container max-w-6xl py-10 sm:py-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
+
             {/* STICKY DESKTOP TABLE OF CONTENTS (25%) */}
             <aside className="lg:col-span-3 sticky top-24 self-start order-2 lg:order-1 print:hidden">
               <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-xs">

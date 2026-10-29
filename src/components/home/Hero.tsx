@@ -3,7 +3,6 @@ import {
   ArrowRight,
   BookOpen,
   Calculator,
-  CheckCircle2,
   CirclePlay,
   Compass,
   MessageCircle,

@@ -45,9 +45,23 @@ export const revalidate = 60;
 
 export default async function BlogPage() {
   const posts = await getPublishedPosts();
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${siteConfig.url}/blog` },
+    ],
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-[#fffdfa]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Header />
 
       <main className="relative flex-1 overflow-hidden">

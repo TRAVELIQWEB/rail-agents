@@ -219,12 +219,12 @@ export default function AdminLoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                     autoComplete="current-password"
-                    className="h-11 w-full rounded-xl border border-[#2a303c] bg-[#111318] px-3.5 pr-10 text-xs font-semibold text-zinc-100 outline-none transition placeholder:font-normal placeholder:text-zinc-500 focus:border-[#ea580c]"
+                    className="h-11 w-full rounded-xl border border-[#2a303c] bg-[#111318] px-3.5 pr-12 text-xs font-semibold text-zinc-100 outline-none transition placeholder:font-normal placeholder:text-zinc-500 focus:border-[#ea580c]"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
-                    className="absolute right-3 text-zinc-400 hover:text-zinc-200 cursor-pointer"
+                    className="absolute right-1 flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#f97316]"
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}

@@ -40,8 +40,23 @@ export const metadata: Metadata = {
 };
 
 export default function GuidesPage() {
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+      { "@type": "ListItem", position: 2, name: "Guides", item: `${siteConfig.url}/guides` },
+    ],
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-[#fff9f5]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Header />
 
       <main className="relative flex-1 overflow-hidden bg-[#fff9f5]">

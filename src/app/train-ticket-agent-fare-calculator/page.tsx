@@ -46,8 +46,46 @@ export const metadata: Metadata = {
 };
 
 export default function TrainTicketAgentFareCalculatorPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        name: "RailAgents IRCTC Agent Ticket Fare Calculator",
+        url: `${siteConfig.url}/train-ticket-agent-fare-calculator`,
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Any",
+        description:
+          "Calculate train ticket costs with a clear fare breakdown, including applicable IRCTC convenience fees, authorized agent service charges, and payment gateway charges.",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "INR",
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Train Ticket Fare Calculator",
+            item: `${siteConfig.url}/train-ticket-agent-fare-calculator`,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-[#fdfbf7]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Header />
 
       <main className="flex-1">

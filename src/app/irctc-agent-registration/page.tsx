@@ -8,20 +8,16 @@ import {
   CheckCircle2,
   Clock,
   ExternalLink,
-  FileCheck2,
-  HelpCircle,
   Info,
   Lock,
   MessageCircle,
   Receipt,
   RotateCcw,
   Scale,
-  ShieldAlert,
   ShieldCheck,
   Train,
   UserCheck,
   XCircle,
-  Zap,
 } from "lucide-react";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -80,20 +76,6 @@ const supportAreas = [
   },
 ];
 
-const TOC_SECTIONS = [
-  { id: "dos-and-donts", label: "Agent Do's & Don'ts" },
-  { id: "registration-overview", label: "Registration & PSP Architecture" },
-  { id: "booking-rules", label: "Customer Intake & Booking Rules" },
-  { id: "tatkal-regulations", label: "Tatkal Hours & 15-Min Lock" },
-  { id: "service-charges", label: "Prescribed Service Charges" },
-  { id: "cancellations-refunds", label: "Cancellations & Refund OTPs" },
-  { id: "tdr-guidance", label: "TDR Grounds & Limitations" },
-  { id: "account-security", label: "Account Security & Credentials" },
-  { id: "audit-records", label: "Record Keeping & Inspections" },
-  { id: "compliance-penalties", label: "Legal Risks & Penalties" },
-  { id: "daily-checklist", label: "Daily Compliance Checklist" },
-];
-
 const guideLinks = [
   {
     title: "IRCTC Agent Rules & Regulations Guide",
@@ -123,9 +105,46 @@ export default function IrctcAgentPage() {
     "Hi RailAgents, I have a question about IRCTC agent compliance and information. Please guide me.",
   );
   const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${whatsappMessage}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: "IRCTC Agent Guidance & Rules: Practical Compliance Guide",
+        description:
+          "Comprehensive guide for railway agents: IRCTC agent registration, booking rules, Tatkal restrictions, permissible service charges, cancellation OTPs, TDR, and compliance.",
+        url: `${siteConfig.url}/irctc-agent-registration`,
+        author: { "@type": "Person", name: "Nihal Singh", url: `${siteConfig.url}/about` },
+        publisher: {
+          "@type": "Organization",
+          "@id": `${siteConfig.url}/#organization`,
+          name: siteConfig.name,
+          url: siteConfig.url,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "IRCTC Agent Guidance & Rules",
+            item: `${siteConfig.url}/irctc-agent-registration`,
+          },
+        ],
+      },
+    ],
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-[#fffdfa] text-slate-800">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Header />
       <main className="relative flex-1 overflow-hidden">
 
@@ -200,10 +219,10 @@ export default function IrctcAgentPage() {
                     </span>
                     {[
                       { label: "Booking Rules", href: "#dos-and-donts" },
-                      { label: "Tatkal Timings", href: "#tatkal-rules" },
+                      { label: "Tatkal Timings", href: "#tatkal-regulations" },
                       { label: "Service Fees", href: "#service-charges" },
-                      { label: "OTP Refunds", href: "#cancellation-refunds" },
-                      { label: "Section 143", href: "#legal-compliance" },
+                      { label: "OTP Refunds", href: "#cancellations-refunds" },
+                      { label: "Section 143", href: "#compliance-penalties" },
                     ].map((pill) => (
                       <a
                         key={pill.label}
@@ -324,553 +343,553 @@ export default function IrctcAgentPage() {
         <div className="site-container max-w-5xl py-10 sm:py-14">
           <article className="space-y-10 sm:space-y-12 leading-relaxed min-w-0">
 
-              {/* ── 01. DO'S & DON'TS ── */}
-              <section id="dos-and-donts" className="group rounded-3xl border border-orange-200/90 bg-white p-6 sm:p-8 shadow-[0_4px_24px_rgba(249,115,22,0.06)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(249,115,22,0.12)] hover:border-orange-300 scroll-mt-24">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-amber-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                    01
-                  </span>
-                  <div>
-                    <span className="text-[11px] font-[800] uppercase tracking-wider text-[var(--primary-dark)]">Operational Baseline</span>
-                    <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
-                      IRCTC Agent Do&apos;s &amp; Don&apos;ts
-                    </h2>
-                  </div>
+            {/* ── 01. DO'S & DON'TS ── */}
+            <section id="dos-and-donts" className="group rounded-3xl border border-orange-200/90 bg-white p-6 sm:p-8 shadow-[0_4px_24px_rgba(249,115,22,0.06)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(249,115,22,0.12)] hover:border-orange-300 scroll-mt-24">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-amber-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  01
+                </span>
+                <div>
+                  <span className="text-[11px] font-[800] uppercase tracking-wider text-[var(--primary-dark)]">Operational Baseline</span>
+                  <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
+                    IRCTC Agent Do&apos;s &amp; Don&apos;ts
+                  </h2>
                 </div>
+              </div>
 
-                <p className="text-slate-600 text-sm mb-6 leading-relaxed">
-                  Every authorized agent must balance efficient customer service with strict procedural boundaries.
-                  Below are the definitive operational standards applicable to railway e-ticketing agents.
-                </p>
+              <p className="text-slate-600 text-sm mb-6 leading-relaxed">
+                Every authorized agent must balance efficient customer service with strict procedural boundaries.
+                Below are the definitive operational standards applicable to railway e-ticketing agents.
+              </p>
 
-                <div className="grid gap-5 md:grid-cols-2 items-stretch">
-                  {/* DO'S Column */}
-                  <div className="flex flex-col rounded-2xl border-2 border-emerald-200 bg-emerald-50/30 p-5 sm:p-6 shadow-xs transition-colors duration-200 hover:bg-emerald-50/50">
-                    <div className="flex items-center gap-2.5 pb-3 border-b border-emerald-200/80">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white shadow-xs">
-                        <CheckCircle2 className="h-4 w-4" />
-                      </span>
-                      <div>
-                        <h3 className="text-sm font-[850] text-emerald-950">DO&apos;S — Approved Practices</h3>
-                        <p className="text-[11px] text-emerald-800">Mandatory operating requirements</p>
-                      </div>
+              <div className="grid gap-5 md:grid-cols-2 items-stretch">
+                {/* DO'S Column */}
+                <div className="flex flex-col rounded-2xl border-2 border-emerald-200 bg-emerald-50/30 p-5 sm:p-6 shadow-xs transition-colors duration-200 hover:bg-emerald-50/50">
+                  <div className="flex items-center gap-2.5 pb-3 border-b border-emerald-200/80">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white shadow-xs">
+                      <CheckCircle2 className="h-4 w-4" />
+                    </span>
+                    <div>
+                      <h3 className="text-sm font-[850] text-emerald-950">DO&apos;S — Approved Practices</h3>
+                      <p className="text-[11px] text-emerald-800">Mandatory operating requirements</p>
                     </div>
-
-                    <ul className="mt-4 flex-1 space-y-3">
-                      <li className="flex items-start gap-2.5">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-slate-900">Commercial RSP Portal:</strong>
-                          <span className="block text-slate-600">Book exclusively via authorized Principal Service Provider portals.</span>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-slate-900">Passenger Mobile Entry:</strong>
-                          <span className="block text-slate-600">Enter customer&apos;s own active phone number for direct PNR and OTP delivery.</span>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-slate-900">Full ERS Slip Issuance:</strong>
-                          <span className="block text-slate-600">Hand over complete printed ticket showing agency details and official fare breakdown.</span>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-slate-900">Customer Requisition Records:</strong>
-                          <span className="block text-slate-600">Collect written or digital consent with passenger names and IDs.</span>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-slate-900">Standard Service Charges:</strong>
-                          <span className="block text-slate-600">Adhere strictly to official caps (₹20 Non-AC / ₹40 AC + GST) with receipts.</span>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-slate-900">Immediate OTP Refund:</strong>
-                          <span className="block text-slate-600">Disburse cancellation refunds promptly upon customer verification code authentication.</span>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-slate-900">Display Agent Certificate:</strong>
-                          <span className="block text-slate-600">Prominently display your authorized certificate and tariff board at your premises.</span>
-                        </div>
-                      </li>
-                    </ul>
                   </div>
 
-                  {/* DON'TS Column */}
-                  <div className="flex flex-col rounded-2xl border-2 border-red-200 bg-red-50/30 p-5 sm:p-6 shadow-xs transition-colors duration-200 hover:bg-red-50/50">
-                    <div className="flex items-center gap-2.5 pb-3 border-b border-red-200/80">
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-600 text-white shadow-xs">
-                        <XCircle className="h-4 w-4" />
-                      </span>
-                      <div>
-                        <h3 className="text-sm font-[850] text-red-950">DON&apos;TS — Prohibited Violations</h3>
-                        <p className="text-[11px] text-red-800">Actions causing penalties &amp; deactivation</p>
+                  <ul className="mt-4 flex-1 space-y-3">
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-slate-900">Commercial RSP Portal:</strong>
+                        <span className="block text-slate-600">Book exclusively via authorized Principal Service Provider portals.</span>
                       </div>
-                    </div>
-
-                    <ul className="mt-4 flex-1 space-y-3">
-                      <li className="flex items-start gap-2.5">
-                        <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-red-950">Personal Retail IDs:</strong>
-                          <span className="block text-slate-600">Never book commercial clients using retail IRCTC personal accounts.</span>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-red-950">Tatkal Window Bypassing:</strong>
-                          <span className="block text-slate-600">Do not attempt commercial booking during initial 15-min counter opening.</span>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-red-950">Automation &amp; Bots:</strong>
-                          <span className="block text-slate-600">Never deploy autofill plugins, Tatkal extension software, or bots.</span>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-red-950">Arbitrary Overcharging:</strong>
-                          <span className="block text-slate-600">Never charge unauthorized extra fees without an official agency receipt.</span>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-red-950">Credential &amp; OTP Sharing:</strong>
-                          <span className="block text-slate-600">Never share your digital certificate or master logins with third parties.</span>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-red-950">Ticket Slip Tampering:</strong>
-                          <span className="block text-slate-600">Never crop, modify, or conceal the official fare breakdown or agent info.</span>
-                        </div>
-                      </li>
-                      <li className="flex items-start gap-2.5">
-                        <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
-                        <div className="text-xs">
-                          <strong className="font-[800] text-red-950">Withholding Customer Refunds:</strong>
-                          <span className="block text-slate-600">Never delay cancellation disbursements or cancel seats without consent.</span>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </section>
-
-              {/* ── 02. REGISTRATION & PSP ARCHITECTURE ── */}
-              <section id="registration-overview" className="group rounded-3xl border border-blue-200/90 bg-gradient-to-br from-white to-blue-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(59,130,246,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(59,130,246,0.1)] hover:border-blue-300 scroll-mt-24">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                    02
-                  </span>
-                  <div>
-                    <span className="text-[11px] font-[800] uppercase tracking-wider text-blue-700">Licensing Structure</span>
-                    <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
-                      Registration &amp; PSP Architecture
-                    </h2>
-                  </div>
-                </div>
-
-                <p className="text-slate-600 text-sm mb-5 leading-relaxed">
-                  IRCTC does not generally appoint individual retail booking agents directly. Commercial ticketing operates
-                  under a structured two-tier hierarchy:
-                </p>
-
-                <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-2xs mb-4">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-blue-900 mb-2.5">
-                    Key Terminology: PSP vs. RSP
-                  </h4>
-                  <ul className="space-y-2.5 text-xs sm:text-sm text-slate-600">
-                    <li>
-                      <strong className="text-slate-900">Principal Service Provider (PSP):</strong> Corporate entities authorized
-                      directly by IRCTC (e.g., banks, major travel portals, government aggregators like CSC) to onboard sub-agents.
                     </li>
-                    <li>
-                      <strong className="text-slate-900">Retail Service Provider (RSP):</strong> The individual travel agent, shopkeeper,
-                      or commercial enterprise operating the booking terminal under an authorized PSP.
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-slate-900">Passenger Mobile Entry:</strong>
+                        <span className="block text-slate-600">Enter customer&apos;s own active phone number for direct PNR and OTP delivery.</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-slate-900">Full ERS Slip Issuance:</strong>
+                        <span className="block text-slate-600">Hand over complete printed ticket showing agency details and official fare breakdown.</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-slate-900">Customer Requisition Records:</strong>
+                        <span className="block text-slate-600">Collect written or digital consent with passenger names and IDs.</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-slate-900">Standard Service Charges:</strong>
+                        <span className="block text-slate-600">Adhere strictly to official caps (₹20 Non-AC / ₹40 AC + GST) with receipts.</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-slate-900">Immediate OTP Refund:</strong>
+                        <span className="block text-slate-600">Disburse cancellation refunds promptly upon customer verification code authentication.</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-slate-900">Display Agent Certificate:</strong>
+                        <span className="block text-slate-600">Prominently display your authorized certificate and tariff board at your premises.</span>
+                      </div>
                     </li>
                   </ul>
                 </div>
 
-                <div className="rounded-2xl border border-blue-200 bg-blue-50/70 p-4 text-xs text-blue-950">
-                  <h4 className="font-bold text-blue-900 mb-1 flex items-center gap-1.5">
-                    <Info className="h-4 w-4 text-blue-700" />
-                    Official Source Verification:
-                  </h4>
-                  <p className="text-blue-900/90 leading-relaxed">
-                    Always confirm your Principal Service Provider on the official IRCTC portal (
-                    <a
-                      href="https://contents.irctc.co.in/en/Agent_Policy.html"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline font-semibold hover:text-blue-950"
-                    >
-                      IRCTC Agent Policy Directory <ExternalLink className="inline h-3 w-3" />
-                    </a>
-                    ). Beware of unauthorized middlemen claiming direct IRCTC agency allotment.
-                  </p>
-                </div>
-              </section>
-
-              {/* ── 03. BOOKING RULES ── */}
-              <section id="booking-rules" className="group rounded-3xl border border-teal-200/90 bg-gradient-to-br from-white to-teal-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(20,184,166,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(20,184,166,0.1)] hover:border-teal-300 scroll-mt-24">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-teal-600 to-emerald-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                    03
-                  </span>
-                  <div>
-                    <span className="text-[11px] font-[800] uppercase tracking-wider text-teal-700">Passenger Intake</span>
-                    <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
-                      Customer Intake &amp; Booking Rules
-                    </h2>
-                  </div>
-                </div>
-
-                <p className="text-slate-600 text-sm mb-5 leading-relaxed">
-                  Daily ticket booking must strictly adhere to the procedures mandated by Indian Railways Coaching Tariff
-                  and IRCTC Agent Operations guidelines:
-                </p>
-
-                <div className="grid gap-3 sm:grid-cols-2 mb-4">
-                  <div className="rounded-2xl border border-teal-100 bg-white p-4 shadow-2xs">
-                    <h4 className="font-bold text-xs uppercase tracking-wider text-teal-900 mb-1.5 flex items-center gap-1.5">
-                      <UserCheck className="h-4 w-4 text-teal-600" />
-                      Passenger Mobile Number
-                    </h4>
-                    <p className="text-xs text-slate-600 leading-relaxed">
-                      You must enter the traveller&apos;s active mobile number. Entering agency phone numbers deprives passengers
-                      of departure updates and cancellation OTPs.
-                    </p>
+                {/* DON'TS Column */}
+                <div className="flex flex-col rounded-2xl border-2 border-red-200 bg-red-50/30 p-5 sm:p-6 shadow-xs transition-colors duration-200 hover:bg-red-50/50">
+                  <div className="flex items-center gap-2.5 pb-3 border-b border-red-200/80">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-600 text-white shadow-xs">
+                      <XCircle className="h-4 w-4" />
+                    </span>
+                    <div>
+                      <h3 className="text-sm font-[850] text-red-950">DON&apos;TS — Prohibited Violations</h3>
+                      <p className="text-[11px] text-red-800">Actions causing penalties &amp; deactivation</p>
+                    </div>
                   </div>
 
-                  <div className="rounded-2xl border border-teal-100 bg-white p-4 shadow-2xs">
-                    <h4 className="font-bold text-xs uppercase tracking-wider text-teal-900 mb-1.5 flex items-center gap-1.5">
-                      <Receipt className="h-4 w-4 text-teal-600" />
-                      Full ERS Delivery
-                    </h4>
-                    <p className="text-xs text-slate-600 leading-relaxed">
-                      Deliver the complete official Electronic Reservation Slip (ERS). The printed slip automatically displays
-                      agency credentials and railway fare breakdown.
-                    </p>
-                  </div>
+                  <ul className="mt-4 flex-1 space-y-3">
+                    <li className="flex items-start gap-2.5">
+                      <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-red-950">Personal Retail IDs:</strong>
+                        <span className="block text-slate-600">Never book commercial clients using retail IRCTC personal accounts.</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-red-950">Tatkal Window Bypassing:</strong>
+                        <span className="block text-slate-600">Do not attempt commercial booking during initial 15-min counter opening.</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-red-950">Automation &amp; Bots:</strong>
+                        <span className="block text-slate-600">Never deploy autofill plugins, Tatkal extension software, or bots.</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-red-950">Arbitrary Overcharging:</strong>
+                        <span className="block text-slate-600">Never charge unauthorized extra fees without an official agency receipt.</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-red-950">Credential &amp; OTP Sharing:</strong>
+                        <span className="block text-slate-600">Never share your digital certificate or master logins with third parties.</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-red-950">Ticket Slip Tampering:</strong>
+                        <span className="block text-slate-600">Never crop, modify, or conceal the official fare breakdown or agent info.</span>
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
+                      <div className="text-xs">
+                        <strong className="font-[800] text-red-950">Withholding Customer Refunds:</strong>
+                        <span className="block text-slate-600">Never delay cancellation disbursements or cancel seats without consent.</span>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
+              </div>
+            </section>
 
-                <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4 text-xs text-amber-950">
-                  <strong className="font-bold text-amber-900 block mb-1">Explaining Waitlist (WL) Realistically:</strong>
-                  Waitlist ticket status does not guarantee berth allotment. Fully waitlisted e-tickets whose names do not
-                  get confirmed after charting are automatically cancelled by Indian Railways system. Never misrepresent waitlists as guarantees.
+            {/* ── 02. REGISTRATION & PSP ARCHITECTURE ── */}
+            <section id="registration-overview" className="group rounded-3xl border border-blue-200/90 bg-gradient-to-br from-white to-blue-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(59,130,246,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(59,130,246,0.1)] hover:border-blue-300 scroll-mt-24">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  02
+                </span>
+                <div>
+                  <span className="text-[11px] font-[800] uppercase tracking-wider text-blue-700">Licensing Structure</span>
+                  <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
+                    Registration &amp; PSP Architecture
+                  </h2>
                 </div>
-              </section>
+              </div>
 
-              {/* ── 04. TATKAL REGULATIONS ── */}
-              <section id="tatkal-regulations" className="group rounded-3xl border border-amber-200/90 bg-gradient-to-br from-white to-amber-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(245,158,11,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(245,158,11,0.1)] hover:border-amber-300 scroll-mt-24">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                    04
-                  </span>
-                  <div>
-                    <span className="text-[11px] font-[800] uppercase tracking-wider text-amber-700">Strict Timings</span>
-                    <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
-                      Tatkal Hours &amp; 15-Minute Agent Lock
-                    </h2>
-                  </div>
-                </div>
+              <p className="text-slate-600 text-sm mb-5 leading-relaxed">
+                IRCTC does not generally appoint individual retail booking agents directly. Commercial ticketing operates
+                under a structured two-tier hierarchy:
+              </p>
 
-                <p className="text-slate-600 text-sm mb-5 leading-relaxed">
-                  To protect public travellers, Indian Railways enforces a mandatory initial 15-minute lock on commercial
-                  agents during quota openings:
-                </p>
-
-                <div className="overflow-x-auto rounded-2xl border border-amber-200/80 bg-white mb-4">
-                  <table className="w-full text-left text-xs sm:text-sm">
-                    <thead className="border-b border-amber-100 bg-amber-50/50 font-bold text-slate-800">
-                      <tr>
-                        <th className="p-3">Reservation Category</th>
-                        <th className="p-3">Counter / Public Opening</th>
-                        <th className="p-3">Authorized Agent Opening</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100 text-slate-600 text-xs">
-                      <tr>
-                        <td className="p-3 font-semibold text-slate-800">General Reservation (ARP)</td>
-                        <td className="p-3">08:00 AM</td>
-                        <td className="p-3 font-medium text-emerald-700">08:15 AM onwards</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 font-semibold text-slate-800">Tatkal AC Classes (1A, 2A, 3A, CC, 3E)</td>
-                        <td className="p-3">10:00 AM</td>
-                        <td className="p-3 font-medium text-emerald-700">10:15 AM onwards</td>
-                      </tr>
-                      <tr>
-                        <td className="p-3 font-semibold text-slate-800">Tatkal Non-AC Classes (SL, 2S)</td>
-                        <td className="p-3">11:00 AM</td>
-                        <td className="p-3 font-medium text-emerald-700">11:15 AM onwards</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  <strong className="text-red-900">Warning:</strong> Attempting to circumvent the 15-minute opening restriction using personal retail IDs
-                  is the single most common cause of Section 143 raids and agency blacklisting.
-                </p>
-              </section>
-
-              {/* ── 05. SERVICE CHARGES ── */}
-              <section id="service-charges" className="group rounded-3xl border border-emerald-200/90 bg-gradient-to-br from-white to-emerald-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(16,185,129,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(16,185,129,0.1)] hover:border-emerald-300 scroll-mt-24">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                    05
-                  </span>
-                  <div>
-                    <span className="text-[11px] font-[800] uppercase tracking-wider text-emerald-700">Permissible Fees</span>
-                    <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
-                      Prescribed Service Charges &amp; Transparency
-                    </h2>
-                  </div>
-                </div>
-
-                <p className="text-slate-600 text-sm mb-5 leading-relaxed">
-                  Under IRCTC Master Policy guidelines, commercial agents may collect specific authorized service fees per ticket:
-                </p>
-
-                <div className="grid gap-4 sm:grid-cols-2 mb-4">
-                  <div className="rounded-2xl border border-emerald-100 bg-white p-5 text-center shadow-2xs">
-                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">Non-AC Classes</span>
-                    <p className="mt-1.5 text-2xl font-[850] text-[var(--navy)]">₹20 <span className="text-xs font-normal text-slate-500">+ applicable GST</span></p>
-                    <p className="mt-1 text-[11px] text-slate-500">Per ticket (not per passenger), regardless of passenger count (up to 6).</p>
-                  </div>
-
-                  <div className="rounded-2xl border border-emerald-100 bg-white p-5 text-center shadow-2xs">
-                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">AC Classes</span>
-                    <p className="mt-1.5 text-2xl font-[850] text-[var(--navy)]">₹40 <span className="text-xs font-normal text-slate-500">+ applicable GST</span></p>
-                    <p className="mt-1 text-[11px] text-slate-500">Per ticket (not per passenger), regardless of AC tier.</p>
-                  </div>
-                </div>
-
-                <div className="rounded-2xl border border-emerald-100 bg-white p-4 text-xs text-slate-600 leading-relaxed shadow-2xs">
-                  <strong className="text-slate-900">Permissible Add-ons:</strong> Payment gateway convenience charges as billed
-                  by the provider may be passed through. Any fee beyond this without an official receipt is treated as illegal overcharging.
-                </div>
-              </section>
-
-              {/* ── 06. CANCELLATIONS & REFUND OTPS ── */}
-              <section id="cancellations-refunds" className="group rounded-3xl border border-rose-200/90 bg-gradient-to-br from-white to-rose-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(244,63,94,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(244,63,94,0.1)] hover:border-rose-300 scroll-mt-24">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rose-500 to-red-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                    06
-                  </span>
-                  <div>
-                    <span className="text-[11px] font-[800] uppercase tracking-wider text-rose-700">Refund Workflow</span>
-                    <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
-                      Cancellations &amp; Customer Refund OTPs
-                    </h2>
-                  </div>
-                </div>
-
-                <p className="text-slate-600 text-sm mb-5 leading-relaxed">
-                  To protect consumers against fraudulent ticket cancellations, IRCTC enforces a mandatory OTP-based
-                  refund verification workflow:
-                </p>
-
-                <ol className="list-decimal pl-5 space-y-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed mb-4">
+              <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-2xs mb-4">
+                <h4 className="font-bold text-xs uppercase tracking-wider text-blue-900 mb-2.5">
+                  Key Terminology: PSP vs. RSP
+                </h4>
+                <ul className="space-y-2.5 text-xs sm:text-sm text-slate-600">
                   <li>
-                    <strong>Customer Request:</strong> Cancellation must be initiated only upon customer written consent or instruction.
+                    <strong className="text-slate-900">Principal Service Provider (PSP):</strong> Corporate entities authorized
+                    directly by IRCTC (e.g., banks, major travel portals, government aggregators like CSC) to onboard sub-agents.
                   </li>
                   <li>
-                    <strong>Automated SMS Verification:</strong> IRCTC automatically generates a cancellation verification OTP sent directly to the customer&apos;s phone.
+                    <strong className="text-slate-900">Retail Service Provider (RSP):</strong> The individual travel agent, shopkeeper,
+                    or commercial enterprise operating the booking terminal under an authorized PSP.
                   </li>
-                  <li>
-                    <strong>Agent Authentication:</strong> The agent submits the passenger&apos;s OTP in their RSP portal to unlock the refund.
-                  </li>
-                  <li>
-                    <strong>Disbursement:</strong> The agent pays the customer the refund amount (fare minus official railway clerkage/cancellation charges) and provides the cancellation receipt.
-                  </li>
-                </ol>
-
-                <div className="rounded-2xl border border-rose-200 bg-rose-50/70 p-4 text-xs text-rose-950">
-                  <strong className="font-bold text-rose-900 block mb-1">Withholding Refunds is a Serious Infraction:</strong>
-                  Retaining cancelled ticket refund balances or delaying OTP verification is treated as commercial fraud under PSP operating terms.
-                </div>
-              </section>
-
-              {/* ── 07. TDR GUIDANCE ── */}
-              <section id="tdr-guidance" className="group rounded-3xl border border-purple-200/90 bg-gradient-to-br from-white to-purple-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(168,85,247,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(168,85,247,0.1)] hover:border-purple-300 scroll-mt-24">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                    07
-                  </span>
-                  <div>
-                    <span className="text-[11px] font-[800] uppercase tracking-wider text-purple-700">Special Claims</span>
-                    <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
-                      Ticket Deposit Receipt (TDR) Grounds &amp; Limitations
-                    </h2>
-                  </div>
-                </div>
-
-                <p className="text-slate-600 text-sm mb-5 leading-relaxed">
-                  A TDR is an official refund claims mechanism filed when a passenger was unable to travel due to railway
-                  operational reasons after charting has finalized:
-                </p>
-
-                <div className="grid gap-3 sm:grid-cols-2 mb-4 text-xs">
-                  <div className="rounded-2xl border border-purple-100 bg-white p-4 shadow-2xs">
-                    <strong className="font-bold text-purple-950 block mb-1.5">Common Valid TDR Grounds:</strong>
-                    <ul className="list-disc pl-4 space-y-1.5 text-slate-600">
-                      <li>Train running late by &gt; 3 hours and passenger not travelling.</li>
-                      <li>Train cancelled by Indian Railways.</li>
-                      <li>AC failure in coach where passenger traveled in lower class.</li>
-                      <li>Improper charting or passenger not accommodated.</li>
-                    </ul>
-                  </div>
-
-                  <div className="rounded-2xl border border-purple-100 bg-white p-4 shadow-2xs">
-                    <strong className="font-bold text-purple-950 block mb-1.5">Critical TDR Realities:</strong>
-                    <ul className="list-disc pl-4 space-y-1.5 text-slate-600">
-                      <li>TDR does not guarantee an automatic refund.</li>
-                      <li>Claims are reviewed by Zonal Railway Claims Offices against conductor charts.</li>
-                      <li>Strict filing window (typically within 72 hours of scheduled departure depending on ground).</li>
-                    </ul>
-                  </div>
-                </div>
-              </section>
-
-              {/* ── 08. ACCOUNT SECURITY ── */}
-              <section id="account-security" className="group rounded-3xl border border-sky-200/90 bg-gradient-to-br from-white to-sky-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(14,165,233,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(14,165,233,0.1)] hover:border-sky-300 scroll-mt-24">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-600 to-cyan-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                    08
-                  </span>
-                  <div>
-                    <span className="text-[11px] font-[800] uppercase tracking-wider text-sky-700">Digital Integrity</span>
-                    <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
-                      Account Security &amp; Credential Protection
-                    </h2>
-                  </div>
-                </div>
-
-                <p className="text-slate-600 text-sm mb-5 leading-relaxed">
-                  Your agent profile is strictly personal to your registered commercial premises:
-                </p>
-
-                <div className="rounded-2xl border border-sky-100 bg-white p-5 text-xs sm:text-sm text-slate-700 space-y-3 shadow-2xs">
-                  <p>
-                    <strong>Digital Signature (DSC) Tokens:</strong> Keep physical possession of your cryptographic token. Never allow remote desktop access (e.g. AnyDesk, TeamViewer) to unknown third parties.
-                  </p>
-                  <p>
-                    <strong>ID Non-Transferability:</strong> Never sub-lease, lend, or sell your agent ID. Operating multiple unregistered counters under a single RSP credential is an audit violation.
-                  </p>
-                  <p>
-                    <strong>Certificate Display:</strong> Keep your authorized IRCTC agency certificate printed and framed at your physical service counter.
-                  </p>
-                </div>
-              </section>
-
-              {/* ── 09. RECORD KEEPING ── */}
-              <section id="audit-records" className="group rounded-3xl border border-indigo-200/90 bg-gradient-to-br from-white to-indigo-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(99,102,241,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(99,102,241,0.1)] hover:border-indigo-300 scroll-mt-24">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-blue-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                    09
-                  </span>
-                  <div>
-                    <span className="text-[11px] font-[800] uppercase tracking-wider text-indigo-700">Audit Preparedness</span>
-                    <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
-                      Record Keeping &amp; Audit Inspections
-                    </h2>
-                  </div>
-                </div>
-
-                <p className="text-slate-600 text-sm mb-5 leading-relaxed">
-                  Railway Board vigilance officers and PSP inspectors have statutory authority to inspect agent premises.
-                  Agents should maintain:
-                </p>
-
-                <ul className="list-disc pl-5 space-y-2 text-xs sm:text-sm text-slate-600 mb-4">
-                  <li>Written booking requisition slips signed by customers (or verified digital records).</li>
-                  <li>Copies of ID proofs collected during Tatkal or quota requests.</li>
-                  <li>Daily transaction registers with PNR numbers, passenger contact info, and collected service fees.</li>
-                  <li>Cancellation and refund receipts with customer acknowledgment signatures or OTP logs.</li>
                 </ul>
+              </div>
 
-                <p className="text-xs text-slate-500 font-medium">
-                  Recommended retention period: Minimum 6 to 12 months as prescribed by your PSP operating manual.
+              <div className="rounded-2xl border border-blue-200 bg-blue-50/70 p-4 text-xs text-blue-950">
+                <h4 className="font-bold text-blue-900 mb-1 flex items-center gap-1.5">
+                  <Info className="h-4 w-4 text-blue-700" />
+                  Official Source Verification:
+                </h4>
+                <p className="text-blue-900/90 leading-relaxed">
+                  Always confirm your Principal Service Provider on the official IRCTC portal (
+                  <a
+                    href="https://contents.irctc.co.in/en/Agent_Policy.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline font-semibold hover:text-blue-950"
+                  >
+                    IRCTC Agent Policy Directory <ExternalLink className="inline h-3 w-3" />
+                  </a>
+                  ). Beware of unauthorized middlemen claiming direct IRCTC agency allotment.
                 </p>
-              </section>
+              </div>
+            </section>
 
-              {/* ── 10. COMPLIANCE & PENALTIES ── */}
-              <section id="compliance-penalties" className="group rounded-3xl border border-red-300 bg-gradient-to-br from-white to-red-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(239,68,68,0.06)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(239,68,68,0.12)] hover:border-red-400 scroll-mt-24">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-red-600 to-rose-700 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                    10
-                  </span>
-                  <div>
-                    <span className="text-[11px] font-[800] uppercase tracking-wider text-red-700">Statutory Liability</span>
-                    <h2 className="text-xl sm:text-2xl font-[850] text-red-950">
-                      Legal Risks &amp; Penalties Under Railways Act
-                    </h2>
-                  </div>
+            {/* ── 03. BOOKING RULES ── */}
+            <section id="booking-rules" className="group rounded-3xl border border-teal-200/90 bg-gradient-to-br from-white to-teal-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(20,184,166,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(20,184,166,0.1)] hover:border-teal-300 scroll-mt-24">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-teal-600 to-emerald-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  03
+                </span>
+                <div>
+                  <span className="text-[11px] font-[800] uppercase tracking-wider text-teal-700">Passenger Intake</span>
+                  <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
+                    Customer Intake &amp; Booking Rules
+                  </h2>
+                </div>
+              </div>
+
+              <p className="text-slate-600 text-sm mb-5 leading-relaxed">
+                Daily ticket booking must strictly adhere to the procedures mandated by Indian Railways Coaching Tariff
+                and IRCTC Agent Operations guidelines:
+              </p>
+
+              <div className="grid gap-3 sm:grid-cols-2 mb-4">
+                <div className="rounded-2xl border border-teal-100 bg-white p-4 shadow-2xs">
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-teal-900 mb-1.5 flex items-center gap-1.5">
+                    <UserCheck className="h-4 w-4 text-teal-600" />
+                    Passenger Mobile Number
+                  </h4>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    You must enter the traveller&apos;s active mobile number. Entering agency phone numbers deprives passengers
+                    of departure updates and cancellation OTPs.
+                  </p>
                 </div>
 
-                <p className="text-slate-600 text-sm mb-5 leading-relaxed">
-                  Violations carry escalating consequences under railway regulations:
-                </p>
-
-                <div className="space-y-3">
-                  <div className="rounded-2xl border border-red-200 bg-red-50/60 p-4 text-xs sm:text-sm shadow-2xs">
-                    <strong className="text-red-900 block font-bold mb-1">Section 143 of The Railways Act, 1989:</strong>
-                    Unauthorized procurement and supply of railway tickets for commercial gain carries imprisonment up to 3 years and/or monetary fines.
-                  </div>
-
-                  <div className="rounded-2xl border border-slate-200 bg-white p-4 text-xs sm:text-sm shadow-2xs">
-                    <strong className="text-slate-900 block font-bold mb-1">Administrative PSP Sanctions:</strong>
-                    Monetary fines per incident, forfeiture of rolling deposit balances, temporary terminal suspension, and permanent blacklisting of PAN and business Aadhaar.
-                  </div>
+                <div className="rounded-2xl border border-teal-100 bg-white p-4 shadow-2xs">
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-teal-900 mb-1.5 flex items-center gap-1.5">
+                    <Receipt className="h-4 w-4 text-teal-600" />
+                    Full ERS Delivery
+                  </h4>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Deliver the complete official Electronic Reservation Slip (ERS). The printed slip automatically displays
+                    agency credentials and railway fare breakdown.
+                  </p>
                 </div>
-              </section>
+              </div>
 
-              {/* ── 11. DAILY COMPLIANCE CHECKLIST ── */}
-              <section id="daily-checklist" className="group rounded-3xl border border-orange-300/90 bg-gradient-to-br from-white to-orange-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(249,115,22,0.06)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(249,115,22,0.12)] hover:border-orange-400 scroll-mt-24">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-600 to-amber-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                    11
-                  </span>
-                  <div>
-                    <span className="text-[11px] font-[800] uppercase tracking-wider text-[var(--primary-dark)]">Interactive Tool</span>
-                    <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
-                      Interactive Daily Compliance Checklist
-                    </h2>
-                  </div>
+              <div className="rounded-2xl border border-amber-200 bg-amber-50/70 p-4 text-xs text-amber-950">
+                <strong className="font-bold text-amber-900 block mb-1">Explaining Waitlist (WL) Realistically:</strong>
+                Waitlist ticket status does not guarantee berth allotment. Fully waitlisted e-tickets whose names do not
+                get confirmed after charting are automatically cancelled by Indian Railways system. Never misrepresent waitlists as guarantees.
+              </div>
+            </section>
+
+            {/* ── 04. TATKAL REGULATIONS ── */}
+            <section id="tatkal-regulations" className="group rounded-3xl border border-amber-200/90 bg-gradient-to-br from-white to-amber-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(245,158,11,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(245,158,11,0.1)] hover:border-amber-300 scroll-mt-24">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  04
+                </span>
+                <div>
+                  <span className="text-[11px] font-[800] uppercase tracking-wider text-amber-700">Strict Timings</span>
+                  <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
+                    Tatkal Hours &amp; 15-Minute Agent Lock
+                  </h2>
+                </div>
+              </div>
+
+              <p className="text-slate-600 text-sm mb-5 leading-relaxed">
+                To protect public travellers, Indian Railways enforces a mandatory initial 15-minute lock on commercial
+                agents during quota openings:
+              </p>
+
+              <div className="overflow-x-auto rounded-2xl border border-amber-200/80 bg-white mb-4">
+                <table className="w-full text-left text-xs sm:text-sm">
+                  <thead className="border-b border-amber-100 bg-amber-50/50 font-bold text-slate-800">
+                    <tr>
+                      <th className="p-3">Reservation Category</th>
+                      <th className="p-3">Counter / Public Opening</th>
+                      <th className="p-3">Authorized Agent Opening</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 text-slate-600 text-xs">
+                    <tr>
+                      <td className="p-3 font-semibold text-slate-800">General Reservation (ARP)</td>
+                      <td className="p-3">08:00 AM</td>
+                      <td className="p-3 font-medium text-emerald-700">08:15 AM onwards</td>
+                    </tr>
+                    <tr>
+                      <td className="p-3 font-semibold text-slate-800">Tatkal AC Classes (1A, 2A, 3A, CC, 3E)</td>
+                      <td className="p-3">10:00 AM</td>
+                      <td className="p-3 font-medium text-emerald-700">10:15 AM onwards</td>
+                    </tr>
+                    <tr>
+                      <td className="p-3 font-semibold text-slate-800">Tatkal Non-AC Classes (SL, 2S)</td>
+                      <td className="p-3">11:00 AM</td>
+                      <td className="p-3 font-medium text-emerald-700">11:15 AM onwards</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p className="text-xs text-slate-600 leading-relaxed">
+                <strong className="text-red-900">Warning:</strong> Attempting to circumvent the 15-minute opening restriction using personal retail IDs
+                is the single most common cause of Section 143 raids and agency blacklisting.
+              </p>
+            </section>
+
+            {/* ── 05. SERVICE CHARGES ── */}
+            <section id="service-charges" className="group rounded-3xl border border-emerald-200/90 bg-gradient-to-br from-white to-emerald-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(16,185,129,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(16,185,129,0.1)] hover:border-emerald-300 scroll-mt-24">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  05
+                </span>
+                <div>
+                  <span className="text-[11px] font-[800] uppercase tracking-wider text-emerald-700">Permissible Fees</span>
+                  <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
+                    Prescribed Service Charges &amp; Transparency
+                  </h2>
+                </div>
+              </div>
+
+              <p className="text-slate-600 text-sm mb-5 leading-relaxed">
+                Under IRCTC Master Policy guidelines, commercial agents may collect specific authorized service fees per ticket:
+              </p>
+
+              <div className="grid gap-4 sm:grid-cols-2 mb-4">
+                <div className="rounded-2xl border border-emerald-100 bg-white p-5 text-center shadow-2xs">
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">Non-AC Classes</span>
+                  <p className="mt-1.5 text-2xl font-[850] text-[var(--navy)]">₹20 <span className="text-xs font-normal text-slate-500">+ applicable GST</span></p>
+                  <p className="mt-1 text-[11px] text-slate-500">Per ticket (not per passenger), regardless of passenger count (up to 6).</p>
                 </div>
 
-                <p className="text-slate-600 text-sm mb-6 leading-relaxed">
-                  Use this interactive checklist at your booking desk every morning to ensure your counter operates
-                  with 100% compliance:
+                <div className="rounded-2xl border border-emerald-100 bg-white p-5 text-center shadow-2xs">
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-700">AC Classes</span>
+                  <p className="mt-1.5 text-2xl font-[850] text-[var(--navy)]">₹40 <span className="text-xs font-normal text-slate-500">+ applicable GST</span></p>
+                  <p className="mt-1 text-[11px] text-slate-500">Per ticket (not per passenger), regardless of AC tier.</p>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-emerald-100 bg-white p-4 text-xs text-slate-600 leading-relaxed shadow-2xs">
+                <strong className="text-slate-900">Permissible Add-ons:</strong> Payment gateway convenience charges as billed
+                by the provider may be passed through. Any fee beyond this without an official receipt is treated as illegal overcharging.
+              </div>
+            </section>
+
+            {/* ── 06. CANCELLATIONS & REFUND OTPS ── */}
+            <section id="cancellations-refunds" className="group rounded-3xl border border-rose-200/90 bg-gradient-to-br from-white to-rose-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(244,63,94,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(244,63,94,0.1)] hover:border-rose-300 scroll-mt-24">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rose-500 to-red-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  06
+                </span>
+                <div>
+                  <span className="text-[11px] font-[800] uppercase tracking-wider text-rose-700">Refund Workflow</span>
+                  <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
+                    Cancellations &amp; Customer Refund OTPs
+                  </h2>
+                </div>
+              </div>
+
+              <p className="text-slate-600 text-sm mb-5 leading-relaxed">
+                To protect consumers against fraudulent ticket cancellations, IRCTC enforces a mandatory OTP-based
+                refund verification workflow:
+              </p>
+
+              <ol className="list-decimal pl-5 space-y-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed mb-4">
+                <li>
+                  <strong>Customer Request:</strong> Cancellation must be initiated only upon customer written consent or instruction.
+                </li>
+                <li>
+                  <strong>Automated SMS Verification:</strong> IRCTC automatically generates a cancellation verification OTP sent directly to the customer&apos;s phone.
+                </li>
+                <li>
+                  <strong>Agent Authentication:</strong> The agent submits the passenger&apos;s OTP in their RSP portal to unlock the refund.
+                </li>
+                <li>
+                  <strong>Disbursement:</strong> The agent pays the customer the refund amount (fare minus official railway clerkage/cancellation charges) and provides the cancellation receipt.
+                </li>
+              </ol>
+
+              <div className="rounded-2xl border border-rose-200 bg-rose-50/70 p-4 text-xs text-rose-950">
+                <strong className="font-bold text-rose-900 block mb-1">Withholding Refunds is a Serious Infraction:</strong>
+                Retaining cancelled ticket refund balances or delaying OTP verification is treated as commercial fraud under PSP operating terms.
+              </div>
+            </section>
+
+            {/* ── 07. TDR GUIDANCE ── */}
+            <section id="tdr-guidance" className="group rounded-3xl border border-purple-200/90 bg-gradient-to-br from-white to-purple-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(168,85,247,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(168,85,247,0.1)] hover:border-purple-300 scroll-mt-24">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-indigo-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  07
+                </span>
+                <div>
+                  <span className="text-[11px] font-[800] uppercase tracking-wider text-purple-700">Special Claims</span>
+                  <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
+                    Ticket Deposit Receipt (TDR) Grounds &amp; Limitations
+                  </h2>
+                </div>
+              </div>
+
+              <p className="text-slate-600 text-sm mb-5 leading-relaxed">
+                A TDR is an official refund claims mechanism filed when a passenger was unable to travel due to railway
+                operational reasons after charting has finalized:
+              </p>
+
+              <div className="grid gap-3 sm:grid-cols-2 mb-4 text-xs">
+                <div className="rounded-2xl border border-purple-100 bg-white p-4 shadow-2xs">
+                  <strong className="font-bold text-purple-950 block mb-1.5">Common Valid TDR Grounds:</strong>
+                  <ul className="list-disc pl-4 space-y-1.5 text-slate-600">
+                    <li>Train running late by &gt; 3 hours and passenger not travelling.</li>
+                    <li>Train cancelled by Indian Railways.</li>
+                    <li>AC failure in coach where passenger traveled in lower class.</li>
+                    <li>Improper charting or passenger not accommodated.</li>
+                  </ul>
+                </div>
+
+                <div className="rounded-2xl border border-purple-100 bg-white p-4 shadow-2xs">
+                  <strong className="font-bold text-purple-950 block mb-1.5">Critical TDR Realities:</strong>
+                  <ul className="list-disc pl-4 space-y-1.5 text-slate-600">
+                    <li>TDR does not guarantee an automatic refund.</li>
+                    <li>Claims are reviewed by Zonal Railway Claims Offices against conductor charts.</li>
+                    <li>Strict filing window (typically within 72 hours of scheduled departure depending on ground).</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            {/* ── 08. ACCOUNT SECURITY ── */}
+            <section id="account-security" className="group rounded-3xl border border-sky-200/90 bg-gradient-to-br from-white to-sky-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(14,165,233,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(14,165,233,0.1)] hover:border-sky-300 scroll-mt-24">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-600 to-cyan-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  08
+                </span>
+                <div>
+                  <span className="text-[11px] font-[800] uppercase tracking-wider text-sky-700">Digital Integrity</span>
+                  <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
+                    Account Security &amp; Credential Protection
+                  </h2>
+                </div>
+              </div>
+
+              <p className="text-slate-600 text-sm mb-5 leading-relaxed">
+                Your agent profile is strictly personal to your registered commercial premises:
+              </p>
+
+              <div className="rounded-2xl border border-sky-100 bg-white p-5 text-xs sm:text-sm text-slate-700 space-y-3 shadow-2xs">
+                <p>
+                  <strong>Digital Signature (DSC) Tokens:</strong> Keep physical possession of your cryptographic token. Never allow remote desktop access (e.g. AnyDesk, TeamViewer) to unknown third parties.
                 </p>
+                <p>
+                  <strong>ID Non-Transferability:</strong> Never sub-lease, lend, or sell your agent ID. Operating multiple unregistered counters under a single RSP credential is an audit violation.
+                </p>
+                <p>
+                  <strong>Certificate Display:</strong> Keep your authorized IRCTC agency certificate printed and framed at your physical service counter.
+                </p>
+              </div>
+            </section>
 
-                <AgentComplianceChecklist />
-              </section>
+            {/* ── 09. RECORD KEEPING ── */}
+            <section id="audit-records" className="group rounded-3xl border border-indigo-200/90 bg-gradient-to-br from-white to-indigo-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(99,102,241,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(99,102,241,0.1)] hover:border-indigo-300 scroll-mt-24">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-600 to-blue-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  09
+                </span>
+                <div>
+                  <span className="text-[11px] font-[800] uppercase tracking-wider text-indigo-700">Audit Preparedness</span>
+                  <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
+                    Record Keeping &amp; Audit Inspections
+                  </h2>
+                </div>
+              </div>
 
-            </article>
-          </div>
+              <p className="text-slate-600 text-sm mb-5 leading-relaxed">
+                Railway Board vigilance officers and PSP inspectors have statutory authority to inspect agent premises.
+                Agents should maintain:
+              </p>
+
+              <ul className="list-disc pl-5 space-y-2 text-xs sm:text-sm text-slate-600 mb-4">
+                <li>Written booking requisition slips signed by customers (or verified digital records).</li>
+                <li>Copies of ID proofs collected during Tatkal or quota requests.</li>
+                <li>Daily transaction registers with PNR numbers, passenger contact info, and collected service fees.</li>
+                <li>Cancellation and refund receipts with customer acknowledgment signatures or OTP logs.</li>
+              </ul>
+
+              <p className="text-xs text-slate-500 font-medium">
+                Recommended retention period: Minimum 6 to 12 months as prescribed by your PSP operating manual.
+              </p>
+            </section>
+
+            {/* ── 10. COMPLIANCE & PENALTIES ── */}
+            <section id="compliance-penalties" className="group rounded-3xl border border-red-300 bg-gradient-to-br from-white to-red-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(239,68,68,0.06)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(239,68,68,0.12)] hover:border-red-400 scroll-mt-24">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-red-600 to-rose-700 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  10
+                </span>
+                <div>
+                  <span className="text-[11px] font-[800] uppercase tracking-wider text-red-700">Statutory Liability</span>
+                  <h2 className="text-xl sm:text-2xl font-[850] text-red-950">
+                    Legal Risks &amp; Penalties Under Railways Act
+                  </h2>
+                </div>
+              </div>
+
+              <p className="text-slate-600 text-sm mb-5 leading-relaxed">
+                Violations carry escalating consequences under railway regulations:
+              </p>
+
+              <div className="space-y-3">
+                <div className="rounded-2xl border border-red-200 bg-red-50/60 p-4 text-xs sm:text-sm shadow-2xs">
+                  <strong className="text-red-900 block font-bold mb-1">Section 143 of The Railways Act, 1989:</strong>
+                  Unauthorized procurement and supply of railway tickets for commercial gain carries imprisonment up to 3 years and/or monetary fines.
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 bg-white p-4 text-xs sm:text-sm shadow-2xs">
+                  <strong className="text-slate-900 block font-bold mb-1">Administrative PSP Sanctions:</strong>
+                  Monetary fines per incident, forfeiture of rolling deposit balances, temporary terminal suspension, and permanent blacklisting of PAN and business Aadhaar.
+                </div>
+              </div>
+            </section>
+
+            {/* ── 11. DAILY COMPLIANCE CHECKLIST ── */}
+            <section id="daily-checklist" className="group rounded-3xl border border-orange-300/90 bg-gradient-to-br from-white to-orange-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(249,115,22,0.06)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(249,115,22,0.12)] hover:border-orange-400 scroll-mt-24">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-600 to-amber-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  11
+                </span>
+                <div>
+                  <span className="text-[11px] font-[800] uppercase tracking-wider text-[var(--primary-dark)]">Interactive Tool</span>
+                  <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
+                    Interactive Daily Compliance Checklist
+                  </h2>
+                </div>
+              </div>
+
+              <p className="text-slate-600 text-sm mb-6 leading-relaxed">
+                Use this interactive checklist at your booking desk every morning to ensure your counter operates
+                with 100% compliance:
+              </p>
+
+              <AgentComplianceChecklist />
+            </section>
+
+          </article>
+        </div>
 
         {/* ══ 5. FARE CALCULATOR SECTION ══ */}
         <section className="border-t border-[#f0e1d5] bg-white py-8 sm:py-10">

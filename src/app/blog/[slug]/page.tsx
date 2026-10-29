@@ -1,7 +1,7 @@
 // Public /blog/[slug] — individual blog post page
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPostBySlug, getPublishedPosts } from "@/lib/posts";
+import { getPostBySlug, getPublishedPosts, isPostPubliclyVisible } from "@/lib/posts";
 import { sanitizeHtml } from "@/lib/sanitize";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -30,7 +30,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  if (!post || post.status !== "published") return {};
+  if (!post || !isPostPubliclyVisible(post)) return {};
 
   const canonicalUrl = post.canonicalUrl ?? `${siteConfig.url}/blog/${slug}`;
   const socialVideo = parseSocialVideoUrl(post.featuredVideoUrl);
@@ -77,7 +77,7 @@ export default async function BlogPostPage({ params }: Props) {
   const post = await getPostBySlug(slug);
 
   // 404 for unpublished posts — never expose drafts
-  if (!post || post.status !== "published") {
+  if (!post || !isPostPubliclyVisible(post)) {
     notFound();
   }
 

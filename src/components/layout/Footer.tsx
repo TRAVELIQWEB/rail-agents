@@ -95,17 +95,7 @@ export function Footer() {
 
         <div className="mt-6 flex flex-col items-center gap-2 border-t border-white/15 pt-4 text-center text-[0.8125rem] text-white/65 sm:flex-row sm:justify-between sm:text-left">
           <p>&copy; {currentYear} RailAgents. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <p>Made with care for railway agents across India</p>
-            <span className="text-white/30">•</span>
-            <InternalLink
-              href="/admin/login"
-              prefetch={false}
-              className="text-xs text-white/50 transition-colors hover:text-white/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
-            >
-              Admin Login
-            </InternalLink>
-          </div>
+          <p>Made with care for railway agents across India</p>
         </div>
       </div>
     </footer>

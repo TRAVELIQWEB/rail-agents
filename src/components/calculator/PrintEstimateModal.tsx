@@ -384,8 +384,8 @@ export function PrintEstimateModal({
                     </td>
                     <td className="py-2.5 px-3 sm:px-4 text-center text-xs text-slate-600">
                       {result.railwayFare <= 2000
-                        ? "Fare ≤ ₹2,000 → Flat ₹0.75"
-                        : "Fare > ₹2,000 → 1.00% of Base Fare"}
+                        ? "Fare ≤ ₹2,000 → 0.75% on (Fare + IRCTC)"
+                        : "Fare > ₹2,000 → 1.00% on (Fare + IRCTC)"}
                     </td>
                     <td className="py-2.5 px-3 sm:px-4 text-right font-semibold text-[var(--primary-dark)]">
                       {formatINR(result.pgCharge)}

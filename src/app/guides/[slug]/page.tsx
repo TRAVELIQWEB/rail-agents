@@ -55,22 +55,40 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
     `Hi RailAgents, I have a question about: ${guide.title}. Please guide me.`,
   );
   const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${whatsappMessage}`;
-  const breadcrumbJsonLd = {
+  const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+    "@graph": [
       {
-        "@type": "ListItem",
-        position: 2,
-        name: "Guides",
-        item: `${siteConfig.url}/guides`,
+        "@type": "Article",
+        headline: guide.title,
+        description: guide.summary,
+        dateModified: `${guide.updatedAt}T00:00:00.000Z`,
+        url: `${siteConfig.url}/guides/${guide.slug}`,
+        author: { "@type": "Person", name: "Nihal Singh", url: `${siteConfig.url}/about` },
+        publisher: {
+          "@type": "Organization",
+          "@id": `${siteConfig.url}/#organization`,
+          name: siteConfig.name,
+          url: siteConfig.url,
+        },
       },
       {
-        "@type": "ListItem",
-        position: 3,
-        name: guide.title,
-        item: `${siteConfig.url}/guides/${guide.slug}`,
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Guides",
+            item: `${siteConfig.url}/guides`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: guide.title,
+            item: `${siteConfig.url}/guides/${guide.slug}`,
+          },
+        ],
       },
     ],
   };
@@ -80,7 +98,7 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
       <Header />

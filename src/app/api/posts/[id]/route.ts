@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getAdminIronSession, isAdminUiPreviewEnabled } from "@/lib/auth";
 import { isAdminSessionValid } from "@/lib/admin-session-validation";
-import { getPostById, updatePost, deletePost } from "@/lib/posts";
+import { getPostById, updatePost, deletePost, isPostPubliclyVisible } from "@/lib/posts";
 import { sanitizeHtml, sanitizeText } from "@/lib/sanitize";
 
 async function isAdmin() {
@@ -22,8 +22,8 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
   if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   const admin = await isAdmin();
-  // Non-admins can only see published posts
-  if (!admin && post.status !== "published") {
+  // Non-admins can only see publicly visible (published or due-scheduled) posts
+  if (!admin && !isPostPubliclyVisible(post)) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
   return NextResponse.json(post);

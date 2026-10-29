@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { BlogPost } from "@/types/blog";
@@ -203,16 +203,15 @@ function PostMediaThumbnail({
 
 export function BlogList({ posts }: BlogListProps) {
   const searchParams = useSearchParams();
-  const initialQ = searchParams.get("q") ?? "";
-  const [search, setSearch] = useState(initialQ);
+  const qParam = searchParams.get("q") ?? "";
+  const [prevQParam, setPrevQParam] = useState(qParam);
+  const [search, setSearch] = useState(qParam);
   const [activeCategory, setActiveCategory] = useState("All");
 
-  useEffect(() => {
-    const qParam = searchParams.get("q");
-    if (qParam !== null) {
-      setSearch(qParam);
-    }
-  }, [searchParams]);
+  if (qParam !== prevQParam) {
+    setPrevQParam(qParam);
+    setSearch(qParam);
+  }
 
   // Determine dynamic categories from published posts
   const availableCategories = ["All", ...Array.from(new Set(posts.map((p) => p.category)))];

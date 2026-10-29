@@ -751,46 +751,50 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
 
   return (
     <div className="overflow-hidden bg-white flex flex-col flex-1 h-full">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-slate-50/80 px-3.5 py-2.5 sm:px-4 flex-shrink-0">
-        <div className="inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-2xs" role="group" aria-label="Editor view mode">
+      <div className="flex flex-col gap-2 border-b border-slate-200 bg-slate-50/80 px-2.5 py-2.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3 sm:px-4 flex-shrink-0">
+        <div className="grid w-full grid-cols-3 gap-1 rounded-xl border border-slate-200 bg-white p-1 shadow-2xs sm:inline-flex sm:w-auto" role="group" aria-label="Editor view mode">
           <button
             type="button"
             aria-pressed={mode === "visual"}
             onClick={() => handleModeChange("visual")}
-            className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition cursor-pointer ${
+            className={`min-h-11 min-w-0 rounded-lg px-1 py-2 text-[11px] leading-tight font-bold transition cursor-pointer sm:px-3.5 sm:py-1.5 sm:text-xs ${
               mode === "visual"
                 ? "bg-orange-600 text-white shadow-sm shadow-orange-600/20"
                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            Visual Editor
+            <span className="sm:hidden">Visual</span>
+            <span className="hidden sm:inline">Visual Editor</span>
           </button>
           <button
             type="button"
             aria-pressed={mode === "html"}
             onClick={() => handleModeChange("html")}
-            className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition cursor-pointer ${
+            aria-label="Advanced: Edit HTML"
+            className={`min-h-11 min-w-0 rounded-lg px-1 py-2 text-[11px] leading-tight font-bold transition cursor-pointer sm:px-3.5 sm:py-1.5 sm:text-xs ${
               mode === "html"
                 ? "bg-orange-600 text-white shadow-sm shadow-orange-600/20"
                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            &lt;/&gt; Advanced: Edit HTML
+            <span className="sm:hidden">HTML</span>
+            <span className="hidden sm:inline">&lt;/&gt; Advanced: Edit HTML</span>
           </button>
           <button
             type="button"
             aria-pressed={mode === "split"}
             onClick={() => handleModeChange("split")}
-            className={`rounded-lg px-3.5 py-1.5 text-xs font-bold transition cursor-pointer ${
+            className={`min-h-11 min-w-0 rounded-lg px-1 py-2 text-[11px] leading-tight font-bold transition cursor-pointer sm:px-3.5 sm:py-1.5 sm:text-xs ${
               mode === "split"
                 ? "bg-orange-600 text-white shadow-sm shadow-orange-600/20"
                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
             }`}
           >
-            Split View
+            <span className="sm:hidden">Split</span>
+            <span className="hidden sm:inline">Split View</span>
           </button>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex min-w-0 flex-wrap items-center gap-2 sm:justify-end">
           {mode !== "visual" && (
             <span className="rounded-md bg-orange-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-orange-800">
               HTML Mode Active
@@ -1389,4 +1393,3 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
     </div>
   );
 }
-

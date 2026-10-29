@@ -17,8 +17,7 @@ async function isAdmin() {
   return isAdminSessionValid(session.admin);
 }
 
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
+export async function GET() {
   const admin = await isAdmin();
 
   if (admin) {

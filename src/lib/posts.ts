@@ -1,4 +1,3 @@
-
 import { randomUUID } from "crypto";
 import type { BlogPost, CreatePostInput, UpdatePostInput } from "@/types/blog";
 import clientPromise from "@/lib/mongodb";
@@ -27,18 +26,21 @@ export async function getAllPosts(): Promise<BlogPost[]> {
   return collection.find({}, { projection: { _id: 0 } }).toArray();
 }
 
+export function isPostPubliclyVisible(post: BlogPost, now = new Date()): boolean {
+  return (
+    post.status === "published" ||
+    (post.status === "scheduled" &&
+      Boolean(post.scheduledAt) &&
+      new Date(post.scheduledAt!) <= now)
+  );
+}
+
 export async function getPublishedPosts(): Promise<BlogPost[]> {
   const all = await getAllPosts();
   const now = new Date();
 
   return all
-    .filter(
-      (post) =>
-        post.status === "published" ||
-        (post.status === "scheduled" &&
-          post.scheduledAt &&
-          new Date(post.scheduledAt) <= now)
-    )
+    .filter((post) => isPostPubliclyVisible(post, now))
     .sort((a, b) => {
       const aDate = a.publishedAt ?? a.scheduledAt ?? a.createdAt;
       const bDate = b.publishedAt ?? b.scheduledAt ?? b.createdAt;

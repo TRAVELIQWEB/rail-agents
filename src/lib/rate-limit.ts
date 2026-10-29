@@ -1,5 +1,5 @@
 // In-memory rate limiter for admin login endpoint
-// Limits to 5 attempts per IP per 15 minutes
+// Limits to 10 attempts per IP per 15 minutes
 
 interface RateLimitEntry {
   count: number;
@@ -8,7 +8,7 @@ interface RateLimitEntry {
 
 const store = new Map<string, RateLimitEntry>();
 
-const MAX_ATTEMPTS = 50;
+const MAX_ATTEMPTS = 10;
 const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
 
 export function checkRateLimit(ip: string): { allowed: boolean; remaining: number; resetAt: number } {
@@ -31,4 +31,3 @@ export function checkRateLimit(ip: string): { allowed: boolean; remaining: numbe
 export function resetRateLimit(ip: string) {
   store.delete(ip);
 }
-

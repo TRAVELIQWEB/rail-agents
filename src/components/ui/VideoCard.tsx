@@ -18,13 +18,13 @@ export function VideoCard({ video }: VideoCardProps) {
       <div className="relative aspect-video w-full overflow-hidden rounded-t-2xl bg-slate-100">
         <Image
           src={video.thumbnail}
-          alt=""
+          alt={video.title}
           fill
           sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw"
           quality={60}
           className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
         />
-          <span className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/15">
+        <span className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors group-hover:bg-black/15">
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/95 text-[var(--primary)] opacity-100 shadow transition-opacity sm:opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100">
             <Play aria-hidden="true" className="ml-0.5 h-4 w-4 fill-current" />
           </span>

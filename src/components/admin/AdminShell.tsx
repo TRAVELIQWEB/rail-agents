@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Logo } from "@/components/layout/Logo";
 import {
   LayoutDashboard,
@@ -30,6 +30,7 @@ interface AdminShellProps {
 
 export function AdminShell({ children, email }: AdminShellProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
 
@@ -40,7 +41,8 @@ export function AdminShell({ children, email }: AdminShellProps) {
     } catch {
       // Continue anyway to clear client state
     }
-    window.location.href = "/admin/login";
+    router.push("/admin/login");
+    router.refresh();
   };
 
   // Derive active page title & breadcrumbs
@@ -61,19 +63,18 @@ export function AdminShell({ children, email }: AdminShellProps) {
           href === "/admin/posts/new"
             ? pathname === "/admin/posts/new"
             : href === "/admin/posts"
-            ? pathname === "/admin/posts" || (pathname.startsWith("/admin/posts/") && pathname !== "/admin/posts/new")
-            : pathname === href;
+              ? pathname === "/admin/posts" || (pathname.startsWith("/admin/posts/") && pathname !== "/admin/posts/new")
+              : pathname === href;
         return (
           <Link
             key={href}
             href={href}
             onClick={() => setSidebarOpen(false)}
             aria-current={active ? "page" : undefined}
-            className={`group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold transition-colors ${
-              active
+            className={`group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold transition-colors ${active
                 ? "bg-[#ea580c] text-white"
                 : "text-zinc-400 hover:bg-[#1f242d] hover:text-zinc-100"
-            }`}
+              }`}
           >
             <Icon
               size={16}
@@ -166,7 +167,7 @@ export function AdminShell({ children, email }: AdminShellProps) {
   );
 
   return (
-    <div className="admin-dark-theme flex h-screen overflow-hidden bg-[#0f1115] font-sans antialiased text-zinc-100">
+    <div className="admin-dark-theme flex min-h-dvh overflow-x-hidden bg-[#0f1115] font-sans antialiased text-zinc-100 lg:h-dvh lg:min-h-0 lg:overflow-hidden">
       {/* Desktop Sidebar */}
       <aside className="hidden w-60 flex-shrink-0 overflow-y-auto border-r border-[#242933] bg-[#14171c] lg:flex lg:flex-col">
         {renderSidebarContent()}

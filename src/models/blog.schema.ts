@@ -1,4 +1,4 @@
-import type { BlogPost, CreatePostInput, UpdatePostInput, PostStatus } from "@/types/blog";
+import type { CreatePostInput, PostStatus } from "@/types/blog";
 
 export interface FieldValidationRule {
   required?: boolean;

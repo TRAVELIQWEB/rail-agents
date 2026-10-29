@@ -5,8 +5,14 @@ import { FileText, Lock, MessageCircle } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import { siteConfig } from "@/config/site";
 
+function getInitialPrefilledQuery(): string {
+  if (typeof window === "undefined") return "";
+  const prefilled = new URLSearchParams(window.location.search).get("q")?.trim();
+  return prefilled ? prefilled.slice(0, 500) : "";
+}
+
 export function QueryForm() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(getInitialPrefilledQuery);
   const [queryError, setQueryError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [handoffOpened, setHandoffOpened] = useState(false);
