@@ -1,5 +1,6 @@
 // Public /blog listing page — RailAgents Journal & Editorial Insights
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowDown, MessageSquare, ArrowRight } from "lucide-react";
 import { getPublishedPosts } from "@/lib/posts";
@@ -44,9 +45,23 @@ export const revalidate = 60;
 
 export default async function BlogPage() {
   const posts = await getPublishedPosts();
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${siteConfig.url}/blog` },
+    ],
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-[#fffdfa]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Header />
 
       <main className="relative flex-1 overflow-hidden">
@@ -63,9 +78,9 @@ export default async function BlogPage() {
         {/* ══ 1. UNIQUE EDITORIAL HERO SECTION ══ */}
         <section
           aria-label="Journal introduction"
-          className="relative border-b border-[#f0e4d7] bg-gradient-to-b from-[#fffcf8] via-[#faf6f0] to-[#f6efe6] py-7 sm:py-9 lg:py-10"
+          className="relative border-b border-[#f0e4d7] bg-gradient-to-b from-[#fffcf8] via-[#faf6f0] to-[#f6efe6] pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8"
         >
-          <div className="site-container max-w-5xl">
+          <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-3xl text-center">
               {/* Eyebrow */}
               <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#edd7c4] bg-white/80 px-3.5 py-1 text-xs font-[800] uppercase tracking-[0.14em] text-[var(--primary-dark)] shadow-2xs backdrop-blur-md">
@@ -108,8 +123,10 @@ export default async function BlogPage() {
 
         {/* ══ 2. EDITORIAL ARTICLES & TOPIC LISTING ══ */}
         <section aria-label="Journal articles and topics" className="py-12 sm:py-16">
-          <div className="site-container max-w-5xl">
-            <BlogList posts={posts} />
+          <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
+            <Suspense fallback={<div className="min-h-[320px] animate-pulse rounded-3xl bg-white/60" />}>
+              <BlogList posts={posts} />
+            </Suspense>
 
             {/* Empty State fallback */}
             {posts.length === 0 && (

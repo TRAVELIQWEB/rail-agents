@@ -46,13 +46,51 @@ export const metadata: Metadata = {
 };
 
 export default function TrainTicketAgentFareCalculatorPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        name: "RailAgents IRCTC Agent Ticket Fare Calculator",
+        url: `${siteConfig.url}/train-ticket-agent-fare-calculator`,
+        applicationCategory: "BusinessApplication",
+        operatingSystem: "Any",
+        description:
+          "Calculate train ticket costs with a clear fare breakdown, including applicable IRCTC convenience fees, authorized agent service charges, and payment gateway charges.",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "INR",
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Train Ticket Fare Calculator",
+            item: `${siteConfig.url}/train-ticket-agent-fare-calculator`,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-[#fdfbf7]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Header />
 
       <main className="flex-1">
         {/* Warm Premium Hero Header Section */}
-        <section className="relative overflow-hidden border-b border-[#f2e6d9] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pb-6 pt-[66px] sm:pb-7 sm:pt-[78px] lg:pt-[84px]">
+        <section className="relative overflow-hidden border-b border-[#f2e6d9] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8">
           {/* Subtle Ambient Radial Glows */}
           <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-72 w-[600px] rounded-full bg-gradient-to-br from-orange-200/35 via-amber-100/20 to-transparent blur-3xl" />
           <div className="pointer-events-none absolute -bottom-16 right-10 h-48 w-48 rounded-full bg-orange-100/40 blur-2xl" />
@@ -96,7 +134,7 @@ export default function TrainTicketAgentFareCalculatorPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-5">
                 <div className="group rounded-2xl border border-[#ede1d3] bg-[#faf6f0]/70 p-5 transition-all duration-300 hover:bg-white hover:border-orange-300 hover:shadow-[0_8px_24px_rgba(249,115,22,0.08)] hover:-translate-y-1">
                   <div className="flex items-center gap-3 mb-2.5">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-orange-100 text-orange-600 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_2px_4px_rgba(249,115,22,0.1)] group-hover:scale-105 transition-transform duration-200">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-600 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_2px_4px_rgba(249,115,22,0.1)] group-hover:scale-105 transition-transform duration-200">
                       <CreditCard className="h-4.5 w-4.5" />
                     </div>
                     <h3 className="text-sm font-bold text-stone-900 group-hover:text-orange-900 transition-colors duration-200">
@@ -110,7 +148,7 @@ export default function TrainTicketAgentFareCalculatorPage() {
 
                 <div className="group rounded-2xl border border-[#ede1d3] bg-[#faf6f0]/70 p-5 transition-all duration-300 hover:bg-white hover:border-orange-300 hover:shadow-[0_8px_24px_rgba(249,115,22,0.08)] hover:-translate-y-1">
                   <div className="flex items-center gap-3 mb-2.5">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-100 text-amber-700 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_2px_4px_rgba(245,158,11,0.1)] group-hover:scale-105 transition-transform duration-200">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_2px_4px_rgba(245,158,11,0.1)] group-hover:scale-105 transition-transform duration-200">
                       <Users className="h-4.5 w-4.5" />
                     </div>
                     <h3 className="text-sm font-bold text-stone-900 group-hover:text-amber-950 transition-colors duration-200">
@@ -124,7 +162,7 @@ export default function TrainTicketAgentFareCalculatorPage() {
 
                 <div className="group rounded-2xl border border-[#ede1d3] bg-[#faf6f0]/70 p-5 transition-all duration-300 hover:bg-white hover:border-orange-300 hover:shadow-[0_8px_24px_rgba(249,115,22,0.08)] hover:-translate-y-1">
                   <div className="flex items-center gap-3 mb-2.5">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-orange-100 text-orange-700 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_2px_4px_rgba(249,115,22,0.1)] group-hover:scale-105 transition-transform duration-200">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-700 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_2px_4px_rgba(249,115,22,0.1)] group-hover:scale-105 transition-transform duration-200">
                       <ShieldCheck className="h-4.5 w-4.5" />
                     </div>
                     <h3 className="text-sm font-bold text-stone-900 group-hover:text-orange-950 transition-colors duration-200">

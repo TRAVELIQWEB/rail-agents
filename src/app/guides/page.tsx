@@ -40,8 +40,23 @@ export const metadata: Metadata = {
 };
 
 export default function GuidesPage() {
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+      { "@type": "ListItem", position: 2, name: "Guides", item: `${siteConfig.url}/guides` },
+    ],
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-[#fff9f5]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Header />
 
       <main className="relative flex-1 overflow-hidden bg-[#fff9f5]">
@@ -58,7 +73,7 @@ export default function GuidesPage() {
         {/* ══ 1. COMPACT HERO SECTION ══ */}
         <section
           aria-label="Guides introduction"
-          className="relative border-b border-[#f0e1d5] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] py-6 sm:py-8 lg:py-9"
+          className="relative border-b border-[#f0e1d5] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8"
         >
           <div className="site-container max-w-5xl">
             <div className="mx-auto text-center">

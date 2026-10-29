@@ -1,8 +1,7 @@
-
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { ObjectId, GridFSBucket } from "mongodb";
-import { getAdminIronSession } from "@/lib/auth";
+import { getAdminIronSession, isAdminUiPreviewEnabled } from "@/lib/auth";
 import clientPromise from "@/lib/mongodb";
 import { isAdminSessionValid } from "@/lib/admin-session-validation";
 
@@ -24,13 +23,57 @@ const EXTENSION_BY_TYPE: Record<string, string> = {
   "image/gif": "gif",
 };
 
+function matchesImageMagicBytes(bytes: Buffer, mimeType: string): boolean {
+  if (bytes.length < 12) return false;
+
+  switch (mimeType) {
+    case "image/jpeg":
+      return bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+    case "image/png":
+      return (
+        bytes[0] === 0x89 &&
+        bytes[1] === 0x50 &&
+        bytes[2] === 0x4e &&
+        bytes[3] === 0x47 &&
+        bytes[4] === 0x0d &&
+        bytes[5] === 0x0a &&
+        bytes[6] === 0x1a &&
+        bytes[7] === 0x0a
+      );
+    case "image/gif":
+      return (
+        bytes[0] === 0x47 &&
+        bytes[1] === 0x49 &&
+        bytes[2] === 0x46 &&
+        bytes[3] === 0x38 &&
+        (bytes[4] === 0x37 || bytes[4] === 0x39) &&
+        bytes[5] === 0x61
+      );
+    case "image/webp":
+      return (
+        bytes[0] === 0x52 &&
+        bytes[1] === 0x49 &&
+        bytes[2] === 0x46 &&
+        bytes[3] === 0x46 &&
+        bytes[8] === 0x57 &&
+        bytes[9] === 0x45 &&
+        bytes[10] === 0x42 &&
+        bytes[11] === 0x50
+      );
+    default:
+      return false;
+  }
+}
+
 export async function POST(req: Request) {
   try {
     // Verify that the administrator is logged in.
     const cookieStore = await cookies();
     const session = await getAdminIronSession(cookieStore);
+    const isAuthorized =
+      isAdminUiPreviewEnabled() || (await isAdminSessionValid(session.admin));
 
-    if (!(await isAdminSessionValid(session.admin))) {
+    if (!isAuthorized) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
@@ -76,6 +119,19 @@ export async function POST(req: Request) {
       );
     }
 
+    const bytes = Buffer.from(await file.arrayBuffer());
+
+    // Verify file content magic bytes match declared MIME type.
+    if (!matchesImageMagicBytes(bytes, file.type)) {
+      return NextResponse.json(
+        {
+          error:
+            "Invalid or corrupted image file. Content does not match its file type.",
+        },
+        { status: 415 }
+      );
+    }
+
     // Connect to the RailAgents MongoDB database.
     const client = await clientPromise;
     const db = client.db("railagents");
@@ -90,8 +146,6 @@ export async function POST(req: Request) {
     const filename = `${imageId.toHexString()}.${EXTENSION_BY_TYPE[file.type]
       }`;
 
-    const bytes = Buffer.from(await file.arrayBuffer());
-
     // Store the image and its metadata in MongoDB GridFS.
     await new Promise<void>((resolve, reject) => {
       const upload = bucket.openUploadStream(filename, {
@@ -99,7 +153,7 @@ export async function POST(req: Request) {
         metadata: {
           originalName: file.name,
           contentType: file.type,
-          uploadedBy: session.admin?.email,
+          uploadedBy: session.admin?.email ?? "preview@railagents.local",
           uploadedAt: new Date(),
         },
       });

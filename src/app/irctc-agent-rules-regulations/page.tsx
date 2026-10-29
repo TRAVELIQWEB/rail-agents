@@ -12,14 +12,11 @@ import {
   HelpCircle,
   Clock,
   Train,
-  ArrowRight,
   ExternalLink,
   MessageCircle,
   Receipt,
   UserCheck,
   Building,
-  RotateCcw,
-  Zap,
   Info,
 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
@@ -133,9 +130,63 @@ export default function IrctcAgentRulesPage() {
   const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(
     "Hi RailAgents, I have a question regarding IRCTC agent rules, compliance, or booking regulations. Please guide me."
   )}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: "IRCTC Agent Rules & Regulations: Complete Guide",
+        description:
+          "Learn important IRCTC agent rules, booking dos and don'ts, service charges, customer records, cancellation and refund procedures, TDR guidance, and compliance responsibilities.",
+        url: `${siteConfig.url}/irctc-agent-rules-regulations`,
+        author: { "@type": "Person", name: "Nihal Singh", url: `${siteConfig.url}/about` },
+        publisher: {
+          "@type": "Organization",
+          "@id": `${siteConfig.url}/#organization`,
+          name: siteConfig.name,
+          url: siteConfig.url,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "IRCTC Agent",
+            item: `${siteConfig.url}/irctc-agent-registration`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: "Rules & Regulations",
+            item: `${siteConfig.url}/irctc-agent-rules-regulations`,
+          },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: FAQS.map((item) => ({
+          "@type": "Question",
+          name: item.q,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.a,
+          },
+        })),
+      },
+    ],
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-[#fffdfa] text-slate-800">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Header />
 
       {/* Breadcrumb Navigation */}
@@ -215,7 +266,7 @@ export default function IrctcAgentRulesPage() {
         ========================================================== */}
         <div className="site-container max-w-6xl py-10 sm:py-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
+
             {/* STICKY DESKTOP TABLE OF CONTENTS (25%) */}
             <aside className="lg:col-span-3 sticky top-24 self-start order-2 lg:order-1 print:hidden">
               <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-xs">
@@ -261,7 +312,7 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-a" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
                     A
                   </span>
                   <h2 className="text-2xl font-bold text-[var(--navy)]">Understand Your Agent Status</h2>
@@ -328,7 +379,7 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-b" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
                     B
                   </span>
                   <h2 className="text-2xl font-bold text-[var(--navy)]">Registration and Account Security</h2>
@@ -395,7 +446,7 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-c" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
                     C
                   </span>
                   <h2 className="text-2xl font-bold text-[var(--navy)]">Booking Rules Every Agent Should Know</h2>
@@ -472,7 +523,7 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-d" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-red-100 font-bold text-xs text-red-800">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 font-bold text-xs text-red-800">
                     D
                   </span>
                   <h2 className="text-2xl font-bold text-red-950">
@@ -617,7 +668,7 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-e" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
                     E
                   </span>
                   <h2 className="text-2xl font-bold text-[var(--navy)]">Service Charges, Payment Gateways &amp; Receipts</h2>
@@ -688,7 +739,7 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-f" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
                     F
                   </span>
                   <h2 className="text-2xl font-bold text-[var(--navy)]">Shop, Signage, and Authorization Certificate</h2>
@@ -739,7 +790,7 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-g" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
                     G
                   </span>
                   <h2 className="text-2xl font-bold text-[var(--navy)]">Cancellation and Refund Rules</h2>
@@ -818,7 +869,7 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-h" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
                     H
                   </span>
                   <h2 className="text-2xl font-bold text-[var(--navy)]">TDR: Important Responsibilities and Procedures</h2>
@@ -868,7 +919,7 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-i" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
                     I
                   </span>
                   <h2 className="text-2xl font-bold text-[var(--navy)]">Tatkal Booking Dos and Don&apos;ts</h2>
@@ -913,7 +964,7 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-j" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
                     J
                   </span>
                   <h2 className="text-2xl font-bold text-[var(--navy)]">Customer Data, Consent, and Record Keeping</h2>
@@ -953,7 +1004,7 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-k" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
                     K
                   </span>
                   <h2 className="text-2xl font-bold text-[var(--navy)]">Complaints, Inspections, and Compliance</h2>
@@ -988,7 +1039,7 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-l" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 font-bold text-xs text-emerald-800">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 font-bold text-xs text-emerald-800">
                     L
                   </span>
                   <h2 className="text-2xl font-bold text-[var(--navy)]">Daily Agent Compliance Checklist</h2>
@@ -1008,7 +1059,7 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-m" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
                     M
                   </span>
                   <h2 className="text-2xl font-bold text-[var(--navy)]">Frequently Asked Questions</h2>

@@ -17,8 +17,7 @@ async function isAdmin() {
   return isAdminSessionValid(session.admin);
 }
 
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
+export async function GET() {
   const admin = await isAdmin();
 
   if (admin) {
@@ -28,8 +27,8 @@ export async function GET(req: Request) {
 
   // Public: return only published posts with summary fields
   const published = await getPublishedPosts();
-  const summaries = published.map(({ id, title, slug, excerpt, featuredImage, featuredVideoUrl, category, tags, author, status, publishedAt, createdAt, updatedAt }) => ({
-    id, title, slug, excerpt, featuredImage, featuredVideoUrl, category, tags, author, status, publishedAt, createdAt, updatedAt,
+  const summaries = published.map(({ id, title, slug, excerpt, featuredImage, featuredVideoUrl, socialLinks, category, tags, author, status, publishedAt, createdAt, updatedAt }) => ({
+    id, title, slug, excerpt, featuredImage, featuredVideoUrl, socialLinks, category, tags, author, status, publishedAt, createdAt, updatedAt,
   }));
   return NextResponse.json(summaries);
 }
@@ -55,6 +54,21 @@ export async function POST(req: Request) {
   body.focusKeyphrase = sanitizeText(body.focusKeyphrase ?? "");
   body.featuredImageAlt = sanitizeText(body.featuredImageAlt ?? "");
   body.featuredVideoUrl = typeof body.featuredVideoUrl === "string" ? sanitizeText(body.featuredVideoUrl) : null;
+  if (body.socialLinks && typeof body.socialLinks === "object") {
+    body.socialLinks = {
+      instagram: typeof body.socialLinks.instagram === "string" && body.socialLinks.instagram.trim()
+        ? sanitizeText(body.socialLinks.instagram.trim())
+        : null,
+      facebook: typeof body.socialLinks.facebook === "string" && body.socialLinks.facebook.trim()
+        ? sanitizeText(body.socialLinks.facebook.trim())
+        : null,
+      youtube: typeof body.socialLinks.youtube === "string" && body.socialLinks.youtube.trim()
+        ? sanitizeText(body.socialLinks.youtube.trim())
+        : null,
+    };
+  } else {
+    body.socialLinks = null;
+  }
   body.relatedPostIds = Array.isArray(body.relatedPostIds)
     ? body.relatedPostIds.filter((id): id is string => typeof id === "string").map((id) => id.trim()).filter(Boolean)
     : [];
@@ -84,4 +98,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: msg }, { status: 409 });
   }
 }
-

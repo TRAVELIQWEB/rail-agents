@@ -18,10 +18,12 @@ const structuredData = {
       "@id": `${siteConfig.url}/#organization`,
       name: siteConfig.name,
       url: siteConfig.url,
-      logo: `${siteConfig.url}/logo.svg`,
-      sameAs: [siteConfig.social.youtube, siteConfig.social.instagram].filter(
-        Boolean,
-      ),
+      logo: `${siteConfig.url}/icon.png`,
+      sameAs: [
+        siteConfig.social.youtube,
+        siteConfig.social.instagram,
+        siteConfig.social.facebook,
+      ].filter(Boolean),
     },
     {
       "@type": "WebSite",
@@ -90,7 +92,7 @@ export default function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html:
-              "(function(w,l){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});})(window,'dataLayer');",
+              "(function(w,l){if(w.location&&w.location.pathname.indexOf('/admin')===0)return;w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});})(window,'dataLayer');",
           }}
         />
         <Script

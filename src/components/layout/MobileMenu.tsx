@@ -51,7 +51,7 @@ export function MobileMenu() {
         prefetch={false}
         aria-label="IRCTC Ticket Fare Calculator"
         title="Fare Calculator"
-        className={`flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--primary-border)] bg-orange-50/70 text-[var(--primary-dark)] hover:bg-orange-100/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] min-[380px]:h-11 min-[380px]:w-11 ${
+        className={`flex h-11 w-11 items-center justify-center rounded-lg border border-[var(--primary-border)] bg-orange-50/70 text-[var(--primary-dark)] hover:bg-orange-100/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${
           isCalcPage ? "hidden min-[380px]:flex" : "flex"
         }`}
       >
@@ -62,7 +62,7 @@ export function MobileMenu() {
         prefetch={false}
         aria-label="Contact RailAgents"
         title="Contact Us"
-        className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--primary-border)] text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] min-[380px]:h-11 min-[380px]:w-11"
+        className="flex h-11 w-11 items-center justify-center rounded-lg border border-[var(--primary-border)] text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
       >
         <MessageCircle aria-hidden="true" className="h-4 w-4 sm:h-5 sm:w-5" />
       </InternalLink>
@@ -72,7 +72,7 @@ export function MobileMenu() {
         aria-expanded={isOpen}
         aria-controls="mobile-navigation"
         onClick={() => setIsOpen((open) => !open)}
-        className={`icon-action flex h-10 w-10 cursor-pointer items-center justify-center border border-[var(--primary-border)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] min-[380px]:h-11 min-[380px]:w-11 ${
+        className={`icon-action flex h-11 w-11 cursor-pointer items-center justify-center border border-[var(--primary-border)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${
           isOpen
             ? "bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] hover:text-white"
             : ""
@@ -97,7 +97,7 @@ export function MobileMenu() {
                   prefetch={false}
                   current={isActive}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center justify-between rounded-lg px-3 py-2 text-base font-[600] transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${
+                  className={`flex min-h-11 items-center justify-between rounded-lg px-3 py-2 text-base font-[600] transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${
                     isActive
                       ? "bg-[var(--primary-soft)] text-[var(--primary-dark)]"
                       : "text-[var(--body-text)]"
@@ -125,7 +125,7 @@ export function MobileMenu() {
                     prefetch={false}
                     current={isToolActive}
                     onClick={() => setIsOpen(false)}
-                    className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-[650] transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] ${
+                    className={`flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 text-sm font-[650] transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${
                       isToolActive
                         ? "bg-[var(--primary-soft)] text-[var(--primary-dark)] font-bold"
                         : "text-[var(--navy)]"

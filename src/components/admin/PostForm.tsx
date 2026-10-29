@@ -5,11 +5,12 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
-  Save, Send, Eye, Clock, Trash2, ChevronDown, ChevronUp,
-  Upload, X, Tag, Globe, User, Calendar, AlertCircle,
-  CheckCircle2, RotateCcw, AlertTriangle, ArrowUpRight, ArrowRight, Video,
-  Plus, Key, Sparkles,
+  Send, Eye, Trash2, ChevronDown, ChevronUp,
+  Upload, X, Tag, Globe, AlertCircle,
+  CheckCircle2, RotateCcw, ArrowUpRight, ArrowRight, Video,
+  Plus, Key, Sparkles, Share2,
 } from "lucide-react";
+import { FaInstagram, FaFacebookF, FaYoutube } from "react-icons/fa6";
 import { BLOG_CATEGORIES } from "@/types/blog";
 import type { BlogPost, PostStatus } from "@/types/blog";
 import { sanitizeHtml } from "@/lib/sanitize";
@@ -92,16 +93,19 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
   const [allowIndexing, setAllowIndexing] = useState(post?.allowIndexing ?? true);
   const [featuredImageAlt, setFeaturedImageAlt] = useState(post?.featuredImageAlt ?? "");
   const [relatedPostIds, setRelatedPostIds] = useState<string[]>(post?.relatedPostIds ?? []);
+  const [instagramUrl, setInstagramUrl] = useState<string>(post?.socialLinks?.instagram ?? "");
+  const [facebookUrl, setFacebookUrl] = useState<string>(post?.socialLinks?.facebook ?? "");
+  const [youtubeSocialUrl, setYoutubeSocialUrl] = useState<string>(post?.socialLinks?.youtube ?? "");
 
   // Autosave draft key
   const draftKey = `railagents_draft_${mode === "edit" ? post?.id : "new"}`;
 
   const saveDraft = useCallback(() => {
     if (typeof window === "undefined") return;
-    const draft = { title, slug, excerpt, content, category, tags, author, featuredImage, featuredVideoUrl, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds };
+    const draft = { title, slug, excerpt, content, category, tags, author, featuredImage, featuredVideoUrl, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds, instagramUrl, facebookUrl, youtubeSocialUrl };
     localStorage.setItem(draftKey, JSON.stringify(draft));
     setSaveStatus("saved");
-  }, [title, slug, excerpt, content, category, tags, author, featuredImage, featuredVideoUrl, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds, draftKey]);
+  }, [title, slug, excerpt, content, category, tags, author, featuredImage, featuredVideoUrl, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds, instagramUrl, facebookUrl, youtubeSocialUrl, draftKey]);
 
   // Window beforeunload guard against accidental data loss
   useEffect(() => {
@@ -119,28 +123,38 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
 
   // Load autosaved draft (create mode only)
   useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | null = null;
     if (mode === "create" && typeof window !== "undefined") {
       const saved = localStorage.getItem(draftKey);
       if (saved) {
-        try {
-          const d = JSON.parse(saved);
-          if (d.title) { setTitle(d.title); setSlug(d.slug ?? ""); setSlugManuallyEdited(true); }
-          if (d.excerpt) setExcerpt(d.excerpt);
-          if (d.content) setContent(d.content);
-          if (d.category) setCategory(d.category);
-          if (d.tags?.length) setTags(d.tags);
-          if (d.author) setAuthor(d.author);
-          if (d.featuredImage) { setFeaturedImage(d.featuredImage); setImagePreview(d.featuredImage); }
-          if (d.featuredVideoUrl) { setFeaturedVideoUrl(d.featuredVideoUrl); setCoverMediaType("video"); }
-          if (d.seoTitle) setSeoTitle(d.seoTitle);
-          if (d.metaDescription) setMetaDescription(d.metaDescription);
-          if (d.focusKeyphrase) setFocusKeyphrase(d.focusKeyphrase);
-          if (typeof d.canonicalUrl === "string") setCanonicalUrl(d.canonicalUrl);
-          if (typeof d.allowIndexing === "boolean") setAllowIndexing(d.allowIndexing);
-          if (d.featuredImageAlt) setFeaturedImageAlt(d.featuredImageAlt);
-          if (Array.isArray(d.relatedPostIds)) setRelatedPostIds(d.relatedPostIds);
-          setSaveStatus("saved");
-        } catch {}
+        timer = setTimeout(() => {
+          try {
+            const d = JSON.parse(saved);
+            if (d.title) { setTitle(d.title); setSlug(d.slug ?? ""); setSlugManuallyEdited(true); }
+            if (d.excerpt) setExcerpt(d.excerpt);
+            if (d.content) setContent(d.content);
+            if (d.category) setCategory(d.category);
+            if (d.tags?.length) setTags(d.tags);
+            if (d.author) setAuthor(d.author);
+            if (d.featuredImage) { setFeaturedImage(d.featuredImage); setImagePreview(d.featuredImage); }
+            if (d.featuredVideoUrl) { setFeaturedVideoUrl(d.featuredVideoUrl); setCoverMediaType("video"); }
+            if (d.seoTitle) setSeoTitle(d.seoTitle);
+            if (d.metaDescription) setMetaDescription(d.metaDescription);
+            if (d.focusKeyphrase) setFocusKeyphrase(d.focusKeyphrase);
+            if (typeof d.canonicalUrl === "string") setCanonicalUrl(d.canonicalUrl);
+            if (typeof d.allowIndexing === "boolean") setAllowIndexing(d.allowIndexing);
+            if (d.featuredImageAlt) setFeaturedImageAlt(d.featuredImageAlt);
+            if (Array.isArray(d.relatedPostIds)) setRelatedPostIds(d.relatedPostIds);
+            if (typeof d.instagramUrl === "string") setInstagramUrl(d.instagramUrl);
+            if (typeof d.facebookUrl === "string") setFacebookUrl(d.facebookUrl);
+            if (typeof d.youtubeSocialUrl === "string") setYoutubeSocialUrl(d.youtubeSocialUrl);
+            setSaveStatus("saved");
+          } catch {}
+          isDraftLoadedRef.current = true;
+        }, 0);
+        return () => {
+          if (timer) clearTimeout(timer);
+        };
       }
     }
     isDraftLoadedRef.current = true;
@@ -149,14 +163,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
   useEffect(() => {
     // Avoid autosaving empty initial state before draft has had a chance to restore
     if (!isDraftLoadedRef.current && mode === "create") return;
-    setSaveStatus("unsaved");
     if (autosaveTimer.current) clearTimeout(autosaveTimer.current);
     autosaveTimer.current = setTimeout(() => {
       setSaveStatus("saving");
       saveDraft();
     }, 15_000);
     return () => { if (autosaveTimer.current) clearTimeout(autosaveTimer.current); };
-  }, [title, slug, excerpt, content, category, tags, author, featuredImage, featuredVideoUrl, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds, saveDraft, mode]);
+  }, [title, slug, excerpt, content, category, tags, author, featuredImage, featuredVideoUrl, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds, instagramUrl, facebookUrl, youtubeSocialUrl, saveDraft, mode]);
 
   const handleImageUpload = async (file: File) => {
     setUploadingImage(true);
@@ -238,6 +251,11 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
     content,
     featuredImage,
     featuredVideoUrl: featuredVideoUrl.trim() || null,
+    socialLinks: {
+      instagram: instagramUrl.trim() || null,
+      facebook: facebookUrl.trim() || null,
+      youtube: youtubeSocialUrl.trim() || null,
+    },
     category,
     tags,
     author: author.trim(),
@@ -356,10 +374,18 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
     await handleSave("draft");
   };
 
+  // Live word count & reading time for the editor header
+  const wordCount = content
+    .replace(/<[^>]*>/g, "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+  const readingTime = Math.max(1, Math.round(wordCount / 200));
+
   const saveStatusColors: Record<SaveStatus, string> = {
     idle: "text-slate-400",
-    saving: "text-amber-600",
-    saved: "text-emerald-600",
+    saving: "text-amber-500",
+    saved: "text-emerald-500",
     unsaved: "text-slate-400",
   };
   const saveStatusText: Record<SaveStatus, string> = {
@@ -417,7 +443,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
       </nav>
 
       {/* Top Header Card */}
-      <div className="mb-4 flex flex-col gap-4 rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-slate-200/90 bg-white px-5 py-4 shadow-xs sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2.5">
             <h1 className="text-xl font-black tracking-tight text-slate-900 sm:text-2xl">
@@ -447,69 +473,54 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => setShowLivePreview(true)}
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 cursor-pointer"
+          >
+            <Eye size={13} className="text-slate-500" />
+            <span>Preview</span>
+          </button>
           <Link
             href="/admin/posts"
-            className="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
+            className="inline-flex min-h-11 items-center rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
           >
             Back to Posts
           </Link>
         </div>
       </div>
 
-      {/* 3-Step Editorial Workflow Bar: Write, Enhance, Publish */}
-      <div className="mb-5 flex items-center justify-between rounded-xl border border-slate-200/90 bg-white p-1.5 shadow-2xs">
-        <div className="flex flex-1 items-center divide-x divide-slate-100 text-xs font-bold">
-          <div className="flex flex-1 items-center justify-center gap-2 py-1 px-3 text-slate-900 bg-slate-50 rounded-lg">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-white text-[10px] font-black">1</span>
-            <span>Write</span>
-            <span className="hidden sm:inline text-[11px] font-normal text-slate-400">(Title, Slug &amp; Body)</span>
-          </div>
-
-          <div className="flex flex-1 items-center justify-center gap-2 py-1 px-3 text-slate-700">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-100 text-orange-700 text-[10px] font-black">2</span>
-            <span>Enhance</span>
-            <span className="hidden sm:inline text-[11px] font-normal text-slate-400">(Cover, Category, Tags)</span>
-          </div>
-
-          <div className="flex flex-1 items-center justify-center gap-2 py-1 px-3 text-slate-700">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 text-blue-700 text-[10px] font-black">3</span>
-            <span>Publish</span>
-            <span className="hidden sm:inline text-[11px] font-normal text-slate-400">(SEO, Preview &amp; Status)</span>
-          </div>
-        </div>
-      </div>
-
       {/* Main Two-Column Layout: Left Editor & Right Settings Panel */}
-      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(320px,380px)] gap-6 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(340px,390px)] gap-6 items-stretch">
         {/* Main Column */}
         <div className="flex flex-col space-y-6 min-w-0">
           {/* Box 1: Article Basic Details Card */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-4 flex-shrink-0 transition hover:border-slate-300">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-3.5 sm:p-5 lg:p-6 shadow-xs space-y-4 flex-shrink-0 transition hover:border-slate-300">
+            <div className="flex flex-col items-start gap-2 border-b border-slate-100 pb-3.5 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-2.5">
-                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 font-bold border border-blue-100/80">
-                  <Sparkles size={14} />
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600 font-bold border border-orange-100">
+                  <Sparkles size={15} />
                 </span>
-                <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900">
+                <div className="min-w-0">
+                  <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
                     Article Details &amp; Slug
                   </h2>
-                  <p className="text-[10px] text-slate-400 font-normal">Core headline and URL configuration</p>
+                  <p className="text-[11px] text-slate-400 font-normal">Core headline, permalink URL, and article summary</p>
                 </div>
               </div>
-              <span className="text-[10px] font-bold text-orange-600 bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-200/70 uppercase tracking-wider">
-                Required
+              <span className="ml-10 whitespace-nowrap text-[10.5px] font-bold text-orange-700 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-200/70 uppercase tracking-wider sm:ml-0">
+                Required *
               </span>
             </div>
 
-            {/* Title */}
+            {/* Title & Slug in a clean stacked layout with comfortable 42px input height */}
             <div>
-              <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center justify-between mb-1.5">
                 <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                   Article Title <span className="text-orange-600">*</span>
                 </label>
-                <span className="text-[10px] font-semibold text-slate-400">{title.length} characters</span>
+                <span className="text-[10.5px] font-semibold text-slate-400">{title.length} characters</span>
               </div>
               <input
                 type="text"
@@ -520,18 +531,18 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   if (!slugManuallyEdited && mode === "create") setSlug(slugify(nextTitle));
                   setSaveStatus("unsaved");
                 }}
-                placeholder="Enter article headline..."
-                className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-3 py-1.5 text-xs font-semibold text-slate-900 outline-none transition placeholder:font-normal placeholder:text-slate-400 hover:border-blue-300 focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100"
+                placeholder="Enter a clear, compelling article headline..."
+                className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 text-sm font-semibold text-slate-900 outline-none transition placeholder:font-normal placeholder:text-slate-400 hover:border-slate-300 focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100"
               />
             </div>
 
             {/* Slug */}
             <div>
-              <label className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                 Permalink / Slug <span className="text-orange-600">*</span>
               </label>
-              <div className="flex items-center overflow-hidden rounded-lg border border-slate-200 bg-slate-50/40 hover:border-blue-300 focus-within:border-blue-600 focus-within:bg-white focus-within:ring-1 focus-within:ring-blue-100 transition">
-                <span className="flex-shrink-0 bg-slate-100/80 border-r border-slate-200 px-2.5 py-1 text-[11px] font-semibold text-slate-500">
+              <div className="flex h-10 items-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50/50 hover:border-slate-300 focus-within:border-orange-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-100 transition">
+                <span className="flex h-full items-center flex-shrink-0 bg-slate-100/90 border-r border-slate-200 px-3 text-xs font-semibold text-slate-500">
                   railagents.in/blog/
                 </span>
                 <input
@@ -539,38 +550,45 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   value={slug}
                   onChange={(e) => { setSlug(e.target.value); setSlugManuallyEdited(true); }}
                   placeholder="article-permalink-slug"
-                  className="flex-1 px-2.5 py-1 text-xs font-mono font-medium text-slate-900 outline-none bg-transparent"
+                  className="flex-1 h-full px-3 text-xs font-mono font-semibold text-slate-900 outline-none bg-transparent"
                 />
               </div>
             </div>
 
             {/* Excerpt */}
             <div>
-              <label className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                 Article Summary / Excerpt
               </label>
               <textarea
                 value={excerpt}
                 onChange={(e) => setExcerpt(e.target.value)}
                 rows={2}
-                placeholder="Brief summary for cards and search snippets..."
-                className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-3 py-1.5 text-xs text-slate-800 outline-none transition placeholder:text-slate-400 hover:border-blue-300 focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100"
+                placeholder="Brief 1–2 sentence summary for blog cards and key takeaway box..."
+                className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs leading-relaxed text-slate-800 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100"
               />
             </div>
           </div>
 
           {/* Box 2: Article Content / Editor Card */}
           <div className="flex-1 flex flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs transition hover:border-slate-300">
-            <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/70 px-4 py-2.5 flex-shrink-0">
-              <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-800">
-                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-50 text-blue-600 font-bold border border-blue-100/80">
-                  <CheckCircle2 size={13} />
+            <div className="flex items-center justify-between border-b border-slate-100 bg-white px-5 py-3.5 flex-shrink-0">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600 font-bold border border-orange-100">
+                  <CheckCircle2 size={15} />
                 </span>
-                <span>Article Content Body <span className="text-orange-600">*</span></span>
-              </label>
-              <p className="text-[11px] font-semibold text-slate-500">
-                Visual Editor · <span className="text-blue-600 font-bold">HTML</span> / <span className="text-blue-600 font-bold">Split View</span>
-              </p>
+                <div>
+                  <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                    Article Content Body <span className="text-orange-600">*</span>
+                  </h2>
+                  <p className="text-[11px] text-slate-400 font-normal">Write or paste formatted content, headings, lists, and images</p>
+                </div>
+              </div>
+              <div className="hidden sm:flex items-center gap-2">
+                <span className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold text-slate-500">
+                  {wordCount} {wordCount === 1 ? "word" : "words"} · ~{readingTime} min read
+                </span>
+              </div>
             </div>
             <div className="flex-1 flex flex-col min-h-0 bg-white">
               <RichEditor
@@ -592,115 +610,101 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
         </div>
 
         {/* Sidebar Column: Distinct boxed cards for settings */}
-        <div className="space-y-6 min-w-0">
+        <div className="flex flex-col space-y-6 min-w-0">
 
           {/* Box 3: Featured Media (Cover Image or YouTube Video) */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-3.5 transition hover:border-slate-300">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-900">
-                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-orange-50 text-orange-600 border border-orange-100">
-                  {coverMediaType === "video" ? <Video size={13} className="text-red-600" /> : <Upload size={13} />}
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-3.5 sm:p-5 shadow-xs space-y-4 transition hover:border-slate-300">
+            <div className="flex flex-col items-start gap-2 border-b border-slate-100 pb-3.5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600 border border-orange-100">
+                  {coverMediaType === "video" ? <Video size={15} className="text-red-600" /> : <Upload size={15} />}
                 </span>
-                <span>Featured Cover</span>
-              </h2>
-              <span className="text-[10px] font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-200/70">Required *</span>
+                <div>
+                  <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                    Featured Cover
+                  </h2>
+                  <p className="text-[11px] text-slate-400 font-normal">16:9 image or YouTube video</p>
+                </div>
+              </div>
+              <span className="ml-10 whitespace-nowrap text-[10.5px] font-bold text-orange-700 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-200/70 sm:ml-0">Required *</span>
             </div>
 
             {/* Media Type Switcher Tabs */}
-            <div className="flex rounded-xl bg-slate-100/80 p-1 border border-slate-200/70">
+            <div className="grid grid-cols-2 gap-1 rounded-xl bg-slate-100/90 p-1 border border-slate-200/70">
               <button
                 type="button"
                 onClick={() => setCoverMediaType("image")}
-                className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                className={`flex min-h-11 min-w-0 flex-col items-center justify-center gap-1 rounded-lg px-2 py-2 text-[11px] leading-tight font-bold transition-all cursor-pointer sm:flex-row sm:gap-1.5 sm:text-xs ${
                   coverMediaType === "image"
-                    ? "bg-orange-600 text-white shadow-sm ring-1 ring-orange-700/20 font-semibold"
-                    : "text-slate-500 hover:text-slate-900"
+                    ? "bg-orange-600 text-white shadow-sm ring-1 ring-orange-700/20"
+                    : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                <Upload size={12} className={coverMediaType === "image" ? "text-white" : "text-slate-500"} />
-                Cover Image
+                <Upload size={13} className={`shrink-0 ${coverMediaType === "image" ? "text-white" : "text-slate-500"}`} />
+                <span>Cover Image</span>
               </button>
               <button
                 type="button"
                 onClick={() => setCoverMediaType("video")}
-                className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                className={`flex min-h-11 min-w-0 flex-col items-center justify-center gap-1 rounded-lg px-2 py-2 text-[11px] leading-tight font-bold transition-all cursor-pointer sm:flex-row sm:gap-1.5 sm:text-xs ${
                   coverMediaType === "video"
-                    ? "bg-orange-600 text-white shadow-sm ring-1 ring-orange-700/20 font-semibold"
-                    : "text-slate-500 hover:text-slate-900"
+                    ? "bg-orange-600 text-white shadow-sm ring-1 ring-orange-700/20"
+                    : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                <Video size={12} className={coverMediaType === "video" ? "text-white" : "text-slate-500"} />
-                YouTube Video
+                <Video size={13} className={`shrink-0 ${coverMediaType === "video" ? "text-white" : "text-slate-500"}`} />
+                <span>YouTube Video</span>
               </button>
             </div>
 
             {coverMediaType === "video" ? (
               /* YouTube Video Option */
-              <div className="space-y-2.5 pt-1">
+              <div className="space-y-3.5 pt-0.5">
                 <div>
-                  <label className="mb-1 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
-                    YouTube Link or Video ID <span className="text-red-500">*</span>
+                  <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                    YouTube Video URL <span className="text-red-500">*</span>
                   </label>
                   <div className="flex gap-1.5">
                     <input
                       type="text"
                       value={featuredVideoUrl}
                       onChange={(e) => setFeaturedVideoUrl(e.target.value)}
-                      placeholder="Paste YouTube watch URL or ID..."
-                      className="flex-1 rounded-lg border border-slate-200 bg-slate-50/40 px-3 py-1.5 text-xs font-medium text-slate-900 outline-none focus:border-red-500 focus:bg-white focus:ring-1 focus:ring-red-100 transition"
+                      placeholder="https://www.youtube.com/watch?v=... or /shorts/..."
+                      className="h-10 flex-1 rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
                     />
                     {featuredVideoUrl && (
                       <button
                         type="button"
                         onClick={() => setFeaturedVideoUrl("")}
-                        className="rounded-lg border border-slate-200 px-2 text-xs font-semibold text-slate-500 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
+                        className="h-10 rounded-xl border border-slate-200 px-2.5 text-xs font-semibold text-slate-500 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
                         title="Clear link"
                       >
-                        <X size={13} />
+                        <X size={14} />
                       </button>
                     )}
                   </div>
-                  <p className="mt-1 text-[10px] text-slate-400">
-                    Supports youtube.com, youtu.be, or embed link.
-                  </p>
                 </div>
 
-                {/* Quick Sample / Template Helper */}
-                {!featuredVideoUrl.trim() && (
-                  <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-2 text-xs">
-                    <p className="font-bold text-slate-700 mb-1 text-[10px] uppercase tracking-wider">Quick template:</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      <button
-                        type="button"
-                        onClick={() => setFeaturedVideoUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ")}
-                        className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10.5px] font-semibold text-slate-700 hover:border-red-400 hover:text-red-600 cursor-pointer shadow-2xs"
-                      >
-                        + Use Sample Demo Video
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Interactive Video Preview Box */}
+                {/* Interactive YouTube Preview Box */}
                 {(() => {
                   const videoId = extractYouTubeId(featuredVideoUrl);
 
                   if (videoId) {
                     return (
-                      <div className="space-y-1">
+                      <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-[10.5px] font-bold text-slate-600">
                           <span>Live Video Preview</span>
                           <span className="text-emerald-600 flex items-center gap-1 font-mono text-[10px]">
                             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                            {videoId}
+                            ID: {videoId}
                           </span>
                         </div>
                         <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-950 shadow-md">
                           <iframe
-                            src={`https://www.youtube.com/embed/${videoId}`}
+                            src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0`}
                             title="YouTube video preview"
                             className="h-full w-full border-0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowFullScreen
                           />
                         </div>
@@ -709,21 +713,65 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   }
 
                   return (
-                    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-red-200 bg-red-50/30 py-3.5 px-3 text-center">
-                      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-red-100 text-red-600 mb-1">
-                        <Video size={14} />
+                    <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50/50 py-5 px-3 text-center">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-50 text-orange-600 mb-1.5 border border-orange-100">
+                        <Video size={15} />
                       </div>
-                      <p className="text-xs font-bold text-slate-800">No Video Added</p>
-                      <p className="mt-0.5 text-[10px] text-slate-400 leading-tight">
-                        Paste a YouTube video link above to show live preview.
+                      <p className="text-xs font-bold text-slate-800">No YouTube Video Added</p>
+                      <p className="mt-0.5 text-[10.5px] text-slate-400 leading-tight">
+                        Paste any YouTube watch or Shorts link above.
                       </p>
                     </div>
                   );
                 })()}
+
+                {/* Custom 16:9 Cover Image for YouTube Shorts / Video */}
+                <div className="border-t border-slate-100 pt-3 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-[10.5px] font-bold uppercase tracking-wider text-slate-700">
+                      Custom 16:9 Cover Image (For YouTube Shorts)
+                    </label>
+                    {imagePreview && (
+                      <button
+                        type="button"
+                        onClick={() => { setFeaturedImage(null); setImagePreview(null); }}
+                        className="text-[10.5px] font-bold text-red-600 hover:underline cursor-pointer"
+                      >
+                        Remove Cover
+                      </button>
+                    )}
+                  </div>
+                  {imagePreview ? (
+                    <div className="relative overflow-hidden rounded-xl border border-slate-200 aspect-[16/9]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={imagePreview} alt="Custom 16:9 video cover" className="h-full w-full object-cover" />
+                      <div className="absolute bottom-2 right-2 rounded bg-black/75 px-2 py-0.5 text-[9.5px] font-bold text-white">
+                        16:9 Blog Card Cover Active
+                      </div>
+                    </div>
+                  ) : (
+                    <label className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/60 px-3 text-center transition hover:border-orange-400 hover:bg-orange-50/40">
+                      <Upload size={13} className="text-orange-600 shrink-0" />
+                      <span className="text-xs font-bold text-slate-700">
+                        {uploadingImage ? "Uploading..." : "Upload 16:9 Cover Image for Shorts"}
+                      </span>
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        className="sr-only"
+                        disabled={uploadingImage}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleImageUpload(file);
+                        }}
+                      />
+                    </label>
+                  )}
+                </div>
               </div>
             ) : (
               /* Featured Image Option */
-              <div className="space-y-2.5 pt-1">
+              <div className="space-y-3 pt-0.5">
                 {imagePreview ? (
                   <div className="relative group">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -731,21 +779,21 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     <button
                       type="button"
                       onClick={() => { setFeaturedImage(null); setImagePreview(null); }}
-                      className="absolute right-2 top-2 rounded-full bg-white/95 p-1 shadow-md hover:bg-red-50 text-slate-600 hover:text-red-600 transition"
+                      className="absolute right-2 top-2 rounded-full bg-white/95 p-1.5 shadow-md hover:bg-red-50 text-slate-600 hover:text-red-600 transition cursor-pointer"
                       title="Remove image"
                     >
                       <X size={13} />
                     </button>
                   </div>
                 ) : (
-                  <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50/50 py-3.5 text-center transition hover:border-blue-400 hover:bg-blue-50/40">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-50 text-blue-600 mb-1 border border-blue-100">
-                      <Upload size={14} />
+                  <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50/50 py-5 text-center transition hover:border-orange-400 hover:bg-orange-50/30">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-50 text-orange-600 mb-1.5 border border-orange-100">
+                      <Upload size={15} />
                     </div>
-                    <span className="text-[11px] font-bold text-slate-700">
+                    <span className="text-xs font-bold text-slate-700">
                       {uploadingImage ? "Uploading file..." : "Upload Cover Image"}
                     </span>
-                    <span className="text-[9.5px] text-slate-400">JPG, PNG, WebP up to 5MB</span>
+                    <span className="mt-0.5 text-[10px] text-slate-400">JPG, PNG, WebP up to 5MB (16:9 recommended)</span>
                     <input
                       type="file"
                       accept="image/jpeg,image/png,image/webp"
@@ -760,10 +808,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 )}
 
                 <div>
+                  <label className="mb-1 block text-[10.5px] font-bold uppercase tracking-wider text-slate-600">
+                    Or Paste Image URL
+                  </label>
                   <input
                     type="url"
-                    placeholder="Or paste image URL..."
-                    className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-2.5 py-1.5 text-xs text-slate-800 outline-none focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100 transition"
+                    placeholder="https://example.com/image.jpg"
+                    className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
                     onBlur={(e) => {
                       if (e.target.value.trim()) {
                         setFeaturedImage(e.target.value.trim());
@@ -775,13 +826,15 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 </div>
 
                 <div>
-                  <label className="mb-0.5 block text-[10px] font-bold uppercase tracking-wider text-slate-600">Alt text (SEO & Accessibility)</label>
+                  <label className="mb-1 block text-[10.5px] font-bold uppercase tracking-wider text-slate-600">
+                    Image Alt Text (SEO &amp; Accessibility)
+                  </label>
                   <input
                     type="text"
                     value={featuredImageAlt}
                     onChange={(e) => setFeaturedImageAlt(e.target.value)}
-                    placeholder="Brief description of the image..."
-                    className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-2.5 py-1.5 text-xs text-slate-800 outline-none focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100 transition"
+                    placeholder="Brief description of the cover image..."
+                    className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
                   />
                 </div>
               </div>
@@ -789,54 +842,65 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
           </div>
 
           {/* Box 4: Categorization & Author */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-3 transition hover:border-slate-300">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-900">
-                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-50 text-blue-600 border border-blue-100">
-                  <Tag size={13} />
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-3.5 sm:p-5 shadow-xs space-y-4 transition hover:border-slate-300">
+            <div className="flex flex-col items-start gap-2 border-b border-slate-100 pb-3.5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600 border border-orange-100">
+                  <Tag size={15} />
                 </span>
-                <span>Taxonomy &amp; Author</span>
-              </h2>
-              <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200/70">Organization</span>
+                <div>
+                  <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                    Taxonomy &amp; Author
+                  </h2>
+                  <p className="text-[11px] text-slate-400 font-normal">Category, author, and topic tags</p>
+                </div>
+              </div>
+              <span className="ml-10 whitespace-nowrap text-[10.5px] font-bold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-full sm:ml-0">Organization</span>
             </div>
 
-            <div className="space-y-2.5">
-              <div>
-                <label className="mb-1 block text-[10.5px] font-bold uppercase tracking-wider text-slate-700">Category <span className="text-orange-600">*</span></label>
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-2.5 py-1.5 text-xs font-semibold text-slate-800 outline-none focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100 transition"
-                >
-                  {BLOG_CATEGORIES.map((c) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
+            <div className="space-y-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3.5">
+                <div>
+                  <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                    Category <span className="text-orange-600">*</span>
+                  </label>
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-semibold text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition cursor-pointer"
+                  >
+                    {BLOG_CATEGORIES.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                    Author <span className="text-orange-600">*</span>
+                  </label>
+                  <select
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
+                    className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-semibold text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition cursor-pointer"
+                  >
+                    <option value="">Select author</option>
+                    {authorOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                  </select>
+                </div>
               </div>
 
               <div>
-                <label className="mb-1 block text-[10.5px] font-bold uppercase tracking-wider text-slate-700">Author <span className="text-orange-600">*</span></label>
-                <select
-                  value={author}
-                  onChange={(e) => setAuthor(e.target.value)}
-                  className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-2.5 py-1.5 text-xs font-semibold text-slate-800 outline-none focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100 transition"
-                >
-                  <option value="">Select author</option>
-                  {authorOptions.map((option) => <option key={option} value={option}>{option}</option>)}
-                </select>
-              </div>
-
-              <div>
-                <label className="mb-1 block text-[10.5px] font-bold uppercase tracking-wider text-slate-700">
+                <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                   Tags <span className="font-normal text-slate-400 normal-case">(press Enter to add)</span>
                 </label>
-                <div className="flex flex-wrap gap-1 rounded-lg border border-slate-200 bg-slate-50/40 p-1.5 focus-within:border-blue-600 focus-within:bg-white focus-within:ring-1 focus-within:ring-blue-100 transition">
+                <div className="min-h-[40px] flex flex-wrap items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50/50 p-2 focus-within:border-orange-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-100 transition">
                   {tags.map((tag) => (
-                    <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[10.5px] font-bold text-blue-800 border border-blue-200/70">
-                      <Tag size={9} className="text-blue-500" />
+                    <span key={tag} className="inline-flex items-center gap-1 rounded-lg bg-orange-50 px-2.5 py-0.5 text-[11px] font-bold text-orange-800 border border-orange-200/70">
+                      <Tag size={9} className="text-orange-500" />
                       {tag}
-                      <button type="button" onClick={() => removeTag(tag)} className="ml-0.5 text-blue-400 hover:text-blue-800 cursor-pointer">
-                        <X size={9} />
+                      <button type="button" onClick={() => removeTag(tag)} className="ml-0.5 text-orange-400 hover:text-orange-800 cursor-pointer">
+                        <X size={10} />
                       </button>
                     </span>
                   ))}
@@ -845,8 +909,8 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     value={tagInput}
                     onChange={(e) => setTagInput(e.target.value)}
                     onKeyDown={addTag}
-                    placeholder={tags.length === 0 ? "Add tag..." : ""}
-                    className="flex-1 min-w-[60px] bg-transparent py-0.5 px-1 text-xs font-medium text-slate-800 outline-none placeholder:text-slate-400"
+                    placeholder={tags.length === 0 ? "Type tag and press Enter..." : "Add tag..."}
+                    className="flex-1 min-w-[90px] bg-transparent py-0.5 px-1 text-xs font-medium text-slate-800 outline-none placeholder:text-slate-400"
                   />
                 </div>
               </div>
@@ -854,150 +918,183 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
           </div>
 
           {/* Box 5: Related Articles */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-3 transition hover:border-slate-300">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-900">
-                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100">
-                  <Sparkles size={13} />
-                </span>
-                <span>Related Posts</span>
-              </h3>
-              <span className="text-[10px] font-semibold text-slate-400">Optional</span>
-            </div>
-            <p className="text-[11px] text-slate-500">Select relevant existing articles to recommend.</p>
-            {availablePosts.filter((item) => item.id !== post?.id).length ? (
-              <div className="max-h-48 space-y-1.5 overflow-y-auto pr-1">
-                {availablePosts.filter((item) => item.id !== post?.id).map((item) => (
-                  <label key={item.id} className="flex cursor-pointer items-start gap-2 rounded-xl p-2 transition hover:bg-slate-50 border border-transparent hover:border-slate-200">
-                    <input
-                      type="checkbox"
-                      checked={relatedPostIds.includes(item.id)}
-                      onChange={(e) => setRelatedPostIds((current) => e.target.checked ? [...current, item.id] : current.filter((id) => id !== item.id))}
-                      className="mt-0.5 h-3.5 w-3.5 accent-blue-600"
-                    />
-                    <span className="min-w-0">
-                      <span className="block truncate text-xs font-semibold text-slate-800">{item.title}</span>
-                      <span className="block truncate text-[10px] text-slate-400">/blog/{item.slug} · {item.status}</span>
-                    </span>
-                  </label>
-                ))}
+          <div className="flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-3.5 shadow-xs space-y-3 transition hover:border-slate-300 sm:p-5 lg:flex-1">
+            <div className="min-w-0">
+              <div className="flex flex-col items-start gap-2 border-b border-slate-100 pb-3.5 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-2.5">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600 border border-orange-100">
+                    <Sparkles size={15} />
+                  </span>
+                  <div>
+                    <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                      Related Posts
+                    </h3>
+                    <p className="text-[11px] text-slate-400 font-normal">Recommend existing articles</p>
+                  </div>
+                </div>
+                <span className="ml-10 whitespace-nowrap text-[10.5px] font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full sm:ml-0">Optional</span>
               </div>
-            ) : (
-              <p className="rounded-xl bg-slate-50 border border-slate-200/60 px-3 py-2.5 text-xs text-slate-500">No other articles are available yet.</p>
+
+              <div className="mt-3">
+                {availablePosts.filter((item) => item.id !== post?.id).length ? (
+                  <div className="max-h-48 space-y-1.5 overflow-y-auto pr-1">
+                    {availablePosts.filter((item) => item.id !== post?.id).map((item) => (
+                      <label key={item.id} className="flex cursor-pointer items-start gap-2.5 rounded-xl p-2.5 transition hover:bg-orange-50/40 border border-slate-100 hover:border-orange-200">
+                        <input
+                          type="checkbox"
+                          checked={relatedPostIds.includes(item.id)}
+                          onChange={(e) => setRelatedPostIds((current) => e.target.checked ? [...current, item.id] : current.filter((id) => id !== item.id))}
+                          className="mt-0.5 h-4 w-4 accent-orange-600 rounded"
+                        />
+                        <span className="min-w-0">
+                          <span className="block truncate text-xs font-bold text-slate-800">{item.title}</span>
+                          <span className="block truncate text-[10.5px] text-slate-400">/blog/{item.slug} · {item.status}</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="rounded-xl bg-slate-50 border border-slate-200/60 px-3.5 py-3 text-xs text-slate-500">No other articles are available yet.</p>
+                )}
+              </div>
+            </div>
+
+            {mode === "edit" && post && (
+              <div className="pt-3 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (!confirm("Are you sure you want to permanently delete this post?")) return;
+                    await fetch(`/api/posts/${post.id}`, { method: "DELETE" });
+                    router.push("/admin/posts");
+                  }}
+                  className="w-full h-10 flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50/50 hover:bg-red-100/70 text-red-700 text-xs font-bold transition-all cursor-pointer"
+                >
+                  <Trash2 size={13} className="text-red-500" />
+                  <span>Delete This Article</span>
+                </button>
+              </div>
             )}
           </div>
-
-          {/* Box 6: Danger Zone / Delete Post (edit mode only) */}
-          {mode === "edit" && post && (
-            <div className="rounded-2xl border border-red-200 bg-red-50/30 p-4 shadow-xs">
-              <button
-                type="button"
-                onClick={async () => {
-                  if (!confirm("Are you sure you want to permanently delete this post?")) return;
-                  await fetch(`/api/posts/${post.id}`, { method: "DELETE" });
-                  router.push("/admin/posts");
-                }}
-                className="w-full flex items-center justify-center gap-2 rounded-xl border border-red-300 bg-white hover:bg-red-50 text-red-700 py-2.5 text-xs font-bold transition-all cursor-pointer shadow-xs"
-              >
-                <Trash2 size={13} className="text-red-500" />
-                <span>Delete This Article</span>
-              </button>
-            </div>
-          )}
         </div>
       </div>
 
       {/* Box 7: Search Optimization (SEO & Social Snippet) Section */}
       <div className="mt-6 rounded-2xl border border-slate-200/90 bg-white shadow-xs overflow-hidden transition hover:border-slate-300">
+        {/* Card Header */}
         <button
           type="button"
           onClick={() => setShowSeo((v) => !v)}
-          className="flex w-full items-center justify-between bg-slate-50/80 px-5 py-3.5 text-xs font-bold uppercase tracking-wider text-slate-800 transition hover:bg-slate-100/80 cursor-pointer"
+          className="flex w-full flex-wrap items-start gap-x-3 gap-y-2 border-b border-slate-100 bg-white px-3 py-3 text-left transition hover:bg-slate-50/60 cursor-pointer sm:flex-nowrap sm:items-center sm:px-5 sm:py-4"
         >
-          <div className="flex items-center gap-2">
-            <Globe size={15} className="text-blue-600" />
-            <span className="text-xs font-bold text-slate-900">Search Optimization (SEO, Meta & Keyphrases)</span>
+          <div className="flex min-w-0 flex-1 items-start gap-2 sm:items-center sm:gap-3">
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600 border border-orange-100">
+              <Globe size={16} />
+            </span>
+            <div className="min-w-0">
+              <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                Search Optimization (SEO, Meta &amp; Keyphrases)
+              </h2>
+              <p className="text-[11px] font-normal text-slate-400">
+                Configure search engine snippet, target keywords, and Google indexing
+              </p>
+            </div>
           </div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
-            <span>{currentKeyphrases.length} keyphrases</span>
-            {showSeo ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          <div className="ml-10 flex w-[calc(100%-2.5rem)] items-center justify-between gap-2 sm:ml-0 sm:w-auto sm:justify-start">
+            <span className="rounded-full bg-orange-50 border border-orange-200/70 px-2.5 py-1 text-[10.5px] font-bold text-orange-700">
+              {currentKeyphrases.length} {currentKeyphrases.length === 1 ? "keyphrase" : "keyphrases"}
+            </span>
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-500">
+              {showSeo ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+            </span>
           </div>
         </button>
 
         {showSeo && (
-          <div className="p-5 border-t border-slate-100 space-y-4">
-            <div className="grid gap-4 md:grid-cols-2">
+          <div className="space-y-5 bg-white p-3.5 sm:p-6">
+            {/* Row 1: 50/50 Side-by-Side Custom SEO Title & Meta Description (Equal Height, Zero Empty Space) */}
+            <div className="grid gap-5 md:grid-cols-2">
               {/* Custom SEO Title */}
               <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="block text-[10.5px] font-bold uppercase tracking-wider text-slate-700">Custom SEO Title</label>
-                  <span className="text-[10px] text-slate-400">{(seoTitle || title).length}/60 chars</span>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                    Custom SEO Title
+                  </label>
+                  <span className={`text-[10.5px] font-semibold ${(seoTitle || title).length > 55 ? "text-amber-600" : "text-slate-400"}`}>
+                    {(seoTitle || title).length} / 60 chars
+                  </span>
                 </div>
                 <input
                   type="text"
                   maxLength={60}
                   value={seoTitle}
                   onChange={(e) => setSeoTitle(e.target.value)}
-                  placeholder={title || "SEO title for search results..."}
-                  className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-3 py-1.5 text-xs font-medium text-slate-900 outline-none focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100 transition"
+                  placeholder={title || "Enter SEO title for Google search results..."}
+                  className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 text-xs font-semibold text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition placeholder:font-normal placeholder:text-slate-400"
                 />
               </div>
 
               {/* Meta Description */}
               <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="block text-[10.5px] font-bold uppercase tracking-wider text-slate-700">Meta Description</label>
-                  <span className="text-[10px] text-slate-400">{(metaDescription || excerpt).length}/160 chars</span>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                    Meta Description
+                  </label>
+                  <span className={`text-[10.5px] font-semibold ${(metaDescription || excerpt).length > 150 ? "text-amber-600" : "text-slate-400"}`}>
+                    {(metaDescription || excerpt).length} / 160 chars
+                  </span>
                 </div>
                 <input
                   type="text"
                   value={metaDescription}
                   onChange={(e) => setMetaDescription(e.target.value)}
                   maxLength={160}
-                  placeholder={excerpt || "Search engine snippet summary..."}
-                  className="w-full rounded-lg border border-slate-200 bg-slate-50/40 px-3 py-1.5 text-xs font-medium text-slate-900 outline-none focus:border-blue-600 focus:bg-white focus:ring-1 focus:ring-blue-100 transition"
+                  placeholder={excerpt || "Write a compelling summary for search engine results..."}
+                  className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition placeholder:font-normal placeholder:text-slate-400"
                 />
               </div>
             </div>
 
-            {/* Focus Keyphrase Multi-Selector */}
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="flex items-center gap-1.5 text-[10.5px] font-bold uppercase tracking-wider text-slate-700">
-                  <Key size={12} className="text-blue-600" />
-                  Focus Keyphrases
-                  <span className="text-[10px] font-normal text-slate-400 normal-case">
-                    (Click suggestions or type custom keywords & press Enter)
+            {/* Row 2: Focus Keyphrases & Suggested Keyphrases */}
+            <div className="space-y-2.5">
+              <div className="flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+                <label className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[11px] font-bold uppercase tracking-wider text-slate-800">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-md bg-orange-50 text-orange-600 border border-orange-100">
+                    <Key size={11} />
+                  </span>
+                  <span>Focus Keyphrases</span>
+                  <span className="text-[11px] font-normal text-slate-400 normal-case">
+                    (Type custom keyword &amp; press Enter, or click suggestions below)
                   </span>
                 </label>
-                <span className="text-[10.5px] font-bold text-slate-500">
+                <span className="text-[11px] font-bold text-slate-500">
                   {currentKeyphrases.length} selected
                 </span>
               </div>
 
               {/* Multi-Select Pills Container */}
-              <div className="min-h-[34px] flex flex-wrap items-center gap-1.5 rounded-lg border border-slate-200 bg-slate-50/40 p-1.5 transition focus-within:border-blue-600 focus-within:bg-white focus-within:ring-1 focus-within:ring-blue-100">
+              <div className="min-h-[42px] flex flex-wrap items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50/50 p-2 transition focus-within:border-orange-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-100">
                 {currentKeyphrases.map((phrase) => (
                   <span
                     key={phrase}
-                    className="inline-flex items-center gap-1 rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 text-[11px] font-bold text-blue-900 shadow-2xs animate-in fade-in zoom-in-95 duration-150"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-orange-200 bg-orange-50 px-2.5 py-1 text-xs font-bold text-orange-900 shadow-2xs"
                   >
-                    <Sparkles size={9} className="text-blue-500 shrink-0" />
+                    <Sparkles size={10} className="text-orange-500 shrink-0" />
                     <span>{phrase}</span>
                     <button
                       type="button"
                       onClick={() => removeKeyphrase(phrase)}
-                      className="rounded p-0.5 text-blue-400 hover:bg-blue-200/60 hover:text-blue-900 transition-colors cursor-pointer"
+                      className="rounded-full p-0.5 text-orange-400 hover:bg-orange-200/60 hover:text-orange-900 transition-colors cursor-pointer"
                       title="Remove keyphrase"
                       aria-label={`Remove ${phrase}`}
                     >
-                      <X size={10} />
+                      <X size={11} />
                     </button>
                   </span>
                 ))}
 
                 {/* Inline Type-to-Add Input */}
-                <div className="flex flex-1 items-center min-w-[120px]">
+                <div className="flex min-w-0 flex-1 basis-full items-center px-1 sm:basis-auto">
                   <input
                     type="text"
                     value={keyphraseInput}
@@ -1011,115 +1108,266 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                         removeKeyphrase(currentKeyphrases[currentKeyphrases.length - 1]);
                       }
                     }}
-                    placeholder={currentKeyphrases.length === 0 ? "Type keyphrase and press Enter..." : "Add keyword..."}
+                    placeholder={currentKeyphrases.length === 0 ? "Type a focus keyphrase and press Enter..." : "Add another keyphrase..."}
                     className="w-full bg-transparent text-xs font-semibold text-slate-800 outline-none placeholder:font-normal placeholder:text-slate-400"
                   />
                   {keyphraseInput.trim() && (
                     <button
                       type="button"
                       onClick={() => addKeyphrase(keyphraseInput)}
-                      className="ml-1 inline-flex items-center gap-1 rounded-md bg-blue-600 px-2 py-0.5 text-[10.5px] font-bold text-white hover:bg-blue-700 cursor-pointer"
+                      className="ml-1.5 inline-flex items-center gap-1 rounded-lg bg-orange-600 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-orange-700 cursor-pointer shrink-0"
                     >
-                      <Plus size={10} />
+                      <Plus size={11} />
                       Add
                     </button>
                   )}
                 </div>
               </div>
 
-              {/* Suggested Railway Keyphrases with compact sizes (+1-2px larger) and show less / show more */}
-              <div className="mt-2">
-                {(() => {
-                  const unselected = SUGGESTED_KEYPHRASES.filter(
-                    (suggestion) => !currentKeyphrases.some((k) => k.toLowerCase() === suggestion.toLowerCase())
-                  );
-                  const displayed = showAllKeyphrases ? unselected : unselected.slice(0, 6);
+              {/* Suggested Railway Keyphrases */}
+              {(() => {
+                const unselected = SUGGESTED_KEYPHRASES.filter(
+                  (suggestion) => !currentKeyphrases.some((k) => k.toLowerCase() === suggestion.toLowerCase())
+                );
+                const displayed = showAllKeyphrases ? unselected : unselected.slice(0, 6);
 
-                  if (unselected.length === 0) return null;
+                if (unselected.length === 0) return null;
 
-                  return (
-                    <>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1">
-                          <span>Suggested Features &amp; Keyphrases (Click to add)</span>
-                        </p>
-                        {unselected.length > 6 && (
-                          <button
-                            type="button"
-                            onClick={() => setShowAllKeyphrases((prev) => !prev)}
-                            className="text-[11px] font-bold text-orange-600 hover:text-orange-700 cursor-pointer transition-colors"
-                          >
-                            {showAllKeyphrases ? "Show less" : `Show all (${unselected.length})`}
-                          </button>
-                        )}
-                      </div>
+                return (
+                  <div className="min-w-0 rounded-xl border border-slate-100 bg-slate-50/50 p-2.5 sm:p-3">
+                    <div className="mb-2 flex flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                      <p className="text-[10.5px] font-bold uppercase tracking-wider text-slate-500">
+                        Suggested Railway Keyphrases (Click to add)
+                      </p>
+                      {unselected.length > 6 && (
+                        <button
+                          type="button"
+                          onClick={() => setShowAllKeyphrases((prev) => !prev)}
+                          className="min-h-11 text-xs font-bold text-orange-600 hover:text-orange-700 cursor-pointer transition-colors"
+                        >
+                          {showAllKeyphrases ? "Show less" : `Show all (${unselected.length})`}
+                        </button>
+                      )}
+                    </div>
 
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        {displayed.map((suggestion) => (
-                          <button
-                            key={suggestion}
-                            type="button"
-                            onClick={() => addKeyphrase(suggestion)}
-                            className="inline-flex items-center gap-1 rounded-[5px] border border-slate-200/90 bg-white px-2 py-0.5 font-medium text-slate-600 shadow-2xs hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 transition-colors cursor-pointer"
-                            style={{ fontSize: "11.5px", lineHeight: "16px" }}
-                          >
-                            <Plus size={9.5} className="text-slate-400 shrink-0" />
-                            <span>{suggestion}</span>
-                          </button>
-                        ))}
+                    <div className="flex flex-wrap items-start gap-1.5">
+                      {displayed.map((suggestion) => (
+                        <button
+                          key={suggestion}
+                          type="button"
+                          onClick={() => addKeyphrase(suggestion)}
+                          className="inline-flex min-h-11 max-w-full items-center gap-1.5 rounded-lg border border-slate-200/90 bg-white px-2.5 py-2 text-left text-xs font-medium text-slate-700 shadow-2xs hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 transition-all cursor-pointer"
+                        >
+                          <Plus size={11} className="text-orange-500 shrink-0" />
+                          <span className="min-w-0">{suggestion}</span>
+                        </button>
+                      ))}
 
-                        {!showAllKeyphrases && unselected.length > 6 && (
-                          <button
-                            type="button"
-                            onClick={() => setShowAllKeyphrases(true)}
-                            className="inline-flex items-center gap-1 rounded-[5px] border border-dashed border-orange-300 bg-orange-50/70 px-2 py-0.5 font-bold text-orange-700 hover:bg-orange-100 transition-colors cursor-pointer"
-                            style={{ fontSize: "11.5px", lineHeight: "16px" }}
-                          >
-                            <span>+{unselected.length - 6} more</span>
-                          </button>
-                        )}
-                      </div>
-                    </>
-                  );
-                })()}
-              </div>
+                      {!showAllKeyphrases && unselected.length > 6 && (
+                        <button
+                          type="button"
+                          onClick={() => setShowAllKeyphrases(true)}
+                          className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-dashed border-orange-300 bg-orange-50/70 px-2.5 py-2 text-xs font-bold text-orange-700 hover:bg-orange-100 transition-colors cursor-pointer"
+                        >
+                          <span>+{unselected.length - 6} more</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-[auto_1fr] items-center">
-              <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-slate-200 bg-slate-50/70 px-3.5 py-2.5">
-                <input
-                  type="checkbox"
-                  checked={allowIndexing}
-                  onChange={(e) => setAllowIndexing(e.target.checked)}
-                  className="h-4 w-4 accent-orange-600 rounded"
-                />
-                <span className="text-xs font-semibold text-slate-700">
-                  Index in search engines (Google, Bing)
-                </span>
+            {/* Row 3: Equal-Height Bottom Grid — Indexing Control (4 cols) + Google SERP Preview (8 cols) */}
+            <div className="grid gap-4 lg:grid-cols-12 items-stretch">
+              {/* Left 4 Cols: Search Engine Indexing Card */}
+              <label className="lg:col-span-4 flex flex-col justify-between cursor-pointer rounded-xl border border-slate-200/90 bg-slate-50/60 p-4 transition hover:border-orange-300 hover:bg-orange-50/20">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
+                    <Globe size={11} className="text-orange-600" />
+                    <span>Search Visibility</span>
+                  </span>
+                  <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${allowIndexing ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-slate-200 text-slate-600"}`}>
+                    {allowIndexing ? "Indexed" : "Noindex"}
+                  </span>
+                </div>
+
+                <div className="mt-3 flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    checked={allowIndexing}
+                    onChange={(e) => setAllowIndexing(e.target.checked)}
+                    className="mt-0.5 h-4 w-4 accent-orange-600 rounded cursor-pointer shrink-0"
+                  />
+                  <div className="min-w-0">
+                    <span className="block text-xs font-bold text-slate-900">
+                      Index in search engines (Google, Bing)
+                    </span>
+                    <span className="mt-0.5 block text-[11px] leading-relaxed text-slate-500">
+                      Allow search engines to crawl and display this article in public search results.
+                    </span>
+                  </div>
+                </div>
               </label>
 
-              <div className="rounded-xl border border-slate-200 bg-slate-50/50 px-4 py-2.5">
-                <p className="text-[9px] font-bold uppercase tracking-wider text-slate-400">Google SERP Preview</p>
-                <p className="truncate text-xs font-bold text-blue-700">{seoTitle || title || "Your article title"}</p>
-                <p className="truncate text-[10px] text-emerald-700">https://railagents.in/blog/{slug || "article-slug"}</p>
-                <p className="mt-0.5 line-clamp-1 text-[11px] text-slate-600">{metaDescription || excerpt || "Your article snippet will appear here in search engine result pages."}</p>
+              {/* Right 8 Cols: Live Google SERP Preview Card */}
+              <div className="min-w-0 lg:col-span-8 flex flex-col justify-between rounded-xl border border-slate-200/90 bg-slate-50/60 p-3 sm:p-4">
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                  <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
+                    <Sparkles size={11} className="text-orange-600" />
+                    <span>Google SERP Preview</span>
+                  </span>
+                  <span className="whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 border border-slate-200/80">
+                    Live Snippet
+                  </span>
+                </div>
+
+                <div className="min-w-0 rounded-lg border border-slate-200/80 bg-white px-2.5 py-2.5 shadow-2xs sm:px-3.5">
+                  <div className="flex items-center gap-2 text-[11px] text-slate-600">
+                    <span className="flex h-4 w-4 items-center justify-center rounded-full bg-orange-100 text-[9px] font-black text-orange-700 shrink-0">
+                      R
+                    </span>
+                    <span className="font-bold text-slate-800">RailAgents</span>
+                    <span className="text-slate-300">•</span>
+                    <span className="min-w-0 break-all text-[10.5px] text-emerald-700">
+                      https://railagents.in/blog/{slug || "article-slug"}
+                    </span>
+                  </div>
+                  <p className="mt-1 truncate text-xs sm:text-[13px] font-bold text-[#1a0dab]">
+                    {seoTitle || title || "Your article title"}
+                  </p>
+                  <p className="mt-0.5 line-clamp-1 text-[11px] text-slate-600">
+                    {metaDescription || excerpt || "Your article snippet will appear here in search engine result pages."}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         )}
       </div>
 
+      {/* Box 8: Social Media Post / Reel Links (Instagram, Facebook, YouTube) */}
+      <div className="mt-6 rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 shadow-xs transition hover:border-slate-300">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 pb-3.5">
+          <div className="flex items-center gap-3">
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600 border border-orange-100">
+              <Share2 size={15} />
+            </span>
+            <div>
+              <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                Social Media Video &amp; Post Links
+              </h2>
+              <p className="text-[11px] text-slate-400">
+                Attach related Instagram Reel, Facebook Video, or YouTube links for this article (Displayed on the blog post)
+              </p>
+            </div>
+          </div>
+          <span className="self-start sm:self-auto text-[10.5px] font-semibold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
+            Optional
+          </span>
+        </div>
+
+        <div className="mt-4 grid gap-4 md:grid-cols-3">
+          {/* Instagram Reel / Post URL */}
+          <div>
+            <label className="mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <span className="flex h-4 w-4 items-center justify-center rounded bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white">
+                <FaInstagram className="h-2.5 w-2.5" />
+              </span>
+              <span>Instagram Reel / Post URL</span>
+            </label>
+            <div className="flex gap-1.5">
+              <input
+                type="url"
+                value={instagramUrl}
+                onChange={(e) => setInstagramUrl(e.target.value)}
+                placeholder="https://www.instagram.com/reel/..."
+                className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
+              />
+              {instagramUrl && (
+                <button
+                  type="button"
+                  onClick={() => setInstagramUrl("")}
+                  className="h-10 rounded-xl border border-slate-200 px-2.5 text-xs text-slate-400 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
+                  title="Clear Instagram link"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Facebook Video / Reel URL */}
+          <div>
+            <label className="mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <span className="flex h-4 w-4 items-center justify-center rounded bg-[#1877f2] text-white">
+                <FaFacebookF className="h-2.5 w-2.5" />
+              </span>
+              <span>Facebook Video / Reel URL</span>
+            </label>
+            <div className="flex gap-1.5">
+              <input
+                type="url"
+                value={facebookUrl}
+                onChange={(e) => setFacebookUrl(e.target.value)}
+                placeholder="https://www.facebook.com/reel/... or fb.watch/..."
+                className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
+              />
+              {facebookUrl && (
+                <button
+                  type="button"
+                  onClick={() => setFacebookUrl("")}
+                  className="h-10 rounded-xl border border-slate-200 px-2.5 text-xs text-slate-400 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
+                  title="Clear Facebook link"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Additional YouTube / Shorts Link */}
+          <div>
+            <label className="mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <span className="flex h-4 w-4 items-center justify-center rounded bg-[#ff0000] text-white">
+                <FaYoutube className="h-2.5 w-2.5" />
+              </span>
+              <span>YouTube Video / Short URL</span>
+            </label>
+            <div className="flex gap-1.5">
+              <input
+                type="url"
+                value={youtubeSocialUrl}
+                onChange={(e) => setYoutubeSocialUrl(e.target.value)}
+                placeholder="https://www.youtube.com/shorts/..."
+                className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
+              />
+              {youtubeSocialUrl && (
+                <button
+                  type="button"
+                  onClick={() => setYoutubeSocialUrl("")}
+                  className="h-10 rounded-xl border border-slate-200 px-2.5 text-xs text-slate-400 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
+                  title="Clear YouTube link"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Bottom Submit Navigation Bar */}
-      <div className="mt-8 flex flex-col md:flex-row items-center justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white p-4 shadow-sm">
-        <div className="flex items-center gap-2.5 text-xs text-slate-500">
+      <div className="mt-6 flex flex-col items-stretch gap-3 rounded-2xl border border-slate-200/90 bg-white px-3.5 py-3.5 shadow-sm sm:px-5 sm:py-4 md:flex-row md:items-center md:justify-between md:gap-4">
+        <div className="flex min-w-0 items-start gap-2.5 text-xs text-slate-500 sm:items-center">
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 font-bold border border-emerald-200 shrink-0">✓</span>
           <span>Ready with all details? Click <strong className="text-slate-800 font-bold">Next</strong> to select Draft, Publish, or Schedule options.</span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto justify-end">
+        <div className="grid w-full grid-cols-2 items-stretch gap-2.5 md:flex md:w-auto md:items-center md:justify-end">
           {/* Nearby Alert for Missing Required Fields */}
           {error && (
-            <div className="flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 animate-in fade-in duration-150">
+            <div className="col-span-2 flex min-w-0 items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 animate-in fade-in duration-150 md:col-span-1">
               <AlertCircle size={14} className="text-red-600 shrink-0" />
               <span>{error}</span>
             </div>
@@ -1128,7 +1376,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
           <button
             type="button"
             onClick={() => setShowLivePreview(true)}
-            className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-2xs"
+            className="min-h-11 w-full rounded-xl border border-slate-200 bg-white px-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-2xs sm:px-4 md:w-auto"
           >
             Preview Article
           </button>
@@ -1142,6 +1390,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
             icon={<ArrowRight size={14} className="text-white" />}
             size="sm"
             variant="orange"
+            className="w-full justify-center md:w-auto"
           />
         </div>
       </div>
@@ -1282,7 +1531,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     onClick={() => setStatus(s)}
                     className={`rounded-xl py-2 px-2 text-xs font-bold capitalize transition-all cursor-pointer ${
                       status === s
-                        ? "bg-white text-orange-700 shadow-sm border border-orange-200"
+                        ? "bg-orange-600 text-white shadow-sm"
                         : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
@@ -1387,4 +1636,3 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
     </div>
   );
 }
-
