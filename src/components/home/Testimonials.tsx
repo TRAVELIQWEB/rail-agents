@@ -96,7 +96,7 @@ export function Testimonials() {
                 />
 
                 {/* TOP PROFILE */}
-              <div className="relative z-10 flex w-full flex-col items-center justify-between gap-3 sm:flex-row sm:items-start">
+                <div className="relative z-10 flex w-full flex-col items-center justify-between gap-3 sm:flex-row sm:items-start">
                   <div className="flex flex-col items-center gap-3 sm:flex-row">
                     <span
                       className="
@@ -166,7 +166,7 @@ export function Testimonials() {
                 </div>
 
                 {/* BOTTOM DECORATIVE LINE */}
-              <div className="relative z-10 mx-auto mt-4 h-[3px] w-10 rounded-full bg-[var(--primary)] transition-all duration-300 group-hover:w-16 sm:mx-0" />
+                <div className="relative z-10 mx-auto mt-4 h-[3px] w-10 rounded-full bg-[var(--primary)] transition-all duration-300 group-hover:w-16 sm:mx-0" />
               </article>
             ))}
           </div>
@@ -234,29 +234,34 @@ export function Testimonials() {
             and details to verify with the relevant authorized provider.
           </p>
 
-          <div className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
+          <div className="mt-6 flex flex-row flex-nowrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3 w-full">
             <InternalLink
               href="/irctc-agent-registration"
               prefetch={false}
               className="
                 inline-flex
-                min-h-[46px]
+                h-11
+                shrink-0
                 items-center
-                gap-2
+                justify-center
+                gap-1.5
                 rounded-xl
                 bg-[var(--primary)]
-                px-5
-                text-[0.9rem]
-                font-[600]
+                px-4
+                sm:px-5
+                text-xs
+                sm:text-[0.875rem]
+                font-[700]
                 text-white
-                shadow-[0_8px_22px_rgba(249,115,22,0.28)]
+                shadow-[0_8px_20px_rgba(249,115,22,0.25)]
                 transition
                 hover:-translate-y-[1px]
                 hover:bg-[var(--primary-hover)]
+                whitespace-nowrap
               "
             >
-              Understand the Process
-              <ArrowRight className="h-4 w-4" />
+              <span>Agent Process</span>
+              <ArrowRight className="h-4 w-4 shrink-0" />
             </InternalLink>
 
             <InternalLink
@@ -264,22 +269,28 @@ export function Testimonials() {
               prefetch={false}
               className="
                 inline-flex
-                min-h-[46px]
+                h-11
+                shrink-0
                 items-center
+                justify-center
                 rounded-xl
                 border
                 border-[#f97316]/40
-                bg-white/80
-                px-5
-                text-[0.9rem]
-                font-[600]
+                bg-white/95
+                px-4
+                sm:px-5
+                text-xs
+                sm:text-[0.875rem]
+                font-[700]
                 text-[#b9500c]
                 backdrop-blur-sm
                 transition
                 hover:bg-white
+                hover:border-[#f97316]/70
+                whitespace-nowrap
               "
             >
-              Learn more about RailAgents
+              <span>About Us</span>
             </InternalLink>
           </div>
         </aside>

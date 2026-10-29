@@ -3,6 +3,7 @@
 // DELETE /api/posts/[id] — delete post (admin only)
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 import { getAdminIronSession, isAdminUiPreviewEnabled } from "@/lib/auth";
 import { isAdminSessionValid } from "@/lib/admin-session-validation";
 import { getPostById, updatePost, deletePost, isPostPubliclyVisible } from "@/lib/posts";
@@ -74,6 +75,13 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 
   try {
     const updated = await updatePost(id, body as Parameters<typeof updatePost>[1]);
+    try {
+      revalidatePath("/blog");
+      revalidatePath(`/blog/${updated.slug}`);
+      revalidatePath("/sitemap.xml");
+    } catch (e) {
+      console.warn("Revalidation warning on update:", e);
+    }
     return NextResponse.json(updated);
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";
@@ -89,7 +97,17 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
   const { id } = await params;
 
   try {
+    const postToDelete = await getPostById(id);
     await deletePost(id);
+    try {
+      revalidatePath("/blog");
+      if (postToDelete?.slug) {
+        revalidatePath(`/blog/${postToDelete.slug}`);
+      }
+      revalidatePath("/sitemap.xml");
+    } catch (e) {
+      console.warn("Revalidation warning on delete:", e);
+    }
     return NextResponse.json({ ok: true });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";

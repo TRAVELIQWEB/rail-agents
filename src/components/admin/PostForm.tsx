@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
-  Send, Eye, Trash2, ChevronDown, ChevronUp,
+  Send, Eye, ChevronDown, ChevronUp,
   Upload, X, Tag, Globe, AlertCircle,
   CheckCircle2, RotateCcw, ArrowUpRight, ArrowRight, Video,
   Plus, Key, Sparkles, Share2,
@@ -106,6 +106,42 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
     localStorage.setItem(draftKey, JSON.stringify(draft));
     setSaveStatus("saved");
   }, [title, slug, excerpt, content, category, tags, author, featuredImage, featuredVideoUrl, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds, instagramUrl, facebookUrl, youtubeSocialUrl, draftKey]);
+
+  // Reset form to fresh blank state (used after publishing a new post)
+  const resetForm = useCallback(() => {
+    setTitle("");
+    setSlug("");
+    setExcerpt("");
+    setContent("");
+    setCategory(BLOG_CATEGORIES[0]);
+    setTags([]);
+    setAuthor("RailAgents");
+    setStatus("draft");
+    setPublishedAt("");
+    setScheduledAt("");
+    setFeaturedImage(null);
+    setImagePreview(null);
+    setFeaturedVideoUrl("");
+    setCoverMediaType("image");
+    setSeoTitle("");
+    setMetaDescription("");
+    setFocusKeyphrase("");
+    setKeyphraseInput("");
+    setCanonicalUrl("");
+    setAllowIndexing(true);
+    setFeaturedImageAlt("");
+    setRelatedPostIds([]);
+    setInstagramUrl("");
+    setFacebookUrl("");
+    setYoutubeSocialUrl("");
+    setSlugManuallyEdited(false);
+    setTagInput("");
+    setSaveStatus("idle");
+    setError(null);
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(draftKey);
+    }
+  }, [draftKey]);
 
   // Window beforeunload guard against accidental data loss
   useEffect(() => {
@@ -430,7 +466,14 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
       });
 
       if (mode === "create") {
-        router.push(`/admin/posts/${data.id}/edit`);
+        resetForm();
+        setSuccessMessage(
+          chosenStatus === "published"
+            ? "Article published live successfully! The editor is ready for your next post."
+            : chosenStatus === "scheduled"
+              ? "Article scheduled successfully! The editor is ready for your next post."
+              : "Draft saved successfully!"
+        );
       } else {
         setSuccessMessage(
           chosenStatus === "published"
@@ -571,7 +614,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
       </div>
 
       {/* Main Two-Column Layout: Left Editor & Right Settings Panel */}
-      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(340px,390px)] gap-6 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(340px,390px)] gap-6 items-start">
         {/* Main Column */}
         <div className="flex flex-col space-y-6 min-w-0">
           {/* Box 1: Article Basic Details Card */}
@@ -681,8 +724,8 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
           </div>
         </div>
 
-        {/* Sidebar Column: Distinct boxed cards for settings */}
-        <div className="flex flex-col space-y-6 min-w-0">
+        {/* Sidebar Column: Distinct boxed cards for settings (Sticky so it stays visible while scrolling long content) */}
+        <div className="flex flex-col space-y-6 min-w-0 lg:sticky lg:top-4">
 
           {/* Box 3: Featured Media (Cover Image or YouTube Video) */}
           <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-4 transition hover:border-slate-300">
@@ -1028,23 +1071,6 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 )}
               </div>
             </div>
-
-            {mode === "edit" && post && (
-              <div className="pt-3 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={async () => {
-                    if (!confirm("Are you sure you want to permanently delete this post?")) return;
-                    await fetch(`/api/posts/${post.id}`, { method: "DELETE" });
-                    router.push("/admin/posts");
-                  }}
-                  className="w-full h-10 flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50/50 hover:bg-red-100/70 text-red-700 text-xs font-bold transition-all cursor-pointer"
-                >
-                  <Trash2 size={13} className="text-red-500" />
-                  <span>Delete This Article</span>
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -1445,10 +1471,16 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
 
           <button
             type="button"
-            onClick={() => setShowLivePreview(true)}
-            className="h-10 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-2xs"
+            onClick={() => {
+              if (window.confirm("Are you sure you want to reset all fields in this form? Any unsaved changes will be lost.")) {
+                resetForm();
+              }
+            }}
+            className="h-10 inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-2xs"
+            title="Reset form to blank"
           >
-            Preview Article
+            <RotateCcw size={13} className="text-slate-500" />
+            <span>Reset</span>
           </button>
 
           <InteractiveButton
@@ -1534,7 +1566,21 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
             </div>
 
             {/* Actions */}
-            <div className="mt-6 flex flex-col-reverse sm:flex-row gap-3">
+            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setPublishedSuccessData(null);
+                  if (mode === "create") {
+                    resetForm();
+                  } else {
+                    router.push("/admin/posts/new");
+                  }
+                }}
+                className="flex-1 rounded-xl bg-slate-900 py-3 text-xs font-extrabold text-white shadow-md hover:bg-slate-800 transition-colors cursor-pointer text-center"
+              >
+                + Write Another Post
+              </button>
               <button
                 type="button"
                 onClick={() => {
@@ -1543,17 +1589,17 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 }}
                 className="flex-1 rounded-xl border border-slate-200 py-3 text-xs font-extrabold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer text-center"
               >
-                Go to All Posts
+                All Posts
               </button>
               {publishedSuccessData.status === "published" && (
                 <Link
                   href={`/blog/${publishedSuccessData.slug}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 py-3 text-xs font-extrabold text-white shadow-md shadow-orange-500/20 hover:bg-orange-700 transition-colors cursor-pointer text-center"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-orange-600 py-3 text-xs font-extrabold text-white shadow-md shadow-orange-500/20 hover:bg-orange-700 transition-colors cursor-pointer text-center"
                 >
-                  <span>View Public Post</span>
-                  <ArrowUpRight size={15} />
+                  <span>View Post</span>
+                  <ArrowUpRight size={14} />
                 </Link>
               )}
             </div>
