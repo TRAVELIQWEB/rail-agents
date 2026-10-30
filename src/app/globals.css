@@ -1468,3 +1468,243 @@ input[type="number"] {
     animation: none !important;
   }
 }
+
+/* ==========================================================================
+   Interactive Social Icon Hover Effect with Tooltip & Fluid Fill Up (Uiverse)
+   ========================================================================== */
+.social-icon-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+}
+
+.social-icon-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-icon-item .social-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  color: #ffffff;
+  padding: 5px 9px;
+  border-radius: 6px;
+  opacity: 0;
+  visibility: hidden;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 50;
+}
+
+.social-icon-item .social-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 4px;
+  border-style: solid;
+  border-color: currentColor transparent transparent transparent;
+}
+
+.social-icon-item:hover .social-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.social-icon-item a.social-link {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+}
+
+.social-icon-item a.social-link--light {
+  color: #475569;
+  background-color: #ffffff;
+  border: 1px solid #fed7aa;
+}
+
+.social-icon-item a.social-link:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  border-color: transparent;
+}
+
+.social-icon-item a.social-link svg {
+  position: relative;
+  z-index: 2;
+  width: 17px;
+  height: 17px;
+  transition: transform 0.3s ease;
+}
+
+.social-icon-item a.social-link:hover svg {
+  transform: scale(1.12);
+}
+
+.social-icon-item a.social-link .social-filled {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.social-icon-item a.social-link:hover .social-filled {
+  height: 100%;
+}
+
+/* Platform-Specific Brand Colors */
+.social-icon-item a[data-social="linkedin"] .social-filled,
+.social-icon-item a[data-social="linkedin"] ~ .social-tooltip {
+  background-color: #0077b5;
+  color: #ffffff;
+}
+
+.social-icon-item a[data-social="github"] .social-filled,
+.social-icon-item a[data-social="github"] ~ .social-tooltip {
+  background-color: #24292e;
+  color: #ffffff;
+}
+
+.social-icon-item a[data-social="facebook"] .social-filled,
+.social-icon-item a[data-social="facebook"] ~ .social-tooltip {
+  background-color: #1877f2;
+  color: #ffffff;
+}
+
+.social-icon-item a[data-social="youtube"] .social-filled,
+.social-icon-item a[data-social="youtube"] ~ .social-tooltip {
+  background-color: #ff0000;
+  color: #ffffff;
+}
+
+.social-icon-item a[data-social="instagram"] .social-filled,
+.social-icon-item a[data-social="instagram"] ~ .social-tooltip {
+  background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+  color: #ffffff;
+}
+
+.social-icon-item a[data-social="twitter"] .social-filled,
+.social-icon-item a[data-social="twitter"] ~ .social-tooltip,
+.social-icon-item a[data-social="x"] .social-filled,
+.social-icon-item a[data-social="x"] ~ .social-tooltip {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   Fly-1 Send Button Effect (From Uiverse.io by adamgiebl)
+   ========================================================================== */
+.uiverse-send-btn {
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 750;
+  background: #25D366;
+  color: white;
+  padding: 0.65em 1.4em;
+  padding-left: 1.1em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 9999px;
+  overflow: hidden;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.35);
+  position: relative;
+}
+
+.uiverse-send-btn:hover {
+  background: #20ba59;
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
+  transform: translateY(-1px);
+}
+
+.uiverse-send-btn:active {
+  transform: scale(0.96);
+}
+
+.uiverse-send-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.uiverse-send-btn .svg-wrapper-1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.uiverse-send-btn .svg-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.uiverse-send-btn span {
+  display: block;
+  margin-left: 0.45em;
+  transition: all 0.3s ease-in-out;
+  white-space: nowrap;
+}
+
+.uiverse-send-btn svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.uiverse-send-btn:hover .svg-wrapper {
+  animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+
+.uiverse-send-btn:hover svg {
+  transform: translateX(1.1em) rotate(45deg) scale(1.12);
+}
+
+.uiverse-send-btn:hover span {
+  transform: translateX(5.5em);
+  opacity: 0;
+}
+
+@keyframes fly-1 {
+  from {
+    transform: translateY(0.12em);
+  }
+
+  to {
+    transform: translateY(-0.12em);
+  }
+}

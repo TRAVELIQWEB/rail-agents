@@ -55,7 +55,7 @@ export function QueryPage() {
 
           <div className="site-container relative z-10 flex flex-1 flex-col justify-between max-w-5xl w-full">
             {/* Focused 2-Column Grid Layout (Left Content: 5 cols | Right Form: 7 cols) */}
-            <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-8 xl:gap-12">
+            <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:items-center lg:gap-8 xl:gap-12">
 
               {/* ══ LEFT COLUMN: Heading & Features (5 Cols) ══ */}
               <div className="flex flex-col items-center text-center lg:col-span-5 lg:items-start lg:text-left">
@@ -112,7 +112,7 @@ export function QueryPage() {
               </div>
 
               {/* ══ RIGHT COLUMN: Contact Form Card (7 Cols) ══ */}
-              <div className="relative z-20 lg:col-span-7">
+              <div className="relative z-20 lg:col-span-7 lg:mt-4">
                 <QueryForm />
               </div>
 
@@ -138,21 +138,24 @@ export function QueryPage() {
 
                 <div className="flex flex-col items-center gap-2 sm:items-end">
                   <p className="text-xs font-bold text-[#0f2747]">Follow RailAgents</p>
-                  <div className="flex items-center gap-2">
-                    {socialLinks.map(({ label, href, icon: Icon, color }) => (
-                      <a
-                        key={label}
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Follow RailAgents on ${label}`}
-                        title={label}
-                        className="flex h-9 w-9 items-center justify-center rounded-full border border-orange-100 bg-[#fffaf5] transition-all hover:-translate-y-0.5 hover:border-orange-300 hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
-                      >
-                        <Icon aria-hidden="true" className="h-4 w-4" style={{ color }} />
-                      </a>
+                  <ul className="social-icon-list">
+                    {socialLinks.map(({ label, href, icon: Icon }) => (
+                      <li key={label} className="social-icon-item">
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Follow RailAgents on ${label}`}
+                          data-social={label.toLowerCase()}
+                          className="social-link social-link--light"
+                        >
+                          <div className="social-filled" />
+                          <Icon aria-hidden="true" />
+                        </a>
+                        <div className="social-tooltip">{label}</div>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               </div>
             </div>

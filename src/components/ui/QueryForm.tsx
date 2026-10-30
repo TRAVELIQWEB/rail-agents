@@ -132,12 +132,28 @@ export function QueryForm() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="inline-flex min-h-[54px] w-full max-w-[320px] items-center justify-center gap-2.5 rounded-full border border-orange-200 bg-white px-3 text-sm font-extrabold text-[var(--primary-dark)] shadow-[0_8px_18px_rgba(15,23,42,0.06)] transition-all hover:-translate-y-0.5 hover:border-orange-300 hover:bg-orange-50 hover:shadow-[0_12px_22px_rgba(15,23,42,0.08)] active:translate-y-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] disabled:cursor-wait disabled:opacity-70 sm:px-5 sm:text-base"
+            className="uiverse-send-btn focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
           >
-            <span className="whitespace-nowrap">
-              {isSubmitting ? "Opening WhatsApp..." : "Send Query on WhatsApp"}
+            <div className="svg-wrapper-1">
+              <div className="svg-wrapper">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="none"
+                >
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path
+                    fill="currentColor"
+                    d="M1.946 9.315c-.522-.174-.527-.455.01-.634l19.087-6.362c.529-.176.832.12.684.638l-5.454 19.086c-.15.529-.455.547-.679.045L12 14l6-8-8 6-8.054-2.685z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <span>
+              {isSubmitting ? "Opening WhatsApp..." : "Send me"}
             </span>
-            <FaWhatsapp aria-hidden="true" className="h-4 w-4 shrink-0 text-[var(--primary-dark)]" />
           </button>
         </div>
 

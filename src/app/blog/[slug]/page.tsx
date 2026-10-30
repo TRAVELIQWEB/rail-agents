@@ -483,44 +483,56 @@ export default async function BlogPostPage({ params }: Props) {
                           Follow this topic on our official social channels
                         </h2>
                       </div>
-                      <div className="flex flex-wrap items-center gap-3">
+                      <ul className="social-icon-list flex-wrap items-center">
                         {post.socialLinks?.instagram && (
-                          <a
-                            href={post.socialLinks.instagram}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Watch on Instagram"
-                            title="Watch on Instagram"
-                            className="group flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white shadow-[0_6px_16px_rgba(238,42,123,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:scale-105"
-                          >
-                            <FaInstagram className="h-5 w-5 transition-transform group-hover:scale-110" />
-                          </a>
+                          <li className="social-icon-item">
+                            <a
+                              href={post.socialLinks.instagram}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label="Instagram"
+                              data-social="instagram"
+                              className="social-link social-link--light"
+                            >
+                              <div className="social-filled" />
+                              <FaInstagram aria-hidden="true" />
+                            </a>
+                            <div className="social-tooltip">Instagram</div>
+                          </li>
                         )}
                         {post.socialLinks?.facebook && (
-                          <a
-                            href={post.socialLinks.facebook}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Watch on Facebook"
-                            title="Watch on Facebook"
-                            className="group flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-b from-[#3b82f6] via-[#1d4ed8] to-[#1e40af] text-white shadow-[0_6px_16px_rgba(29,78,216,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:scale-105"
-                          >
-                            <FaFacebookF className="h-5 w-5 transition-transform group-hover:scale-110" />
-                          </a>
+                          <li className="social-icon-item">
+                            <a
+                              href={post.socialLinks.facebook}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label="Facebook"
+                              data-social="facebook"
+                              className="social-link social-link--light"
+                            >
+                              <div className="social-filled" />
+                              <FaFacebookF aria-hidden="true" />
+                            </a>
+                            <div className="social-tooltip">Facebook</div>
+                          </li>
                         )}
                         {post.socialLinks?.youtube && (
-                          <a
-                            href={post.socialLinks.youtube}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Watch on YouTube"
-                            title="Watch on YouTube"
-                            className="group flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff4d4d] via-[#ff0000] to-[#cc0000] text-white shadow-[0_6px_16px_rgba(255,0,0,0.3)] transition-all duration-200 hover:-translate-y-0.5 hover:scale-105"
-                          >
-                            <FaYoutube className="h-5 w-5 transition-transform group-hover:scale-110" />
-                          </a>
+                          <li className="social-icon-item">
+                            <a
+                              href={post.socialLinks.youtube}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label="YouTube"
+                              data-social="youtube"
+                              className="social-link social-link--light"
+                            >
+                              <div className="social-filled" />
+                              <FaYoutube aria-hidden="true" />
+                            </a>
+                            <div className="social-tooltip">YouTube</div>
+                          </li>
                         )}
-                      </div>
+                      </ul>
                     </div>
                   </div>
                 )}
