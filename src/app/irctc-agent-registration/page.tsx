@@ -110,20 +110,28 @@ export default function IrctcAgentPage() {
     "@graph": [
       {
         "@type": "Article",
+        "@id": `${siteConfig.url}/irctc-agent-registration#article`,
         headline: "IRCTC Agent Guidance & Rules: Practical Compliance Guide",
         description:
           "Comprehensive guide for railway agents: IRCTC agent registration, booking rules, Tatkal restrictions, permissible service charges, cancellation OTPs, TDR, and compliance.",
         url: `${siteConfig.url}/irctc-agent-registration`,
-        author: { "@type": "Person", name: "Nihal Singh", url: `${siteConfig.url}/about` },
+        mainEntityOfPage: `${siteConfig.url}/irctc-agent-registration`,
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        inLanguage: "en-IN",
+        image: siteConfig.socialImage,
+        author: {
+          "@type": "Person",
+          "@id": `${siteConfig.url}/about#nihal-singh`,
+          name: "Nihal Singh",
+          url: `${siteConfig.url}/about`,
+        },
         publisher: {
-          "@type": "Organization",
           "@id": `${siteConfig.url}/#organization`,
-          name: siteConfig.name,
-          url: siteConfig.url,
         },
       },
       {
         "@type": "BreadcrumbList",
+        "@id": `${siteConfig.url}/irctc-agent-registration#breadcrumb`,
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
           {

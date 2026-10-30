@@ -49,27 +49,26 @@ export function Footer() {
               Clear railway agent information, practical guides, and help with
               travel-related questions.
             </p>
-            <div className="mt-4 flex items-center justify-center gap-2.5 md:justify-start">
-              {socialLinks.map(({ label, href, icon: Icon, color }) =>
+            <ul className="social-icon-list mt-4 justify-center md:justify-start">
+              {socialLinks.map(({ label, href, icon: Icon }) =>
                 href ? (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    title={label}
-                    className="group flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] transition-colors hover:border-[var(--primary)] hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
-                  >
-                    <Icon
-                      aria-hidden="true"
-                      className="h-3.5 w-3.5 transition-transform group-hover:scale-110"
-                      style={{ color }}
-                    />
-                  </a>
+                  <li key={label} className="social-icon-item">
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={label}
+                      data-social={label.toLowerCase()}
+                      className="social-link"
+                    >
+                      <div className="social-filled" />
+                      <Icon aria-hidden="true" />
+                    </a>
+                    <div className="social-tooltip">{label}</div>
+                  </li>
                 ) : null,
               )}
-            </div>
+            </ul>
           </div>
 
           <FooterLinkColumn title="Quick Links" items={quickLinks} />
@@ -95,7 +94,17 @@ export function Footer() {
 
         <div className="mt-6 flex flex-col items-center gap-2 border-t border-white/15 pt-4 text-center text-[0.8125rem] text-white/65 sm:flex-row sm:justify-between sm:text-left">
           <p>&copy; {currentYear} RailAgents. All rights reserved.</p>
-          <p>Made with care for railway agents across India</p>
+          <p>
+            Designed and developed by{" "}
+            <a
+              href="https://coderlala.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-white font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+            >
+              CoderLala Technologies Pvt. Ltd.
+            </a>
+          </p>
         </div>
       </div>
     </footer>

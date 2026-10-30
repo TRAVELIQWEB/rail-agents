@@ -135,26 +135,34 @@ export default function IrctcAgentRulesPage() {
     "@graph": [
       {
         "@type": "Article",
+        "@id": `${siteConfig.url}/irctc-agent-rules-regulations#article`,
         headline: "IRCTC Agent Rules & Regulations: Complete Guide",
         description:
           "Learn important IRCTC agent rules, booking dos and don'ts, service charges, customer records, cancellation and refund procedures, TDR guidance, and compliance responsibilities.",
         url: `${siteConfig.url}/irctc-agent-rules-regulations`,
-        author: { "@type": "Person", name: "Nihal Singh", url: `${siteConfig.url}/about` },
+        mainEntityOfPage: `${siteConfig.url}/irctc-agent-rules-regulations`,
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        inLanguage: "en-IN",
+        image: siteConfig.socialImage,
+        author: {
+          "@type": "Person",
+          "@id": `${siteConfig.url}/about#nihal-singh`,
+          name: "Nihal Singh",
+          url: `${siteConfig.url}/about`,
+        },
         publisher: {
-          "@type": "Organization",
           "@id": `${siteConfig.url}/#organization`,
-          name: siteConfig.name,
-          url: siteConfig.url,
         },
       },
       {
         "@type": "BreadcrumbList",
+        "@id": `${siteConfig.url}/irctc-agent-rules-regulations#breadcrumb`,
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
           {
             "@type": "ListItem",
             position: 2,
-            name: "IRCTC Agent",
+            name: "IRCTC Agent Registration",
             item: `${siteConfig.url}/irctc-agent-registration`,
           },
           {
@@ -167,6 +175,8 @@ export default function IrctcAgentRulesPage() {
       },
       {
         "@type": "FAQPage",
+        "@id": `${siteConfig.url}/irctc-agent-rules-regulations#faq`,
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
         mainEntity: FAQS.map((item) => ({
           "@type": "Question",
           name: item.q,
@@ -1193,25 +1203,6 @@ export default function IrctcAgentRulesPage() {
       </main>
 
       <Footer />
-
-      {/* FAQ Structured Data Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: FAQS.map((faq) => ({
-              "@type": "Question",
-              name: faq.q,
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: faq.a,
-              },
-            })),
-          }),
-        }}
-      />
     </div>
   );
 }

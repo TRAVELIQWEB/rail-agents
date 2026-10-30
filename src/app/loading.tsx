@@ -1,24 +1,25 @@
-import { Train } from "lucide-react";
-
 export default function Loading() {
   return (
-    <div className="fixed inset-0 z-[100] flex min-h-screen items-center justify-center bg-[#fffdf9]/95 px-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[100] flex min-h-screen items-center justify-center bg-[#fffdfb]/95 px-4 backdrop-blur-sm">
       <div
         role="status"
         aria-live="polite"
         aria-atomic="true"
-        className="flex flex-col items-center text-center"
+        aria-label="Loading RailAgents"
+        className="flex flex-col items-center justify-center text-center"
       >
-        <span className="relative flex h-16 w-16 items-center justify-center">
-          <span className="absolute inset-0 rounded-full border-2 border-orange-100 border-t-[var(--primary)] motion-safe:animate-spin motion-reduce:animate-none" />
-          <Train aria-hidden="true" className="h-7 w-7 text-[var(--navy)]" />
-        </span>
-        <span className="mt-4 text-base font-[800] tracking-[-0.02em] text-[var(--navy)]">
-          RailAgents
-        </span>
-        <span className="mt-1 text-sm text-slate-600">
-          Getting things ready...
-        </span>
+        <div className="rail-capsule-loader">
+          <span className="rail-capsule-text font-bold tracking-wider">loading</span>
+          <span className="rail-capsule-bar" />
+        </div>
+
+        <div className="mt-6 flex items-center gap-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-[var(--primary)] animate-pulse" />
+          <span className="text-[11px] font-extrabold uppercase tracking-widest text-[var(--navy)]/80">
+            RailAgents
+          </span>
+          <span className="h-1.5 w-1.5 rounded-full bg-[var(--primary)] animate-pulse" />
+        </div>
       </div>
     </div>
   );

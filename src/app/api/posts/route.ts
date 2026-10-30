@@ -2,6 +2,7 @@
 // POST /api/posts — create a new post (admin only)
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 import { getAdminIronSession, isAdminUiPreviewEnabled } from "@/lib/auth";
 import { isAdminSessionValid } from "@/lib/admin-session-validation";
 import { getAllPosts, createPost, getPublishedPosts } from "@/lib/posts";
@@ -92,6 +93,13 @@ export async function POST(req: Request) {
 
   try {
     const post = await createPost(body);
+    try {
+      revalidatePath("/blog");
+      revalidatePath(`/blog/${post.slug}`);
+      revalidatePath("/sitemap.xml");
+    } catch (e) {
+      console.warn("Revalidation warning on create:", e);
+    }
     return NextResponse.json(post, { status: 201 });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";

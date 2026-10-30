@@ -22,7 +22,43 @@ export const metadata = {
 };
 
 export default function AskNihalPage() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${siteConfig.url}/ask-nihal#webpage`,
+        url: `${siteConfig.url}/ask-nihal`,
+        name: "Ask Nihal Singh About Railway Services | RailAgents",
+        description:
+          "Ask Nihal Singh for guidance on railway agent registration, IRCTC information, booking questions, and railway services.",
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        breadcrumb: { "@id": `${siteConfig.url}/ask-nihal#breadcrumb` },
+        inLanguage: "en-IN",
+        mainEntity: {
+          "@id": `${siteConfig.url}/about#nihal-singh`,
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${siteConfig.url}/ask-nihal#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          { "@type": "ListItem", position: 2, name: "Ask Nihal", item: `${siteConfig.url}/ask-nihal` },
+        ],
+      },
+    ],
+  };
+
   return (
-    <QueryPage />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+        }}
+      />
+      <QueryPage />
+    </>
   );
 }

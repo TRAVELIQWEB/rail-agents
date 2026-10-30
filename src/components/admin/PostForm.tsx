@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
-  Send, Eye, Trash2, ChevronDown, ChevronUp,
+  Send, Eye, ChevronDown, ChevronUp,
   Upload, X, Tag, Globe, AlertCircle,
   CheckCircle2, RotateCcw, ArrowUpRight, ArrowRight, Video,
   Plus, Key, Sparkles, Share2,
@@ -107,6 +107,42 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
     setSaveStatus("saved");
   }, [title, slug, excerpt, content, category, tags, author, featuredImage, featuredVideoUrl, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds, instagramUrl, facebookUrl, youtubeSocialUrl, draftKey]);
 
+  // Reset form to fresh blank state (used after publishing a new post)
+  const resetForm = useCallback(() => {
+    setTitle("");
+    setSlug("");
+    setExcerpt("");
+    setContent("");
+    setCategory(BLOG_CATEGORIES[0]);
+    setTags([]);
+    setAuthor("RailAgents");
+    setStatus("draft");
+    setPublishedAt("");
+    setScheduledAt("");
+    setFeaturedImage(null);
+    setImagePreview(null);
+    setFeaturedVideoUrl("");
+    setCoverMediaType("image");
+    setSeoTitle("");
+    setMetaDescription("");
+    setFocusKeyphrase("");
+    setKeyphraseInput("");
+    setCanonicalUrl("");
+    setAllowIndexing(true);
+    setFeaturedImageAlt("");
+    setRelatedPostIds([]);
+    setInstagramUrl("");
+    setFacebookUrl("");
+    setYoutubeSocialUrl("");
+    setSlugManuallyEdited(false);
+    setTagInput("");
+    setSaveStatus("idle");
+    setError(null);
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(draftKey);
+    }
+  }, [draftKey]);
+
   // Window beforeunload guard against accidental data loss
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -149,7 +185,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
             if (typeof d.facebookUrl === "string") setFacebookUrl(d.facebookUrl);
             if (typeof d.youtubeSocialUrl === "string") setYoutubeSocialUrl(d.youtubeSocialUrl);
             setSaveStatus("saved");
-          } catch {}
+          } catch { }
           isDraftLoadedRef.current = true;
         }, 0);
         return () => {
@@ -171,17 +207,97 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
     return () => { if (autosaveTimer.current) clearTimeout(autosaveTimer.current); };
   }, [title, slug, excerpt, content, category, tags, author, featuredImage, featuredVideoUrl, featuredImageAlt, seoTitle, metaDescription, focusKeyphrase, canonicalUrl, allowIndexing, relatedPostIds, instagramUrl, facebookUrl, youtubeSocialUrl, saveDraft, mode]);
 
+  // Automatically compress / resize high-resolution images on the client so uploads never hit 413 limits
+  const optimizeImageForUpload = async (file: File): Promise<File> => {
+    // Skip GIFs or small WebP/JPEG files under 1.2 MB
+    if (
+      file.type === "image/gif" ||
+      (file.size <= 1.2 * 1024 * 1024 && file.type !== "image/png")
+    ) {
+      return file;
+    }
+
+    return new Promise((resolve) => {
+      const img = new window.Image();
+      const objectUrl = URL.createObjectURL(file);
+
+      img.onload = () => {
+        URL.revokeObjectURL(objectUrl);
+        const MAX_WIDTH = 1920;
+        const MAX_HEIGHT = 1080;
+        let { width, height } = img;
+
+        if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+          const ratio = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          resolve(file);
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+        const outputType = "image/webp";
+        canvas.toBlob(
+          (blob) => {
+            if (!blob || blob.size >= file.size) {
+              resolve(file);
+              return;
+            }
+            const baseName = file.name.replace(/\.[^.]+$/, "");
+            const optimizedFile = new File([blob], `${baseName}.webp`, {
+              type: outputType,
+              lastModified: Date.now(),
+            });
+            resolve(optimizedFile);
+          },
+          outputType,
+          0.86
+        );
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        resolve(file);
+      };
+
+      img.src = objectUrl;
+    });
+  };
+
+  const uploadOptimizedImage = async (rawFile: File): Promise<string> => {
+    const file = await optimizeImageForUpload(rawFile);
+    const fd = new FormData();
+    fd.append("file", file);
+    const res = await fetch("/api/upload", { method: "POST", body: fd });
+    let data: { url?: string; error?: string } = {};
+    try {
+      data = await res.json();
+    } catch {
+      if (res.status === 413) {
+        throw new Error("Image file is too large (413). Please select an image under 15MB.");
+      }
+      throw new Error(`Upload failed (${res.status}).`);
+    }
+    if (!res.ok || !data.url) {
+      throw new Error(data.error ?? "Upload failed");
+    }
+    return data.url;
+  };
+
   const handleImageUpload = async (file: File) => {
     setUploadingImage(true);
     setError(null);
     try {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Upload failed");
-      setFeaturedImage(data.url);
-      setImagePreview(data.url);
+      const url = await uploadOptimizedImage(file);
+      setFeaturedImage(url);
+      setImagePreview(url);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Image upload failed");
     } finally {
@@ -350,14 +466,21 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
       });
 
       if (mode === "create") {
-        router.push(`/admin/posts/${data.id}/edit`);
+        resetForm();
+        setSuccessMessage(
+          chosenStatus === "published"
+            ? "Article published live successfully! The editor is ready for your next post."
+            : chosenStatus === "scheduled"
+              ? "Article scheduled successfully! The editor is ready for your next post."
+              : "Draft saved successfully!"
+        );
       } else {
         setSuccessMessage(
           chosenStatus === "published"
             ? "Article published live successfully!"
             : chosenStatus === "scheduled"
-            ? "Article scheduled successfully!"
-            : "Draft saved successfully!"
+              ? "Article scheduled successfully!"
+              : "Draft saved successfully!"
         );
         router.refresh();
       }
@@ -449,13 +572,12 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
             <h1 className="text-xl font-black tracking-tight text-slate-900 sm:text-2xl">
               {mode === "create" ? "Create Article" : "Edit Article"}
             </h1>
-            <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold uppercase border ${
-              status === "published"
-                ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                : status === "scheduled"
+            <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold uppercase border ${status === "published"
+              ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+              : status === "scheduled"
                 ? "bg-blue-50 text-blue-700 border-blue-200"
                 : "bg-orange-50 text-orange-700 border-orange-200/60"
-            }`}>
+              }`}>
               {mode === "create" ? "Draft" : status}
             </span>
           </div>
@@ -477,14 +599,14 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
           <button
             type="button"
             onClick={() => setShowLivePreview(true)}
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 cursor-pointer"
+            className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 cursor-pointer"
           >
             <Eye size={13} className="text-slate-500" />
             <span>Preview</span>
           </button>
           <Link
             href="/admin/posts"
-            className="inline-flex min-h-11 items-center rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
+            className="inline-flex h-9 items-center rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
           >
             Back to Posts
           </Link>
@@ -492,24 +614,24 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
       </div>
 
       {/* Main Two-Column Layout: Left Editor & Right Settings Panel */}
-      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(340px,390px)] gap-6 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(340px,390px)] gap-6 items-start">
         {/* Main Column */}
         <div className="flex flex-col space-y-6 min-w-0">
           {/* Box 1: Article Basic Details Card */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-3.5 sm:p-5 lg:p-6 shadow-xs space-y-4 flex-shrink-0 transition hover:border-slate-300">
-            <div className="flex flex-col items-start gap-2 border-b border-slate-100 pb-3.5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 shadow-xs space-y-4 flex-shrink-0 transition hover:border-slate-300">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
               <div className="flex items-center gap-2.5">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600 font-bold border border-orange-100">
                   <Sparkles size={15} />
                 </span>
-                <div className="min-w-0">
+                <div>
                   <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
                     Article Details &amp; Slug
                   </h2>
                   <p className="text-[11px] text-slate-400 font-normal">Core headline, permalink URL, and article summary</p>
                 </div>
               </div>
-              <span className="ml-10 whitespace-nowrap text-[10.5px] font-bold text-orange-700 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-200/70 uppercase tracking-wider sm:ml-0">
+              <span className="text-[10.5px] font-bold text-orange-700 bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-200/70 uppercase tracking-wider">
                 Required *
               </span>
             </div>
@@ -596,25 +718,18 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 onChange={setContent}
                 placeholder="Start writing your article here..."
                 savedValue={post?.content ?? ""}
-                onUploadImage={async (file: File) => {
-                  const fd = new FormData();
-                  fd.append("file", file);
-                  const res = await fetch("/api/upload", { method: "POST", body: fd });
-                  const data = await res.json();
-                  if (!res.ok) throw new Error(data.error ?? "Upload failed");
-                  return data.url;
-                }}
+                onUploadImage={uploadOptimizedImage}
               />
             </div>
           </div>
         </div>
 
-        {/* Sidebar Column: Distinct boxed cards for settings */}
-        <div className="flex flex-col space-y-6 min-w-0">
+        {/* Sidebar Column: Distinct boxed cards for settings (Sticky so it stays visible while scrolling long content) */}
+        <div className="flex flex-col space-y-6 min-w-0 lg:sticky lg:top-4">
 
           {/* Box 3: Featured Media (Cover Image or YouTube Video) */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-3.5 sm:p-5 shadow-xs space-y-4 transition hover:border-slate-300">
-            <div className="flex flex-col items-start gap-2 border-b border-slate-100 pb-3.5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-4 transition hover:border-slate-300">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
               <div className="flex items-center gap-2.5">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600 border border-orange-100">
                   {coverMediaType === "video" ? <Video size={15} className="text-red-600" /> : <Upload size={15} />}
@@ -626,34 +741,32 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   <p className="text-[11px] text-slate-400 font-normal">16:9 image or YouTube video</p>
                 </div>
               </div>
-              <span className="ml-10 whitespace-nowrap text-[10.5px] font-bold text-orange-700 bg-orange-50 px-2.5 py-1 rounded-full border border-orange-200/70 sm:ml-0">Required *</span>
+              <span className="text-[10.5px] font-bold text-orange-700 bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-200/70">Required *</span>
             </div>
 
             {/* Media Type Switcher Tabs */}
-            <div className="grid grid-cols-2 gap-1 rounded-xl bg-slate-100/90 p-1 border border-slate-200/70">
+            <div className="flex rounded-xl bg-slate-100/90 p-1 border border-slate-200/70">
               <button
                 type="button"
                 onClick={() => setCoverMediaType("image")}
-                className={`flex min-h-11 min-w-0 flex-col items-center justify-center gap-1 rounded-lg px-2 py-2 text-[11px] leading-tight font-bold transition-all cursor-pointer sm:flex-row sm:gap-1.5 sm:text-xs ${
-                  coverMediaType === "image"
-                    ? "bg-orange-600 text-white shadow-sm ring-1 ring-orange-700/20"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
+                className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-bold transition-all cursor-pointer ${coverMediaType === "image"
+                  ? "bg-orange-600 text-white shadow-sm ring-1 ring-orange-700/20"
+                  : "text-slate-600 hover:text-slate-900"
+                  }`}
               >
-                <Upload size={13} className={`shrink-0 ${coverMediaType === "image" ? "text-white" : "text-slate-500"}`} />
-                <span>Cover Image</span>
+                <Upload size={13} className={coverMediaType === "image" ? "text-white" : "text-slate-500"} />
+                Cover Image
               </button>
               <button
                 type="button"
                 onClick={() => setCoverMediaType("video")}
-                className={`flex min-h-11 min-w-0 flex-col items-center justify-center gap-1 rounded-lg px-2 py-2 text-[11px] leading-tight font-bold transition-all cursor-pointer sm:flex-row sm:gap-1.5 sm:text-xs ${
-                  coverMediaType === "video"
-                    ? "bg-orange-600 text-white shadow-sm ring-1 ring-orange-700/20"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
+                className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-bold transition-all cursor-pointer ${coverMediaType === "video"
+                  ? "bg-orange-600 text-white shadow-sm ring-1 ring-orange-700/20"
+                  : "text-slate-600 hover:text-slate-900"
+                  }`}
               >
-                <Video size={13} className={`shrink-0 ${coverMediaType === "video" ? "text-white" : "text-slate-500"}`} />
-                <span>YouTube Video</span>
+                <Video size={13} className={coverMediaType === "video" ? "text-white" : "text-slate-500"} />
+                YouTube Video
               </button>
             </div>
 
@@ -793,7 +906,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     <span className="text-xs font-bold text-slate-700">
                       {uploadingImage ? "Uploading file..." : "Upload Cover Image"}
                     </span>
-                    <span className="mt-0.5 text-[10px] text-slate-400">JPG, PNG, WebP up to 5MB (16:9 recommended)</span>
+                    <span className="mt-0.5 text-[10px] text-slate-400">JPG, PNG, WebP (auto-optimized, 16:9 recommended)</span>
                     <input
                       type="file"
                       accept="image/jpeg,image/png,image/webp"
@@ -842,8 +955,8 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
           </div>
 
           {/* Box 4: Categorization & Author */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-3.5 sm:p-5 shadow-xs space-y-4 transition hover:border-slate-300">
-            <div className="flex flex-col items-start gap-2 border-b border-slate-100 pb-3.5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-4 transition hover:border-slate-300">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
               <div className="flex items-center gap-2.5">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600 border border-orange-100">
                   <Tag size={15} />
@@ -855,7 +968,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   <p className="text-[11px] text-slate-400 font-normal">Category, author, and topic tags</p>
                 </div>
               </div>
-              <span className="ml-10 whitespace-nowrap text-[10.5px] font-bold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-full sm:ml-0">Organization</span>
+              <span className="text-[10.5px] font-bold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full">Organization</span>
             </div>
 
             <div className="space-y-3.5">
@@ -918,9 +1031,9 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
           </div>
 
           {/* Box 5: Related Articles */}
-          <div className="flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-3.5 shadow-xs space-y-3 transition hover:border-slate-300 sm:p-5 lg:flex-1">
-            <div className="min-w-0">
-              <div className="flex flex-col items-start gap-2 border-b border-slate-100 pb-3.5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex-1 flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-3 transition hover:border-slate-300">
+            <div>
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
                 <div className="flex items-center gap-2.5">
                   <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600 border border-orange-100">
                     <Sparkles size={15} />
@@ -932,7 +1045,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     <p className="text-[11px] text-slate-400 font-normal">Recommend existing articles</p>
                   </div>
                 </div>
-                <span className="ml-10 whitespace-nowrap text-[10.5px] font-semibold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full sm:ml-0">Optional</span>
+                <span className="text-[10.5px] font-semibold text-slate-400 bg-slate-100 px-2.5 py-0.5 rounded-full">Optional</span>
               </div>
 
               <div className="mt-3">
@@ -958,23 +1071,6 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 )}
               </div>
             </div>
-
-            {mode === "edit" && post && (
-              <div className="pt-3 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={async () => {
-                    if (!confirm("Are you sure you want to permanently delete this post?")) return;
-                    await fetch(`/api/posts/${post.id}`, { method: "DELETE" });
-                    router.push("/admin/posts");
-                  }}
-                  className="w-full h-10 flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50/50 hover:bg-red-100/70 text-red-700 text-xs font-bold transition-all cursor-pointer"
-                >
-                  <Trash2 size={13} className="text-red-500" />
-                  <span>Delete This Article</span>
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -985,13 +1081,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
         <button
           type="button"
           onClick={() => setShowSeo((v) => !v)}
-          className="flex w-full flex-wrap items-start gap-x-3 gap-y-2 border-b border-slate-100 bg-white px-3 py-3 text-left transition hover:bg-slate-50/60 cursor-pointer sm:flex-nowrap sm:items-center sm:px-5 sm:py-4"
+          className="flex w-full items-center justify-between border-b border-slate-100 bg-white px-5 py-4 text-left transition hover:bg-slate-50/60 cursor-pointer"
         >
-          <div className="flex min-w-0 flex-1 items-start gap-2 sm:items-center sm:gap-3">
+          <div className="flex items-center gap-3">
             <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600 border border-orange-100">
               <Globe size={16} />
             </span>
-            <div className="min-w-0">
+            <div>
               <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
                 Search Optimization (SEO, Meta &amp; Keyphrases)
               </h2>
@@ -1000,8 +1096,8 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
               </p>
             </div>
           </div>
-          <div className="ml-10 flex w-[calc(100%-2.5rem)] items-center justify-between gap-2 sm:ml-0 sm:w-auto sm:justify-start">
-            <span className="rounded-full bg-orange-50 border border-orange-200/70 px-2.5 py-1 text-[10.5px] font-bold text-orange-700">
+          <div className="flex items-center gap-2.5">
+            <span className="rounded-full bg-orange-50 border border-orange-200/70 px-2.5 py-0.5 text-[10.5px] font-bold text-orange-700">
               {currentKeyphrases.length} {currentKeyphrases.length === 1 ? "keyphrase" : "keyphrases"}
             </span>
             <span className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-500">
@@ -1011,7 +1107,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
         </button>
 
         {showSeo && (
-          <div className="space-y-5 bg-white p-3.5 sm:p-6">
+          <div className="p-5 sm:p-6 space-y-5 bg-white">
             {/* Row 1: 50/50 Side-by-Side Custom SEO Title & Meta Description (Equal Height, Zero Empty Space) */}
             <div className="grid gap-5 md:grid-cols-2">
               {/* Custom SEO Title */}
@@ -1057,8 +1153,8 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
 
             {/* Row 2: Focus Keyphrases & Suggested Keyphrases */}
             <div className="space-y-2.5">
-              <div className="flex flex-col gap-1.5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-                <label className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[11px] font-bold uppercase tracking-wider text-slate-800">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <label className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-800">
                   <span className="flex h-5 w-5 items-center justify-center rounded-md bg-orange-50 text-orange-600 border border-orange-100">
                     <Key size={11} />
                   </span>
@@ -1094,7 +1190,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 ))}
 
                 {/* Inline Type-to-Add Input */}
-                <div className="flex min-w-0 flex-1 basis-full items-center px-1 sm:basis-auto">
+                <div className="flex flex-1 items-center min-w-[180px] px-1">
                   <input
                     type="text"
                     value={keyphraseInput}
@@ -1134,8 +1230,8 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 if (unselected.length === 0) return null;
 
                 return (
-                  <div className="min-w-0 rounded-xl border border-slate-100 bg-slate-50/50 p-2.5 sm:p-3">
-                    <div className="mb-2 flex flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="rounded-xl border border-slate-100 bg-slate-50/50 p-3">
+                    <div className="flex items-center justify-between mb-2">
                       <p className="text-[10.5px] font-bold uppercase tracking-wider text-slate-500">
                         Suggested Railway Keyphrases (Click to add)
                       </p>
@@ -1143,23 +1239,23 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                         <button
                           type="button"
                           onClick={() => setShowAllKeyphrases((prev) => !prev)}
-                          className="min-h-11 text-xs font-bold text-orange-600 hover:text-orange-700 cursor-pointer transition-colors"
+                          className="text-xs font-bold text-orange-600 hover:text-orange-700 cursor-pointer transition-colors"
                         >
                           {showAllKeyphrases ? "Show less" : `Show all (${unselected.length})`}
                         </button>
                       )}
                     </div>
 
-                    <div className="flex flex-wrap items-start gap-1.5">
+                    <div className="flex flex-wrap items-center gap-1.5">
                       {displayed.map((suggestion) => (
                         <button
                           key={suggestion}
                           type="button"
                           onClick={() => addKeyphrase(suggestion)}
-                          className="inline-flex min-h-11 max-w-full items-center gap-1.5 rounded-lg border border-slate-200/90 bg-white px-2.5 py-2 text-left text-xs font-medium text-slate-700 shadow-2xs hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 transition-all cursor-pointer"
+                          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200/90 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 shadow-2xs hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 transition-all cursor-pointer"
                         >
                           <Plus size={11} className="text-orange-500 shrink-0" />
-                          <span className="min-w-0">{suggestion}</span>
+                          <span>{suggestion}</span>
                         </button>
                       ))}
 
@@ -1167,7 +1263,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                         <button
                           type="button"
                           onClick={() => setShowAllKeyphrases(true)}
-                          className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-dashed border-orange-300 bg-orange-50/70 px-2.5 py-2 text-xs font-bold text-orange-700 hover:bg-orange-100 transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1 rounded-lg border border-dashed border-orange-300 bg-orange-50/70 px-2.5 py-1 text-xs font-bold text-orange-700 hover:bg-orange-100 transition-colors cursor-pointer"
                         >
                           <span>+{unselected.length - 6} more</span>
                         </button>
@@ -1199,7 +1295,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     onChange={(e) => setAllowIndexing(e.target.checked)}
                     className="mt-0.5 h-4 w-4 accent-orange-600 rounded cursor-pointer shrink-0"
                   />
-                  <div className="min-w-0">
+                  <div>
                     <span className="block text-xs font-bold text-slate-900">
                       Index in search engines (Google, Bing)
                     </span>
@@ -1211,25 +1307,25 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
               </label>
 
               {/* Right 8 Cols: Live Google SERP Preview Card */}
-              <div className="min-w-0 lg:col-span-8 flex flex-col justify-between rounded-xl border border-slate-200/90 bg-slate-50/60 p-3 sm:p-4">
-                <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+              <div className="lg:col-span-8 flex flex-col justify-between rounded-xl border border-slate-200/90 bg-slate-50/60 p-4">
+                <div className="flex items-center justify-between mb-2">
                   <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
                     <Sparkles size={11} className="text-orange-600" />
                     <span>Google SERP Preview</span>
                   </span>
-                  <span className="whitespace-nowrap rounded-full bg-white px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 border border-slate-200/80">
+                  <span className="rounded-full bg-white px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 border border-slate-200/80">
                     Live Snippet
                   </span>
                 </div>
 
-                <div className="min-w-0 rounded-lg border border-slate-200/80 bg-white px-2.5 py-2.5 shadow-2xs sm:px-3.5">
+                <div className="rounded-lg border border-slate-200/80 bg-white px-3.5 py-2.5 shadow-2xs">
                   <div className="flex items-center gap-2 text-[11px] text-slate-600">
                     <span className="flex h-4 w-4 items-center justify-center rounded-full bg-orange-100 text-[9px] font-black text-orange-700 shrink-0">
                       R
                     </span>
                     <span className="font-bold text-slate-800">RailAgents</span>
                     <span className="text-slate-300">•</span>
-                    <span className="min-w-0 break-all text-[10.5px] text-emerald-700">
+                    <span className="truncate text-[10.5px] text-emerald-700">
                       https://railagents.in/blog/{slug || "article-slug"}
                     </span>
                   </div>
@@ -1358,16 +1454,16 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
       </div>
 
       {/* Bottom Submit Navigation Bar */}
-      <div className="mt-6 flex flex-col items-stretch gap-3 rounded-2xl border border-slate-200/90 bg-white px-3.5 py-3.5 shadow-sm sm:px-5 sm:py-4 md:flex-row md:items-center md:justify-between md:gap-4">
-        <div className="flex min-w-0 items-start gap-2.5 text-xs text-slate-500 sm:items-center">
+      <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white px-5 py-4 shadow-sm">
+        <div className="flex items-center gap-2.5 text-xs text-slate-500">
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 font-bold border border-emerald-200 shrink-0">✓</span>
           <span>Ready with all details? Click <strong className="text-slate-800 font-bold">Next</strong> to select Draft, Publish, or Schedule options.</span>
         </div>
 
-        <div className="grid w-full grid-cols-2 items-stretch gap-2.5 md:flex md:w-auto md:items-center md:justify-end">
+        <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto justify-end">
           {/* Nearby Alert for Missing Required Fields */}
           {error && (
-            <div className="col-span-2 flex min-w-0 items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 animate-in fade-in duration-150 md:col-span-1">
+            <div className="flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 animate-in fade-in duration-150">
               <AlertCircle size={14} className="text-red-600 shrink-0" />
               <span>{error}</span>
             </div>
@@ -1375,10 +1471,16 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
 
           <button
             type="button"
-            onClick={() => setShowLivePreview(true)}
-            className="min-h-11 w-full rounded-xl border border-slate-200 bg-white px-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-2xs sm:px-4 md:w-auto"
+            onClick={() => {
+              if (window.confirm("Are you sure you want to reset all fields in this form? Any unsaved changes will be lost.")) {
+                resetForm();
+              }
+            }}
+            className="h-10 inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-2xs"
+            title="Reset form to blank"
           >
-            Preview Article
+            <RotateCcw size={13} className="text-slate-500" />
+            <span>Reset</span>
           </button>
 
           <InteractiveButton
@@ -1390,7 +1492,6 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
             icon={<ArrowRight size={14} className="text-white" />}
             size="sm"
             variant="orange"
-            className="w-full justify-center md:w-auto"
           />
         </div>
       </div>
@@ -1441,8 +1542,8 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 {publishedSuccessData.status === "published"
                   ? "Article Live on Website"
                   : publishedSuccessData.status === "scheduled"
-                  ? "Article Scheduled"
-                  : "Draft Saved"}
+                    ? "Article Scheduled"
+                    : "Draft Saved"}
               </span>
 
               <h3 className="mt-3 text-xl font-black text-slate-900 sm:text-2xl leading-snug">
@@ -1465,7 +1566,21 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
             </div>
 
             {/* Actions */}
-            <div className="mt-6 flex flex-col-reverse sm:flex-row gap-3">
+            <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setPublishedSuccessData(null);
+                  if (mode === "create") {
+                    resetForm();
+                  } else {
+                    router.push("/admin/posts/new");
+                  }
+                }}
+                className="flex-1 rounded-xl bg-slate-900 py-3 text-xs font-extrabold text-white shadow-md hover:bg-slate-800 transition-colors cursor-pointer text-center"
+              >
+                + Write Another Post
+              </button>
               <button
                 type="button"
                 onClick={() => {
@@ -1474,17 +1589,17 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 }}
                 className="flex-1 rounded-xl border border-slate-200 py-3 text-xs font-extrabold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer text-center"
               >
-                Go to All Posts
+                All Posts
               </button>
               {publishedSuccessData.status === "published" && (
                 <Link
                   href={`/blog/${publishedSuccessData.slug}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-orange-600 py-3 text-xs font-extrabold text-white shadow-md shadow-orange-500/20 hover:bg-orange-700 transition-colors cursor-pointer text-center"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-orange-600 py-3 text-xs font-extrabold text-white shadow-md shadow-orange-500/20 hover:bg-orange-700 transition-colors cursor-pointer text-center"
                 >
-                  <span>View Public Post</span>
-                  <ArrowUpRight size={15} />
+                  <span>View Post</span>
+                  <ArrowUpRight size={14} />
                 </Link>
               )}
             </div>
@@ -1529,11 +1644,10 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     key={s}
                     type="button"
                     onClick={() => setStatus(s)}
-                    className={`rounded-xl py-2 px-2 text-xs font-bold capitalize transition-all cursor-pointer ${
-                      status === s
-                        ? "bg-orange-600 text-white shadow-sm"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
+                    className={`rounded-xl py-2 px-2 text-xs font-bold capitalize transition-all cursor-pointer ${status === s
+                      ? "bg-orange-600 text-white shadow-sm"
+                      : "text-slate-600 hover:text-slate-900"
+                      }`}
                   >
                     {s}
                   </button>
@@ -1593,12 +1707,12 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     isSubmitting
                       ? "Saving..."
                       : status === "published"
-                      ? mode === "edit"
-                        ? "Update & Publish"
-                        : "Confirm & Publish"
-                      : status === "scheduled"
-                      ? "Schedule Post"
-                      : "Save as Draft"
+                        ? mode === "edit"
+                          ? "Update & Publish"
+                          : "Confirm & Publish"
+                        : status === "scheduled"
+                          ? "Schedule Post"
+                          : "Save as Draft"
                   }
                   icon={<Send size={14} className="text-white" />}
                   size="md"
@@ -1636,3 +1750,4 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
     </div>
   );
 }
+

@@ -7,7 +7,7 @@ import { isAdminSessionValid } from "@/lib/admin-session-validation";
 
 export const runtime = "nodejs";
 
-const MAX_SIZE_MB = 5;
+const MAX_SIZE_MB = 15;
 
 const ALLOWED_TYPES = new Set([
   "image/jpeg",
@@ -111,7 +111,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // Enforce the 5 MB limit.
+    // Enforce the 15 MB limit.
     if (file.size > MAX_SIZE_MB * 1024 * 1024) {
       return NextResponse.json(
         { error: `Image must be under ${MAX_SIZE_MB}MB.` },

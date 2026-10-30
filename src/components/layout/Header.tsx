@@ -76,11 +76,10 @@ export function Header() {
                 href={item.href}
                 prefetch={false}
                 current={isActive}
-                className={`inline-flex items-center whitespace-nowrap rounded-full px-2 py-1.5 text-[14px] font-[600] leading-none transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:px-2.5 xl:text-[15px] min-[1440px]:text-[16px] ${
-                  isActive
-                    ? "bg-[#ffefe6] text-[var(--primary)] shadow-xs"
-                    : "text-[var(--navy)] hover:bg-[#fff7f0] hover:text-[var(--primary)]"
-                }`}
+                className={`inline-flex items-center whitespace-nowrap rounded-full px-2 py-1.5 text-[14px] font-[600] leading-none transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:px-2.5 xl:text-[15px] min-[1440px]:text-[16px] ${isActive
+                  ? "bg-[#ffefe6] text-[var(--primary)] shadow-xs"
+                  : "text-[var(--navy)] hover:bg-[#fff7f0] hover:text-[var(--primary)]"
+                  }`}
               >
                 <span>{item.label}</span>
               </InternalLink>
@@ -99,27 +98,24 @@ export function Header() {
               onClick={() => setUtilitiesOpen((prev) => !prev)}
               aria-expanded={utilitiesOpen}
               aria-haspopup="true"
-              className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2 py-1.5 text-[14px] font-[600] leading-none transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:px-2.5 xl:text-[15px] min-[1440px]:text-[16px] cursor-pointer ${
-                isUtilityActive
-                  ? "bg-[#ffefe6] text-[var(--primary)] shadow-xs"
-                  : "text-[var(--navy)] hover:bg-[#fff7f0] hover:text-[var(--primary)]"
-              }`}
+              className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2 py-1.5 text-[14px] font-[600] leading-none transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:px-2.5 xl:text-[15px] min-[1440px]:text-[16px] cursor-pointer ${isUtilityActive
+                ? "bg-[#ffefe6] text-[var(--primary)] shadow-xs"
+                : "text-[var(--navy)] hover:bg-[#fff7f0] hover:text-[var(--primary)]"
+                }`}
             >
               <span>Tools</span>
               <ChevronDown
-                className={`h-3.5 w-3.5 transition-transform duration-200 ${
-                  utilitiesOpen ? "rotate-180" : ""
-                }`}
+                className={`h-3.5 w-3.5 transition-transform duration-200 ${utilitiesOpen ? "rotate-180" : ""
+                  }`}
               />
             </button>
 
             {/* Dropdown Card */}
             <div
-              className={`absolute left-1/2 top-full -translate-x-1/2 pt-2 transition-all duration-200 ${
-                utilitiesOpen
-                  ? "opacity-100 visible translate-y-0"
-                  : "opacity-0 invisible -translate-y-1 pointer-events-none"
-              }`}
+              className={`absolute left-1/2 top-full -translate-x-1/2 pt-2 transition-all duration-200 ${utilitiesOpen
+                ? "opacity-100 visible translate-y-0"
+                : "opacity-0 invisible -translate-y-1 pointer-events-none"
+                }`}
             >
               <div className="w-[330px] rounded-2xl border border-[#fed7aa] bg-white p-2.5 shadow-[0_16px_36px_rgba(234,88,12,0.12),0_4px_12px_rgba(0,0,0,0.06)]">
                 <div className="px-2.5 py-1.5 text-[11px] font-extrabold uppercase tracking-wider text-stone-400">
@@ -170,11 +166,10 @@ export function Header() {
                 href={item.href}
                 prefetch={false}
                 current={isActive}
-                className={`inline-flex items-center whitespace-nowrap rounded-full px-2 py-1.5 text-[14px] font-[600] leading-none transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:px-2.5 xl:text-[15px] min-[1440px]:text-[16px] ${
-                  isActive
-                    ? "bg-[#ffefe6] text-[var(--primary)] shadow-xs"
-                    : "text-[var(--navy)] hover:bg-[#fff7f0] hover:text-[var(--primary)]"
-                }`}
+                className={`inline-flex items-center whitespace-nowrap rounded-full px-2 py-1.5 text-[14px] font-[600] leading-none transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:px-2.5 xl:text-[15px] min-[1440px]:text-[16px] ${isActive
+                  ? "bg-[#ffefe6] text-[var(--primary)] shadow-xs"
+                  : "text-[var(--navy)] hover:bg-[#fff7f0] hover:text-[var(--primary)]"
+                  }`}
               >
                 <span>{item.label}</span>
               </InternalLink>

@@ -192,6 +192,7 @@ export default function AboutPage() {
   );
   const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${whatsappMessage}`;
 
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -199,41 +200,61 @@ export default function AboutPage() {
         "@type": "AboutPage",
         "@id": `${siteConfig.url}/about#webpage`,
         "url": `${siteConfig.url}/about`,
-        "name": "About Nihal Singh & RailAgents - Practical Railway Agent Guidance",
-        "description": "Meet Nihal Singh, who brings 20 years of hands-on experience in railway ticketing and agent operations. Explore rules, dos & don'ts, and guides on RailAgents.",
+        "name": "About Nihal Singh | Railway Agent Guidance – RailAgents",
+        "description":
+          "Learn about Nihal Singh, his railway-agent experience, and the educational guidance provided through RailAgents.",
+        "inLanguage": "en-IN",
         "isPartOf": {
-          "@type": "WebSite",
           "@id": `${siteConfig.url}/#website`,
-          "name": siteConfig.name,
-          "url": siteConfig.url,
         },
-        "about": {
-          "@type": "Person",
+        "publisher": {
+          "@id": `${siteConfig.url}/#organization`,
+        },
+        "breadcrumb": {
+          "@id": `${siteConfig.url}/about#breadcrumb`,
+        },
+        "mainEntity": {
           "@id": `${siteConfig.url}/about#nihal-singh`,
-          "name": "Nihal Singh",
-          "jobTitle": "Railway Agent Practical Guide & Educator",
-          "description": "Railway ticketing operations guide with 20 years of hands-on experience in railway-agent practices, rules compliance, and fraud prevention.",
-          "url": `${siteConfig.url}/about`,
-          "image": `${siteConfig.url}/images/nihal-singh.png`,
-          "knowsAbout": [
-            "Railway ticketing procedures",
-            "IRCTC authorized agent rules",
-            "Tatkal booking timings and regulations",
-            "TDR filing and refund claims",
-            "Railway agent business compliance",
-            "Ticket cancellation guidelines"
-          ]
         },
       },
       {
+        "@type": "Person",
+        "@id": `${siteConfig.url}/about#nihal-singh`,
+        "name": "Nihal Singh",
+        "jobTitle": "Railway Agent Guide and Educator",
+        "description":
+          "Shares practical educational guidance about railway-agent operations, booking procedures, applicable rules, and fraud prevention.",
+        "url": `${siteConfig.url}/about`,
+        "knowsAbout": [
+          "Railway ticketing procedures",
+          "IRCTC agent rules",
+          "Tatkal booking regulations",
+          "TDR filing and refund procedures",
+          "Railway agent business practices",
+          "Ticket cancellation guidelines"
+        ],
+      },
+      {
         "@type": "BreadcrumbList",
+        "@id": `${siteConfig.url}/about#breadcrumb`,
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": siteConfig.url },
-          { "@type": "ListItem", "position": 2, "name": "About", "item": `${siteConfig.url}/about` }
-        ]
-      }
-    ]
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": `${siteConfig.url}/`,
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "About",
+            "item": `${siteConfig.url}/about`,
+          },
+        ],
+      },
+    ],
   };
+
 
   return (
     <div className="flex min-h-screen flex-col bg-[#fffdfb] text-[var(--navy)]">
