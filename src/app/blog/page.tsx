@@ -1,4 +1,4 @@
-// Public /blog listing page — RailAgents Journal & Editorial Insights
+
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
@@ -45,12 +45,38 @@ export const revalidate = 60;
 
 export default async function BlogPage() {
   const posts = await getPublishedPosts();
-  const breadcrumbJsonLd = {
+  const structuredData = {
     "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
-      { "@type": "ListItem", position: 2, name: "Blog", item: `${siteConfig.url}/blog` },
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${siteConfig.url}/blog#webpage`,
+        url: `${siteConfig.url}/blog`,
+        name: "Railway Travel Insights & Industry Updates | RailAgents",
+        description:
+          "Read railway-ticketing insights, industry updates, booking explanations, and practical perspectives for railway agents and travellers on RailAgents.",
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        breadcrumb: { "@id": `${siteConfig.url}/blog#breadcrumb` },
+        inLanguage: "en-IN",
+        mainEntity: {
+          "@type": "ItemList",
+          numberOfItems: posts.length,
+          itemListElement: posts.map((post, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            url: post.canonicalUrl ?? `${siteConfig.url}/blog/${post.slug}`,
+            name: post.title,
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${siteConfig.url}/blog#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          { "@type": "ListItem", position: 2, name: "Blog", item: `${siteConfig.url}/blog` },
+        ],
+      },
     ],
   };
 
@@ -59,7 +85,7 @@ export default async function BlogPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
         }}
       />
       <Header />

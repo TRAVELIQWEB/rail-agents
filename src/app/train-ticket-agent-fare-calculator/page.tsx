@@ -51,12 +51,15 @@ export default function TrainTicketAgentFareCalculatorPage() {
     "@graph": [
       {
         "@type": "WebApplication",
+        "@id": `${siteConfig.url}/train-ticket-agent-fare-calculator#app`,
         name: "RailAgents IRCTC Agent Ticket Fare Calculator",
         url: `${siteConfig.url}/train-ticket-agent-fare-calculator`,
         applicationCategory: "BusinessApplication",
         operatingSystem: "Any",
         description:
           "Calculate train ticket costs with a clear fare breakdown, including applicable IRCTC convenience fees, authorized agent service charges, and payment gateway charges.",
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        publisher: { "@id": `${siteConfig.url}/#organization` },
         offers: {
           "@type": "Offer",
           price: "0",
@@ -64,7 +67,47 @@ export default function TrainTicketAgentFareCalculatorPage() {
         },
       },
       {
+        "@type": "FAQPage",
+        "@id": `${siteConfig.url}/train-ticket-agent-fare-calculator#faq`,
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: "How is the payment gateway charge calculated?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Payment gateway charges apply to the combined ticket fare and IRCTC convenience fee: 0.75% for amounts up to and including ₹2,000, and 1.00% for amounts exceeding ₹2,000, accurately rounded to two decimal places.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "What is the maximum number of passengers allowed?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "Under Indian Railways general quota rules, a maximum of 6 passengers (adults and children combined) can be booked on a single ticket. The calculator validates this limit live.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "Is the printed estimate a confirmed railway ticket?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "No. The printed slip is a customer fare quotation to provide a clear, itemized breakdown before booking. A confirmed railway journey requires actual PRS booking and valid PNR generation.",
+            },
+          },
+          {
+            "@type": "Question",
+            name: "How can I register as an IRCTC agent?",
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: "You can become an authorized IRCTC train ticket agent by registering through recognized principal service providers with valid KYC documents, commercial PAN, and digital signature certificates.",
+            },
+          },
+        ],
+      },
+      {
         "@type": "BreadcrumbList",
+        "@id": `${siteConfig.url}/train-ticket-agent-fare-calculator#breadcrumb`,
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
           {

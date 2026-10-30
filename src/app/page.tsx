@@ -1,3 +1,4 @@
+
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
@@ -16,8 +17,11 @@ export const metadata = {
   },
   description:
     "Explore practical railway agent guidance, IRCTC registration information, ticket booking help, and video tutorials from RailAgents.",
-  alternates: { canonical: siteConfig.url },
+  alternates: {
+    canonical: siteConfig.url,
+  },
   openGraph: {
+    type: "website" as const,
     title: "Railway Agent Guidance, IRCTC Help & Video Guides | RailAgents",
     description:
       "Explore practical railway agent guidance, IRCTC registration information, ticket booking help, and video tutorials from RailAgents.",
@@ -25,6 +29,7 @@ export const metadata = {
     images: [siteConfig.socialImage],
   },
   twitter: {
+    card: "summary_large_image" as const,
     title: "Railway Agent Guidance, IRCTC Help & Video Guides | RailAgents",
     description:
       "Explore practical railway agent guidance, IRCTC registration information, ticket booking help, and video tutorials from RailAgents.",
@@ -32,10 +37,36 @@ export const metadata = {
   },
 };
 
+// Homepage structured data
+const homePageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${siteConfig.url}/#webpage`,
+  url: `${siteConfig.url}/`,
+  name: "Railway Agent Guidance, IRCTC Help & Video Guides | RailAgents",
+  description:
+    "Explore practical railway agent guidance, IRCTC registration information, ticket booking help, and video tutorials from RailAgents.",
+  isPartOf: {
+    "@id": `${siteConfig.url}/#website`,
+  },
+  about: {
+    "@id": `${siteConfig.url}/#organization`,
+  },
+  inLanguage: "en-IN",
+};
+
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-[var(--background)]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(homePageSchema).replace(/</g, "\\u003c"),
+        }}
+      />
+
       <Header />
+
       <main className="flex-1">
         <Hero />
         <ExploreTopics />
@@ -44,6 +75,7 @@ export default function Home() {
         <Testimonials />
         <FinalAskCta />
       </main>
+
       <Footer />
     </div>
   );

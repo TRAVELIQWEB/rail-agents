@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { GuidesDirectory } from "@/components/guides/GuidesDirectory";
 import { siteConfig } from "@/config/site";
+import { guides } from "@/data/guides";
 
 export const metadata: Metadata = {
   title: "Railway Agent Guides & Resources",
@@ -40,12 +41,38 @@ export const metadata: Metadata = {
 };
 
 export default function GuidesPage() {
-  const breadcrumbJsonLd = {
+  const structuredData = {
     "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
-      { "@type": "ListItem", position: 2, name: "Guides", item: `${siteConfig.url}/guides` },
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${siteConfig.url}/guides#webpage`,
+        url: `${siteConfig.url}/guides`,
+        name: "Railway Agent Guides & Resources | RailAgents",
+        description:
+          "Practical step-by-step guides for railway agents: IRCTC rules, commercial Tatkal timings, service charge compliance, ticket cancellation refunds, and registration procedures.",
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        breadcrumb: { "@id": `${siteConfig.url}/guides#breadcrumb` },
+        inLanguage: "en-IN",
+        mainEntity: {
+          "@type": "ItemList",
+          numberOfItems: guides.length,
+          itemListElement: guides.map((guide, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            url: `${siteConfig.url}/guides/${guide.slug}`,
+            name: guide.title,
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${siteConfig.url}/guides#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          { "@type": "ListItem", position: 2, name: "Guides", item: `${siteConfig.url}/guides` },
+        ],
+      },
     ],
   };
 
@@ -54,7 +81,7 @@ export default function GuidesPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
         }}
       />
       <Header />

@@ -125,40 +125,57 @@ export default async function BlogPostPage({ params }: Props) {
 
   const socialVideo = parseSocialVideoUrl(post.featuredVideoUrl);
 
-  // Article structured data
-  const jsonLd = {
+  // Article & Breadcrumb structured data in unified graph
+  const structuredData = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: post.title,
-    description: post.excerpt,
-    author: { "@type": "Person", name: post.author },
-    datePublished: post.publishedAt,
-    dateModified: post.updatedAt,
-    image: post.featuredImage || socialVideo?.thumbnailUrl || undefined,
-    url: canonicalUrl,
-    publisher: {
-      "@type": "Organization",
-      "@id": `${siteConfig.url}/#organization`,
-      name: "RailAgents",
-      url: siteConfig.url,
-    },
-  };
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+    "@graph": [
       {
-        "@type": "ListItem",
-        position: 2,
-        name: "Blog",
-        item: `${siteConfig.url}/blog`,
+        "@type": "BlogPosting",
+        "@id": `${canonicalUrl}#article`,
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        mainEntityOfPage: canonicalUrl,
+        headline: post.title,
+        description: post.excerpt,
+        url: canonicalUrl,
+        author: {
+          "@type": "Person",
+          name: post.author,
+          ...(post.author?.toLowerCase().includes("nihal")
+            ? { "@id": `${siteConfig.url}/about#nihal-singh` }
+            : {}),
+        },
+        publisher: { "@id": `${siteConfig.url}/#organization` },
+        datePublished: post.publishedAt || undefined,
+        dateModified: post.updatedAt || post.publishedAt || undefined,
+        ...(post.featuredImage || socialVideo?.thumbnailUrl
+          ? {
+              image: {
+                "@type": "ImageObject",
+                url: post.featuredImage || socialVideo?.thumbnailUrl,
+              },
+            }
+          : {}),
+        ...(post.category ? { articleSection: post.category } : {}),
+        inLanguage: "en-IN",
       },
       {
-        "@type": "ListItem",
-        position: 3,
-        name: post.title,
-        item: canonicalUrl,
+        "@type": "BreadcrumbList",
+        "@id": `${canonicalUrl}#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Blog",
+            item: `${siteConfig.url}/blog`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: post.title,
+            item: canonicalUrl,
+          },
+        ],
       },
     ],
   };
@@ -200,13 +217,7 @@ export default async function BlogPostPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
         }}
       />
       <Header />
@@ -371,10 +382,10 @@ export default async function BlogPostPage({ params }: Props) {
                       {/* Responsive Video / Reel / Short Frame */}
                       <div
                         className={`relative w-full ${socialVideo.platform === "instagram"
-                            ? "aspect-[4/5] min-h-[440px] bg-white"
-                            : socialVideo.isVertical
-                              ? "aspect-[4/4.4] sm:aspect-[4/3.6] bg-slate-950"
-                              : "aspect-[16/9] bg-slate-950"
+                          ? "aspect-[4/5] min-h-[440px] bg-white"
+                          : socialVideo.isVertical
+                            ? "aspect-[4/4.4] sm:aspect-[4/3.6] bg-slate-950"
+                            : "aspect-[16/9] bg-slate-950"
                           } overflow-hidden rounded-xl shadow-inner ring-1 ring-slate-900/10`}
                       >
                         {(post.featuredImage ||

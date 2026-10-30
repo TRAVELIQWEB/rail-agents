@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import "./ParticleText.css";
 
 const INHERIT = /^(currentcolor|inherit)$/i;
 const TONES = 12;
@@ -49,7 +48,7 @@ const waitForFonts = async (font: string) => {
 
   try {
     await document.fonts.load(font);
-  } catch {}
+  } catch { }
 
   await document.fonts.ready;
 };
@@ -132,7 +131,7 @@ export const ParticleText: React.FC<ParticleTextProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const settingsRef = useRef<ParticleTextProps | null>(null);
-  const wakeRef = useRef<() => void>(() => {});
+  const wakeRef = useRef<() => void>(() => { });
 
   useEffect(() => {
     settingsRef.current = {
@@ -504,10 +503,10 @@ export const ParticleText: React.FC<ParticleTextProps> = ({
 
         const heat = motionHeat
           ? clamp(
-              (Math.hypot(particle.x - particle.targetX, particle.y - particle.targetY) - HEAT_DEADZONE) / HEAT_RANGE,
-              0,
-              1
-            )
+            (Math.hypot(particle.x - particle.targetX, particle.y - particle.targetY) - HEAT_DEADZONE) / HEAT_RANGE,
+            0,
+            1
+          )
           : particle.tone;
         const tone = Math.round(heat * (TONES - 1));
         const fade = Math.round((floor + (1 - floor) * progress) * (FADES - 1));
@@ -838,7 +837,7 @@ export const ParticleText: React.FC<ParticleTextProps> = ({
     return () => {
       alive = false;
       buildId += 1;
-      wakeRef.current = () => {};
+      wakeRef.current = () => { };
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
       themeObserver.disconnect();

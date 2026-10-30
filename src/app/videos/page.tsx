@@ -39,12 +39,45 @@ export const metadata: Metadata = {
 export default async function VideoGuidesPage() {
   const videos = await getLatestVideos(50);
   const channelVideosUrl = getYouTubeChannelVideosUrl();
-  const breadcrumbJsonLd = {
+  const structuredData = {
     "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
-      { "@type": "ListItem", position: 2, name: "Video Guides", item: `${siteConfig.url}/videos` },
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${siteConfig.url}/videos#webpage`,
+        url: `${siteConfig.url}/videos`,
+        name: "Railway & IRCTC Agent Video Guides | RailAgents",
+        description:
+          "Watch practical railway and IRCTC agent video guides from RailAgents, with clear walkthroughs of booking rules, registration, and common questions.",
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        breadcrumb: { "@id": `${siteConfig.url}/videos#breadcrumb` },
+        inLanguage: "en-IN",
+        mainEntity: {
+          "@type": "ItemList",
+          numberOfItems: videos.length,
+          itemListElement: videos.map((video, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            item: {
+              "@type": "VideoObject",
+              name: video.title,
+              description: video.title,
+              thumbnailUrl: video.thumbnail ? [video.thumbnail] : undefined,
+              uploadDate: video.publishedAt || undefined,
+              contentUrl: video.url,
+              embedUrl: `https://www.youtube-nocookie.com/embed/${video.id}`,
+            },
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${siteConfig.url}/videos#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          { "@type": "ListItem", position: 2, name: "Video Guides", item: `${siteConfig.url}/videos` },
+        ],
+      },
     ],
   };
 
@@ -53,7 +86,7 @@ export default async function VideoGuidesPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
         }}
       />
       <Header />
