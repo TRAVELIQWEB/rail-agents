@@ -9,7 +9,7 @@ export default async function NewPostPage() {
   const posts = await getAllPosts();
   return (
     <AdminShell email={admin.email}>
-      <PostForm mode="create" availablePosts={posts.map(({ id, title, slug, status, author }) => ({ id, title, slug, status, author }))} />
+      <PostForm mode="create" availablePosts={posts.map(({ id, title, slug, status, author, category }) => ({ id, title, slug, status, author, category }))} />
     </AdminShell>
   );
 }

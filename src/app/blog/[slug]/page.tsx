@@ -5,6 +5,7 @@ import { getPostBySlug, getPublishedPosts, isPostPubliclyVisible } from "@/lib/p
 import { sanitizeHtml } from "@/lib/sanitize";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { BlogArticleContent } from "@/components/blog/BlogArticleContent";
 import { siteConfig } from "@/config/site";
 import { parseSocialVideoUrl } from "@/lib/youtube-parser";
 import Link from "next/link";
@@ -233,14 +234,14 @@ export default async function BlogPostPage({ params }: Props) {
           className="pointer-events-none absolute -right-32 top-40 h-96 w-96 rounded-full bg-amber-100/40 blur-3xl"
         />
 
-        {/* ══ 1. EDITORIAL HERO HEADER ══ */}
-        <section className="relative border-b border-[#ece0d1] bg-gradient-to-b from-[#fffaf3] via-[#fffdfa] to-[#faf7f2] pt-7 pb-8 sm:pt-9 sm:pb-10">
+        {/* ══ 1. EDITORIAL HERO HEADER (Tight, compact, high-impact) ══ */}
+        <section className="relative border-b border-[#ece0d1] bg-gradient-to-b from-[#fffaf3] via-[#fffdfa] to-[#faf7f2] pt-4 pb-4 sm:pt-5 sm:pb-5">
           <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
             {/* Top Bar: Breadcrumb + Back Link */}
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2.5">
               <nav
                 aria-label="Breadcrumb"
-                className="inline-flex items-center gap-1.5 rounded-full border border-[#eadbce] bg-white/90 px-3.5 py-1.5 text-xs font-semibold text-slate-500 shadow-2xs"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[#eadbce] bg-white/90 px-3 py-1 text-xs font-semibold text-slate-500 shadow-2xs"
               >
                 <Link
                   href="/"
@@ -263,7 +264,7 @@ export default async function BlogPostPage({ params }: Props) {
 
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-1.5 rounded-full border border-[#eadbce] bg-white px-3.5 py-1.5 text-xs font-bold text-[#0f2747] shadow-2xs transition hover:border-orange-300 hover:bg-orange-50/60 hover:text-orange-700"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[#eadbce] bg-white px-3 py-1 text-xs font-bold text-[#0f2747] shadow-2xs transition hover:border-orange-300 hover:bg-orange-50/60 hover:text-orange-700"
               >
                 <ArrowLeft size={13} />
                 <span>All Journal Articles</span>
@@ -271,85 +272,38 @@ export default async function BlogPostPage({ params }: Props) {
             </div>
 
             {/* Category & Verified Guide Pill Row */}
-            <div className="mb-4 flex flex-wrap items-center gap-2.5">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-600 px-3.5 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white shadow-xs">
+            <div className="mb-2 flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-600 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white shadow-xs">
                 <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
                 {post.category}
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/80 bg-emerald-50/90 px-3 py-1 text-[11px] font-bold text-emerald-800">
-                <CheckCircle2 size={13} className="text-emerald-600" />
-                Verified RailAgents Guide
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/80 bg-emerald-50/90 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800">
+                <CheckCircle2 size={11} className="text-emerald-600" />
+                Verified Guide
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#eadbce] bg-white/80 px-3 py-1 text-[11px] font-bold text-slate-600">
-                <Clock size={12} className="text-orange-500" />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#eadbce] bg-white/80 px-2.5 py-0.5 text-[10px] font-bold text-slate-600">
+                <Clock size={11} className="text-orange-500" />
                 {readingTime} min read
               </span>
             </div>
 
             {/* Article Headline */}
-            <h1 className="text-2xl sm:text-3xl lg:text-[40px] font-[850] tracking-[-0.025em] text-[#0f2747] leading-[1.18] max-w-5xl">
+            <h1 className="text-lg sm:text-xl lg:text-[26px] font-[850] tracking-[-0.025em] text-[#0f2747] leading-[1.25] max-w-5xl">
               {post.title}
             </h1>
 
             {/* Subtitle / Lead Excerpt in Hero */}
             {post.excerpt && (
-              <p className="mt-3.5 max-w-4xl text-sm sm:text-base lg:text-[17px] font-normal leading-relaxed text-slate-600">
+              <p className="mt-1.5 max-w-4xl text-xs sm:text-[13px] font-normal leading-relaxed text-slate-600 line-clamp-2">
                 {post.excerpt}
               </p>
             )}
-
-            {/* Structured Author, Date & Tags Bar */}
-            <div className="mt-6 flex flex-col gap-4 border-t border-[#ede1d3]/80 pt-5 sm:flex-row sm:items-center sm:justify-between">
-              {/* Author & Date */}
-              <div className="flex flex-wrap items-center gap-3.5">
-                <div className="flex items-center gap-2.5">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#0f2747] to-[#1e3a5f] text-xs font-extrabold text-white shadow-xs ring-2 ring-orange-100">
-                    {authorInitials || <User size={16} />}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-1.5 text-xs sm:text-sm font-extrabold text-[#0f2747]">
-                      <span>{post.author}</span>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-2 text-[11px] font-medium text-slate-500">
-                      <span>Editorial Desk</span>
-                      {publishDate && (
-                        <>
-                          <span>•</span>
-                          <span className="inline-flex items-center gap-1 text-slate-600">
-                            <Calendar size={11} className="text-orange-500" />
-                            Published {publishDate}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Tags */}
-              {post.tags.length > 0 && (
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="mr-1 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                    <Tag size={12} className="text-orange-500" />
-                    Topics:
-                  </span>
-                  {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-[#e6d7c7] bg-white px-2.5 py-1 text-[11px] font-bold text-[#0f2747] shadow-2xs"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
         </section>
 
         {/* ══ 2. MAIN EDITORIAL ARTICLE SHEET ══ */}
-        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 mt-7 sm:mt-9">
-          <article className="rounded-3xl border border-[#e9dccd] bg-white p-5 sm:p-8 lg:p-11 shadow-[0_12px_40px_rgba(15,39,71,0.05)]">
+        <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8 mt-4 sm:mt-5">
+          <article className="rounded-2xl border border-[#e9dccd] bg-white p-4 sm:p-6 lg:p-8 shadow-[0_8px_30px_rgba(15,39,71,0.04)]">
             <div className="clearfix">
               {hasMedia && (
                 /* Left Media Column (~44% width on desktop, floats left so long article content wraps cleanly underneath to 100% width with zero empty space) */
@@ -461,14 +415,58 @@ export default async function BlogPostPage({ params }: Props) {
               )}
 
               {/* Article Body Content — Flows beside media on top and wraps cleanly to 100% width underneath */}
-              <div
-                className="blog-content max-w-none text-slate-800"
-                dangerouslySetInnerHTML={{ __html: safeContent }}
+              <BlogArticleContent
+                slug={post.slug}
+                htmlContent={safeContent}
               />
             </div>
 
-            {/* ── Bottom of Article Sheet: Social Links + Editorial Trust Banner ── */}
+            {/* ── Bottom of Article Sheet: Author Bio, Tags, Social Links + Editorial Trust Banner ── */}
             <div className="clear-both pt-8 mt-8 border-t border-[#efe4d8] space-y-6">
+              {/* Shifted to Bottom: Author Info, Publish Date & Topic Tags */}
+              <div className="rounded-2xl border border-[#eadbce] bg-[#fffcf8] p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#0f2747] to-[#1e3a5f] text-xs font-extrabold text-white shadow-xs ring-2 ring-orange-100">
+                    {authorInitials || <User size={16} />}
+                  </div>
+                  <div>
+                    <div className="text-sm font-extrabold text-[#0f2747]">
+                      {post.author}
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-slate-500">
+                      <span>Editorial Desk</span>
+                      {publishDate && (
+                        <>
+                          <span>•</span>
+                          <span className="inline-flex items-center gap-1 text-slate-600">
+                            <Calendar size={11} className="text-orange-500" />
+                            Published {publishDate}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Topics / Tags */}
+                {post.tags.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="mr-1 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                      <Tag size={12} className="text-orange-500" />
+                      Topics:
+                    </span>
+                    {post.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-[#e6d7c7] bg-white px-2.5 py-1 text-xs font-bold text-[#0f2747] shadow-2xs"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               {/* Social Media Video & Post Links Banner (when added in Admin Box 8) */}
               {(post.socialLinks?.instagram ||
                 post.socialLinks?.facebook ||

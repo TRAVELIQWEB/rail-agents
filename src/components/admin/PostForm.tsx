@@ -38,7 +38,7 @@ type SaveStatus = "saved" | "saving" | "unsaved" | "idle";
 interface PostFormProps {
   post?: BlogPost; // if provided, we're editing
   mode: "create" | "edit";
-  availablePosts?: Pick<BlogPost, "id" | "title" | "slug" | "status" | "author">[];
+  availablePosts?: Pick<BlogPost, "id" | "title" | "slug" | "status" | "author" | "category">[];
 }
 
 export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
@@ -73,7 +73,17 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
   const [slug, setSlug] = useState(post?.slug ?? "");
   const [excerpt, setExcerpt] = useState(post?.excerpt ?? "");
   const [content, setContent] = useState(post?.content ?? "");
-  const [category, setCategory] = useState(post?.category ?? BLOG_CATEGORIES[0]);
+  const [category, setCategory] = useState<string>(post?.category ?? BLOG_CATEGORIES[0]);
+  const [customCategories, setCustomCategories] = useState<string[]>([]);
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const [customCategoryInput, setCustomCategoryInput] = useState("");
+  const categoryOptions = Array.from(new Set([
+    ...BLOG_CATEGORIES,
+    post?.category ?? "",
+    category,
+    ...customCategories,
+    ...availablePosts.map((item) => item.category ?? ""),
+  ].filter(Boolean)));
   const [tags, setTags] = useState<string[]>(post?.tags ?? []);
   const [author, setAuthor] = useState(post?.author ?? "RailAgents");
   const [status, setStatus] = useState<PostStatus>(post?.status ?? "draft");
@@ -305,12 +315,31 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
     }
   };
 
+  const addTagsFromInput = (raw: string) => {
+    const parts = raw
+      .split(/[,\n]+/)
+      .map((t) => t.trim())
+      .filter(Boolean);
+    if (parts.length === 0) return;
+    setTags((prev) => {
+      const updated = [...prev];
+      for (const part of parts) {
+        const exists = updated.some((existing) => existing.toLowerCase() === part.toLowerCase());
+        if (!exists) {
+          updated.push(part);
+        }
+      }
+      return updated;
+    });
+    setTagInput("");
+  };
+
   const addTag = (e: React.KeyboardEvent) => {
     if ((e.key === "Enter" || e.key === ",") && tagInput.trim()) {
       e.preventDefault();
-      const t = tagInput.trim().replace(/,+$/, "");
-      if (t && !tags.includes(t)) setTags((prev) => [...prev, t]);
-      setTagInput("");
+      addTagsFromInput(tagInput);
+    } else if (e.key === "Backspace" && !tagInput && tags.length > 0) {
+      setTags((prev) => prev.slice(0, -1));
     }
   };
 
@@ -974,18 +1003,91 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
             <div className="space-y-3.5">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3.5">
                 <div>
-                  <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
-                    Category <span className="text-orange-600">*</span>
-                  </label>
-                  <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-semibold text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition cursor-pointer"
-                  >
-                    {BLOG_CATEGORIES.map((c) => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
-                  </select>
+                  <div className="mb-1.5 flex items-center justify-between gap-2">
+                    <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                      Category <span className="text-orange-600">*</span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsAddingCategory((prev) => !prev);
+                        setCustomCategoryInput("");
+                      }}
+                      className="inline-flex items-center gap-1 text-[10.5px] font-bold text-orange-600 hover:text-orange-700 cursor-pointer transition-colors"
+                    >
+                      {isAddingCategory ? (
+                        <span>Choose from list</span>
+                      ) : (
+                        <>
+                          <Plus size={11} />
+                          <span>Add Custom</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {isAddingCategory ? (
+                    <div className="flex items-center gap-1.5">
+                      <input
+                        type="text"
+                        value={customCategoryInput}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setCustomCategoryInput(val);
+                          if (val.trim()) {
+                            setCategory(val.trim());
+                          }
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" && customCategoryInput.trim()) {
+                            e.preventDefault();
+                            const trimmed = customCategoryInput.trim();
+                            setCustomCategories((prev) => (prev.includes(trimmed) ? prev : [...prev, trimmed]));
+                            setCategory(trimmed);
+                            setCustomCategoryInput("");
+                            setIsAddingCategory(false);
+                          }
+                        }}
+                        placeholder="Type custom category & press Enter..."
+                        autoFocus
+                        className="h-10 flex-1 rounded-xl border border-orange-400 bg-white px-3 text-xs font-semibold text-slate-800 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const trimmed = customCategoryInput.trim();
+                          if (trimmed) {
+                            setCustomCategories((prev) => (prev.includes(trimmed) ? prev : [...prev, trimmed]));
+                            setCategory(trimmed);
+                          }
+                          setCustomCategoryInput("");
+                          setIsAddingCategory(false);
+                        }}
+                        className="h-10 inline-flex items-center gap-1 rounded-xl bg-orange-600 px-3 text-xs font-bold text-white hover:bg-orange-700 cursor-pointer shrink-0 transition"
+                      >
+                        <Plus size={12} />
+                        Add
+                      </button>
+                    </div>
+                  ) : (
+                    <select
+                      value={category}
+                      onChange={(e) => {
+                        if (e.target.value === "__ADD_CUSTOM__") {
+                          setIsAddingCategory(true);
+                          setCustomCategoryInput("");
+                        } else {
+                          setCategory(e.target.value);
+                        }
+                      }}
+                      className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-semibold text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition cursor-pointer"
+                    >
+                      {categoryOptions.map((c) => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                      <option value="__ADD_CUSTOM__">+ Add Custom Category...</option>
+                    </select>
+                  )}
                 </div>
 
                 <div>
@@ -1004,27 +1106,55 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
               </div>
 
               <div>
-                <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
-                  Tags <span className="font-normal text-slate-400 normal-case">(press Enter to add)</span>
-                </label>
-                <div className="min-h-[40px] flex flex-wrap items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50/50 p-2 focus-within:border-orange-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-100 transition">
+                <div className="mb-1.5 flex items-center justify-between gap-2">
+                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                    Tags <span className="font-normal text-slate-400 normal-case">(press Enter to add)</span>
+                  </label>
+                  {tags.length > 0 && (
+                    <span className="text-[10.5px] font-bold text-slate-500">
+                      {tags.length} selected
+                    </span>
+                  )}
+                </div>
+                <div className="min-h-[42px] flex flex-wrap items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50/50 p-2 focus-within:border-orange-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-100 transition">
                   {tags.map((tag) => (
-                    <span key={tag} className="inline-flex items-center gap-1 rounded-lg bg-orange-50 px-2.5 py-0.5 text-[11px] font-bold text-orange-800 border border-orange-200/70">
-                      <Tag size={9} className="text-orange-500" />
-                      {tag}
-                      <button type="button" onClick={() => removeTag(tag)} className="ml-0.5 text-orange-400 hover:text-orange-800 cursor-pointer">
-                        <X size={10} />
+                    <span
+                      key={tag}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-orange-200 bg-orange-50 px-2.5 py-1 text-xs font-bold text-orange-900 shadow-2xs"
+                    >
+                      <Tag size={10} className="text-orange-500 shrink-0" />
+                      <span>{tag}</span>
+                      <button
+                        type="button"
+                        onClick={() => removeTag(tag)}
+                        className="rounded-full p-0.5 text-orange-400 hover:bg-orange-200/60 hover:text-orange-900 transition-colors cursor-pointer"
+                        title="Remove tag"
+                        aria-label={`Remove ${tag}`}
+                      >
+                        <X size={11} />
                       </button>
                     </span>
                   ))}
-                  <input
-                    type="text"
-                    value={tagInput}
-                    onChange={(e) => setTagInput(e.target.value)}
-                    onKeyDown={addTag}
-                    placeholder={tags.length === 0 ? "Type tag and press Enter..." : "Add tag..."}
-                    className="flex-1 min-w-[90px] bg-transparent py-0.5 px-1 text-xs font-medium text-slate-800 outline-none placeholder:text-slate-400"
-                  />
+                  <div className="flex flex-1 items-center min-w-[120px] px-1">
+                    <input
+                      type="text"
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyDown={addTag}
+                      placeholder={tags.length === 0 ? "Type or paste tags and press Enter..." : "Add another tag..."}
+                      className="w-full bg-transparent py-0.5 text-xs font-semibold text-slate-800 outline-none placeholder:font-normal placeholder:text-slate-400"
+                    />
+                    {tagInput.trim() && (
+                      <button
+                        type="button"
+                        onClick={() => addTagsFromInput(tagInput)}
+                        className="ml-1.5 inline-flex items-center gap-1 rounded-lg bg-orange-600 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-orange-700 cursor-pointer shrink-0"
+                      >
+                        <Plus size={11} />
+                        Add
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
