@@ -45,27 +45,23 @@ export default function TrainChartPreparationTimePage() {
       <Header />
 
       <main className="flex-1">
-        {/* Compact & Clean Hero Header */}
-        <section className="relative overflow-hidden border-b border-[#f2e6d9] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pt-4 pb-3.5 sm:pt-5 sm:pb-4 lg:pt-6 lg:pb-5">
+        <section className="relative overflow-hidden border-b border-orange-100 bg-gradient-to-b from-white via-white to-orange-50/70 py-8 sm:py-10">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-56 w-[500px] rounded-full bg-gradient-to-br from-orange-200/30 via-amber-100/15 to-transparent blur-3xl"
           />
 
           <div className="site-container relative z-10">
-            <div className="mx-auto max-w-4xl text-center">
-              <p className="inline-flex items-center gap-2 rounded-full border border-orange-200/90 bg-white/85 px-3 py-1 text-[10.5px] font-extrabold uppercase tracking-[0.12em] text-orange-800 shadow-2xs mb-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
-                RailAgents · PRS Charting Utility
+            <div className="mx-auto max-w-5xl text-center">
+              <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/90 px-3 py-1 text-xs font-semibold tracking-wide text-orange-700 shadow-sm">
+                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-orange-500" />
+                Indian Railways charting guide
               </p>
-              <h1 className="text-xl sm:text-2xl lg:text-[1.95rem] font-extrabold text-[#0b2240] tracking-tight leading-tight">
-                IRCTC Train{" "}
-                <span className="text-[var(--primary)] whitespace-nowrap">
-                  Chart Preparation Time
-                </span>
+              <h1 className="text-3xl font-extrabold leading-[1.08] tracking-tight text-[#0b2240] sm:text-4xl lg:text-5xl">
+                Train Chart <span className="text-[var(--primary)]">Preparation Time</span>
               </h1>
-              <p className="mx-auto mt-1 max-w-2xl text-[11.5px] sm:text-xs text-stone-600 leading-normal">
-                Search any train by number or name, select your boarding station, and view exact First Chart, Second (Final) Chart, and Remote Quota station timings.
+              <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+                Find the first and final reservation chart times for your train and boarding station.
               </p>
             </div>
           </div>
@@ -74,7 +70,7 @@ export default function TrainChartPreparationTimePage() {
         {/* Dedicated Chart Preparation Component */}
         <section
           aria-label="IRCTC Train Chart Preparation Time"
-          className="relative py-4 sm:py-6 lg:py-8 bg-gradient-to-b from-[#f7f0e6]/60 via-[#faf6f0] to-[#fdfbf7] pb-14 lg:pb-12"
+          className="relative py-6 sm:py-8 lg:py-10 bg-gradient-to-b from-orange-50/40 via-[#faf8f4] to-[#fdfbf7] pb-14 lg:pb-12"
         >
           <div className="site-container relative px-2 sm:px-4">
             <TrainChartPreparationTime />
