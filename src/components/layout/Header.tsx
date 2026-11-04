@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Calculator } from "lucide-react";
+import { ChevronDown, Calculator, CalendarDays, Radio } from "lucide-react";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { Logo } from "@/components/layout/Logo";
 import { SearchForm } from "@/components/layout/SearchForm";
@@ -17,13 +17,45 @@ const navItems = [
   { label: "Guides", href: "/guides" },
 ];
 
-const utilityTools = [
+interface UtilityTool {
+  title: string;
+  href: string;
+  description: string;
+  badge: string;
+  icon: "calculator" | "calendar" | "radio";
+}
+
+const utilityTools: UtilityTool[] = [
   {
     title: "Train Ticket Fare Calculator",
     href: "/train-ticket-agent-fare-calculator",
     description: "Complete fare estimation with IRCTC & agent service fee breakdown",
     badge: "Popular Tool",
+    icon: "calculator",
   },
+  {
+    title: "IRCTC Cancellation & Refund Calculator",
+    href: "/irctc-cancellation-refund-calculator",
+    description: "PRS-based cancellation charges and estimated refund breakdown",
+    badge: "PRS Verified",
+    icon: "calculator",
+  },
+  {
+    title: "IRCTC Ticket Date Calculator",
+    href: "/ticket-date-calculator",
+    description: "Check 60-day advance reservation & Tatkal booking opening date",
+    badge: "New Tool",
+    icon: "calendar",
+  },
+  /*
+  {
+    title: "Live Train Running Status",
+    href: "/live-train-status",
+    description: "Real-time train status, delay, halts, and coach position",
+    badge: "Live Data",
+    icon: "radio",
+  },
+  */
 ];
 
 export function Header() {
@@ -33,7 +65,10 @@ export function Header() {
 
   const isUtilityActive =
     pathname === "/train-ticket-agent-fare-calculator" ||
-    pathname === "/fare-calculator";
+    pathname === "/fare-calculator" ||
+    pathname === "/irctc-cancellation-refund-calculator" ||
+    pathname === "/ticket-date-calculator" ||
+    pathname === "/live-train-status";
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -131,7 +166,13 @@ export function Header() {
                     className="group flex items-start gap-3 rounded-xl p-2.5 transition-all hover:bg-orange-50/80"
                   >
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-[var(--primary)] transition-transform group-hover:scale-105">
-                      <Calculator className="h-5 w-5" />
+                      {tool.icon === "calendar" ? (
+                        <CalendarDays className="h-5 w-5" />
+                      ) : tool.icon === "radio" ? (
+                        <Radio className="h-5 w-5" />
+                      ) : (
+                        <Calculator className="h-5 w-5" />
+                      )}
                     </span>
                     <div className="min-w-0">
                       <div className="flex items-center gap-1.5">

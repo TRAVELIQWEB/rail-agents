@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Calculator, Menu, MessageCircle, X } from "lucide-react";
+import { Calculator, CalendarDays, Menu, MessageCircle, Radio, X } from "lucide-react";
 import { SearchForm } from "@/components/layout/SearchForm";
 import { InternalLink } from "@/components/ui/InternalLink";
 
@@ -14,8 +14,17 @@ const navItems = [
   { label: "Guides", href: "/guides" },
 ];
 
-const utilityItems = [
-  { label: "Train Ticket Fare Calculator", href: "/train-ticket-agent-fare-calculator", isTool: true },
+interface MobileUtilityItem {
+  label: string;
+  href: string;
+  icon: "calculator" | "calendar" | "radio";
+}
+
+const utilityItems: MobileUtilityItem[] = [
+  { label: "Train Ticket Fare Calculator", href: "/train-ticket-agent-fare-calculator", icon: "calculator" },
+  { label: "IRCTC Cancellation & Refund Calculator", href: "/irctc-cancellation-refund-calculator", icon: "calculator" },
+  { label: "IRCTC Ticket Date Calculator", href: "/ticket-date-calculator", icon: "calendar" },
+  // { label: "Live Train Running Status", href: "/live-train-status", icon: "radio" },
 ];
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +51,8 @@ export function MobileMenu() {
 
   const isCalcPage =
     pathname === "/train-ticket-agent-fare-calculator" ||
-    pathname === "/fare-calculator";
+    pathname === "/fare-calculator" ||
+    pathname === "/irctc-cancellation-refund-calculator";
 
   return (
     <div className="relative flex shrink-0 items-center gap-1 sm:gap-2 min-[1080px]:hidden" ref={menuRef}>
@@ -131,7 +141,13 @@ export function MobileMenu() {
                         : "text-[var(--navy)]"
                     }`}
                   >
-                    <Calculator className="h-4 w-4 shrink-0 text-[var(--primary)]" />
+                    {tool.icon === "calendar" ? (
+                      <CalendarDays className="h-4 w-4 shrink-0 text-[var(--primary)]" />
+                    ) : tool.icon === "radio" ? (
+                      <Radio className="h-4 w-4 shrink-0 text-[var(--primary)]" />
+                    ) : (
+                      <Calculator className="h-4 w-4 shrink-0 text-[var(--primary)]" />
+                    )}
                     <span>{tool.label}</span>
                   </InternalLink>
                 );

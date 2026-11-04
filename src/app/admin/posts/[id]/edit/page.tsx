@@ -18,7 +18,7 @@ export default async function EditPostPage({ params }: Props) {
 
   return (
     <AdminShell email={admin.email}>
-      <PostForm mode="edit" post={post} availablePosts={posts.map(({ id: postId, title, slug, status, author }) => ({ id: postId, title, slug, status, author }))} />
+      <PostForm mode="edit" post={post} availablePosts={posts.map(({ id: postId, title, slug, status, author, category }) => ({ id: postId, title, slug, status, author, category }))} />
     </AdminShell>
   );
 }

@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
         destination: "/train-ticket-agent-fare-calculator",
         permanent: true,
       },
+      {
+        source: "/irctc-ticket-date-calculator",
+        destination: "/ticket-date-calculator",
+        permanent: true,
+      },
     ];
   },
 };

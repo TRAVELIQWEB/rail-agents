@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRCTC टिकट कैंसिलेशन और रिफंड कैलकुलेटर (PRS Verified)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+        .active-card {
+            border-color: #1d4ed8 !important;
+            background-color: #eff6ff !important;
+            box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.2);
+        }
+        .active-pill {
+            background-color: #1e3a8a !important;
+            color: #ffffff !important;
+            border-color: #1e3a8a !important;
+        }
+        .active-green-pill {
+            background-color: #047857 !important;
+            color: #ffffff !important;
+            border-color: #047857 !important;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <!-- Top Header Banner -->
+    <header class="bg-gradient-to-r from-blue-950 via-blue-900 to-indigo-950 text-white shadow-lg border-b border-blue-800">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex items-start sm:items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-amber-400 text-blue-950 flex items-center justify-center font-extrabold text-xl shadow-md shrink-0">
+                    🚆
+                </div>
+                <div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="bg-amber-400 text-blue-950 text-[11px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">100% Verified PRS + Gazette G.S.R. 41(E)</span>
+                        <span class="bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-[11px] font-semibold px-2.5 py-0.5 rounded-full">Regular (48h/12h/4h) &amp; Vande Bharat Sleeper (72h/8h)</span>
+                    </div>
+                    <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight mt-1">IRCTC टिकट कैंसिलेशन और रिफंड कैलकुलेटर</h1>
+                    <p class="text-xs sm:text-sm text-blue-200 mt-0.5">भारत का राजपत्र G.S.R. 41(E) (16 जनवरी 2026) और असली PRS डबल ₹5 राउंडिंग नियम सहित</p>
+                </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 self-start md:self-center">
+                <button id="toggleRuleRegimeBtn" type="button" class="text-xs font-bold px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 shadow transition flex items-center gap-1.5">
+                    <span>🚆 ट्रेन नियम:</span>
+                    <span id="ruleRegimeBadge" class="underline font-extrabold">सामान्य ट्रेनें (48h / 12h / 4h)</span>
+                </button>
+                <button id="toggleRoundingBtn" type="button" class="text-xs font-bold px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow transition flex items-center gap-1.5">
+                    <span>🔄 ₹5 डबल राउंड-अप:</span>
+                    <span id="roundingStateBadge" class="underline font-extrabold">चालू (ON)</span>
+                </button>
+                <button id="openJsonModalBtn" type="button" class="text-xs font-bold px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 transition">
+                    📋 JSON पेस्ट करें
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 pt-5 space-y-6">
+
+        <!-- Official eGazette G.S.R. 41(E) Clarification Banner -->
+        <section class="bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-2 border-amber-300 rounded-2xl p-4 shadow-sm">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                <div class="space-y-1">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="bg-blue-900 text-white text-[11px] font-extrabold px-2.5 py-0.5 rounded-full uppercase">📜 भारत का राजपत्र G.S.R. 41(E) — 16 जनवरी 2026</span>
+                        <span class="text-xs sm:text-sm font-extrabold text-slate-900">72 घंटे और 8 घंटे का नियम केवल 2 ट्रेनों पर लागू है, बाकी सभी ट्रेनों पर 48h/12h/4h व चार्ट नियम लागू है!</span>
+                    </div>
+                    <p class="text-xs text-slate-700 leading-relaxed">
+                        सरकारी गज़ट अधिसूचना के अनुसार: <strong>1️⃣ वंदे भारत स्लीपर एक्सप्रेस (Vande Bharat Sleeper)</strong> और <strong>2️⃣ अमृत भारत II एक्सप्रेस (Amrit Bharat II)</strong> के कन्फर्म टिकटों पर <strong>&gt;72 घंटे = 25% कटौती</strong> (कोई फ्लैट चार्ज नहीं), <strong>72 से 8 घंटे = 50% कटौती</strong>, और <strong>&lt; 8 घंटे (या चार्ट बनने के बाद) = ₹0 रिफंड</strong> है। जबकि <strong>अन्य सभी ट्रेनों (सामान्य Vande Bharat Chair Car, राजधानी, शताब्दी, मेल/एक्सप्रेस)</strong> पर: <strong>&gt;48h फ्लैट चार्ज, 48h–12h पर 25% कटौती, यदि चार्ट नहीं बना है और समय 12 घंटे से कम व 4 घंटे से ज़्यादा है तो 50% कटौती, और चार्ट बन जाने के बाद (या &lt;4h) ₹0 रिफंड</strong> लागू है!
+                    </p>
+                </div>
+                <div class="inline-flex flex-wrap sm:flex-nowrap rounded-xl bg-white p-1 border border-amber-300 shadow-sm shrink-0 self-start lg:self-center gap-1">
+                    <button type="button" id="regimeActualBtn" class="text-xs font-extrabold px-3 py-2 rounded-lg bg-blue-900 text-white transition text-left">
+                        🚆 सामान्य ट्रेनें / Vande Bharat CC (48h / 12h / 4h)
+                    </button>
+                    <button type="button" id="regimeRumoredBtn" class="text-xs font-semibold px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 transition text-left">
+                        🛌 Vande Bharat Sleeper / Amrit Bharat II (72h / 8h)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 1-Click Verified Test Cases Bar -->
+        <section class="bg-blue-950 text-white rounded-2xl p-3.5 shadow-md border border-blue-800">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5">
+                <div class="flex items-center gap-2">
+                    <span class="bg-amber-400 text-blue-950 text-xs font-extrabold px-2.5 py-1 rounded-lg">🧪 वेरिफाइड टेस्ट केसेस (1-Click Load)</span>
+                    <span id="activeTestBadge" class="text-xs text-amber-300 font-semibold">🔥 JSON केस: SBC Vande Bharat (PNR 4347417217)</span>
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                    <button type="button" data-testcase="TC_JSON" class="testcase-btn text-xs font-bold px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 hover:bg-amber-300 transition shadow-sm">
+                        🔥 JSON केस: Vande Bharat CC (₹355 कटौती)
+                    </button>
+                    <button type="button" data-testcase="TC1" class="testcase-btn text-xs font-semibold px-3 py-1.5 rounded-xl bg-blue-900/90 hover:bg-blue-800 text-blue-100 border border-blue-700 transition">
+                        Test 1: Personal + 3AC + इंश्योरेंस (>48h)
+                    </button>
+                    <button type="button" data-testcase="TC2" class="testcase-btn text-xs font-semibold px-3 py-1.5 rounded-xl bg-blue-900/90 hover:bg-blue-800 text-blue-100 border border-blue-700 transition">
+                        Test 2: Agent ≤ ₹2000 (0.75% PG)
+                    </button>
+                    <button type="button" data-testcase="TC3" class="testcase-btn text-xs font-semibold px-3 py-1.5 rounded-xl bg-blue-900/90 hover:bg-blue-800 text-blue-100 border border-blue-700 transition">
+                        Test 3: Agent > ₹2000 (1% PG + फूड)
+                    </button>
+                    <button type="button" data-testcase="TC4" class="testcase-btn text-xs font-semibold px-3 py-1.5 rounded-xl bg-blue-900/90 hover:bg-blue-800 text-blue-100 border border-blue-700 transition">
+                        Test 4: Waitlist (< 30 मि. = कभी ₹0 नहीं)
+                    </button>
+                    <button type="button" data-testcase="TC5" class="testcase-btn text-xs font-semibold px-3 py-1.5 rounded-xl bg-blue-900/90 hover:bg-blue-800 text-blue-100 border border-blue-700 transition">
+                        Test 5: ट्रेन कैंसिल (100% रेलवे रिफंड)
+                    </button>
+                    <button type="button" data-testcase="TC_VBSLEEPER" class="testcase-btn text-xs font-bold px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white border border-rose-400 transition">
+                        📜 गज़ट केस: Vande Bharat Sleeper (72h/8h नियम)
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Grid: Left Inputs (7 cols) & Right Live Receipt (5 cols) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+            <!-- LEFT COLUMN: All Calculator Controls -->
+            <div class="lg:col-span-7 space-y-5">
+
+                <!-- STEP 1: Booking Source (Personal vs Agent vs Counter) -->
+                <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/90 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <h2 class="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-blue-900 text-white text-xs flex items-center justify-center">1</span>
+                            टिकट कहाँ से बुक किया गया था? (Booking Mode)
+                        </h2>
+                        <span id="topSourceSummaryBadge" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-blue-50 text-blue-900 border border-blue-200">
+                            एजेंट आईडी: IRCTC ₹35.40 + एजेंट ₹40 + PG (0.75%/1%)
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                        <button type="button" data-source="PERSONAL" class="source-btn text-left p-3 rounded-xl border border-slate-200 hover:border-blue-400 transition bg-slate-50/60">
+                            <div class="font-extrabold text-xs sm:text-sm text-slate-900">👤 पर्सनल आईडी (Personal)</div>
+                            <div class="text-[11px] text-slate-600 mt-0.5">सिर्फ IRCTC फीस • <strong>₹0 PG चार्ज</strong></div>
+                        </button>
+                        <button type="button" data-source="AGENT" class="source-btn active-card text-left p-3 rounded-xl border border-slate-200 hover:border-blue-400 transition bg-slate-50/60">
+                            <div class="font-extrabold text-xs sm:text-sm text-slate-900">🏢 एजेंट आईडी (Agent/RSP)</div>
+                            <div class="text-[11px] text-slate-600 mt-0.5">IRCTC + एजेंट ₹40/₹20 + PG 0.75%/1%</div>
+                        </button>
+                        <button type="button" data-source="COUNTER" class="source-btn text-left p-3 rounded-xl border border-slate-200 hover:border-blue-400 transition bg-slate-50/60">
+                            <div class="font-extrabold text-xs sm:text-sm text-slate-900">🪟 रेलवे काउंटर (PRS)</div>
+                            <div class="text-[11px] text-slate-600 mt-0.5">कोई IRCTC / एजेंट / PG फीस नहीं</div>
+                        </button>
+                    </div>
+
+                    <!-- Personal ID Payment Mode Sub-Bar (Hidden for Agent/Counter) -->
+                    <div id="personalPaymentSubBar" class="hidden bg-indigo-50/80 border border-indigo-200/80 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <div class="text-xs font-extrabold text-indigo-950">💳 पर्सनल आईडी पेमेंट माध्यम (IRCTC Convenience Fee):</div>
+                            <div class="text-[11px] text-indigo-700">पर्सनल आईडी में UPI करने पर कम कन्वीनियंस फीस लगती है (PG चार्ज ₹0 रहता है)</div>
+                        </div>
+                        <div class="inline-flex rounded-xl bg-white p-1 border border-indigo-200 shrink-0">
+                            <button type="button" data-pay="CARD" class="pay-btn active-pill text-xs font-bold px-3 py-1.5 rounded-lg transition">
+                                Card / NetBanking (₹35.40 / ₹17.70)
+                            </button>
+                            <button type="button" data-pay="UPI" class="pay-btn text-xs font-bold px-3 py-1.5 rounded-lg text-slate-700 transition">
+                                BHIM / UPI (₹11.80 / ₹23.60)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Agent PG Controls Sub-Bar (Visible only when Agent ID is selected) -->
+                    <div id="agentPgSubBar" class="bg-amber-50/90 border border-amber-200 rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <div class="text-xs font-extrabold text-amber-950">🏦 एजेंट PG चार्ज नियम: <span class="font-normal">(रेलवे किराया + कैटरिंग + IRCTC फीस + इंश्योरेंस) पर</span></div>
+                            <div class="text-[11px] text-amber-800">यदि योग <strong>≤ ₹2,000</strong> हो तो <strong>0.75%</strong> | यदि योग <strong>> ₹2,000</strong> हो तो <strong>1.00%</strong> (एजेंट फीस ₹40/₹20 बाहर रहती है)</div>
+                        </div>
+                        <button type="button" id="togglePgBtn" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-amber-600 text-white hover:bg-amber-700 transition shrink-0">
+                            PG चार्ज: चालू (Auto 0.75% / 1%)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Travel Class & Ticket Status -->
+                <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/90 space-y-4">
+                    <h2 class="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-blue-900 text-white text-xs flex items-center justify-center">2</span>
+                        यात्रा की क्लास और टिकट का वर्तमान स्टेटस चुनें
+                    </h2>
+
+                    <!-- Class Buttons -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-2">कोच क्लास (Travel Class):</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                            <button type="button" data-class="1AC" class="class-btn p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-left hover:border-blue-400 transition">
+                                <div class="font-extrabold text-xs text-slate-900">1AC / EC</div>
+                                <div class="text-[11px] text-slate-600">फ्लैट: ₹240+GST (₹255)</div>
+                            </button>
+                            <button type="button" data-class="2AC" class="class-btn p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-left hover:border-blue-400 transition">
+                                <div class="font-extrabold text-xs text-slate-900">2AC / FC</div>
+                                <div class="text-[11px] text-slate-600">फ्लैट: ₹200+GST (₹210)</div>
+                            </button>
+                            <button type="button" data-class="3AC" class="class-btn active-card p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-left hover:border-blue-400 transition">
+                                <div class="font-extrabold text-xs text-slate-900">3AC / CC / 3E</div>
+                                <div class="text-[11px] text-slate-600">फ्लैट: ₹180+GST (₹190)</div>
+                            </button>
+                            <button type="button" data-class="SL" class="class-btn p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-left hover:border-blue-400 transition">
+                                <div class="font-extrabold text-xs text-slate-900">Sleeper (SL)</div>
+                                <div class="text-[11px] text-slate-600">फ्लैट: ₹120 (No GST)</div>
+                            </button>
+                            <button type="button" data-class="2S" class="class-btn p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-left hover:border-blue-400 transition">
+                                <div class="font-extrabold text-xs text-slate-900">2S (Second)</div>
+                                <div class="text-[11px] text-slate-600">फ्लैट: ₹60 (No GST)</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Ticket Status Buttons -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-2">कैंसिल करते समय टिकट का स्टेटस (Ticket Status):</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            <button type="button" data-status="CNF" class="status-btn active-card p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-left hover:border-blue-400 transition">
+                                <div class="font-extrabold text-xs text-slate-900">✅ Confirmed (CNF)</div>
+                                <div class="text-[11px] text-slate-600">समय स्लैब (48h/12h/4h) लागू</div>
+                            </button>
+                            <button type="button" data-status="RAC" class="status-btn p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-left hover:border-blue-400 transition">
+                                <div class="font-extrabold text-xs text-slate-900">🌗 RAC टिकट</div>
+                                <div class="text-[11px] text-slate-600">30 मि. पहले तक ₹60/₹65 कटौती</div>
+                            </button>
+                            <button type="button" data-status="WL" class="status-btn p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-left hover:border-blue-400 transition">
+                                <div class="font-extrabold text-xs text-slate-900">⏳ Waitlist (WL)</div>
+                                <div class="text-[11px] text-emerald-700 font-semibold">कभी ₹0 नहीं • सिर्फ ₹60/₹65 कटौती</div>
+                            </button>
+                            <button type="button" data-status="TQ_CNF" class="status-btn p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-left hover:border-blue-400 transition">
+                                <div class="font-extrabold text-xs text-slate-900">⚡ Tatkal CNF</div>
+                                <div class="text-[11px] text-rose-700">नो रिफंड (₹0 वापसी)</div>
+                            </button>
+                            <button type="button" data-status="TQWL" class="status-btn p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-left hover:border-blue-400 transition">
+                                <div class="font-extrabold text-xs text-slate-900">⚡ Tatkal WL (TQWL)</div>
+                                <div class="text-[11px] text-emerald-700 font-semibold">कभी ₹0 नहीं • सिर्फ ₹60/₹65 कटौती</div>
+                            </button>
+                            <button type="button" data-status="TRAIN_CANCELLED" class="status-btn p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 text-left hover:border-blue-400 transition">
+                                <div class="font-extrabold text-xs text-blue-900">🚫 ट्रेन कैंसिल (Train Cancelled)</div>
+                                <div class="text-[11px] text-blue-700 font-semibold">रेलवे कटौती ₹0 (100% किराया वापस)</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Time Before Departure (Dual Date-Time Pickers + Quick Slab Buttons) -->
+                <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/90 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <h2 class="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-blue-900 text-white text-xs flex items-center justify-center">3</span>
+                            टिकट कब कैंसिल किया? (Cancellation vs Departure Time)
+                        </h2>
+                        <span id="calculatedGapLabel" class="text-xs font-extrabold px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900 border border-amber-300">
+                            अंतर: 14 घंटे 50 मि. (48h–12h = 25% स्लैब)
+                        </span>
+                    </div>
+
+                    <!-- Quick Slab Buttons -->
+                    <div>
+                        <label id="slabSectionTitleLabel" class="block text-xs font-bold text-slate-700 mb-2">⚡ या तो सीधा समय-स्लैब चुनें (सामान्य ट्रेनें - 48h / 12h / 4h):</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                            <button type="button" data-hours="80" class="slab-btn p-2 rounded-xl border border-slate-200 bg-slate-50 text-center hover:border-blue-400 transition">
+                                <div id="slabBtn1Title" class="font-extrabold text-xs text-emerald-800">&gt; 48 घंटे पहले</div>
+                                <div id="slabBtn1Sub" class="text-[10px] text-slate-600">फ्लैट चार्ज (₹190/₹120)</div>
+                            </button>
+                            <button type="button" data-hours="14.83" class="slab-btn active-card p-2 rounded-xl border border-slate-200 bg-slate-50 text-center hover:border-blue-400 transition">
+                                <div id="slabBtn2Title" class="font-extrabold text-xs text-amber-800">48 से 12 घंटे</div>
+                                <div id="slabBtn2Sub" class="text-[10px] text-slate-600">25% कटौती (JSON: 14h 50m)</div>
+                            </button>
+                            <button type="button" data-hours="9" class="slab-btn p-2 rounded-xl border border-slate-200 bg-slate-50 text-center hover:border-blue-400 transition">
+                                <div id="slabBtn3Title" class="font-extrabold text-xs text-orange-800">&lt;12h से &gt;4h (चार्ट नहीं बना)</div>
+                                <div id="slabBtn3Sub" class="text-[10px] text-slate-600">50% कटौती (Chart Not Prepared)</div>
+                            </button>
+                            <button type="button" data-hours="2" class="slab-btn p-2 rounded-xl border border-slate-200 bg-slate-50 text-center hover:border-blue-400 transition">
+                                <div id="slabBtn4Title" class="font-extrabold text-xs text-rose-800">चार्ट बन जाने पर / &lt;4h</div>
+                                <div id="slabBtn4Sub" class="text-[10px] text-slate-600">CNF: ₹0 रिफंड | RAC/WL: रिफंड</div>
+                            </button>
+                            <button type="button" data-hours="0.25" class="slab-btn p-2 rounded-xl border border-slate-200 bg-slate-50 text-center hover:border-blue-400 transition">
+                                <div class="font-extrabold text-xs text-rose-900">&lt; 30 मिनट</div>
+                                <div class="text-[10px] text-slate-600">सिर्फ WL पर रिफंड</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Exact Date-Time Pickers -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label for="cancelDateTime" class="text-xs font-bold text-slate-700">🕒 टिकट कैंसिल करने का समय:</label>
+                                <button type="button" id="setNowBtn" class="text-[11px] font-bold text-blue-700 hover:underline">अभी का समय (Now)</button>
+                            </div>
+                            <input id="cancelDateTime" type="datetime-local" class="w-full px-3 py-2 text-xs sm:text-sm font-semibold rounded-lg border border-slate-300 bg-white" />
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label for="departureDateTime" class="text-xs font-bold text-slate-700">🚉 ट्रेन छूटने का समय (Departure):</label>
+                                <span class="text-[11px] text-slate-500">चार्ट/प्रस्थान समय</span>
+                            </div>
+                            <input id="departureDateTime" type="datetime-local" class="w-full px-3 py-2 text-xs sm:text-sm font-semibold rounded-lg border border-slate-300 bg-white" />
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between bg-slate-50 px-3.5 py-2.5 rounded-xl border border-slate-200">
+                        <label for="chartPreparedCheckbox" class="text-xs font-bold text-slate-800 cursor-pointer select-none">
+                            📋 क्या कैंसिलेशन के समय ट्रेन का पहला चार्ट (Chart Prepared) बन चुका था?
+                        </label>
+                        <input id="chartPreparedCheckbox" type="checkbox" class="w-4 h-4 rounded text-blue-900 focus:ring-blue-600 cursor-pointer" />
+                    </div>
+                </div>
+
+                <!-- STEP 4: Passengers, Fare Mode, Catering & Insurance -->
+                <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200/90 space-y-4">
+                    <h2 class="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-blue-900 text-white text-xs flex items-center justify-center">4</span>
+                        यात्री संख्या, किराया (Grand Total / बेसिक), कैटरिंग और इंश्योरेंस
+                    </h2>
+
+                    <!-- Passenger Selectors -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">👥 टिकट में कुल यात्री (Total Booked):</label>
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <button type="button" data-totalpax="1" class="total-pax-btn active-pill text-xs font-bold w-8 h-8 rounded-lg border border-slate-300 bg-white">1</button>
+                                <button type="button" data-totalpax="2" class="total-pax-btn text-xs font-bold w-8 h-8 rounded-lg border border-slate-300 bg-white">2</button>
+                                <button type="button" data-totalpax="3" class="total-pax-btn text-xs font-bold w-8 h-8 rounded-lg border border-slate-300 bg-white">3</button>
+                                <button type="button" data-totalpax="4" class="total-pax-btn text-xs font-bold w-8 h-8 rounded-lg border border-slate-300 bg-white">4</button>
+                                <button type="button" data-totalpax="5" class="total-pax-btn text-xs font-bold w-8 h-8 rounded-lg border border-slate-300 bg-white">5</button>
+                                <button type="button" data-totalpax="6" class="total-pax-btn text-xs font-bold w-8 h-8 rounded-lg border border-slate-300 bg-white">6</button>
+                                <input id="totalPassengersInput" type="number" min="1" max="12" value="1" class="w-12 h-8 text-center text-xs font-bold rounded-lg border border-slate-300 bg-white" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">✂️ कितने यात्री कैंसिल कर रहे हैं? (Cancelling):</label>
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <button type="button" data-cancelpax="1" class="cancel-pax-btn active-pill text-xs font-bold w-8 h-8 rounded-lg border border-slate-300 bg-white">1</button>
+                                <button type="button" data-cancelpax="2" class="cancel-pax-btn text-xs font-bold w-8 h-8 rounded-lg border border-slate-300 bg-white">2</button>
+                                <button type="button" data-cancelpax="3" class="cancel-pax-btn text-xs font-bold w-8 h-8 rounded-lg border border-slate-300 bg-white">3</button>
+                                <button type="button" data-cancelpax="4" class="cancel-pax-btn text-xs font-bold w-8 h-8 rounded-lg border border-slate-300 bg-white">4</button>
+                                <button type="button" data-cancelpax="5" class="cancel-pax-btn text-xs font-bold w-8 h-8 rounded-lg border border-slate-300 bg-white">5</button>
+                                <button type="button" data-cancelpax="6" class="cancel-pax-btn text-xs font-bold w-8 h-8 rounded-lg border border-slate-300 bg-white">6</button>
+                                <input id="cancelPassengersInput" type="number" min="1" max="12" value="1" class="w-12 h-8 text-center text-xs font-bold rounded-lg border border-slate-300 bg-white" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section A: Fare Input Mode Switcher -->
+                    <div class="space-y-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div class="text-xs font-extrabold text-slate-900">💰 Section A: आप किराया किस रूप में डालना चाहते हैं?</div>
+                            <div class="inline-flex rounded-xl bg-slate-200 p-1">
+                                <button type="button" id="modeGrandTotalBtn" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-blue-900 text-white transition">
+                                    1️⃣ कुल भुगतान (Grand Total - सब सहित)
+                                </button>
+                                <button type="button" id="modePureFareBtn" class="text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-700 hover:bg-white transition">
+                                    2️⃣ सिर्फ शुद्ध रेलवे किराया (Train Fare)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Mode 1: Grand Total Box (Single input, hides per-passenger box as requested) -->
+                        <div id="grandTotalInputPanel" class="space-y-2">
+                            <label for="enteredGrandTotalInput" class="block text-xs font-bold text-slate-700">
+                                🧾 टिकट पर सबसे नीचे छपा कुल भुगतान (Grand Total - IRCTC फीस, एजेंट फीस, PG, कैटरिंग, इंश्योरेंस सब सहित):
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 font-extrabold">₹</span>
+                                <input id="enteredGrandTotalInput" type="number" step="0.01" value="1481.13" class="w-full pl-8 pr-4 py-2.5 text-base font-extrabold text-blue-950 rounded-xl border-2 border-blue-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            </div>
+                            <p class="text-[11px] text-slate-600">
+                                💡 नोट: Grand Total मोड में प्रति-यात्री इनपुट बॉक्स बंद रहता है क्योंकि IRCTC फीस और एजेंट चार्ज पूरी टिकट पर एक बार लगते हैं। सिस्टम नीचे अपने-आप शुद्ध किराया अलग कर देगा।
+                            </p>
+                        </div>
+
+                        <!-- Mode 2: Pure Train Fare Dual Synced Boxes -->
+                        <div id="pureFareInputPanel" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label for="pureTotalFareInput" class="block text-xs font-bold text-slate-700 mb-1">
+                                    1️⃣ कुल शुद्ध ट्रेन किराया (GST सहित, बिना कैटरिंग/IRCTC फीस):
+                                </label>
+                                <input id="pureTotalFareInput" type="number" step="1" value="1032" class="w-full px-3 py-2 text-sm font-extrabold rounded-xl border border-slate-300 bg-white" />
+                            </div>
+                            <div>
+                                <label for="purePerPaxFareInput" class="block text-xs font-bold text-slate-700 mb-1">
+                                    2️⃣ प्रति यात्री शुद्ध ट्रेन किराया (Per Passenger Train Fare):
+                                </label>
+                                <input id="purePerPaxFareInput" type="number" step="1" value="1032" class="w-full px-3 py-2 text-sm font-extrabold rounded-xl border border-slate-300 bg-white" />
+                            </div>
+                        </div>
+
+                        <!-- Live Extracted Pure Fare Dark Strip -->
+                        <div class="bg-slate-900 text-white p-3 rounded-xl space-y-1.5 text-xs">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-slate-300">🔍 निकाला गया शुद्ध ट्रेन किराया (GST सहित, बिना फूड): <strong id="stripPureTotalFare" class="text-emerald-400 text-sm">₹1,032.00</strong></span>
+                                <span class="bg-slate-800 border border-slate-700 px-2.5 py-0.5 rounded-lg text-amber-300 font-bold">
+                                    👤 प्रति यात्री शुद्ध ट्रेन किराया: <span id="stripPurePerPaxFare">₹1,032.00</span>
+                                </span>
+                            </div>
+                            <div id="stripPgFormulaLine" class="pt-1.5 border-t border-slate-800 text-[11px] text-amber-300">
+                                🧮 <strong>PG Base (एजेंट आईडी):</strong> <span id="stripPgBaseSum" class="text-white">₹1,395 (किराया+फूड) + ₹35.40 (IRCTC) = ₹1,430.40</span> ➔ <strong id="stripPgFormulaResult" class="text-emerald-300">PG @ 0.75% = ₹10.73</strong>
+                            </div>
+                            <div class="pt-1.5 border-t border-slate-800 text-[11px] text-sky-300">
+                                📐 <strong>Ex-GST कटौती आधार (प्रति यात्री):</strong> <span id="stripExGstBreakdownText" class="text-white">बेसिक किराया (बिना GST) ₹983.00 + कैटरिंग (बिना GST) ₹346.62 = ₹1,329.62</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section B: Catering / Food Charge -->
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <div class="text-xs font-extrabold text-slate-900">🍱 Section B: क्या टिकट में कैटरिंग (Food Charge) शामिल था?</div>
+                                <div class="text-[11px] text-slate-600">वंदे भारत / राजधानी / शताब्दी (JSON केस: ₹363 कुल कैटरिंग = ₹346.62 बिना GST + ₹16.38 GST)</div>
+                            </div>
+                            <div class="inline-flex rounded-xl bg-slate-200 p-1">
+                                <button type="button" id="catNoBtn" class="text-xs font-semibold px-3 py-1 rounded-lg text-slate-700 hover:bg-white transition">नहीं (No)</button>
+                                <button type="button" id="catYesBtn" class="active-green-pill text-xs font-bold px-3 py-1 rounded-lg transition">हाँ (Yes)</button>
+                            </div>
+                        </div>
+
+                        <div id="cateringInputsArea" class="space-y-2.5 pt-2 border-t border-slate-200">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label for="totalCateringInput" class="block text-xs font-bold text-slate-700 mb-1">कुल कैटरिंग चार्ज (GST सहित - Total Catering):</label>
+                                    <input id="totalCateringInput" type="number" step="1" value="363" class="w-full px-3 py-1.5 text-sm font-bold rounded-lg border border-slate-300 bg-white" />
+                                </div>
+                                <div>
+                                    <label for="perPaxCateringInput" class="block text-xs font-bold text-slate-700 mb-1">प्रति यात्री कैटरिंग (GST सहित - Per Pax):</label>
+                                    <input id="perPaxCateringInput" type="number" step="1" value="363" class="w-full px-3 py-1.5 text-sm font-bold rounded-lg border border-slate-300 bg-white" />
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap items-center justify-between gap-2 bg-white px-3 py-2 rounded-lg border border-slate-200 text-[11px]">
+                                <div class="text-slate-700">
+                                    🧾 <strong>बिना GST कैटरिंग (Ex-GST Catering):</strong> <span id="catExGstDisplay" class="font-extrabold text-emerald-700">₹346.62</span>
+                                    <span class="text-slate-500 ml-1">(कैटरिंग 5% GST: <span id="catGstDisplay">₹16.38</span>)</span>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-slate-500 font-semibold">प्रीसेट:</span>
+                                    <button type="button" data-food="363" class="food-preset-btn text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-300">₹363 (Vande Bharat)</button>
+                                    <button type="button" data-food="150" class="food-preset-btn text-[11px] font-bold px-2 py-0.5 rounded bg-slate-100 border border-slate-300">₹150</button>
+                                    <button type="button" data-food="300" class="food-preset-btn text-[11px] font-bold px-2 py-0.5 rounded bg-slate-100 border border-slate-300">₹300</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section C: IRCTC Travel Insurance -->
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <div class="text-xs font-extrabold text-slate-900">🛡️ Section C: क्या IRCTC ट्रैवल इंश्योरेंस (Travel Insurance) लिया गया था?</div>
+                                <div class="text-[11px] text-slate-600">₹0.45 या ₹0.35 प्रति यात्री (PG Base में जुड़ता है और कैंसिल करने पर वापस आता है)</div>
+                            </div>
+                            <div class="inline-flex rounded-xl bg-slate-200 p-1">
+                                <button type="button" id="insNoBtn" class="active-pill text-xs font-bold px-3 py-1 rounded-lg transition">नहीं (No)</button>
+                                <button type="button" id="insYesBtn" class="text-xs font-semibold px-3 py-1 rounded-lg text-slate-700 hover:bg-white transition">हाँ (Yes)</button>
+                            </div>
+                        </div>
+
+                        <div id="insuranceInputsArea" class="hidden space-y-2.5 pt-2 border-t border-slate-200">
+                            <div class="flex flex-wrap items-center justify-between gap-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-slate-700">दर (प्रति यात्री):</span>
+                                    <button type="button" data-insrate="0.45" class="ins-rate-btn active-pill text-xs font-bold px-2.5 py-1 rounded-lg border border-slate-300 bg-white">₹0.45 / यात्री</button>
+                                    <button type="button" data-insrate="0.35" class="ins-rate-btn text-xs font-bold px-2.5 py-1 rounded-lg border border-slate-300 bg-white">₹0.35 / यात्री</button>
+                                    <input id="customInsRateInput" type="number" step="0.05" value="0.45" class="w-20 px-2 py-1 text-xs font-bold rounded-lg border border-slate-300 bg-white" />
+                                </div>
+                                <label class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 cursor-pointer">
+                                    <input id="insRefundableCheckbox" type="checkbox" checked class="w-4 h-4 rounded text-emerald-700" />
+                                    <span>कैंसिलेशन पर इंश्योरेंस रिफंड में जोड़ें</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Sticky Live Refund Receipt -->
+            <div class="lg:col-span-5 lg:sticky lg:top-5 space-y-4">
+                <div class="bg-white rounded-3xl shadow-xl border-2 border-blue-900/15 overflow-hidden">
+
+                    <!-- Receipt Top Banner -->
+                    <div class="bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white p-5">
+                        <div class="flex items-center justify-between gap-2 text-xs text-blue-200 font-semibold">
+                            <span id="receiptModeTitle">एजेंट आईडी (RSP) • 3AC / CC / 3E • कन्फर्म (CNF)</span>
+                            <span id="receiptPaxBadge" class="bg-amber-400 text-slate-950 font-extrabold px-2.5 py-0.5 rounded-full">1/1 यात्री कैंसिल</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mt-4">
+                            <div class="bg-emerald-500/20 border border-emerald-400/40 rounded-2xl p-3.5">
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-200">बैंक में कुल रिफंड (Net Refund)</div>
+                                <div id="finalNetRefundDisplay" class="text-2xl sm:text-3xl font-extrabold text-emerald-300 mt-1">₹1,040.00</div>
+                                <div id="perPaxNetRefundSub" class="text-[11px] text-emerald-100 mt-0.5">प्रति यात्री रिफंड: ₹1,040.00</div>
+                            </div>
+                            <div class="bg-rose-500/20 border border-rose-400/40 rounded-2xl p-3.5">
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-rose-200">रेलवे कैंसिलेशन कटौती</div>
+                                <div id="finalRailwayCutDisplay" class="text-2xl sm:text-3xl font-extrabold text-rose-300 mt-1">- ₹355.00</div>
+                                <div id="perPaxRailwayCutSub" class="text-[11px] text-rose-100 mt-0.5">₹355.00 / यात्री</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Receipt Body -->
+                    <div class="p-4 sm:p-5 space-y-4 text-xs">
+
+                        <!-- Box 1: Grand Total Reverse Breakdown -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2">
+                            <div class="font-extrabold text-slate-900 flex items-center justify-between border-b border-slate-200 pb-1.5">
+                                <span>1️⃣ टिकट कुल भुगतान (Grand Total) का विभाजन</span>
+                                <span id="receiptBookingSourceTag" class="text-[11px] bg-slate-200 text-slate-800 px-2 py-0.5 rounded-md font-bold">एजेंट आईडी (RSP)</span>
+                            </div>
+                            <div class="space-y-1.5 text-slate-700">
+                                <div class="flex justify-between font-bold text-slate-900">
+                                    <span>ग्राहक द्वारा कुल भुगतान (Grand Total):</span>
+                                    <span id="receiptGrandTotalPaid">₹1,481.13</span>
+                                </div>
+                                <div class="flex justify-between text-rose-700">
+                                    <span>- IRCTC कन्वीनियंस फीस (Non-Refundable):</span>
+                                    <span id="receiptIrctcFee">- ₹35.40</span>
+                                </div>
+                                <div class="flex justify-between text-slate-700" id="receiptInsuranceRow" style="display:none;">
+                                    <span>• ट्रैवल इंश्योरेंस (<span id="receiptInsStatusText">रिफंड में शामिल</span>):</span>
+                                    <span id="receiptInsuranceFee">₹0.00</span>
+                                </div>
+                                <div class="flex justify-between text-amber-900 bg-amber-50 px-2 py-1 rounded border border-amber-200 text-[11px]" id="receiptPgBaseRow">
+                                    <span>🧮 <strong>PG Base</strong> (किराया + IRCTC + इंश्योरेंस):</span>
+                                    <span id="receiptPgBaseVal" class="font-bold">₹1,430.40</span>
+                                </div>
+                                <div class="flex justify-between text-rose-700" id="receiptPgFeeRow">
+                                    <span>- पेमेंट गेटवे (PG चार्ज <span id="receiptPgSlabLabel">≤ ₹2000 @ 0.75%</span>):</span>
+                                    <span id="receiptPgFee">- ₹10.73</span>
+                                </div>
+                                <div class="flex justify-between text-rose-700" id="receiptAgentFeeRow">
+                                    <span>- एजेंट सर्विस चार्ज (RSP Fee - Non-Refundable):</span>
+                                    <span id="receiptAgentFee">- ₹40.00</span>
+                                </div>
+                                <div class="flex justify-between font-extrabold text-blue-950 border-t border-slate-200 pt-1.5">
+                                    <span>= कुल शुद्ध रेलवे किराया (ट्रेन किराया + कैटरिंग):</span>
+                                    <span id="receiptPureRailwayTotal">₹1,395.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Box 2: PRS Double ₹5 Rounding Cancellation Math -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 space-y-2">
+                            <div class="font-extrabold text-slate-900 flex items-center justify-between border-b border-slate-200 pb-1.5">
+                                <span>2️⃣ रेलवे कैंसिलेशन कटौती का सटीक हिसाब</span>
+                                <span id="receiptPerPaxFormulaBadge" class="text-[11px] bg-blue-100 text-blue-900 px-2 py-0.5 rounded-md font-bold">₹335 + ₹16.75 GST ➔ ₹355</span>
+                            </div>
+
+                            <div class="space-y-1.5 text-slate-700">
+                                <div class="flex justify-between">
+                                    <span>कैंसिल यात्रियों का शुद्ध ट्रेन किराया (<span id="receiptCancelPaxCount">1</span> यात्री, GST सहित):</span>
+                                    <span id="receiptCancellingTrainFare" class="font-bold text-slate-900">₹1,032.00</span>
+                                </div>
+                                <div class="flex justify-between" id="receiptCateringRow">
+                                    <span>+ कैंसिल यात्रियों का कैटरिंग चार्ज (GST सहित):</span>
+                                    <span id="receiptCancellingCatering" class="font-bold text-emerald-700">₹363.00</span>
+                                </div>
+                                <div class="flex justify-between text-indigo-950 bg-indigo-50 px-2 py-1 rounded border border-indigo-200 text-[11px]" id="receiptExGstBaseRow">
+                                    <span>🔍 <strong>स्टेप 1 (बिना GST आधार):</strong> बेसिक + बिना GST फूड:</span>
+                                    <span id="receiptExGstBaseVal" class="font-extrabold">₹1,329.62</span>
+                                </div>
+                                <div class="flex justify-between text-rose-700">
+                                    <span id="receiptBaseCancelCutLabel">• स्टेप 2: 25% बेसिक (₹332.41 ➔ ₹5 राउंड-ऑफ):</span>
+                                    <span id="receiptBaseCancelCut">- ₹335.00</span>
+                                </div>
+                                <div class="flex justify-between text-rose-700">
+                                    <span>• स्टेप 3: राउंडेड बेसिक पर 5% कैंसिलेशन GST:</span>
+                                    <span id="receiptGstCancelCut">- ₹16.75</span>
+                                </div>
+                                <div class="flex justify-between text-rose-700">
+                                    <span>• स्टेप 4: कुल योग (बेसिक+GST) का पुनः ₹5 राउंड-ऑफ:</span>
+                                    <span id="receiptRoundingCut">- ₹3.25</span>
+                                </div>
+                                <div class="flex justify-between font-extrabold text-rose-800 border-t border-slate-200 pt-1.5">
+                                    <span>कुल रेलवे कैंसिलेशन कटौती (PRS Cancel Charge):</span>
+                                    <span id="receiptTotalRailwayCut">- ₹355.00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Box 3: Final Net Bank Refund -->
+                        <div class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-3.5 space-y-1.5">
+                            <div class="flex justify-between text-emerald-950 font-semibold">
+                                <span>कैंसिल यात्रियों का कुल रेलवे किराया (किराया + कैटरिंग):</span>
+                                <span id="receiptNetTrainRefund">₹1,395.00</span>
+                            </div>
+                            <div class="flex justify-between text-rose-700 font-semibold">
+                                <span>- रेलवे कैंसिलेशन कटौती (PRS Cancel Charge):</span>
+                                <span id="receiptNetFoodRefund">- ₹355.00</span>
+                            </div>
+                            <div class="flex justify-between text-emerald-950 font-semibold" id="receiptNetInsRefundRow">
+                                <span>+ ट्रैवल इंश्योरेंस रिफंड:</span>
+                                <span id="receiptNetInsRefund">+ ₹0.00</span>
+                            </div>
+                            <div class="flex justify-between text-base font-extrabold text-emerald-950 border-t border-emerald-300 pt-2">
+                                <span>बैंक खाते में आने वाला कुल रिफंड:</span>
+                                <span id="receiptFinalBankRefund">₹1,040.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Rule Explanation Box -->
+                        <div id="ruleExplanationAlert" class="rounded-2xl p-3.5 border bg-amber-50 border-amber-200 text-amber-950 space-y-1">
+                            <div class="font-extrabold text-xs">📌 लागू रेलवे नियम (Applied PRS Rule):</div>
+                            <p id="ruleExplanationText" class="text-[11px] leading-relaxed"></p>
+                            <p id="smartTipText" class="text-[11px] font-bold pt-1"></p>
+                            <div id="regimeComparisonNote" class="mt-2 pt-2 border-t border-amber-300/80 text-[11px] font-semibold text-blue-950"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Cheat Sheet Table -->
+        <section class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/90 space-y-3">
+            <h3 class="text-base font-extrabold text-slate-900">📊 भारतीय रेलवे गज़ट G.S.R. 41(E) (16 जनवरी 2026) — दोनों श्रेणियों की तुलना तालिका</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-800 border-b border-slate-200">
+                            <th class="p-3 font-extrabold">कैंसिलेशन स्टेज</th>
+                            <th class="p-3 font-extrabold text-blue-900">🚆 सामान्य ट्रेनें (Vande Bharat CC, राजधानी, एक्सप्रेस आदि)</th>
+                            <th class="p-3 font-extrabold text-rose-900">🛌 वंदे भारत स्लीपर एवं अमृत भारत II एक्सप्रेस (G.S.R. 41(E))</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        <tr>
+                            <td class="p-3 font-bold text-emerald-800">शुरुआती समय (Early Cancellation)</td>
+                            <td class="p-3"><strong>&gt; 48 घंटे पहले:</strong> फ्लैट चार्ज — 1AC/EC: <strong>₹255</strong> | 2AC: <strong>₹210</strong> | 3AC/CC/3E: <strong>₹190</strong> | SL: <strong>₹120</strong> | 2S: <strong>₹60</strong></td>
+                            <td class="p-3 bg-rose-50/50"><strong>&gt; 72 घंटे पहले:</strong> कोई फ्लैट चार्ज नहीं! सीधा <strong>25% कटौती</strong> (डबल ₹5 राउंडिंग + 5% GST सहित)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-bold text-amber-800">मध्यम समय (Medium Window)</td>
+                            <td class="p-3"><strong>48 घंटे से 12 घंटे के बीच:</strong> <strong>25% कटौती</strong> (जैसे आपके Vande Bharat CC टिकट में 14h 50m पर ₹355 कटा)</td>
+                            <td class="p-3 bg-rose-50/50"><strong>72 घंटे से 8 घंटे के बीच:</strong> सीधा <strong>50% कटौती</strong> (डबल ₹5 राउंडिंग + 5% GST सहित)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-bold text-orange-800">अंतिम समय (Late Window)</td>
+                            <td class="p-3"><strong>यदि चार्ट नहीं बना है और समय 12 घंटे से कम व 4 घंटे से ज़्यादा है:</strong> <strong>50% कटौती</strong> (डबल ₹5 राउंडिंग + 5% GST सहित)</td>
+                            <td class="p-3 bg-rose-50/50"><em>(यदि चार्ट नहीं बना है तो 72 घंटे से 8 घंटे तक 50% स्लैब ही लागू रहता है)</em></td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-bold text-rose-800">चार्ट बनने के बाद / नो-रिफंड ज़ोन</td>
+                            <td class="p-3"><strong>चार्ट बन जाने के बाद (Chart Prepared) या &lt; 4 घंटे:</strong> कन्फर्म टिकट पर <strong>₹0 रिफंड</strong></td>
+                            <td class="p-3 bg-rose-50/50"><strong>चार्ट बन जाने के बाद या &lt; 8 घंटे पहले:</strong> कन्फर्म टिकट पर <strong>₹0 रिफंड</strong> (TDR भी 8 घंटे पहले तक ही मान्य)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JSON Paste Modal -->
+    <div id="jsonModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl border border-slate-200 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <div>
+                    <h3 class="text-base font-extrabold text-slate-900">📋 IRCTC / PRS API JSON लॉग पेस्ट करें</h3>
+                    <p class="text-xs text-slate-600">अपना टिकट JSON पेस्ट करें—सिस्टम अपने-आप किराया, कैटरिंग, समय और क्लास पढ़ लेगा</p>
+                </div>
+                <button type="button" id="closeJsonModalBtn" class="text-slate-500 hover:text-slate-900 text-lg font-extrabold px-2">✕</button>
+            </div>
+            <textarea id="jsonPasteTextarea" rows="8" placeholder='यहाँ अपना {"RBresponse": ..., "RBTktres": ...} वाला JSON पेस्ट करें...' class="w-full p-3 text-xs font-mono rounded-xl border border-slate-300 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-600"></textarea>
+            <div id="jsonParseFeedback" class="text-xs font-bold text-emerald-700 hidden"></div>
+            <div class="flex justify-end gap-2">
+                <button type="button" id="loadSampleJsonBtn" class="text-xs font-bold px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800">
+                    SBC Vande Bharat JSON लोड करें
+                </button>
+                <button type="button" id="applyJsonBtn" class="text-xs font-bold px-4 py-2 rounded-xl bg-blue-900 hover:bg-blue-800 text-white shadow">
+                    ✅ JSON से कैलकुलेट करें
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Official Class Rules
+        const CLASS_RULES = {
+            '1AC': { name: '1AC / Executive (EC)', flatFee: 240, clerkage: 60, isAC: true },
+            '2AC': { name: '2AC / First Class (FC)', flatFee: 200, clerkage: 60, isAC: true },
+            '3AC': { name: '3AC / CC / 3E', flatFee: 180, clerkage: 60, isAC: true },
+            'SL':  { name: 'Sleeper (SL)', flatFee: 120, clerkage: 60, isAC: false },
+            '2S':  { name: 'Second Sitting (2S)', flatFee: 60, clerkage: 60, isAC: false }
+        };
+
+        const STATUS_LABELS = {
+            'CNF': 'कन्फर्म (CNF)',
+            'RAC': 'आरएसी (RAC)',
+            'WL': 'वेटलिस्ट (WL)',
+            'TQ_CNF': 'तत्काल कन्फर्म (TQ CNF)',
+            'TQWL': 'तत्काल वेटिंग (TQWL)',
+            'TRAIN_CANCELLED': 'ट्रेन कैंसिल (Train Cancelled)'
+        };
+
+        // Central Application State (Initialized with User's Real Vande Bharat JSON Case)
+        const state = {
+            ruleRegime: 'ACTUAL_48H',     // ACTUAL_48H (48h/12h/4h Reality) | RUMORED_72H (72h/24h/8h Internet Claim)
+            bookingSource: 'AGENT',       // PERSONAL | AGENT | COUNTER
+            paymentMethod: 'CARD',        // CARD | UPI (UPI only for PERSONAL)
+            pgEnabled: true,              // For AGENT: 0.75% (<=2000) / 1% (>2000)
+            fareInputMode: 'GRAND_TOTAL', // GRAND_TOTAL | PURE_FARE
+            travelClass: '3AC',           // CC falls under 3AC/CC/3E group
+            ticketStatus: 'CNF',
+            totalPassengers: 1,
+            cancelPassengers: 1,
+            enteredTotalAmount: 1481.13,  // 1032 (Train) + 363 (Food) + 35.40 (IRCTC) + 10.73 (PG @ 0.75%) + 40 (Agent)
+            pureTotalFareEntered: 1032,   // 983 (Base+Res+SF) + 49 (ServiceTax)
+            purePerPaxFareEntered: 1032,
+            hasCatering: true,
+            cateringLastEdited: 'TOTAL',
+            totalCateringFee: 363,        // JSON cateringCharge: 363 (Ex-GST: 346.62 + cateringGst: 16.38)
+            perPaxCateringFee: 363,
+            hasInsurance: false,
+            insurancePerPax: 0.45,
+            insuranceRefundable: true,
+            hoursBeforeDeparture: 14.83,  // 14 hours 50 mins (02-Nov 16:55 to 03-Nov 07:45)
+            chartPrepared: false,
+            roundToNextFive: true
+        };
+
+        // Utility functions
+        function formatINR(val) {
+            const num = Number(val) || 0;
+            return '₹' + num.toLocaleString('en-IN', {
+                minimumFractionDigits: Number.isInteger(num) ? 0 : 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function roundUpToFive(amount) {
+            if (amount <= 0) return 0;
+            return Math.ceil(Number(amount.toFixed(4)) / 5) * 5;
+        }
+
+        function setElText(id, text) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = text;
+        }
+
+        function toLocalDateTimeInputValue(dateObj) {
+            const pad = (n) => String(n).padStart(2, '0');
+            return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}T${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
+        }
+
+        // Sync Date-Time Inputs from hoursBeforeDeparture
+        function syncDateInputsFromHours(hoursGap) {
+            const cancelEl = document.getElementById('cancelDateTime');
+            const depEl = document.getElementById('departureDateTime');
+            if (!cancelEl || !depEl) return;
+
+            // Default anchor: if matches Vande Bharat JSON (14.83h), show actual JSON dates
+            if (Math.abs(hoursGap - 14.83) < 0.05) {
+                cancelEl.value = '2026-11-02T16:55';
+                depEl.value = '2026-11-03T07:45';
+                return;
+            }
+            const now = new Date();
+            const dep = new Date(now.getTime() + hoursGap * 3600 * 1000);
+            cancelEl.value = toLocalDateTimeInputValue(now);
+            depEl.value = toLocalDateTimeInputValue(dep);
+        }
+
+        // Booking Fee Config (IRCTC Fee + Agent RSP Fee)
+        function getBookingFeeConfig() {
+            const cls = CLASS_RULES[state.travelClass];
+            const isAC = cls.isAC;
+
+            if (state.bookingSource === 'COUNTER') {
+                return { irctcFee: 0, agentFee: 0 };
+            }
+            if (state.bookingSource === 'AGENT') {
+                // Agent ID: Fixed IRCTC Fee (35.40 AC / 17.70 Non-AC) + Agent Fee (40 AC / 20 Non-AC)
+                return {
+                    irctcFee: isAC ? 35.40 : 17.70,
+                    agentFee: isAC ? 40.00 : 20.00
+                };
+            }
+            // PERSONAL ID:
+            if (state.paymentMethod === 'UPI') {
+                // Personal UPI: ₹10 + 18% GST = ₹11.80 (Non-AC) / ₹20 + 18% GST = ₹23.60 (AC) or ₹11.80 flat
+                return {
+                    irctcFee: 11.80,
+                    agentFee: 0
+                };
+            }
+            return {
+                irctcFee: isAC ? 35.40 : 17.70,
+                agentFee: 0
+            };
+        }
+
+        // Forward and Reverse Fare & Fee Extractor
+        function extractFareAndFees() {
+            const totalPax = Math.max(1, state.totalPassengers);
+            const { irctcFee, agentFee } = getBookingFeeConfig();
+
+            const totalCatering = state.hasCatering ? Math.max(0, Number(state.totalCateringFee) || 0) : 0;
+            const perPaxCatering = totalCatering / totalPax;
+            const totalInsurance = (state.bookingSource !== 'COUNTER' && state.hasInsurance)
+                ? Number((state.insurancePerPax * totalPax).toFixed(2))
+                : 0;
+
+            let pureTotalTrainFare = 0;
+            let pgBase = 0;
+            let pgCharge = 0;
+            let grandTotalPaid = 0;
+
+            if (state.fareInputMode === 'GRAND_TOTAL') {
+                grandTotalPaid = Math.max(0, Number(state.enteredTotalAmount) || 0);
+
+                // Subtract Agent Service Fee first (if Agent ID)
+                const afterAgentFee = Math.max(0, grandTotalPaid - agentFee);
+
+                // Calculate PG Base by reversing PG % (ONLY for AGENT when pgEnabled is true)
+                if (state.bookingSource === 'AGENT' && state.pgEnabled) {
+                    // Threshold at PG Base = 2000 -> with 0.75% PG, amount is 2000 * 1.0075 = 2015
+                    if (afterAgentFee <= 2015.005) {
+                        pgBase = Number((afterAgentFee / 1.0075).toFixed(2));
+                    } else {
+                        pgBase = Number((afterAgentFee / 1.01).toFixed(2));
+                    }
+                    pgCharge = Number((afterAgentFee - pgBase).toFixed(2));
+                } else {
+                    pgBase = afterAgentFee;
+                    pgCharge = 0;
+                }
+
+                // PG Base = Railway Total (Train Fare + Catering) + IRCTC Fee + Insurance
+                const railwayTotal = Math.max(0, Number((pgBase - irctcFee - totalInsurance).toFixed(2)));
+                pureTotalTrainFare = Math.max(0, Number((railwayTotal - totalCatering).toFixed(2)));
+            } else {
+                // PURE_FARE mode: build Grand Total forward
+                pureTotalTrainFare = Math.max(0, Number(state.pureTotalFareEntered) || 0);
+                const railwayTotal = pureTotalTrainFare + totalCatering;
+                pgBase = Number((railwayTotal + irctcFee + totalInsurance).toFixed(2));
+
+                if (state.bookingSource === 'AGENT' && state.pgEnabled) {
+                    const rate = pgBase <= 2000 ? 0.0075 : 0.01;
+                    pgCharge = Number((pgBase * rate).toFixed(2));
+                } else {
+                    pgCharge = 0;
+                }
+                grandTotalPaid = Number((pgBase + pgCharge + agentFee).toFixed(2));
+            }
+
+            const purePerPaxTrainFare = Number((pureTotalTrainFare / totalPax).toFixed(2));
+
+            return {
+                irctcFee,
+                agentFee,
+                totalCatering,
+                perPaxCatering,
+                totalInsurance,
+                pureTotalTrainFare,
+                purePerPaxTrainFare,
+                pgBase,
+                pgCharge,
+                grandTotalPaid
+            };
+        }
+
+        // Update UI Button Highlights
+        function refreshUIHighlights() {
+            // Rule Regime Highlights: ACTUAL_48H (Regular Trains) vs VB_SLEEPER_72H (Vande Bharat Sleeper & Amrit Bharat II)
+            const isRegular = state.ruleRegime === 'ACTUAL_48H';
+            setElText('ruleRegimeBadge', isRegular ? 'सामान्य ट्रेनें (48h / 12h / 4h)' : 'Vande Bharat Sleeper / Amrit Bharat II (72h / 8h)');
+            const actBtn = document.getElementById('regimeActualBtn');
+            const rumBtn = document.getElementById('regimeRumoredBtn');
+            if (actBtn && rumBtn) {
+                actBtn.className = isRegular
+                    ? 'text-xs font-extrabold px-3 py-2 rounded-lg bg-blue-900 text-white transition text-left'
+                    : 'text-xs font-semibold px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 transition text-left';
+                rumBtn.className = !isRegular
+                    ? 'text-xs font-extrabold px-3 py-2 rounded-lg bg-rose-700 text-white transition text-left'
+                    : 'text-xs font-semibold px-3 py-2 rounded-lg text-slate-700 hover:bg-slate-100 transition text-left';
+            }
+
+            // Update Slab Button Titles dynamically based on selected Train Category
+            setElText('slabSectionTitleLabel', isRegular
+                ? '⚡ या तो सीधा समय-स्लैब चुनें (सामान्य ट्रेनें / Vande Bharat CC - 48h / 12h / 4h):'
+                : '⚡ या तो सीधा समय-स्लैब चुनें (Vande Bharat Sleeper / Amrit Bharat II - गज़ट G.S.R. 41(E)):');
+            setElText('slabBtn1Title', isRegular ? '> 48 घंटे पहले' : '> 72 घंटे पहले');
+            setElText('slabBtn1Sub', isRegular ? 'फ्लैट चार्ज (₹190/₹120)' : '25% कटौती (कोई फ्लैट नहीं!)');
+            setElText('slabBtn2Title', isRegular ? '48 से 12 घंटे' : '72 से 24 घंटे');
+            setElText('slabBtn2Sub', isRegular ? '25% कटौती (JSON: 14h 50m)' : '50% कटौती (72h–8h स्लैब)');
+            setElText('slabBtn3Title', isRegular ? '<12h से >4h (चार्ट नहीं बना)' : '24 से 8 घंटे (चार्ट नहीं बना)');
+            setElText('slabBtn3Sub', isRegular ? '50% कटौती (Chart Not Prepared)' : '50% कटौती (72h–8h स्लैब)');
+            setElText('slabBtn4Title', isRegular ? 'चार्ट बन जाने पर / <4h' : 'चार्ट बन जाने पर / <8h');
+            setElText('slabBtn4Sub', isRegular ? 'CNF: ₹0 रिफंड | RAC/WL: रिफंड' : 'CNF: ₹0 रिफंड (< 8h)');
+
+            // Booking Source Buttons
+            document.querySelectorAll('.source-btn').forEach(btn => {
+                btn.classList.toggle('active-card', btn.dataset.source === state.bookingSource);
+            });
+
+            // Show/Hide Personal UPI Sub-bar & Agent PG Sub-bar
+            const personalSub = document.getElementById('personalPaymentSubBar');
+            const agentSub = document.getElementById('agentPgSubBar');
+            if (personalSub) personalSub.classList.toggle('hidden', state.bookingSource !== 'PERSONAL');
+            if (agentSub) agentSub.classList.toggle('hidden', state.bookingSource !== 'AGENT');
+
+            // Payment Method Buttons (Personal)
+            document.querySelectorAll('.pay-btn').forEach(btn => {
+                btn.classList.toggle('active-pill', btn.dataset.pay === state.paymentMethod);
+            });
+
+            // Agent PG Toggle Button
+            const pgBtn = document.getElementById('togglePgBtn');
+            if (pgBtn) {
+                pgBtn.textContent = state.pgEnabled ? 'PG चार्ज: चालू (Auto 0.75% / 1%)' : 'PG चार्ज: बंद (₹0)';
+                pgBtn.className = state.pgEnabled
+                    ? 'text-xs font-bold px-3 py-1.5 rounded-lg bg-amber-600 text-white hover:bg-amber-700 transition shrink-0'
+                    : 'text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-300 text-slate-800 hover:bg-slate-400 transition shrink-0';
+            }
+
+            // Class Buttons
+            document.querySelectorAll('.class-btn').forEach(btn => {
+                btn.classList.toggle('active-card', btn.dataset.class === state.travelClass);
+            });
+
+            // Status Buttons
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                btn.classList.toggle('active-card', btn.dataset.status === state.ticketStatus);
+            });
+
+            // Slab Buttons
+            document.querySelectorAll('.slab-btn').forEach(btn => {
+                const h = parseFloat(btn.dataset.hours);
+                let isMatch = false;
+                if (isRegular) {
+                    isMatch =
+                        (h === 80 && state.hoursBeforeDeparture > 48) ||
+                        (h === 14.83 && state.hoursBeforeDeparture <= 48 && state.hoursBeforeDeparture >= 12) ||
+                        (h === 9 && state.hoursBeforeDeparture < 12 && state.hoursBeforeDeparture >= 4) ||
+                        (h === 2 && state.hoursBeforeDeparture < 4 && state.hoursBeforeDeparture >= 0.5) ||
+                        (h === 0.25 && state.hoursBeforeDeparture < 0.5);
+                } else {
+                    isMatch =
+                        (h === 80 && state.hoursBeforeDeparture > 72) ||
+                        (h === 14.83 && state.hoursBeforeDeparture <= 72 && state.hoursBeforeDeparture >= 24) ||
+                        (h === 9 && state.hoursBeforeDeparture < 24 && state.hoursBeforeDeparture >= 8) ||
+                        (h === 2 && state.hoursBeforeDeparture < 8 && state.hoursBeforeDeparture >= 0.5) ||
+                        (h === 0.25 && state.hoursBeforeDeparture < 0.5);
+                }
+                btn.classList.toggle('active-card', isMatch);
+            });
+
+            // Passenger Buttons
+            document.querySelectorAll('.total-pax-btn').forEach(btn => {
+                btn.classList.toggle('active-pill', parseInt(btn.dataset.totalpax, 10) === state.totalPassengers);
+            });
+            document.querySelectorAll('.cancel-pax-btn').forEach(btn => {
+                const val = parseInt(btn.dataset.cancelpax, 10);
+                btn.disabled = val > state.totalPassengers;
+                btn.classList.toggle('opacity-40', val > state.totalPassengers);
+                btn.classList.toggle('cursor-not-allowed', val > state.totalPassengers);
+                btn.classList.toggle('active-pill', val === state.cancelPassengers);
+            });
+
+            const totalPaxIn = document.getElementById('totalPassengersInput');
+            const cancelPaxIn = document.getElementById('cancelPassengersInput');
+            if (totalPaxIn) totalPaxIn.value = state.totalPassengers;
+            if (cancelPaxIn) cancelPaxIn.value = state.cancelPassengers;
+
+            // Fare Input Mode Panels
+            const gtBtn = document.getElementById('modeGrandTotalBtn');
+            const pfBtn = document.getElementById('modePureFareBtn');
+            const gtPanel = document.getElementById('grandTotalInputPanel');
+            const pfPanel = document.getElementById('pureFareInputPanel');
+
+            if (state.fareInputMode === 'GRAND_TOTAL') {
+                gtBtn.className = 'text-xs font-bold px-3 py-1.5 rounded-lg bg-blue-900 text-white transition';
+                pfBtn.className = 'text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-700 hover:bg-white transition';
+                gtPanel.classList.remove('hidden');
+                pfPanel.classList.add('hidden');
+            } else {
+                pfBtn.className = 'text-xs font-bold px-3 py-1.5 rounded-lg bg-blue-900 text-white transition';
+                gtBtn.className = 'text-xs font-semibold px-3 py-1.5 rounded-lg text-slate-700 hover:bg-white transition';
+                pfPanel.classList.remove('hidden');
+                gtPanel.classList.add('hidden');
+            }
+
+            // Catering Toggle
+            const catYesBtn = document.getElementById('catYesBtn');
+            const catNoBtn = document.getElementById('catNoBtn');
+            const catArea = document.getElementById('cateringInputsArea');
+            if (state.hasCatering) {
+                catYesBtn.className = 'active-green-pill text-xs font-bold px-3 py-1 rounded-lg transition';
+                catNoBtn.className = 'text-xs font-semibold px-3 py-1 rounded-lg text-slate-700 hover:bg-white transition';
+                catArea.classList.remove('hidden');
+            } else {
+                catNoBtn.className = 'active-pill text-xs font-bold px-3 py-1 rounded-lg transition';
+                catYesBtn.className = 'text-xs font-semibold px-3 py-1 rounded-lg text-slate-700 hover:bg-white transition';
+                catArea.classList.add('hidden');
+            }
+
+            // Insurance Toggle
+            const insYesBtn = document.getElementById('insYesBtn');
+            const insNoBtn = document.getElementById('insNoBtn');
+            const insArea = document.getElementById('insuranceInputsArea');
+            if (state.hasInsurance) {
+                insYesBtn.className = 'active-green-pill text-xs font-bold px-3 py-1 rounded-lg transition';
+                insNoBtn.className = 'text-xs font-semibold px-3 py-1 rounded-lg text-slate-700 hover:bg-white transition';
+                insArea.classList.remove('hidden');
+            } else {
+                insNoBtn.className = 'active-pill text-xs font-bold px-3 py-1 rounded-lg transition';
+                insYesBtn.className = 'text-xs font-semibold px-3 py-1 rounded-lg text-slate-700 hover:bg-white transition';
+                insArea.classList.add('hidden');
+            }
+
+            document.querySelectorAll('.ins-rate-btn').forEach(btn => {
+                btn.classList.toggle('active-pill', Math.abs(parseFloat(btn.dataset.insrate) - state.insurancePerPax) < 0.001);
+            });
+
+            // Rounding Badge
+            setElText('roundingStateBadge', state.roundToNextFive ? 'चालू (ON)' : 'बंद (Exact)');
+        }
+
+        // Main Calculation Function
+        function calculateRefund() {
+            refreshUIHighlights();
+
+            const cls = CLASS_RULES[state.travelClass];
+            const totalPax = Math.max(1, state.totalPassengers);
+            const pax = Math.min(totalPax, Math.max(1, state.cancelPassengers));
+            const hours = Math.max(0, Number(state.hoursBeforeDeparture) || 0);
+
+            const extracted = extractFareAndFees();
+            const perPaxFare = extracted.purePerPaxTrainFare;
+
+            const cancellingTrainFare = Number((perPaxFare * pax).toFixed(2));
+            const catering = Number((extracted.perPaxCatering * pax).toFixed(2));
+            const totalCancellingTicketFare = Number((cancellingTrainFare + catering).toFixed(2));
+            const cancellingInsurance = (state.bookingSource !== 'COUNTER' && state.hasInsurance)
+                ? Number((state.insurancePerPax * pax).toFixed(2))
+                : 0;
+
+            // Ex-GST Train Base & Ex-GST Catering per passenger (as decoded from Vande Bharat JSON)
+            // 1. Train Ex-GST Base: for AC class, 5% PRS GST is rounded to nearest integer (e.g., 983 * 5% = 48.95 -> 49, so 1032 - 49 = 983)
+            const trainGstPerPax = cls.isAC ? Math.round(perPaxFare - (perPaxFare / 1.05)) : 0;
+            const exGstTrainPerPax = Math.max(0, Number((perPaxFare - trainGstPerPax).toFixed(2)));
+
+            // 2. Catering Ex-GST Base: in JSON, 363 has cateringGst = 16.38 -> Ex-GST = 346.62
+            let catGstPerPax = 0;
+            if (extracted.perPaxCatering > 0) {
+                catGstPerPax = (Math.abs(extracted.perPaxCatering - 363) < 0.01)
+                    ? 16.38
+                    : Number((extracted.perPaxCatering - (extracted.perPaxCatering / 1.05)).toFixed(2));
+            }
+            const exGstCatPerPax = Math.max(0, Number((extracted.perPaxCatering - catGstPerPax).toFixed(2)));
+            const combinedExGstPerPax = Number((exGstTrainPerPax + exGstCatPerPax).toFixed(2));
+
+            // Update Catering & Dark Strip Displays
+            setElText('catExGstDisplay', formatINR(exGstCatPerPax * totalPax));
+            setElText('catGstDisplay', formatINR(catGstPerPax * totalPax));
+            setElText('stripPureTotalFare', formatINR(extracted.pureTotalTrainFare));
+            setElText('stripPurePerPaxFare', formatINR(perPaxFare));
+            setElText('stripExGstBreakdownText', `बेसिक किराया (बिना GST) ${formatINR(exGstTrainPerPax)} + कैटरिंग (बिना GST) ${formatINR(exGstCatPerPax)} = ${formatINR(combinedExGstPerPax)}`);
+
+            // Update Top Source Summary & PG Strip
+            const { irctcFee, agentFee } = getBookingFeeConfig();
+            if (state.bookingSource === 'AGENT') {
+                setElText('topSourceSummaryBadge', `एजेंट आईडी: IRCTC ${formatINR(irctcFee)} + एजेंट ${formatINR(agentFee)} + PG (${extracted.pgBase <= 2000 ? '0.75%' : '1%'})`);
+                const pgLine = document.getElementById('stripPgFormulaLine');
+                if (pgLine) pgLine.classList.remove('hidden');
+                setElText('stripPgBaseSum', `${formatINR(extracted.pureTotalTrainFare + extracted.totalCatering)} (किराया+फूड) + ${formatINR(irctcFee)} (IRCTC)${extracted.totalInsurance > 0 ? ' + ' + formatINR(extracted.totalInsurance) + ' (इंश्योरेंस)' : ''} = ${formatINR(extracted.pgBase)}`);
+                setElText('stripPgFormulaResult', state.pgEnabled ? `PG @ ${extracted.pgBase <= 2000 ? '0.75%' : '1.00%'} = ${formatINR(extracted.pgCharge)}` : 'PG बंद = ₹0');
+            } else if (state.bookingSource === 'PERSONAL') {
+                setElText('topSourceSummaryBadge', `पर्सनल आईडी (${state.paymentMethod}): IRCTC ${formatINR(irctcFee)} • ₹0 PG चार्ज`);
+                const pgLine = document.getElementById('stripPgFormulaLine');
+                if (pgLine) pgLine.classList.add('hidden');
+            } else {
+                setElText('topSourceSummaryBadge', 'रेलवे काउंटर टिकट: ₹0 अतिरिक्त बुकिंग फीस');
+                const pgLine = document.getElementById('stripPgFormulaLine');
+                if (pgLine) pgLine.classList.add('hidden');
+            }
+
+            // Format Time Gap Label
+            const hWhole = Math.floor(hours);
+            const mRem = Math.round((hours - hWhole) * 60);
+            const isRegular = state.ruleRegime === 'ACTUAL_48H';
+
+            let slabShort = '';
+            if (isRegular) {
+                if (state.chartPrepared) slabShort = 'चार्ट बन चुका है (₹0 रिफंड)';
+                else if (hours > 48) slabShort = '> 48h (फ्लैट चार्ज)';
+                else if (hours >= 12) slabShort = '48h–12h (25% स्लैब)';
+                else if (hours >= 4) slabShort = 'चार्ट नहीं बना है व <12h से >4h (50% स्लैब)';
+                else slabShort = 'चार्ट तैयार / < 4h (₹0 रिफंड)';
+            } else {
+                // Vande Bharat Sleeper & Amrit Bharat II (G.S.R. 41(E))
+                if (state.chartPrepared) slabShort = 'चार्ट बन चुका है (₹0 रिफंड)';
+                else if (hours > 72) slabShort = '> 72h (25% स्लैब - गज़ट नियम)';
+                else if (hours >= 8) slabShort = '72h–8h व चार्ट नहीं बना (50% स्लैब)';
+                else slabShort = '< 8h / चार्ट तैयार (₹0 रिफंड)';
+            }
+            setElText('calculatedGapLabel', `अंतर: ${hWhole} घंटे ${mRem} मि. (${slabShort})`);
+
+            // Helper: Exact PRS Two-Stage ₹5 Rounding for 25% & 50% Slabs
+            function computePrsPercentageCut(pctRate) {
+                if (!cls.isAC) {
+                    const combinedNonAc = perPaxFare + extracted.perPaxCatering;
+                    const rawPctCut = Number((combinedNonAc * pctRate).toFixed(3));
+                    const stage1Base = state.roundToNextFive ? roundUpToFive(rawPctCut) : Number(rawPctCut.toFixed(2));
+                    const perPaxBase = Math.max(cls.flatFee, stage1Base);
+                    const perPaxRounded = state.roundToNextFive ? roundUpToFive(perPaxBase) : perPaxBase;
+                    return { rawPctCut, perPaxBase, perPaxGst: 0, perPaxExact: perPaxBase, perPaxRounded };
+                }
+                // AC Class Two-Stage ₹5 Rounding:
+                // Step 1: Raw % on (Ex-GST Train Base + Ex-GST Catering) -> e.g. 1329.62 * 25% = 332.405
+                const rawPctCut = Number((combinedExGstPerPax * pctRate).toFixed(3));
+                // Step 2: First ₹5 Round-Up on Base Cut (332.405 -> 335), subject to minimum flat fee
+                const stage1RoundedBase = state.roundToNextFive ? roundUpToFive(rawPctCut) : Number(rawPctCut.toFixed(2));
+                const perPaxBase = Math.max(cls.flatFee, stage1RoundedBase);
+                // Step 3: 5% GST on Stage-1 Rounded Base (335 * 5% = 16.75)
+                const perPaxGst = Number((perPaxBase * 0.05).toFixed(2));
+                // Step 4: Add both (335 + 16.75 = 351.75) and Round UP again to next ₹5 (-> 355)
+                const perPaxExact = Number((perPaxBase + perPaxGst).toFixed(2));
+                const perPaxRounded = state.roundToNextFive ? roundUpToFive(perPaxExact) : perPaxExact;
+                return { rawPctCut, perPaxBase, perPaxGst, perPaxExact, perPaxRounded };
+            }
+
+            let baseCancelCharge = 0;
+            let gstCharge = 0;
+            let exactCutBeforeRounding = 0;
+            let finalRailwayCut = 0;
+            let roundingDiff = 0;
+            let perPaxFormulaStr = '';
+            let baseCutLabelStr = '• स्टेप 2: बेसिक कैंसिलेशन चार्ज:';
+            let ruleText = '';
+            let smartTip = '';
+            let alertStyle = 'bg-emerald-50 border-emerald-200 text-emerald-950';
+
+            // 1. TRAIN CANCELLED
+            if (state.ticketStatus === 'TRAIN_CANCELLED') {
+                perPaxFormulaStr = 'रेलवे कटौती ₹0 (100% रिफंड)';
+                ruleText = 'ट्रेन कैंसिल होने पर भारतीय रेलवे ₹0 काटता है (100% शुद्ध ट्रेन किराया + कैटरिंग पूरा वापस मिलता है)। केवल नॉन-रिफंडेबल बुकिंग फीस (IRCTC फीस, एजेंट चार्ज और PG चार्ज) ही कुल भुगतान से कम होती है।';
+                smartTip = '💡 ट्रेन कैंसिल होने पर भी IRCTC फीस और PG चार्ज वापस नहीं मिलते, केवल रेलवे का किराया 100% वापस आता है।';
+                alertStyle = 'bg-blue-50 border-blue-300 text-blue-950';
+            }
+            // 2. WAITLIST (WL / TQWL) -> NEVER ₹0 REFUND
+            else if (state.ticketStatus === 'WL' || state.ticketStatus === 'TQWL') {
+                const perPaxBase = cls.clerkage;
+                const perPaxGst = cls.isAC ? (perPaxBase * 0.05) : 0;
+                const perPaxExact = perPaxBase + perPaxGst;
+                const perPaxRounded = state.roundToNextFive ? roundUpToFive(perPaxExact) : perPaxExact;
+
+                baseCancelCharge = perPaxBase * pax;
+                gstCharge = perPaxGst * pax;
+                exactCutBeforeRounding = perPaxExact * pax;
+                finalRailwayCut = Math.min(totalCancellingTicketFare, perPaxRounded * pax);
+                roundingDiff = Math.max(0, finalRailwayCut - exactCutBeforeRounding);
+
+                perPaxFormulaStr = cls.isAC ? `₹${perPaxBase} + ₹${perPaxGst} GST = ₹${perPaxExact} ➔ ₹${perPaxRounded}` : `फ्लैट ₹${perPaxBase} क्लर्केज`;
+                ruleText = `वेटलिस्ट (${STATUS_LABELS[state.ticketStatus]}) ई-टिकट में रिफंड कभी भी ₹0 नहीं होता! चाहे समय 30 मिनट से कम हो या चार्ट बन चुका हो—हमेशा सिर्फ क्लर्केज ₹${perPaxRounded}/यात्री (× ${pax} = ₹${finalRailwayCut}) ही कटता है।`;
+                smartTip = '💡 चार्ट बनने के बाद वेटलिस्ट ई-टिकट ऑटो-कैंसिल हो जाता है और बाकी पूरा पैसा वापस आ जाता है।';
+                alertStyle = 'bg-emerald-50 border-emerald-300 text-emerald-950';
+            }
+            // 3. RAC TICKET
+            else if (state.ticketStatus === 'RAC') {
+                if (hours >= 0.5 && !state.chartPrepared) {
+                    const perPaxBase = cls.clerkage;
+                    const perPaxGst = cls.isAC ? (perPaxBase * 0.05) : 0;
+                    const perPaxExact = perPaxBase + perPaxGst;
+                    const perPaxRounded = state.roundToNextFive ? roundUpToFive(perPaxExact) : perPaxExact;
+
+                    baseCancelCharge = perPaxBase * pax;
+                    gstCharge = perPaxGst * pax;
+                    exactCutBeforeRounding = perPaxExact * pax;
+                    finalRailwayCut = Math.min(totalCancellingTicketFare, perPaxRounded * pax);
+                    roundingDiff = Math.max(0, finalRailwayCut - exactCutBeforeRounding);
+
+                    perPaxFormulaStr = cls.isAC ? `₹${perPaxBase} + ₹${perPaxGst} GST = ₹${perPaxExact} ➔ ₹${perPaxRounded}` : `फ्लैट ₹${perPaxBase} क्लर्केज`;
+                    ruleText = `RAC टिकट ट्रेन छूटने से 30 मिनट पहले तक कैंसिल करने पर केवल क्लर्केज ₹${perPaxRounded}/यात्री (× ${pax} = ₹${finalRailwayCut}) कटता है।`;
+                    smartTip = '⚠️ ध्यान रहे: ट्रेन छूटने में 30 मिनट से कम समय बचने पर RAC टिकट पर कोई रिफंड नहीं मिलता।';
+                    alertStyle = 'bg-emerald-50 border-emerald-200 text-emerald-950';
+                } else {
+                    baseCancelCharge = totalCancellingTicketFare;
+                    finalRailwayCut = totalCancellingTicketFare;
+                    perPaxFormulaStr = '< 30 मिनट / चार्ट तैयार (₹0 रिफंड)';
+                    ruleText = 'RAC टिकट को ट्रेन छूटने से 30 मिनट के अंदर (या चार्ट बनने के बाद) कैंसिल करने पर ₹0 रिफंड मिलता है।';
+                    smartTip = '⚠️ RAC टिकट हमेशा ट्रेन छूटने से कम से कम 30 मिनट पहले कैंसिल करें।';
+                    alertStyle = 'bg-rose-50 border-rose-300 text-rose-950';
+                }
+            }
+            // 4. TATKAL CONFIRMED (TQ_CNF)
+            else if (state.ticketStatus === 'TQ_CNF') {
+                baseCancelCharge = totalCancellingTicketFare;
+                finalRailwayCut = totalCancellingTicketFare;
+                perPaxFormulaStr = 'तत्काल कन्फर्म (₹0 रिफंड)';
+                ruleText = 'कन्फर्म तत्काल (Tatkal CNF) टिकट कैंसिल करने पर रेलवे के नियम अनुसार कोई रिफंड (₹0) नहीं मिलता।';
+                smartTip = '💡 केवल ट्रेन कैंसिल होने या 3 घंटे से अधिक लेट होने पर TDR फाइल करने से ही तत्काल कन्फर्म का रिफंड मिलता है।';
+                alertStyle = 'bg-rose-50 border-rose-300 text-rose-950';
+            }
+            // 5. CONFIRMED (CNF) -> Branch by Train Category:
+            //    (A) Regular Trains (48h flat / 48-12h 25% / 12-4h 50% / <4h 0)
+            //    (B) Vande Bharat Sleeper & Amrit Bharat II (G.S.R. 41(E): >72h 25% / 72-8h 50% / <8h 0)
+            else if (!isRegular) {
+                // OFFICIAL GAZETTE G.S.R. 41(E) FOR VANDE BHARAT SLEEPER & AMRIT BHARAT II EXPRESS
+                if (state.chartPrepared || hours < 8) {
+                    baseCancelCharge = totalCancellingTicketFare;
+                    finalRailwayCut = totalCancellingTicketFare;
+                    perPaxFormulaStr = '< 8 घंटे / चार्ट तैयार (₹0 रिफंड)';
+                    ruleText = 'गज़ट अधिसूचना G.S.R. 41(E) नियम 6(4)(c) के अनुसार: वंदे भारत स्लीपर और अमृत भारत II एक्सप्रेस में ट्रेन छूटने से 8 घंटे से कम समय में टिकट कैंसिल करने (या TDR न डालने) पर कोई रिफंड (₹0) देय नहीं होगा।';
+                    smartTip = '⚠️ ध्यान दें: इन दोनों विशेष ट्रेनों में नो-रिफंड की सीमा 4 घंटे नहीं बल्कि 8 घंटे है!';
+                    alertStyle = 'bg-rose-50 border-rose-300 text-rose-950';
+                } else if (hours > 72) {
+                    // > 72 Hours: 25% of fare (NO Flat Fee Slab!)
+                    const prs = computePrsPercentageCut(0.25);
+
+                    baseCancelCharge = Number((prs.perPaxBase * pax).toFixed(2));
+                    gstCharge = Number((prs.perPaxGst * pax).toFixed(2));
+                    exactCutBeforeRounding = Number((prs.perPaxExact * pax).toFixed(2));
+                    finalRailwayCut = Math.min(totalCancellingTicketFare, Number((prs.perPaxRounded * pax).toFixed(2)));
+                    roundingDiff = Number(Math.max(0, finalRailwayCut - exactCutBeforeRounding).toFixed(2));
+
+                    baseCutLabelStr = `• स्टेप 2: >72h पर 25% बेसिक (₹${prs.rawPctCut.toFixed(2)} ➔ ₹5 राउंड):`;
+                    perPaxFormulaStr = cls.isAC
+                        ? `25% (>72h): ₹${prs.perPaxBase} + ₹${prs.perPaxGst} GST ➔ ₹${prs.perPaxRounded}`
+                        : `25% (>72h) ➔ ₹${prs.perPaxRounded}/यात्री`;
+                    ruleText = `गज़ट G.S.R. 41(E) नियम 6(4)(a) के अनुसार: वंदे भारत स्लीपर / अमृत भारत II एक्सप्रेस में ट्रेन छूटने से 72 घंटे से अधिक समय पहले (${hWhole}h ${mRem}m) कैंसिल करने पर भी फ्लैट चार्ज नहीं लगता, बल्कि सीधा 25% किराया (डबल ₹5 राउंडिंग + GST सहित ₹${prs.perPaxRounded}/यात्री = कुल ₹${finalRailwayCut}) कटता है!`;
+                    smartTip = '📜 गज़ट नियम 6(4)(a): इन दोनों ट्रेनों में 72 घंटे से पहले कैंसिल करने पर भी 25% कटौती होती है।';
+                    alertStyle = 'bg-amber-50 border-amber-200 text-amber-950';
+                } else {
+                    // Between 72 Hours and 8 Hours: 50% of fare
+                    const prs = computePrsPercentageCut(0.50);
+
+                    baseCancelCharge = Number((prs.perPaxBase * pax).toFixed(2));
+                    gstCharge = Number((prs.perPaxGst * pax).toFixed(2));
+                    exactCutBeforeRounding = Number((prs.perPaxExact * pax).toFixed(2));
+                    finalRailwayCut = Math.min(totalCancellingTicketFare, Number((prs.perPaxRounded * pax).toFixed(2)));
+                    roundingDiff = Number(Math.max(0, finalRailwayCut - exactCutBeforeRounding).toFixed(2));
+
+                    baseCutLabelStr = `• स्टेप 2: 72h–8h पर 50% बेसिक (₹${prs.rawPctCut.toFixed(2)} ➔ ₹5 राउंड):`;
+                    perPaxFormulaStr = cls.isAC
+                        ? `50% (72h–8h): ₹${prs.perPaxBase} + ₹${prs.perPaxGst} GST ➔ ₹${prs.perPaxRounded}`
+                        : `50% (72h–8h) ➔ ₹${prs.perPaxRounded}/यात्री`;
+                    ruleText = `गज़ट G.S.R. 41(E) नियम 6(4)(b) के अनुसार: वंदे भारत स्लीपर / अमृत भारत II एक्सप्रेस में ट्रेन छूटने से 72 घंटे से लेकर 8 घंटे के भीतर (${hWhole}h ${mRem}m) कैंसिल करने पर सीधा 50% किराया (डबल ₹5 राउंडिंग + GST सहित ₹${prs.perPaxRounded}/यात्री = कुल ₹${finalRailwayCut}) कटता है!`;
+                    smartTip = '⚠️ सावधान: ट्रेन छूटने में 8 घंटे से कम समय बचते ही इन दोनों ट्रेनों में रिफंड ₹0 हो जाएगा!';
+                    alertStyle = 'bg-orange-50 border-orange-200 text-orange-950';
+                }
+            }
+            else {
+                // REGULAR TRAINS (Including Vande Bharat Chair Car CC/EC, Rajdhani, Shatabdi, Mail/Express) -> 48h / 12h / 4h & Chart Rule
+                if (state.chartPrepared || hours < 4) {
+                    baseCancelCharge = totalCancellingTicketFare;
+                    finalRailwayCut = totalCancellingTicketFare;
+                    perPaxFormulaStr = state.chartPrepared ? 'चार्ट बन चुका है (₹0 रिफंड)' : 'चार्ट तैयार / < 4 घंटे (₹0 रिफंड)';
+                    ruleText = state.chartPrepared
+                        ? 'ट्रेन का चार्ट बन जाने के बाद (Chart Prepared) सामान्य ट्रेन का कन्फर्म टिकट कैंसिल करने पर ₹0 रिफंड मिलता है।'
+                        : 'चार्ट बन जाने के बाद (या ट्रेन छूटने से 4 घंटे से कम समय बचने पर) कन्फर्म टिकट कैंसिल करने पर ₹0 रिफंड मिलता है।';
+                    smartTip = '⚠️ कन्फर्म टिकट पर रिफंड पाने के लिए हमेशा चार्ट बनने से पहले और ट्रेन छूटने से कम से कम 4 घंटे पहले टिकट कैंसिल करें।';
+                    alertStyle = 'bg-rose-50 border-rose-300 text-rose-950';
+                } else if (hours > 48) {
+                    const perPaxBase = cls.flatFee;
+                    const perPaxGst = cls.isAC ? (perPaxBase * 0.05) : 0;
+                    const perPaxExact = perPaxBase + perPaxGst;
+                    const perPaxRounded = state.roundToNextFive ? roundUpToFive(perPaxExact) : perPaxExact;
+
+                    baseCancelCharge = perPaxBase * pax;
+                    gstCharge = perPaxGst * pax;
+                    exactCutBeforeRounding = perPaxExact * pax;
+                    finalRailwayCut = Math.min(totalCancellingTicketFare, perPaxRounded * pax);
+                    roundingDiff = Math.max(0, finalRailwayCut - exactCutBeforeRounding);
+
+                    perPaxFormulaStr = cls.isAC ? `₹${perPaxBase} + ₹${perPaxGst} GST = ₹${perPaxExact} ➔ ₹${perPaxRounded}` : `फ्लैट ₹${perPaxBase}/यात्री`;
+                    ruleText = `ट्रेन छूटने में 48 घंटे से अधिक समय बाकी है (और चार्ट नहीं बना है)। इसलिए सामान्य ट्रेन (${cls.name}) का फ्लैट चार्ज ₹${perPaxRounded}/यात्री (× ${pax} = ₹${finalRailwayCut}) कटेगा।`;
+                    smartTip = '💡 48 घंटे के अंदर आते ही सामान्य ट्रेनों में (बेसिक किराया + बिना GST कैटरिंग) पर 25% कटने लगता है।';
+                    alertStyle = 'bg-emerald-50 border-emerald-200 text-emerald-950';
+                } else if (hours <= 48 && hours >= 12) {
+                    const prs = computePrsPercentageCut(0.25);
+
+                    baseCancelCharge = Number((prs.perPaxBase * pax).toFixed(2));
+                    gstCharge = Number((prs.perPaxGst * pax).toFixed(2));
+                    exactCutBeforeRounding = Number((prs.perPaxExact * pax).toFixed(2));
+                    finalRailwayCut = Math.min(totalCancellingTicketFare, Number((prs.perPaxRounded * pax).toFixed(2)));
+                    roundingDiff = Number(Math.max(0, finalRailwayCut - exactCutBeforeRounding).toFixed(2));
+
+                    baseCutLabelStr = `• स्टेप 2: 25% बेसिक (₹${prs.rawPctCut.toFixed(2)} ➔ ₹5 राउंड-ऑफ):`;
+                    perPaxFormulaStr = cls.isAC
+                        ? `₹${prs.rawPctCut.toFixed(2)} ➔ ₹${prs.perPaxBase} + ₹${prs.perPaxGst} GST = ₹${prs.perPaxExact} ➔ ₹${prs.perPaxRounded}`
+                        : `25% किराया ➔ ₹${prs.perPaxRounded}/यात्री`;
+                    ruleText = `ट्रेन छूटने में 48 से 12 घंटे के बीच समय है (${hWhole}h ${mRem}m) और चार्ट नहीं बना है। PRS नियम के अनुसार: (1) बिना-GST आधार ${formatINR(combinedExGstPerPax)} का 25% = ₹${prs.rawPctCut.toFixed(3)} निकाला गया, (2) उसे पहले ₹5 के गुणक में राउंड करके ₹${prs.perPaxBase} किया गया, (3) उस पर 5% GST = ₹${prs.perPaxGst} जोड़ा गया (कुल ₹${prs.perPaxExact}), और (4) अंत में उसे फिर से ₹5 में राउंड-ऑफ करके ₹${prs.perPaxRounded}/यात्री (कुल ₹${finalRailwayCut}) काटा गया!`;
+                    smartTip = '🎯 डबल ₹5 राउंडिंग वेरिफाइड: ₹1,329.62 × 25% = ₹332.405 ➔ राउंड ₹335 + 5% GST (₹16.75) = ₹351.75 ➔ राउंड ₹355!';
+                    alertStyle = 'bg-amber-50 border-amber-200 text-amber-950';
+                } else {
+                    const prs = computePrsPercentageCut(0.50);
+
+                    baseCancelCharge = Number((prs.perPaxBase * pax).toFixed(2));
+                    gstCharge = Number((prs.perPaxGst * pax).toFixed(2));
+                    exactCutBeforeRounding = Number((prs.perPaxExact * pax).toFixed(2));
+                    finalRailwayCut = Math.min(totalCancellingTicketFare, Number((prs.perPaxRounded * pax).toFixed(2)));
+                    roundingDiff = Number(Math.max(0, finalRailwayCut - exactCutBeforeRounding).toFixed(2));
+
+                    baseCutLabelStr = `• स्टेप 2: 50% बेसिक (₹${prs.rawPctCut.toFixed(2)} ➔ ₹5 राउंड-ऑफ):`;
+                    perPaxFormulaStr = cls.isAC
+                        ? `₹${prs.rawPctCut.toFixed(2)} ➔ ₹${prs.perPaxBase} + ₹${prs.perPaxGst} GST = ₹${prs.perPaxExact} ➔ ₹${prs.perPaxRounded}`
+                        : `50% किराया ➔ ₹${prs.perPaxRounded}/यात्री`;
+                    ruleText = `ट्रेन का चार्ट अभी नहीं बना है (Chart Not Prepared) और समय 12 घंटे से कम तथा 4 घंटे से ज़्यादा है (${hWhole}h ${mRem}m): इसलिए 50% कटौती लागू होगी — (1) बिना-GST आधार ${formatINR(combinedExGstPerPax)} का 50% = ₹${prs.rawPctCut.toFixed(2)} ➔ (2) पहला ₹5 राउंड-ऑफ = ₹${prs.perPaxBase} ➔ (3) + 5% GST (₹${prs.perPaxGst}) = ₹${prs.perPaxExact} ➔ (4) दूसरा ₹5 राउंड-ऑफ = ₹${prs.perPaxRounded}/यात्री (कुल ₹${finalRailwayCut}) कटेगा।`;
+                    smartTip = '⚠️ ध्यान रहे: जैसे ही ट्रेन का चार्ट बन जाएगा (Chart Prepared) या समय 4 घंटे से कम रह जाएगा, रिफंड ₹0 हो जाएगा!';
+                    alertStyle = 'bg-orange-50 border-orange-200 text-orange-950';
+                }
+            }
+
+            // Live Gazette Comparison Note between Regular Trains (48h/12h/4h) and Vande Bharat Sleeper / Amrit Bharat II (72h/8h)
+            let comparisonHtml = '';
+            if (state.ticketStatus === 'CNF') {
+                const prs25 = computePrsPercentageCut(0.25).perPaxRounded * pax;
+                const prs50 = computePrsPercentageCut(0.50).perPaxRounded * pax;
+                const flatRounded = (state.roundToNextFive ? roundUpToFive(cls.flatFee * (cls.isAC ? 1.05 : 1)) : (cls.flatFee * (cls.isAC ? 1.05 : 1))) * pax;
+
+                if (hours > 72) {
+                    comparisonHtml = `📜 <strong>गज़ट तुलना (&gt;72h पर):</strong> सामान्य ट्रेन में अभी सिर्फ फ्लैट <strong>${formatINR(flatRounded)}</strong> कटता है, जबकि <strong>Vande Bharat Sleeper / Amrit Bharat II</strong> में 72 घंटे से पहले भी सीधा 25% (<strong>${formatINR(prs25)}</strong>) कटता है!`;
+                } else if (hours <= 72 && hours > 48) {
+                    comparisonHtml = `📜 <strong>गज़ट तुलना (72h–48h के बीच):</strong> सामान्य ट्रेन में अभी फ्लैट <strong>${formatINR(flatRounded)}</strong> कटता है, जबकि <strong>Vande Bharat Sleeper / Amrit Bharat II</strong> में 50% (<strong>${formatINR(prs50)}</strong>) कटता है!`;
+                } else if (hours <= 48 && hours >= 12) {
+                    comparisonHtml = `📜 <strong>गज़ट तुलना (48h–12h के बीच - JSON केस 14h 50m):</strong> सामान्य ट्रेन (वंदे भारत चेयर कार CC सहित) में यहाँ 25% (<strong>${formatINR(prs25)}</strong>) कटता है, जबकि <strong>Vande Bharat Sleeper / Amrit Bharat II</strong> होता तो 50% (<strong>${formatINR(prs50)}</strong>) कटता!`;
+                } else if (hours < 12 && hours >= 8) {
+                    comparisonHtml = `📜 <strong>गज़ट तुलना (12h–8h के बीच):</strong> इस समय दोनों श्रेणियों (सामान्य ट्रेन और Vande Bharat Sleeper) में 50% (<strong>${formatINR(prs50)}</strong>) ही कटता है।`;
+                } else if (hours < 8 && hours >= 4) {
+                    comparisonHtml = `📜 <strong>गज़ट तुलना (8h–4h के बीच):</strong> सामान्य ट्रेन में अभी 50% (<strong>${formatINR(prs50)}</strong>) कटकर बाकी रिफंड मिलता है, जबकि <strong>Vande Bharat Sleeper / Amrit Bharat II</strong> में 8 घंटे के अंदर <strong>₹0 रिफंड</strong> हो जाता है!`;
+                } else {
+                    comparisonHtml = `📜 <strong>गज़ट तुलना (&lt; 4h पर):</strong> 4 घंटे से कम समय बचने पर दोनों श्रेणियों में कन्फर्म टिकट पर <strong>₹0 रिफंड</strong> है।`;
+                }
+            }
+            const compEl = document.getElementById('regimeComparisonNote');
+            if (compEl) {
+                compEl.innerHTML = comparisonHtml;
+                compEl.style.display = comparisonHtml ? 'block' : 'none';
+            }
+
+            const netRailwayRefund = Math.max(0, Number((totalCancellingTicketFare - finalRailwayCut).toFixed(2)));
+            const insuranceRefund = (state.hasInsurance && state.insuranceRefundable && state.bookingSource !== 'COUNTER')
+                ? cancellingInsurance
+                : 0;
+            const totalNetRefund = Number((netRailwayRefund + insuranceRefund).toFixed(2));
+
+            // Update Right Side Receipt
+            const sourceNames = { 'PERSONAL': 'पर्सनल आईडी', 'AGENT': 'एजेंट आईडी (RSP)', 'COUNTER': 'रेलवे काउंटर' };
+            setElText('receiptModeTitle', `${sourceNames[state.bookingSource]} • ${cls.name} • ${STATUS_LABELS[state.ticketStatus]}`);
+            setElText('receiptPaxBadge', `${pax}/${totalPax} यात्री कैंसिल`);
+            setElText('finalNetRefundDisplay', formatINR(totalNetRefund));
+            setElText('perPaxNetRefundSub', `प्रति यात्री रिफंड: ${formatINR(totalNetRefund / pax)}`);
+            setElText('finalRailwayCutDisplay', `- ${formatINR(finalRailwayCut)}`);
+            setElText('perPaxRailwayCutSub', `${formatINR(finalRailwayCut / pax)} / यात्री`);
+
+            // Box 1
+            setElText('receiptBookingSourceTag', sourceNames[state.bookingSource]);
+            setElText('receiptGrandTotalPaid', formatINR(extracted.grandTotalPaid));
+            setElText('receiptIrctcFee', `- ${formatINR(extracted.irctcFee)}`);
+
+            const insRow = document.getElementById('receiptInsuranceRow');
+            if (insRow) {
+                insRow.style.display = extracted.totalInsurance > 0 ? 'flex' : 'none';
+                setElText('receiptInsStatusText', state.insuranceRefundable ? 'रिफंड में शामिल' : 'Non-Refundable');
+                setElText('receiptInsuranceFee', formatINR(extracted.totalInsurance));
+            }
+
+            const agentFeeRow = document.getElementById('receiptAgentFeeRow');
+            const pgBaseRow = document.getElementById('receiptPgBaseRow');
+            const pgFeeRow = document.getElementById('receiptPgFeeRow');
+            if (state.bookingSource === 'AGENT') {
+                agentFeeRow.style.display = 'flex';
+                setElText('receiptAgentFee', `- ${formatINR(extracted.agentFee)}`);
+                pgBaseRow.style.display = 'flex';
+                setElText('receiptPgBaseVal', `${formatINR(extracted.pgBase)} (${formatINR(extracted.pureTotalTrainFare + extracted.totalCatering)} + ${formatINR(extracted.irctcFee)}${extracted.totalInsurance > 0 ? ' + ' + formatINR(extracted.totalInsurance) : ''})`);
+                pgFeeRow.style.display = 'flex';
+                setElText('receiptPgSlabLabel', `${extracted.pgBase <= 2000 ? '≤ ₹2000 @ 0.75%' : '> ₹2000 @ 1%'}`);
+                setElText('receiptPgFee', `- ${formatINR(extracted.pgCharge)}`);
+            } else {
+                agentFeeRow.style.display = 'none';
+                pgBaseRow.style.display = 'none';
+                pgFeeRow.style.display = 'none';
+            }
+            setElText('receiptPureRailwayTotal', formatINR(extracted.pureTotalTrainFare + extracted.totalCatering));
+
+            // Box 2
+            setElText('receiptPerPaxFormulaBadge', perPaxFormulaStr);
+            setElText('receiptCancelPaxCount', String(pax));
+            setElText('receiptCancellingTrainFare', formatINR(cancellingTrainFare));
+            setElText('receiptCancellingCatering', formatINR(catering));
+            setElText('receiptExGstBaseVal', `${formatINR(combinedExGstPerPax * pax)} (${formatINR(exGstTrainPerPax * pax)} + ${formatINR(exGstCatPerPax * pax)})`);
+            setElText('receiptBaseCancelCutLabel', baseCutLabelStr);
+            setElText('receiptBaseCancelCut', `- ${formatINR(baseCancelCharge)}`);
+            setElText('receiptGstCancelCut', `- ${formatINR(gstCharge)}`);
+            setElText('receiptRoundingCut', `- ${formatINR(roundingDiff)}`);
+            setElText('receiptTotalRailwayCut', `- ${formatINR(finalRailwayCut)}`);
+
+            // Box 3
+            setElText('receiptNetTrainRefund', formatINR(totalCancellingTicketFare));
+            setElText('receiptNetFoodRefund', `- ${formatINR(finalRailwayCut)}`);
+            const netInsRow = document.getElementById('receiptNetInsRefundRow');
+            if (netInsRow) netInsRow.style.display = insuranceRefund > 0 ? 'flex' : 'none';
+            setElText('receiptNetInsRefund', `+ ${formatINR(insuranceRefund)}`);
+            setElText('receiptFinalBankRefund', formatINR(totalNetRefund));
+
+            // Rule Explanation
+            const alertBox = document.getElementById('ruleExplanationAlert');
+            if (alertBox) alertBox.className = `rounded-2xl p-3.5 border space-y-1 ${alertStyle}`;
+            setElText('ruleExplanationText', ruleText);
+            setElText('smartTipText', smartTip);
+        }
+
+        // Bind All Interactive Event Listeners
+        window.addEventListener('DOMContentLoaded', () => {
+            syncDateInputsFromHours(state.hoursBeforeDeparture);
+
+            // Booking Source Buttons
+            document.querySelectorAll('.source-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.bookingSource = btn.dataset.source;
+                    calculateRefund();
+                });
+            });
+
+            // Personal Payment Method Buttons
+            document.querySelectorAll('.pay-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.paymentMethod = btn.dataset.pay;
+                    calculateRefund();
+                });
+            });
+
+            // Agent PG Toggle
+            document.getElementById('togglePgBtn').addEventListener('click', () => {
+                state.pgEnabled = !state.pgEnabled;
+                calculateRefund();
+            });
+
+            // Rounding Toggle
+            document.getElementById('toggleRoundingBtn').addEventListener('click', () => {
+                state.roundToNextFive = !state.roundToNextFive;
+                calculateRefund();
+            });
+
+            // Rule Regime Switchers (Regular Trains 48h/12h/4h vs Vande Bharat Sleeper / Amrit Bharat II 72h/8h)
+            function setRuleRegime(regime) {
+                state.ruleRegime = regime;
+                calculateRefund();
+            }
+            document.getElementById('toggleRuleRegimeBtn').addEventListener('click', () => {
+                setRuleRegime(state.ruleRegime === 'ACTUAL_48H' ? 'VB_SLEEPER_72H' : 'ACTUAL_48H');
+            });
+            document.getElementById('regimeActualBtn').addEventListener('click', () => setRuleRegime('ACTUAL_48H'));
+            document.getElementById('regimeRumoredBtn').addEventListener('click', () => setRuleRegime('VB_SLEEPER_72H'));
+
+            // Travel Class
+            document.querySelectorAll('.class-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.travelClass = btn.dataset.class;
+                    calculateRefund();
+                });
+            });
+
+            // Ticket Status
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.ticketStatus = btn.dataset.status;
+                    calculateRefund();
+                });
+            });
+
+            // Time Slab Buttons
+            document.querySelectorAll('.slab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const rawHours = parseFloat(btn.dataset.hours);
+                    state.hoursBeforeDeparture = rawHours;
+                    state.chartPrepared = false;
+                    document.getElementById('chartPreparedCheckbox').checked = false;
+                    syncDateInputsFromHours(state.hoursBeforeDeparture);
+                    calculateRefund();
+                });
+            });
+
+            // Date-Time Pickers
+            function handleDateChange() {
+                const cVal = document.getElementById('cancelDateTime').value;
+                const dVal = document.getElementById('departureDateTime').value;
+                if (cVal && dVal) {
+                    const diffMs = new Date(dVal).getTime() - new Date(cVal).getTime();
+                    state.hoursBeforeDeparture = Math.max(0, Number((diffMs / (1000 * 3600)).toFixed(2)));
+                    calculateRefund();
+                }
+            }
+            document.getElementById('cancelDateTime').addEventListener('change', handleDateChange);
+            document.getElementById('departureDateTime').addEventListener('change', handleDateChange);
+
+            document.getElementById('setNowBtn').addEventListener('click', () => {
+                const now = new Date();
+                document.getElementById('cancelDateTime').value = toLocalDateTimeInputValue(now);
+                handleDateChange();
+            });
+
+            document.getElementById('chartPreparedCheckbox').addEventListener('change', (e) => {
+                state.chartPrepared = e.target.checked;
+                calculateRefund();
+            });
+
+            // Passenger Buttons & Inputs
+            function updateTotalPassengers(newTotal) {
+                state.totalPassengers = Math.max(1, Math.min(12, newTotal || 1));
+                if (state.cancelPassengers > state.totalPassengers) {
+                    state.cancelPassengers = state.totalPassengers;
+                }
+                if (state.fareInputMode === 'PURE_FARE') {
+                    state.pureTotalFareEntered = Number((state.purePerPaxFareEntered * state.totalPassengers).toFixed(2));
+                    document.getElementById('pureTotalFareInput').value = state.pureTotalFareEntered;
+                }
+                if (state.hasCatering) {
+                    state.totalCateringFee = Number((state.perPaxCateringFee * state.totalPassengers).toFixed(2));
+                    document.getElementById('totalCateringInput').value = state.totalCateringFee;
+                }
+                calculateRefund();
+            }
+
+            document.querySelectorAll('.total-pax-btn').forEach(btn => {
+                btn.addEventListener('click', () => updateTotalPassengers(parseInt(btn.dataset.totalpax, 10)));
+            });
+            document.getElementById('totalPassengersInput').addEventListener('input', (e) => {
+                updateTotalPassengers(parseInt(e.target.value, 10));
+            });
+
+            document.querySelectorAll('.cancel-pax-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const val = parseInt(btn.dataset.cancelpax, 10);
+                    if (val <= state.totalPassengers) {
+                        state.cancelPassengers = val;
+                        calculateRefund();
+                    }
+                });
+            });
+            document.getElementById('cancelPassengersInput').addEventListener('input', (e) => {
+                const val = Math.max(1, Math.min(state.totalPassengers, parseInt(e.target.value, 10) || 1));
+                state.cancelPassengers = val;
+                calculateRefund();
+            });
+
+            // Fare Input Mode Switcher
+            document.getElementById('modeGrandTotalBtn').addEventListener('click', () => {
+                const ext = extractFareAndFees();
+                state.fareInputMode = 'GRAND_TOTAL';
+                state.enteredTotalAmount = ext.grandTotalPaid;
+                document.getElementById('enteredGrandTotalInput').value = state.enteredTotalAmount;
+                calculateRefund();
+            });
+            document.getElementById('modePureFareBtn').addEventListener('click', () => {
+                const ext = extractFareAndFees();
+                state.fareInputMode = 'PURE_FARE';
+                state.pureTotalFareEntered = ext.pureTotalTrainFare;
+                state.purePerPaxFareEntered = ext.purePerPaxTrainFare;
+                document.getElementById('pureTotalFareInput').value = state.pureTotalFareEntered;
+                document.getElementById('purePerPaxFareInput').value = state.purePerPaxFareEntered;
+                calculateRefund();
+            });
+
+            // Grand Total Input
+            document.getElementById('enteredGrandTotalInput').addEventListener('input', (e) => {
+                state.enteredTotalAmount = parseFloat(e.target.value) || 0;
+                calculateRefund();
+            });
+
+            // Dual Synced Pure Fare Inputs
+            document.getElementById('pureTotalFareInput').addEventListener('input', (e) => {
+                state.pureTotalFareEntered = parseFloat(e.target.value) || 0;
+                state.purePerPaxFareEntered = Number((state.pureTotalFareEntered / state.totalPassengers).toFixed(2));
+                document.getElementById('purePerPaxFareInput').value = state.purePerPaxFareEntered;
+                calculateRefund();
+            });
+            document.getElementById('purePerPaxFareInput').addEventListener('input', (e) => {
+                state.purePerPaxFareEntered = parseFloat(e.target.value) || 0;
+                state.pureTotalFareEntered = Number((state.purePerPaxFareEntered * state.totalPassengers).toFixed(2));
+                document.getElementById('pureTotalFareInput').value = state.pureTotalFareEntered;
+                calculateRefund();
+            });
+
+            // Catering Controls
+            document.getElementById('catYesBtn').addEventListener('click', () => {
+                state.hasCatering = true;
+                if (state.totalCateringFee <= 0) {
+                    state.perPaxCateringFee = 363;
+                    state.totalCateringFee = 363 * state.totalPassengers;
+                    document.getElementById('perPaxCateringInput').value = state.perPaxCateringFee;
+                    document.getElementById('totalCateringInput').value = state.totalCateringFee;
+                }
+                calculateRefund();
+            });
+            document.getElementById('catNoBtn').addEventListener('click', () => {
+                state.hasCatering = false;
+                calculateRefund();
+            });
+            document.getElementById('totalCateringInput').addEventListener('input', (e) => {
+                state.totalCateringFee = parseFloat(e.target.value) || 0;
+                state.perPaxCateringFee = Number((state.totalCateringFee / state.totalPassengers).toFixed(2));
+                document.getElementById('perPaxCateringInput').value = state.perPaxCateringFee;
+                calculateRefund();
+            });
+            document.getElementById('perPaxCateringInput').addEventListener('input', (e) => {
+                state.perPaxCateringFee = parseFloat(e.target.value) || 0;
+                state.totalCateringFee = Number((state.perPaxCateringFee * state.totalPassengers).toFixed(2));
+                document.getElementById('totalCateringInput').value = state.totalCateringFee;
+                calculateRefund();
+            });
+            document.querySelectorAll('.food-preset-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.hasCatering = true;
+                    state.perPaxCateringFee = parseFloat(btn.dataset.food) || 0;
+                    state.totalCateringFee = Number((state.perPaxCateringFee * state.totalPassengers).toFixed(2));
+                    document.getElementById('perPaxCateringInput').value = state.perPaxCateringFee;
+                    document.getElementById('totalCateringInput').value = state.totalCateringFee;
+                    calculateRefund();
+                });
+            });
+
+            // Insurance Controls
+            document.getElementById('insYesBtn').addEventListener('click', () => {
+                state.hasInsurance = true;
+                calculateRefund();
+            });
+            document.getElementById('insNoBtn').addEventListener('click', () => {
+                state.hasInsurance = false;
+                calculateRefund();
+            });
+            document.querySelectorAll('.ins-rate-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.insurancePerPax = parseFloat(btn.dataset.insrate);
+                    document.getElementById('customInsRateInput').value = state.insurancePerPax;
+                    calculateRefund();
+                });
+            });
+            document.getElementById('customInsRateInput').addEventListener('input', (e) => {
+                state.insurancePerPax = parseFloat(e.target.value) || 0;
+                calculateRefund();
+            });
+            document.getElementById('insRefundableCheckbox').addEventListener('change', (e) => {
+                state.insuranceRefundable = e.target.checked;
+                calculateRefund();
+            });
+
+            // 1-Click Verified Test Cases
+            document.querySelectorAll('.testcase-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tc = btn.dataset.testcase;
+                    if (tc === 'TC_JSON') {
+                        Object.assign(state, {
+                            ruleRegime: 'ACTUAL_48H',
+                            bookingSource: 'AGENT', paymentMethod: 'CARD', pgEnabled: true,
+                            fareInputMode: 'GRAND_TOTAL', hasCatering: true, totalCateringFee: 363, perPaxCateringFee: 363,
+                            hasInsurance: false, insurancePerPax: 0.45, insuranceRefundable: true,
+                            travelClass: '3AC', ticketStatus: 'CNF', totalPassengers: 1, cancelPassengers: 1,
+                            enteredTotalAmount: 1481.13, pureTotalFareEntered: 1032, purePerPaxFareEntered: 1032,
+                            hoursBeforeDeparture: 14.83, chartPrepared: false, roundToNextFive: true
+                        });
+                        setElText('activeTestBadge', '🔥 JSON केस: SBC Vande Bharat CC (सामान्य 48h/12h नियम • ₹355 कटौती)');
+                    } else if (tc === 'TC_VBSLEEPER') {
+                        Object.assign(state, {
+                            ruleRegime: 'VB_SLEEPER_72H',
+                            bookingSource: 'AGENT', paymentMethod: 'CARD', pgEnabled: true,
+                            fareInputMode: 'GRAND_TOTAL', hasCatering: true, totalCateringFee: 363, perPaxCateringFee: 363,
+                            hasInsurance: false, insurancePerPax: 0.45, insuranceRefundable: true,
+                            travelClass: '3AC', ticketStatus: 'CNF', totalPassengers: 1, cancelPassengers: 1,
+                            enteredTotalAmount: 1481.13, pureTotalFareEntered: 1032, purePerPaxFareEntered: 1032,
+                            hoursBeforeDeparture: 14.83, chartPrepared: false, roundToNextFive: true
+                        });
+                        setElText('activeTestBadge', '📜 गज़ट G.S.R. 41(E): Vande Bharat Sleeper (72h–8h = 50% कटौती • ₹700)');
+                    } else if (tc === 'TC1') {
+                        Object.assign(state, {
+                            ruleRegime: 'ACTUAL_48H',
+                            bookingSource: 'PERSONAL', paymentMethod: 'CARD', pgEnabled: false,
+                            fareInputMode: 'GRAND_TOTAL', hasCatering: false, totalCateringFee: 0, perPaxCateringFee: 0,
+                            hasInsurance: true, insurancePerPax: 0.45, insuranceRefundable: true,
+                            travelClass: '3AC', ticketStatus: 'CNF', totalPassengers: 2, cancelPassengers: 2,
+                            enteredTotalAmount: 2036.30, pureTotalFareEntered: 2000, purePerPaxFareEntered: 1000,
+                            hoursBeforeDeparture: 60, chartPrepared: false, roundToNextFive: true
+                        });
+                        setElText('activeTestBadge', 'Test 1: Personal + 3AC + इंश्योरेंस (>48h = ₹190/यात्री)');
+                    } else if (tc === 'TC2') {
+                        Object.assign(state, {
+                            ruleRegime: 'ACTUAL_48H',
+                            bookingSource: 'AGENT', paymentMethod: 'CARD', pgEnabled: true,
+                            fareInputMode: 'GRAND_TOTAL', hasCatering: false, totalCateringFee: 0, perPaxCateringFee: 0,
+                            hasInsurance: true, insurancePerPax: 0.45, insuranceRefundable: true,
+                            travelClass: '2AC', ticketStatus: 'CNF', totalPassengers: 1, cancelPassengers: 1,
+                            enteredTotalAmount: 1587.37, pureTotalFareEntered: 1500, purePerPaxFareEntered: 1500,
+                            hoursBeforeDeparture: 60, chartPrepared: false, roundToNextFive: true
+                        });
+                        setElText('activeTestBadge', 'Test 2: Agent ≤ ₹2000 (PG Base ₹1535.85 @ 0.75% = ₹11.52)');
+                    } else if (tc === 'TC3') {
+                        Object.assign(state, {
+                            ruleRegime: 'ACTUAL_48H',
+                            bookingSource: 'AGENT', paymentMethod: 'CARD', pgEnabled: true,
+                            fareInputMode: 'GRAND_TOTAL', hasCatering: true, totalCateringFee: 300, perPaxCateringFee: 150,
+                            hasInsurance: true, insurancePerPax: 0.45, insuranceRefundable: true,
+                            travelClass: '3AC', ticketStatus: 'CNF', totalPassengers: 2, cancelPassengers: 2,
+                            enteredTotalAmount: 2803.66, pureTotalFareEntered: 2400, purePerPaxFareEntered: 1200,
+                            hoursBeforeDeparture: 24, chartPrepared: false, roundToNextFive: true
+                        });
+                        setElText('activeTestBadge', 'Test 3: Agent > ₹2000 (PG Base ₹2736.30 @ 1% = ₹27.36)');
+                    } else if (tc === 'TC4') {
+                        Object.assign(state, {
+                            ruleRegime: 'ACTUAL_48H',
+                            bookingSource: 'PERSONAL', paymentMethod: 'UPI', pgEnabled: false,
+                            fareInputMode: 'GRAND_TOTAL', hasCatering: false, totalCateringFee: 0, perPaxCateringFee: 0,
+                            hasInsurance: false, insurancePerPax: 0.45, insuranceRefundable: true,
+                            travelClass: '3AC', ticketStatus: 'WL', totalPassengers: 2, cancelPassengers: 2,
+                            enteredTotalAmount: 2011.80, pureTotalFareEntered: 2000, purePerPaxFareEntered: 1000,
+                            hoursBeforeDeparture: 0.25, chartPrepared: true, roundToNextFive: true
+                        });
+                        setElText('activeTestBadge', 'Test 4: Waitlist (< 30 मि. = कभी ₹0 नहीं, सिर्फ ₹65/यात्री)');
+                    } else if (tc === 'TC5') {
+                        Object.assign(state, {
+                            ruleRegime: 'ACTUAL_48H',
+                            bookingSource: 'AGENT', paymentMethod: 'CARD', pgEnabled: true,
+                            fareInputMode: 'GRAND_TOTAL', hasCatering: true, totalCateringFee: 363, perPaxCateringFee: 363,
+                            hasInsurance: false, insurancePerPax: 0.45, insuranceRefundable: true,
+                            travelClass: '3AC', ticketStatus: 'TRAIN_CANCELLED', totalPassengers: 1, cancelPassengers: 1,
+                            enteredTotalAmount: 1481.13, pureTotalFareEntered: 1032, purePerPaxFareEntered: 1032,
+                            hoursBeforeDeparture: 2, chartPrepared: true, roundToNextFive: true
+                        });
+                        setElText('activeTestBadge', 'Test 5: ट्रेन कैंसिल (रेलवे कटौती ₹0 • 100% किराया रिफंड)');
+                    }
+
+                    // Sync inputs with updated state
+                    document.getElementById('enteredGrandTotalInput').value = state.enteredTotalAmount;
+                    document.getElementById('pureTotalFareInput').value = state.pureTotalFareEntered;
+                    document.getElementById('purePerPaxFareInput').value = state.purePerPaxFareEntered;
+                    document.getElementById('totalCateringInput').value = state.totalCateringFee;
+                    document.getElementById('perPaxCateringInput').value = state.perPaxCateringFee;
+                    document.getElementById('chartPreparedCheckbox').checked = state.chartPrepared;
+                    syncDateInputsFromHours(state.hoursBeforeDeparture);
+                    calculateRefund();
+                });
+            });
+
+            // JSON Modal Controls
+            const modal = document.getElementById('jsonModal');
+            document.getElementById('openJsonModalBtn').addEventListener('click', () => {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            });
+            document.getElementById('closeJsonModalBtn').addEventListener('click', () => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            });
+            document.getElementById('loadSampleJsonBtn').addEventListener('click', () => {
+                const sample = {
+                    RBresponse: {
+                        enqClass: "CC", baseFare: "898", reservationCharge: "40", superfastCharge: "45",
+                        serviceTax: "49.0", cateringCharge: "363", totalFare: "1395",
+                        wpServiceCharge: "30.0", wpServiceTax: "5.4", totalCollectibleAmount: "1430.4"
+                    },
+                    commercials: { TravelAgentFee: 40, pgCharge: 10.73 },
+                    RouteDetails: { fdepartureTime: "07:45", ArrivalDate: "3-11-2026" },
+                    RBTktres: {
+                        numberOfAdults: 1, journeyClass: "CC", totalFare: 1395, serviceChargeTotal: 35.4,
+                        gstCharge: { taxableAmt: 983, totalPRSGst: 48.95, cateringGst: 16.38 },
+                        refunddetails: {
+                            canList: [{ refundAmount: "1040", amountCollected: "1395", cashDeducted: "355", cancelledDate: "2026-11-02T16:55:02.000" }]
+                        }
+                    }
+                };
+                document.getElementById('jsonPasteTextarea').value = JSON.stringify(sample, null, 2);
+            });
+
+            document.getElementById('applyJsonBtn').addEventListener('click', () => {
+                const raw = document.getElementById('jsonPasteTextarea').value.trim();
+                const fb = document.getElementById('jsonParseFeedback');
+                try {
+                    const data = JSON.parse(raw);
+                    const rbResp = data.RBresponse || {};
+                    const tktRes = data.RBTktres || {};
+                    const comm = data.commercials || {};
+
+                    const totalFare = Number(rbResp.totalFare || tktRes.totalFare || 1395);
+                    const catCharge = Number(rbResp.cateringCharge || 0);
+                    const pureTrainFare = totalFare - catCharge;
+                    const paxCount = Number(tktRes.numberOfAdults || 1);
+                    const agentFee = Number(comm.TravelAgentFee ?? tktRes.taServiceCharge ?? 40);
+                    const pgCharge = Number(comm.pgCharge ?? 0);
+                    const irctcFee = Number(tktRes.serviceChargeTotal || 35.4);
+
+                    const classCode = (rbResp.enqClass || tktRes.journeyClass || 'CC').toUpperCase();
+                    let mappedClass = '3AC';
+                    if (classCode === '1A' || classCode === 'EC') mappedClass = '1AC';
+                    else if (classCode === '2A' || classCode === 'FC') mappedClass = '2AC';
+                    else if (classCode === 'SL') mappedClass = 'SL';
+                    else if (classCode === '2S') mappedClass = '2S';
+
+                    state.bookingSource = agentFee > 0 ? 'AGENT' : 'PERSONAL';
+                    state.pgEnabled = pgCharge > 0;
+                    state.travelClass = mappedClass;
+                    state.totalPassengers = paxCount;
+                    state.cancelPassengers = paxCount;
+                    state.hasCatering = catCharge > 0;
+                    state.totalCateringFee = catCharge;
+                    state.perPaxCateringFee = Number((catCharge / paxCount).toFixed(2));
+                    state.pureTotalFareEntered = pureTrainFare;
+                    state.purePerPaxFareEntered = Number((pureTrainFare / paxCount).toFixed(2));
+                    state.enteredTotalAmount = Number((totalFare + irctcFee + pgCharge + agentFee).toFixed(2));
+
+                    document.getElementById('enteredGrandTotalInput').value = state.enteredTotalAmount;
+                    document.getElementById('pureTotalFareInput').value = state.pureTotalFareEntered;
+                    document.getElementById('purePerPaxFareInput').value = state.purePerPaxFareEntered;
+                    document.getElementById('totalCateringInput').value = state.totalCateringFee;
+                    document.getElementById('perPaxCateringInput').value = state.perPaxCateringFee;
+
+                    fb.textContent = '✅ JSON सफलतापूर्वक लोड हो गया!';
+                    fb.className = 'text-xs font-bold text-emerald-700 block';
+                    calculateRefund();
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                        modal.classList.remove('flex');
+                        fb.classList.add('hidden');
+                    }, 600);
+                } catch (err) {
+                    fb.textContent = '❌ JSON फॉर्मेट में त्रुटि है, कृपया सही JSON पेस्ट करें।';
+                    fb.className = 'text-xs font-bold text-rose-700 block';
+                }
+            });
+
+            // Initial Calculation on Page Load
+            calculateRefund();
+        });
+    </script>
+</body>
+</html>

@@ -135,7 +135,8 @@ const ALLOWED_CSS_PROPERTIES = new Set([
   "text-align", "text-decoration", "line-height", "margin", "margin-top",
   "margin-bottom", "margin-left", "margin-right", "padding", "padding-top",
   "padding-bottom", "padding-left", "padding-right", "border", "border-color",
-  "border-width", "border-style", "border-radius", "width", "height", "max-width"
+  "border-width", "border-style", "border-radius", "width", "height", "max-width",
+  "clear", "display", "box-shadow", "justify-content", "align-items", "gap", "flex-wrap"
 ]);
 
 function cleanInlineStyle(styleStr: string): string {
@@ -338,12 +339,29 @@ function formatHtmlSource(source: string): string {
     }
   }
 
-  // Combine small inline elements (e.g. <p>Text</p> or <li>Item</li>) into single neat lines
+  // Combine small inline elements (e.g. <p>Text</p>, <li>Item</li>, or <li><p>Item</p></li>) into single neat lines
   const result: string[] = [];
   for (let i = 0; i < formattedLines.length; i++) {
     const curr = formattedLines[i];
     const next1 = formattedLines[i + 1];
     const next2 = formattedLines[i + 2];
+    const next3 = formattedLines[i + 3];
+    const next4 = formattedLines[i + 4];
+
+    // Collapse <li>\n  <p>\n    Text\n  </p>\n</li> into a single line
+    if (
+      next1 && next2 && next3 && next4 &&
+      /^\s*<li(?:\s+[^>]*)?>$/i.test(curr) &&
+      /^\s*<p(?:\s+[^>]*)?>$/i.test(next1) &&
+      !/^<.*>$/.test(next2.trim()) &&
+      /^\s*<\/p>$/i.test(next3) &&
+      /^\s*<\/li>$/i.test(next4)
+    ) {
+      const indent = curr.match(/^\s*/)?.[0] ?? "";
+      result.push(`${indent}${curr.trim()}${next1.trim()}${next2.trim()}${next3.trim()}${next4.trim()}`);
+      i += 4;
+      continue;
+    }
 
     const matchOpen = /^\s*<(h[1-6]|p|li|th|td)(?:\s+[^>]*)?>$/i.exec(curr);
     if (matchOpen && next1 && next2) {
@@ -528,6 +546,61 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
     onChange(appliedHtml);
     return true;
   }, [editor, onChange]);
+
+  // Split View scroll refs so Visual stops at its content end while HTML continues scrolling
+  const visualScrollRef = useRef<HTMLDivElement>(null);
+  const htmlContainerRef = useRef<HTMLDivElement>(null);
+  const isSyncingScrollRef = useRef(false);
+
+  useEffect(() => {
+    if (mode !== "split") return;
+    const visualEl = visualScrollRef.current;
+    const htmlScroller = htmlContainerRef.current?.querySelector(".cm-scroller") as HTMLElement | null;
+    if (!visualEl || !htmlScroller) return;
+
+    const handleHtmlScroll = () => {
+      if (isSyncingScrollRef.current) return;
+      isSyncingScrollRef.current = true;
+      const visualMaxScroll = Math.max(0, visualEl.scrollHeight - visualEl.clientHeight);
+      // Scroll visual along with HTML, clamping at visualMaxScroll so visual stops at its end without empty space
+      visualEl.scrollTop = Math.min(htmlScroller.scrollTop, visualMaxScroll);
+      window.requestAnimationFrame(() => {
+        isSyncingScrollRef.current = false;
+      });
+    };
+
+    const handleVisualScroll = () => {
+      if (isSyncingScrollRef.current) return;
+      isSyncingScrollRef.current = true;
+      const visualMaxScroll = Math.max(0, visualEl.scrollHeight - visualEl.clientHeight);
+      if (visualEl.scrollTop < visualMaxScroll || htmlScroller.scrollTop < visualMaxScroll) {
+        htmlScroller.scrollTop = visualEl.scrollTop;
+      }
+      window.requestAnimationFrame(() => {
+        isSyncingScrollRef.current = false;
+      });
+    };
+
+    const handleVisualWheel = (e: WheelEvent) => {
+      const visualMaxScroll = Math.max(0, visualEl.scrollHeight - visualEl.clientHeight);
+      const htmlMaxScroll = Math.max(0, htmlScroller.scrollHeight - htmlScroller.clientHeight);
+      // If visual content is finished and user keeps scrolling down, stop visual and only scroll HTML
+      if (e.deltaY > 0 && visualEl.scrollTop >= visualMaxScroll - 1 && htmlScroller.scrollTop < htmlMaxScroll) {
+        e.preventDefault();
+        htmlScroller.scrollTop = Math.min(htmlMaxScroll, htmlScroller.scrollTop + e.deltaY);
+      }
+    };
+
+    htmlScroller.addEventListener("scroll", handleHtmlScroll, { passive: true });
+    visualEl.addEventListener("scroll", handleVisualScroll, { passive: true });
+    visualEl.addEventListener("wheel", handleVisualWheel, { passive: false });
+
+    return () => {
+      htmlScroller.removeEventListener("scroll", handleHtmlScroll);
+      visualEl.removeEventListener("scroll", handleVisualScroll);
+      visualEl.removeEventListener("wheel", handleVisualWheel);
+    };
+  }, [mode, source]);
 
   // Keep Split View live while allowing a short pause for normal code typing.
   useEffect(() => {
@@ -1024,26 +1097,29 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
       <div
         className={
           mode === "split"
-            ? "flex-1 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-stretch divide-y md:divide-y-0 md:divide-x divide-slate-200 min-h-0 min-w-0 box-border overflow-hidden"
+            ? "flex-1 grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-stretch divide-y md:divide-y-0 md:divide-x divide-slate-200 md:h-[75vh] md:min-h-[540px] md:max-h-[820px] min-w-0 box-border overflow-hidden"
             : "flex-1 flex flex-col min-h-0"
         }
       >
         {mode !== "html" && (
-          <section className="min-w-0 flex-1 flex flex-col w-full min-h-0 box-border" aria-label="Visual article editor">
+          <section className="min-w-0 flex-1 flex flex-col w-full h-full min-h-0 box-border overflow-hidden" aria-label="Visual article editor">
             {mode === "split" && (
               <div className="flex h-11 items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-2 flex-shrink-0 box-border">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700">Visual Document</h3>
                 <span className="text-[10px] font-semibold text-slate-400">Preview & Edit</span>
               </div>
             )}
-            <div className={`flex-1 flex flex-col bg-white overflow-y-auto min-h-0 min-w-0 box-border ${mode !== "split" ? "min-h-[380px]" : ""}`}>
+            <div
+              ref={visualScrollRef}
+              className={`flex-1 flex flex-col bg-white overflow-y-auto min-h-0 min-w-0 box-border ${mode !== "split" ? "min-h-[380px]" : "h-full"}`}
+            >
               <EditorContent editor={editor} className="flex-1 flex flex-col min-h-0 min-w-0" />
             </div>
           </section>
         )}
 
         {mode !== "visual" && (
-          <section className="min-w-0 flex-1 flex flex-col w-full min-h-0 box-border relative overflow-hidden" aria-label="HTML source editor">
+          <section className="min-w-0 flex-1 flex flex-col w-full h-full min-h-0 box-border relative overflow-hidden" aria-label="HTML source editor">
             <div
               className={`flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 bg-white px-3 sm:px-4 flex-shrink-0 box-border ${
                 mode === "split" ? "h-11 py-1 overflow-hidden" : "min-h-11 py-2"
@@ -1106,8 +1182,9 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
               </div>
             </div>
             <div
+              ref={htmlContainerRef}
               className={`flex-1 flex flex-col bg-white overflow-hidden min-h-0 min-w-0 box-border [&_.cm-editor]:h-full [&_.cm-scroller]:overflow-auto ${
-                mode !== "split" ? "min-h-[380px]" : ""
+                mode !== "split" ? "min-h-[380px] max-h-[78vh]" : "h-full"
               }`}
             >
               <CodeMirror
