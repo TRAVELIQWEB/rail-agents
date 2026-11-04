@@ -398,7 +398,7 @@ export function TicketDateCalculator() {
           2. RAILWAY JOURNEY DETAILS FORM
          ══════════════════════════════════════════════════════════════════════ */}
       <section aria-labelledby="journey-details-heading">
-        <div className="rounded-2xl bg-white p-5 sm:p-6 shadow-[0_4px_24px_rgba(15,39,71,0.04)] border border-slate-200">
+        <div className="rounded-2xl bg-white p-5 sm:p-6 shadow-[0_4px_24px_rgba(15,39,71,0.07)]">
           <div className="flex flex-wrap items-center justify-between gap-2 pb-4 mb-5 border-b border-slate-100">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_6px_rgba(249,115,22,0.6)]" />
@@ -631,7 +631,7 @@ export function TicketDateCalculator() {
           4. BOOKING CALENDAR
          ══════════════════════════════════════════════════════════════════════ */}
           <section aria-labelledby="booking-calendar-heading" className="h-full flex flex-col">
-            <div className="rounded-2xl bg-white p-5 sm:p-6 shadow-[0_4px_24px_rgba(15,39,71,0.04)] border border-slate-200 flex-1 flex flex-col gap-2.5">
+            <div className="rounded-2xl bg-white p-5 sm:p-6 shadow-[0_4px_24px_rgba(15,39,71,0.07)] flex-1 flex flex-col gap-2.5">
               <div className="flex items-center justify-between pb-2 border-b border-stone-100">
                 <div className="flex items-center gap-2">
                   <CalendarIcon className="h-4 w-4 text-orange-600" />
@@ -764,7 +764,7 @@ export function TicketDateCalculator() {
           3. YOUR BOOKING SCHEDULE (MERGED ALL RESULTS IN ONE PLACE)
          ══════════════════════════════════════════════════════════════════════ */}
           <section aria-labelledby="booking-schedule-heading" className="h-full flex flex-col">
-            <div className="rounded-2xl bg-white p-5 sm:p-6 shadow-[0_4px_24px_rgba(15,39,71,0.04)] border border-slate-200 flex-1 flex flex-col gap-3">
+            <div className="rounded-2xl bg-white p-5 sm:p-6 shadow-[0_4px_24px_rgba(15,39,71,0.07)] flex-1 flex flex-col gap-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-stone-100 gap-2">
                 <div className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-orange-500" />

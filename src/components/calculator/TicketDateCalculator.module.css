@@ -9,8 +9,7 @@
 }
 
 .calculator button:focus-visible,
-.calculator a:focus-visible,
-.calculator input:focus-visible {
+.calculator a:focus-visible {
   outline: 3px solid #fb923c;
   outline-offset: 3px;
 }
