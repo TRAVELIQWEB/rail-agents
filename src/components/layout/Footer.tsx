@@ -14,6 +14,7 @@ const quickLinks = [
   { label: "About Us", href: "/about" },
   { label: "Fare Calculator", href: "/train-ticket-agent-fare-calculator" },
   { label: "Ticket Date Calculator", href: "/ticket-date-calculator" },
+  { label: "Chart Preparation Time", href: "/train-chart-preparation-time" },
   { label: "Blog", href: "/blog" },
   { label: "Guides", href: "/guides" },
   { label: "Contact Us", href: "/contact" },

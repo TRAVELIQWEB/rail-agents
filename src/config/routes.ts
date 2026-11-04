@@ -10,6 +10,7 @@ const availableInternalRoutes = new Set([
   "/irctc-cancellation-refund-calculator",
   "/ticket-date-calculator",
   "/irctc-ticket-date-calculator",
+  "/train-chart-preparation-time",
   "/live-train-status",
   "/videos",
   "/guides",

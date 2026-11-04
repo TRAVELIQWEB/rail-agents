@@ -24,6 +24,7 @@ const utilityItems: MobileUtilityItem[] = [
   { label: "Train Ticket Fare Calculator", href: "/train-ticket-agent-fare-calculator", icon: "calculator" },
   { label: "IRCTC Cancellation & Refund Calculator", href: "/irctc-cancellation-refund-calculator", icon: "calculator" },
   { label: "IRCTC Ticket Date Calculator", href: "/ticket-date-calculator", icon: "calendar" },
+  { label: "Train Chart Preparation Time", href: "/train-chart-preparation-time", icon: "radio" },
   // { label: "Live Train Running Status", href: "/live-train-status", icon: "radio" },
 ];
 export function MobileMenu() {

@@ -19,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteConfig.url}/train-ticket-agent-fare-calculator`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${siteConfig.url}/irctc-cancellation-refund-calculator`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${siteConfig.url}/ticket-date-calculator`, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${siteConfig.url}/train-chart-preparation-time`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${siteConfig.url}/live-train-status`, changeFrequency: "daily", priority: 0.9 },
     { url: `${siteConfig.url}/videos`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${siteConfig.url}/guides`, changeFrequency: "weekly", priority: 0.8 },

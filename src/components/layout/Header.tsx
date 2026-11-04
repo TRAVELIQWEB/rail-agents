@@ -47,6 +47,13 @@ const utilityTools: UtilityTool[] = [
     badge: "New Tool",
     icon: "calendar",
   },
+  {
+    title: "Train Chart Preparation Time",
+    href: "/train-chart-preparation-time",
+    description: "Check station-wise 1st & 2nd reservation chart timings for any train",
+    badge: "Live PRS",
+    icon: "radio",
+  },
   /*
   {
     title: "Live Train Running Status",
@@ -68,6 +75,7 @@ export function Header() {
     pathname === "/fare-calculator" ||
     pathname === "/irctc-cancellation-refund-calculator" ||
     pathname === "/ticket-date-calculator" ||
+    pathname === "/train-chart-preparation-time" ||
     pathname === "/live-train-status";
 
   useEffect(() => {
