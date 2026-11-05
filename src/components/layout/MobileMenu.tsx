@@ -2,31 +2,20 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Calculator, CalendarDays, Menu, MessageCircle, Radio, X } from "lucide-react";
+import { Calculator, CalendarDays, Menu, MessageCircle, Radio, TicketCheck, X } from "lucide-react";
 import { SearchForm } from "@/components/layout/SearchForm";
 import { InternalLink } from "@/components/ui/InternalLink";
+import { railTools } from "@/config/tools";
 
 const navItems = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "IRCTC Agent", href: "/irctc-agent-registration" },
+  { label: "Tools", href: "/tools" },
   { label: "Blog", href: "/blog" },
   { label: "Guides", href: "/guides" },
 ];
 
-interface MobileUtilityItem {
-  label: string;
-  href: string;
-  icon: "calculator" | "calendar" | "radio";
-}
-
-const utilityItems: MobileUtilityItem[] = [
-  { label: "Train Ticket Fare Calculator", href: "/train-ticket-agent-fare-calculator", icon: "calculator" },
-  { label: "IRCTC Cancellation & Refund Calculator", href: "/irctc-cancellation-refund-calculator", icon: "calculator" },
-  { label: "IRCTC Ticket Date Calculator", href: "/ticket-date-calculator", icon: "calendar" },
-  { label: "Train Chart Preparation Time", href: "/train-chart-preparation-time", icon: "radio" },
-  // { label: "Live Train Running Status", href: "/live-train-status", icon: "radio" },
-];
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -124,7 +113,7 @@ export function MobileMenu() {
               <span className="px-3 text-[10px] font-extrabold uppercase tracking-wider text-stone-400 block mb-1">
                 Tools &amp; Calculators
               </span>
-              {utilityItems.map((tool) => {
+              {railTools.map((tool) => {
                 const isToolActive =
                   pathname === tool.href ||
                   (tool.href === "/train-ticket-agent-fare-calculator" && pathname === "/fare-calculator");
@@ -142,14 +131,16 @@ export function MobileMenu() {
                         : "text-[var(--navy)]"
                     }`}
                   >
-                    {tool.icon === "calendar" ? (
+                    {tool.icon === "ticket" ? (
+                      <TicketCheck className="h-4 w-4 shrink-0 text-[var(--primary)]" />
+                    ) : tool.icon === "calendar" ? (
                       <CalendarDays className="h-4 w-4 shrink-0 text-[var(--primary)]" />
                     ) : tool.icon === "radio" ? (
                       <Radio className="h-4 w-4 shrink-0 text-[var(--primary)]" />
                     ) : (
                       <Calculator className="h-4 w-4 shrink-0 text-[var(--primary)]" />
                     )}
-                    <span>{tool.label}</span>
+                    <span>{tool.title}</span>
                   </InternalLink>
                 );
               })}

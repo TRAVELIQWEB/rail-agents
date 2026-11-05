@@ -11,6 +11,8 @@ const availableInternalRoutes = new Set([
   "/ticket-date-calculator",
   "/irctc-ticket-date-calculator",
   "/train-chart-preparation-time",
+  "/pnr-status",
+  "/tools",
   "/live-train-status",
   "/videos",
   "/guides",

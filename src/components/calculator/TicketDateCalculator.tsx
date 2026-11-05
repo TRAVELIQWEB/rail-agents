@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useMemo, useSyncExternalStore, type FormEvent } from "react";
+import styles from "./TicketDateCalculator.module.css";
 import { RailwayInformationAccordion } from "./RailwayInformationAccordion";
 import {
   Calendar as CalendarIcon,
@@ -40,12 +41,17 @@ export interface RailwayStation {
   state: string;
 }
 
+const DEFAULT_FROM_STATION = "New Delhi (NDLS)";
+const DEFAULT_TO_STATION = "Mumbai Central (MMCT)";
 
+function getDefaultJourneyDate() {
+  return getTodayIST();
+}
 
 export function TicketDateCalculator() {
-  const [fromInput, setFromInput] = useState<string>("");
-  const [toInput, setToInput] = useState<string>("");
-  const [journeyDate, setJourneyDate] = useState<string>("");
+  const [fromInput, setFromInput] = useState<string>(DEFAULT_FROM_STATION);
+  const [toInput, setToInput] = useState<string>(DEFAULT_TO_STATION);
+  const [journeyDate, setJourneyDate] = useState<string>(getDefaultJourneyDate);
 
   // Station search states (connected to MongoDB)
   const [fromSuggestions, setFromSuggestions] = useState<RailwayStation[]>([]);
@@ -62,8 +68,8 @@ export function TicketDateCalculator() {
 
   // Calendar month view state
   const [calendarViewDate, setCalendarViewDate] = useState<{ year: number; month: number }>(() => {
-    const today = parseCalendarDate(getTodayIST()) || { year: 2026, month: 11, day: 2 };
-    return { year: today.year, month: today.month };
+    const defaultJourneyDate = parseCalendarDate(getDefaultJourneyDate()) || { year: 2026, month: 11, day: 2 };
+    return { year: defaultJourneyDate.year, month: defaultJourneyDate.month };
   });
 
   // UI feedback states
@@ -181,10 +187,25 @@ export function TicketDateCalculator() {
     setToInput(temp);
   };
 
+  const handleJourneyDateChange = (dateIso: string) => {
+    const parsedDate = parseCalendarDate(dateIso);
+
+    setJourneyDate(dateIso);
+    if (parsedDate) {
+      setCalendarViewDate({ year: parsedDate.year, month: parsedDate.month });
+    }
+  };
+
   const handleReset = () => {
-    setFromInput("");
-    setToInput("");
-    setJourneyDate("");
+    const defaultJourneyDate = getDefaultJourneyDate();
+    const parsedDefaultDate = parseCalendarDate(defaultJourneyDate);
+
+    setFromInput(DEFAULT_FROM_STATION);
+    setToInput(DEFAULT_TO_STATION);
+    setJourneyDate(defaultJourneyDate);
+    if (parsedDefaultDate) {
+      setCalendarViewDate({ year: parsedDefaultDate.year, month: parsedDefaultDate.month });
+    }
   };
 
   // ── Calculated Booking Data ──
@@ -371,31 +392,31 @@ export function TicketDateCalculator() {
   };
 
   return (
-    <div className="w-full max-w-5xl mx-auto space-y-6">
+    <div className={`${styles.calculator} w-full max-w-6xl mx-auto space-y-6`}>
 
       {/* ══════════════════════════════════════════════════════════════════════
           2. RAILWAY JOURNEY DETAILS FORM
          ══════════════════════════════════════════════════════════════════════ */}
       <section aria-labelledby="journey-details-heading">
-        <div className="rounded-xl bg-white p-4 sm:p-5 shadow-[0_2px_16px_rgba(0,0,0,0.04)] border border-[#ede5db]">
-          <div className="flex items-center justify-between pb-2 mb-3 border-b border-stone-100">
+        <div className="rounded-2xl bg-white p-5 sm:p-6 shadow-[0_4px_24px_rgba(15,39,71,0.07)]">
+          <div className="flex flex-wrap items-center justify-between gap-2 pb-4 mb-5 border-b border-slate-100">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_6px_rgba(249,115,22,0.6)]" />
               <h2
                 id="journey-details-heading"
-                className="text-xs font-bold uppercase tracking-wider text-stone-900"
+                className="text-sm font-bold tracking-wide text-[#0b2240]"
               >
                 Railway Journey Details
               </h2>
             </div>
-            <span className="text-[11px] font-semibold text-stone-500">
-              Standard 60-Day ARP Enforced
+            <span className="text-xs font-semibold text-stone-500">
+              60-day advance reservation
             </span>
           </div>
 
           <form
             onSubmit={(e: FormEvent) => e.preventDefault()}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-2.5 items-end"
+            className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end"
           >
             {/* FROM FIELD */}
             <div className="sm:col-span-1 md:col-span-4 relative" ref={fromRef}>
@@ -417,7 +438,7 @@ export function TicketDateCalculator() {
                     setFromOpen(true);
                   }}
                   placeholder="Enter origin station"
-                  className="w-full h-10 rounded-lg border border-stone-200 bg-[#faf8f5] px-3 pr-8 text-xs sm:text-sm font-semibold text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none"
+                  className="w-full min-w-0 h-12 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 pr-8 text-base font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none"
                 />
                 <button
                   type="button"
@@ -490,7 +511,7 @@ export function TicketDateCalculator() {
                 type="button"
                 onClick={handleSwapStations}
                 title="Swap Stations"
-                className="h-8 w-8 rounded-lg border border-stone-200 text-stone-500 hover:text-orange-600 hover:border-orange-300 flex items-center justify-center transition-colors cursor-pointer bg-white shadow-2xs rotate-90 md:rotate-0"
+                className="h-11 w-11 rounded-full border border-stone-200 text-stone-500 hover:text-orange-600 hover:border-orange-300 flex items-center justify-center transition-colors cursor-pointer bg-white shadow-2xs rotate-90 md:rotate-0"
               >
                 <ArrowRightLeft className="h-3.5 w-3.5" />
               </button>
@@ -516,7 +537,7 @@ export function TicketDateCalculator() {
                     setToOpen(true);
                   }}
                   placeholder="Enter destination station"
-                  className="w-full h-10 rounded-lg border border-stone-200 bg-[#faf8f5] px-3 pr-8 text-xs sm:text-sm font-semibold text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none"
+                  className="w-full min-w-0 h-12 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 pr-8 text-base font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none"
                 />
                 <button
                   type="button"
@@ -592,8 +613,8 @@ export function TicketDateCalculator() {
                 id="journey-date"
                 type="date"
                 value={journeyDate}
-                onChange={(e) => setJourneyDate(e.target.value)}
-                className="w-full h-10 rounded-lg border border-stone-200 bg-[#faf8f5] px-3 text-xs sm:text-sm font-semibold text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none cursor-pointer"
+                onChange={(e) => handleJourneyDateChange(e.target.value)}
+                className="w-full min-w-0 h-12 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 text-base font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none cursor-pointer"
               />
             </div>
           </form>
@@ -603,20 +624,20 @@ export function TicketDateCalculator() {
       {/* ══════════════════════════════════════════════════════════════════════
           3 & 4. TWO-COLUMN INTERACTIVE ROW: CALENDAR (LEFT) + SCHEDULE (RIGHT)
          ══════════════════════════════════════════════════════════════════════ */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* LEFT COLUMN: BOOKING CALENDAR */}
         <div className="lg:col-span-5 flex flex-col">
           {/* ══════════════════════════════════════════════════════════════════════
           4. BOOKING CALENDAR
          ══════════════════════════════════════════════════════════════════════ */}
           <section aria-labelledby="booking-calendar-heading" className="h-full flex flex-col">
-            <div className="rounded-xl bg-white p-4 sm:p-5 shadow-[0_2px_16px_rgba(0,0,0,0.04)] border border-[#ede5db] flex-1 flex flex-col justify-between gap-2.5">
+            <div className="rounded-2xl bg-white p-5 sm:p-6 shadow-[0_4px_24px_rgba(15,39,71,0.07)] flex-1 flex flex-col gap-2.5">
               <div className="flex items-center justify-between pb-2 border-b border-stone-100">
                 <div className="flex items-center gap-2">
                   <CalendarIcon className="h-4 w-4 text-orange-600" />
                   <h3
                     id="booking-calendar-heading"
-                    className="text-xs font-bold uppercase tracking-wider text-stone-900"
+                    className="text-sm font-bold tracking-wide text-[#0b2240]"
                   >
                     Booking Calendar
                   </h3>
@@ -625,7 +646,7 @@ export function TicketDateCalculator() {
                   <button
                     type="button"
                     onClick={handlePrevMonth}
-                    className="p-1 rounded hover:bg-stone-100 text-stone-600 cursor-pointer"
+                    className="p-2 rounded-lg hover:bg-stone-100 text-stone-600 cursor-pointer"
                     title="Previous Month"
                   >
                     <ChevronLeft className="h-4 w-4" />
@@ -636,7 +657,7 @@ export function TicketDateCalculator() {
                   <button
                     type="button"
                     onClick={handleNextMonth}
-                    className="p-1 rounded hover:bg-stone-100 text-stone-600 cursor-pointer"
+                    className="p-2 rounded-lg hover:bg-stone-100 text-stone-600 cursor-pointer"
                     title="Next Month"
                   >
                     <ChevronRight className="h-4 w-4" />
@@ -645,7 +666,7 @@ export function TicketDateCalculator() {
               </div>
 
               {/* Day Names Header */}
-              <div className="grid grid-cols-7 gap-1.5 text-center text-[11px] font-bold text-stone-400 py-1 border-b border-stone-100">
+              <div className="grid grid-cols-7 gap-1.5 text-center text-xs font-bold text-stone-400 py-1 border-b border-stone-100">
                 <span>Su</span>
                 <span>Mo</span>
                 <span>Tu</span>
@@ -656,10 +677,10 @@ export function TicketDateCalculator() {
               </div>
 
               {/* Calendar Grid Matrix */}
-              <div className="grid grid-cols-7 auto-rows-fr gap-1.5 text-center flex-1 min-h-[220px]">
+              <div className="grid grid-cols-7 auto-rows-fr gap-1.5 sm:gap-2 text-center">
                 {calendarDays.map((item, idx) => {
                   if (!item.isCurrentMonth) {
-                    return <div key={`empty-${idx}`} className="min-h-[38px]" />;
+                    return <div key={`empty-${idx}`} className="min-h-[44px] sm:min-h-[48px]" />;
                   }
 
                   let colorClasses = "hover:bg-stone-100 text-stone-800";
@@ -674,18 +695,20 @@ export function TicketDateCalculator() {
                   }
 
                   if (item.isSelected) {
-                    colorClasses = "bg-orange-500 text-white font-black shadow-sm ring-2 ring-orange-300";
+                    colorClasses = "bg-orange-500 text-white font-bold shadow-sm ring-2 ring-orange-300";
                   }
 
                   return (
-                    <div key={item.dateIso} className="relative group/day h-full">
+                    <div key={item.dateIso} className="relative group/day aspect-square">
                       <button
                         type="button"
                         disabled={item.status === "PAST"}
                         onClick={() => {
-                          setJourneyDate(item.dateIso);
+                          handleJourneyDateChange(item.dateIso);
                         }}
-                        className={`w-full h-full min-h-[38px] rounded-lg text-xs flex flex-col items-center justify-center transition-all cursor-pointer ${colorClasses}`}
+                        aria-label={`${item.dayNumber} ${MONTH_NAMES[calendarViewDate.month - 1]} ${calendarViewDate.year}`}
+                        aria-pressed={item.isSelected}
+                        className={`w-full h-full min-h-[44px] sm:min-h-[48px] rounded-lg text-xs flex flex-col items-center justify-center transition-all cursor-pointer ${colorClasses}`}
                       >
                         <span>{item.dayNumber}</span>
                       </button>
@@ -694,10 +717,10 @@ export function TicketDateCalculator() {
                       {item.status !== "PAST" && (
                         <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/day:flex flex-col items-center z-50 w-44">
                           <div className="rounded-xl bg-[#0b2240] px-3 py-2 text-white shadow-xl border border-[#1e3a5f] text-center w-full">
-                            <span className="text-[10.5px] text-stone-300 block font-medium leading-none">
+                            <span className="text-xs text-stone-300 block font-medium leading-none">
                               Booking opens on:
                             </span>
-                            <strong className="text-[11.5px] font-black block text-white mt-1 leading-snug">
+                            <strong className="text-[11.5px] font-bold block text-white mt-1 leading-snug">
                               {item.openingFormatted.includes("(")
                                 ? `${item.openingFormatted.split("(")[1].replace(")", "")}, ${item.openingFormatted.split(" (")[0]}`
                                 : item.openingFormatted}
@@ -713,7 +736,7 @@ export function TicketDateCalculator() {
               </div>
 
               {/* Calendar Legend (Single Appearance) */}
-              <div className="pt-2 border-t border-stone-100 flex flex-wrap items-center justify-between gap-2 text-[10.5px] text-stone-600">
+              <div className="mt-auto pt-3 border-t border-stone-100 flex flex-wrap items-center justify-between gap-2 text-xs text-stone-600">
                 <span className="flex items-center gap-1">
                   <span className="h-2 w-2 rounded-full bg-emerald-500" />
                   <span>General Open</span>
@@ -741,19 +764,19 @@ export function TicketDateCalculator() {
           3. YOUR BOOKING SCHEDULE (MERGED ALL RESULTS IN ONE PLACE)
          ══════════════════════════════════════════════════════════════════════ */}
           <section aria-labelledby="booking-schedule-heading" className="h-full flex flex-col">
-            <div className="rounded-xl bg-white p-4 sm:p-5 shadow-[0_2px_16px_rgba(0,0,0,0.04)] border border-[#ede5db] flex-1 flex flex-col gap-3">
+            <div className="rounded-2xl bg-white p-5 sm:p-6 shadow-[0_4px_24px_rgba(15,39,71,0.07)] flex-1 flex flex-col gap-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-stone-100 gap-2">
                 <div className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-orange-500" />
                   <h2
                     id="booking-schedule-heading"
-                    className="text-xs font-bold uppercase tracking-wider text-stone-900"
+                    className="text-sm font-bold tracking-wide text-[#0b2240]"
                   >
                     Your Booking Schedule
                   </h2>
                 </div>
                 {hasJourneyDate && bookingStatus && (
-                  <span className={`px-2.5 py-0.5 rounded text-[11px] font-black uppercase tracking-wider text-white ${bookingStatus.badgeColor}`}>
+                  <span className={`px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider text-white ${bookingStatus.badgeColor}`}>
                     {bookingStatus.title}
                   </span>
                 )}
@@ -762,12 +785,12 @@ export function TicketDateCalculator() {
               {hasJourneyDate && bookingStatus ? (
                 <div className="flex-1 flex flex-col justify-between gap-2.5">
                   {/* NORMAL BOOKING RESULT CARD */}
-                  <div className="rounded-xl bg-[#0b2240] p-3.5 text-white shadow-sm border border-[#1e3a5f]">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-2.5">
+                  <div className="rounded-xl bg-gradient-to-br from-[#0b2240] to-[#163c60] p-5 text-white shadow-sm border border-[#1e3a5f]">
+                    <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
                       <div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                           <CheckCircle2 className="h-4 w-4 text-cyan-400 shrink-0" />
-                          <span className="text-xs font-bold uppercase tracking-wide text-cyan-300">
+                          <span className="text-xs font-semibold tracking-wide text-sky-200">
                             Normal Advance Reservation (60-Day ARP)
                           </span>
                           <span className="text-[10px] font-semibold bg-white/10 px-2 py-0.5 rounded text-stone-300">
@@ -775,11 +798,11 @@ export function TicketDateCalculator() {
                           </span>
                         </div>
 
-                        <div className="mt-1 text-base sm:text-lg font-black text-white">
+                        <div className="mt-3 text-xl sm:text-2xl font-bold tracking-tight text-white">
                           {formatReadableDate(normalBookingDateIso)}
                         </div>
 
-                        <p className="mt-0.5 text-[11px] text-stone-300">
+                        <p className="mt-0.5 text-xs text-stone-300">
                           Calculated as Journey Date minus 60 calendar days (journey date excluded).
                         </p>
                       </div>
@@ -787,7 +810,7 @@ export function TicketDateCalculator() {
                       {/* Single General Countdown (Only shown when opening is in future) */}
                       <div className="shrink-0 text-left md:text-right">
                         {generalCountdown.isZero ? (
-                          <span className="inline-block px-3 py-1 rounded bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-black tracking-wide">
+                          <span className="inline-block px-3 py-1 rounded bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold tracking-wide">
                             ALREADY OPEN
                           </span>
                         ) : (
@@ -795,7 +818,7 @@ export function TicketDateCalculator() {
                             <span className="block text-[10px] uppercase font-bold text-cyan-300 tracking-wider">
                               Opening Countdown:
                             </span>
-                            <span className="text-base font-mono font-black text-cyan-200 block mt-0.5">
+                            <span className="text-base font-mono font-bold text-cyan-200 block mt-0.5">
                               {mounted ? generalCountdown.formatted : "-- : -- : --"}
                             </span>
                           </div>
@@ -807,26 +830,26 @@ export function TicketDateCalculator() {
                   {/* TATKAL RESULTS: SIDE-BY-SIDE (AC & NON-AC) */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                     {/* AC TATKAL */}
-                    <div className="rounded-xl bg-[#faf8f5] p-3 border border-stone-200 flex flex-col justify-between">
+                    <div className="rounded-xl bg-slate-50/80 p-4 border border-stone-200 flex flex-col justify-between">
                       <div className="space-y-1">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-extrabold uppercase tracking-wide text-amber-900 flex items-center gap-1.5">
                             <Zap className="h-3.5 w-3.5 text-amber-600" />
                             AC Tatkal
                           </span>
-                          <span className="text-[11px] font-bold text-stone-500">10:00 AM IST</span>
+                          <span className="text-xs font-bold text-stone-500">10:00 AM IST</span>
                         </div>
 
-                        <div className="text-sm font-black text-stone-900">
+                        <div className="text-sm font-bold text-stone-900">
                           {formatReadableDate(tatkalBookingDateIso)}
                         </div>
 
-                        <div className="text-[11px] text-stone-600">
+                        <div className="text-xs text-stone-600">
                           Applicable classes: <strong>1A, 2A, 3A, 3E, CC, EC</strong>
                         </div>
                       </div>
 
-                      <div className="pt-1.5 mt-1.5 border-t border-stone-200/80 flex items-center justify-between text-[11px]">
+                      <div className="pt-1.5 mt-1.5 border-t border-stone-200/80 flex items-center justify-between text-xs">
                         <span className="text-stone-500 font-medium">Status:</span>
                         {acTatkalCountdown.isZero ? (
                           <span className="font-bold text-stone-600">Opening Time Passed</span>
@@ -839,26 +862,26 @@ export function TicketDateCalculator() {
                     </div>
 
                     {/* NON-AC TATKAL */}
-                    <div className="rounded-xl bg-[#faf8f5] p-3 border border-stone-200 flex flex-col justify-between">
+                    <div className="rounded-xl bg-slate-50/80 p-4 border border-stone-200 flex flex-col justify-between">
                       <div className="space-y-1">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-extrabold uppercase tracking-wide text-orange-900 flex items-center gap-1.5">
                             <Zap className="h-3.5 w-3.5 text-orange-600" />
                             Non-AC Tatkal
                           </span>
-                          <span className="text-[11px] font-bold text-stone-500">11:00 AM IST</span>
+                          <span className="text-xs font-bold text-stone-500">11:00 AM IST</span>
                         </div>
 
-                        <div className="text-sm font-black text-stone-900">
+                        <div className="text-sm font-bold text-stone-900">
                           {formatReadableDate(tatkalBookingDateIso)}
                         </div>
 
-                        <div className="text-[11px] text-stone-600">
+                        <div className="text-xs text-stone-600">
                           Applicable classes: <strong>SL, 2S</strong>
                         </div>
                       </div>
 
-                      <div className="pt-1.5 mt-1.5 border-t border-stone-200/80 flex items-center justify-between text-[11px]">
+                      <div className="pt-1.5 mt-1.5 border-t border-stone-200/80 flex items-center justify-between text-xs">
                         <span className="text-stone-500 font-medium">Status:</span>
                         {nonAcTatkalCountdown.isZero ? (
                           <span className="font-bold text-stone-600">Opening Time Passed</span>
@@ -878,7 +901,7 @@ export function TicketDateCalculator() {
                         <span className="p-0.5 rounded bg-amber-200/80 text-amber-900 font-bold text-[10px]">
                           Current Booking
                         </span>
-                        <p className="text-[11px] text-stone-700 leading-relaxed">
+                        <p className="text-xs text-stone-700 leading-relaxed">
                           After chart preparation (typically 4 hours before departure), IRCTC opens Current Booking for vacant confirmed accommodation at normal ticket fare without Tatkal charges, subject to train availability.
                         </p>
                       </div>
@@ -886,7 +909,7 @@ export function TicketDateCalculator() {
                   )}
 
                   {/* COMPACT AUTHORISED AGENT RESTRICTIONS STRIP */}
-                  <div className="rounded-lg bg-[#faf8f5] border border-stone-200 px-3 py-2 text-stone-700 text-[11px] flex flex-wrap items-center justify-between gap-2">
+                  <div className="rounded-lg bg-[#faf8f5] border border-stone-200 px-3 py-2 text-stone-700 text-xs flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-1.5 font-bold text-stone-900">
                       <ShieldAlert className="h-3.5 w-3.5 text-amber-600 shrink-0" />
                       <span>Authorised Agent Restrictions:</span>
@@ -911,7 +934,7 @@ export function TicketDateCalculator() {
                           setCopied(true);
                           setTimeout(() => setCopied(false), 2000);
                         }}
-                        className="h-8 px-2.5 rounded-lg border border-stone-200 bg-white text-xs font-bold text-stone-700 hover:bg-stone-50 flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                        className="h-11 px-2.5 rounded-lg border border-stone-200 bg-white text-xs font-bold text-stone-700 hover:bg-stone-50 flex items-center gap-1.5 cursor-pointer shadow-2xs"
                       >
                         {copied ? <Check className="h-3 w-3 text-emerald-600" /> : <Copy className="h-3 w-3 text-stone-500" />}
                         <span>{copied ? "Copied" : "Copy"}</span>
@@ -920,7 +943,7 @@ export function TicketDateCalculator() {
                       <button
                         type="button"
                         onClick={handleWhatsAppShare}
-                        className="h-8 px-2.5 rounded-lg border border-emerald-300 bg-emerald-50 text-xs font-bold text-emerald-800 hover:bg-emerald-100 flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                        className="h-11 px-2.5 rounded-lg border border-emerald-300 bg-emerald-50 text-xs font-bold text-emerald-800 hover:bg-emerald-100 flex items-center gap-1.5 cursor-pointer shadow-2xs"
                       >
                         <Share2 className="h-3 w-3 text-emerald-600" />
                         <span>WhatsApp</span>
@@ -929,7 +952,7 @@ export function TicketDateCalculator() {
                       <button
                         type="button"
                         onClick={handleDownloadIcs}
-                        className="h-8 px-2.5 rounded-lg border border-stone-200 bg-white text-xs font-bold text-stone-700 hover:bg-stone-50 flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                        className="h-11 px-2.5 rounded-lg border border-stone-200 bg-white text-xs font-bold text-stone-700 hover:bg-stone-50 flex items-center gap-1.5 cursor-pointer shadow-2xs"
                         title="Download .ics Calendar Event"
                       >
                         <Download className="h-3 w-3 text-stone-500" />
@@ -941,7 +964,7 @@ export function TicketDateCalculator() {
                       <button
                         type="button"
                         onClick={handleReset}
-                        className="h-8 px-2.5 rounded-lg border border-stone-200 bg-white text-xs font-bold text-stone-700 hover:bg-stone-50 flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                        className="h-11 px-2.5 rounded-lg border border-stone-200 bg-white text-xs font-bold text-stone-700 hover:bg-stone-50 flex items-center gap-1.5 cursor-pointer shadow-2xs"
                       >
                         <RotateCcw className="h-3 w-3 text-stone-500" />
                         <span>Reset</span>
@@ -951,7 +974,7 @@ export function TicketDateCalculator() {
                         href="https://www.irctc.co.in"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="h-8 px-3 rounded-lg bg-orange-500 hover:bg-orange-600 text-xs font-bold text-white transition-colors flex items-center gap-1.5 shadow-2xs"
+                        className="h-11 px-3 rounded-lg bg-orange-500 hover:bg-orange-600 text-xs font-bold text-white transition-colors flex items-center gap-1.5 shadow-2xs"
                       >
                         <span>Book on IRCTC</span>
                         <ExternalLink className="h-3 w-3" />
