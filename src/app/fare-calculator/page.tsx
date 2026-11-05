@@ -218,7 +218,7 @@ export default function FareCalculatorPage() {
               <div className="mt-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs font-bold">
                 <Link
                   href="/irctc-agent-registration"
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-2 text-white shadow-[0_3px_10px_rgba(249,115,22,0.3)] hover:from-orange-600 hover:to-amber-600 hover:-translate-y-0.5 transition-all duration-150"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#c2410c] to-[#9a3412] px-4 py-2 text-white shadow-[0_3px_10px_rgba(249,115,22,0.3)] hover:from-[#9a3412] hover:to-[#7c2d12] hover:-translate-y-0.5 transition-all duration-150"
                 >
                   <span>Step-by-Step Registration Guide</span>
                   <ArrowRight className="h-3.5 w-3.5" />

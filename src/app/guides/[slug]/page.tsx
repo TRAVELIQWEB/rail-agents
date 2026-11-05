@@ -9,19 +9,14 @@ import {
   BookOpen,
   Clock,
   Calendar,
-  Share2,
   ChevronRight,
   Sparkles,
   ArrowRight,
   ShieldCheck,
   CheckCircle2,
   HelpCircle,
-  MessageCircle,
-  Video,
-  ExternalLink,
-  Info,
 } from "lucide-react";
-import { FaWhatsapp, FaYoutube } from "react-icons/fa6";
+import { FaWhatsapp } from "react-icons/fa6";
 
 type GuidePageProps = {
   params: Promise<{ slug: string }>;
@@ -34,7 +29,9 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: GuidePageProps): Promise<Metadata> {
   const { slug } = await params;
   const guide = getGuideBySlug(slug);
-  if (!guide) return {};
+  if (!guide) {
+    notFound();
+  }
   const canonicalUrl = `${siteConfig.url}/guides/${guide.slug}`;
   return {
     title: guide.title,
@@ -83,7 +80,7 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
   // Other related guides in the same category or overall
   const relatedGuides = guides
     .filter((g) => g.slug !== guide.slug)
-    .sort((a, b) => (a.category === guide.category ? -1 : 1))
+    .sort((a, b) => Number(b.category === guide.category) - Number(a.category === guide.category))
     .slice(0, 3);
 
   const jsonLd = {
@@ -217,7 +214,7 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
 
               {/* Author byline */}
               <div className="mt-5 flex items-center gap-3 pt-4 border-t border-[#f0e3d5]">
-                <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-orange-500 to-amber-500 flex items-center justify-center text-white font-bold text-xs shadow-xs">
+                <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-[#c2410c] to-[#9a3412] flex items-center justify-center text-white font-bold text-xs shadow-xs">
                   NS
                 </div>
                 <div className="text-xs">

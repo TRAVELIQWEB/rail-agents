@@ -2,7 +2,6 @@
 
 import { useState, type FormEvent } from "react";
 import { FileText, Lock, MessageCircle } from "lucide-react";
-import { FaWhatsapp } from "react-icons/fa";
 import { siteConfig } from "@/config/site";
 
 function getInitialPrefilledQuery(): string {
@@ -20,8 +19,7 @@ export function QueryForm() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const cleanQuery = query.trim();
-    if (!cleanQuery) {
+    if (!query.trim()) {
       setQueryError("Please enter your question before continuing.");
       setHandoffOpened(false);
       document.getElementById("query-input")?.focus();
@@ -33,10 +31,14 @@ export function QueryForm() {
     setHandoffOpened(false);
     setIsSubmitting(true);
 
-    const message = encodeURIComponent(
-      `Hello, I have a question for your team.\n\nMy Query: ${cleanQuery}`,
-    );
-    const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${message}`;
+    const message = [
+      "Hi Nihal Singh! 👋",
+      "I'm contacting you through RailAgents.in.",
+      "",
+      `My question: ${query}`,
+    ].join("\n");
+    const params = new URLSearchParams({ text: message });
+    const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?${params.toString()}`;
     const chatWindow = window.open(whatsappUrl, "_blank");
     if (chatWindow) {
       chatWindow.opener = null;
@@ -55,7 +57,7 @@ export function QueryForm() {
       />
 
       <div className="mb-4 flex flex-col items-center gap-3 text-center md:flex-row md:items-start md:text-left">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#f97316] to-[#ff8c38] text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)]">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#c2410c] to-[#9a3412] text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)]">
           <MessageCircle aria-hidden="true" className="h-5 w-5 fill-white/20 text-white" />
         </div>
         <div>

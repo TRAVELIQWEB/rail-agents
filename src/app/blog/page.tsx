@@ -104,12 +104,12 @@ export default async function BlogPage() {
         {/* ══ 1. UNIQUE EDITORIAL HERO SECTION ══ */}
         <section
           aria-label="Journal introduction"
-          className="relative border-b border-[#f0e4d7] bg-gradient-to-b from-[#fffcf8] via-[#faf6f0] to-[#f6efe6] pt-5 pb-5 sm:pt-6 sm:pb-6 lg:pt-7 lg:pb-7"
+          className="relative border-b border-[#f0e4d7] bg-gradient-to-b from-[#fffcf8] via-[#faf6f0] to-[#f6efe6] pt-3.5 pb-3.5 sm:pt-4 sm:pb-4 lg:pt-4 lg:pb-4"
         >
           <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-3xl text-center">
+            <div className="mx-auto max-w-4xl text-center">
               {/* Eyebrow */}
-              <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-[#edd7c4] bg-white/80 px-3.5 py-1 text-xs font-[800] uppercase tracking-[0.14em] text-[var(--primary-dark)] shadow-2xs backdrop-blur-md">
+              <div className="mb-1.5 inline-flex items-center gap-2 rounded-full border border-[#edd7c4] bg-white/80 px-3 py-0.5 text-xs font-[800] uppercase tracking-[0.14em] text-[var(--primary-dark)] shadow-2xs backdrop-blur-md">
                 <span className="h-1.5 w-1.5 rounded-full bg-[var(--primary)]" />
                 RAILAGENTS JOURNAL
               </div>
@@ -121,24 +121,24 @@ export default async function BlogPage() {
               </h1>
 
               {/* Description */}
-              <p className="page-hero-description mx-auto mt-2 max-w-2xl">
+              <p className="page-hero-description mx-auto mt-1.5 max-w-2xl">
                 Explore the changes, questions, and everyday challenges shaping railway ticketing.
                 Read practical perspectives on agent responsibilities, passenger concerns, booking developments,
                 and the details worth understanding before taking action.
               </p>
 
               {/* Action Buttons */}
-              <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
+              <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
                 <a
                   href="#articles-section"
-                  className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-[var(--primary)] px-5 py-2 text-xs sm:text-sm font-[800] text-white shadow-[0_4px_14px_rgba(249,115,22,0.22)] transition-all hover:bg-[var(--primary-hover)] hover:shadow-[0_6px_20px_rgba(249,115,22,0.3)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                  className="inline-flex min-h-9 items-center justify-center gap-1.5 rounded-full bg-[var(--primary)] px-4 py-1.5 text-xs font-[800] text-white shadow-[0_4px_14px_rgba(249,115,22,0.2)] transition-all hover:bg-[var(--primary-hover)] hover:shadow-[0_6px_20px_rgba(249,115,22,0.28)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
                   <span>Explore Latest Articles</span>
                   <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />
                 </a>
                 <a
                   href="#topics-section"
-                  className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-[#ded0c3] bg-white px-5 py-2 text-xs sm:text-sm font-[750] text-[var(--navy)] shadow-2xs transition-all hover:border-orange-300 hover:bg-orange-50/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                  className="inline-flex min-h-9 items-center justify-center gap-1.5 rounded-full border border-[#ded0c3] bg-white px-4 py-1.5 text-xs font-[750] text-[var(--navy)] shadow-2xs transition-all hover:border-orange-300 hover:bg-orange-50/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
                   <span>Browse Topics</span>
                 </a>
@@ -148,7 +148,7 @@ export default async function BlogPage() {
         </section>
 
         {/* ══ 2. EDITORIAL ARTICLES & TOPIC LISTING ══ */}
-        <section aria-label="Journal articles and topics" className="py-6 sm:py-8 lg:py-10">
+        <section aria-label="Journal articles and topics" className="pt-3 pb-8 sm:pt-4 sm:pb-10 lg:pt-5 lg:pb-12">
           <div className="mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8">
             <Suspense fallback={<div className="min-h-[320px] animate-pulse rounded-3xl bg-white/60" />}>
               <BlogList posts={posts} />

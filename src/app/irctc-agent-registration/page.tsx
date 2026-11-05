@@ -265,7 +265,7 @@ export default function IrctcAgentPage() {
                   <div className="mt-4 space-y-2.5">
                     {[
                       { label: "Booking Credentials", value: "Only official RSP Agent ID (No personal IDs)" },
-                      { label: "Tatkal Window", value: "Opens 15 mins after public (10:15 AM / 11:15 AM)" },
+                      { label: "Tatkal Window", value: "Opens 30 mins after public (10:30 AM / 11:30 AM)" },
                       { label: "Max Service Fee", value: "₹20 Non-AC / ₹40 AC per PNR (+ PG charges)" },
                       { label: "Refund Verification", value: "Customer mobile OTP mandatory for credit" },
                     ].map((row) => (
@@ -354,7 +354,7 @@ export default function IrctcAgentPage() {
             {/* ── 01. DO'S & DON'TS ── */}
             <section id="dos-and-donts" className="group rounded-3xl border border-orange-200/90 bg-white p-6 sm:p-8 shadow-[0_4px_24px_rgba(249,115,22,0.06)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(249,115,22,0.12)] hover:border-orange-300 scroll-mt-24">
               <div className="flex items-center gap-3 mb-3">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-500 to-amber-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#c2410c] to-[#9a3412] font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                   01
                 </span>
                 <div>
@@ -460,7 +460,7 @@ export default function IrctcAgentPage() {
                       <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
                       <div className="text-xs">
                         <strong className="font-[800] text-red-950">Tatkal Window Bypassing:</strong>
-                        <span className="block text-slate-600">Do not attempt commercial booking during initial 15-min counter opening.</span>
+                        <span className="block text-slate-600">Do not attempt commercial booking during initial 30-min counter opening.</span>
                       </div>
                     </li>
                     <li className="flex items-start gap-2.5">
@@ -611,19 +611,19 @@ export default function IrctcAgentPage() {
             {/* ── 04. TATKAL REGULATIONS ── */}
             <section id="tatkal-regulations" className="group rounded-3xl border border-amber-200/90 bg-gradient-to-br from-white to-amber-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(245,158,11,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(245,158,11,0.1)] hover:border-amber-300 scroll-mt-24">
               <div className="flex items-center gap-3 mb-3">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-500 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#9a3412] to-[#c2410c] font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                   04
                 </span>
                 <div>
                   <span className="text-[11px] font-[800] uppercase tracking-wider text-amber-700">Strict Timings</span>
                   <h2 className="text-xl sm:text-2xl font-[850] text-[var(--navy)]">
-                    Tatkal Hours &amp; 15-Minute Agent Lock
+                    Tatkal Hours &amp; 30-Minute Agent Lock
                   </h2>
                 </div>
               </div>
 
               <p className="text-slate-600 text-sm mb-5 leading-relaxed">
-                To protect public travellers, Indian Railways enforces a mandatory initial 15-minute lock on commercial
+                To protect public travellers, Indian Railways enforces a mandatory initial 30-minute lock on commercial
                 agents during quota openings:
               </p>
 
@@ -645,19 +645,19 @@ export default function IrctcAgentPage() {
                     <tr>
                       <td className="p-3 font-semibold text-slate-800">Tatkal AC Classes (1A, 2A, 3A, CC, 3E)</td>
                       <td className="p-3">10:00 AM</td>
-                      <td className="p-3 font-medium text-emerald-700">10:15 AM onwards</td>
+                      <td className="p-3 font-medium text-emerald-700">10:30 AM onwards</td>
                     </tr>
                     <tr>
                       <td className="p-3 font-semibold text-slate-800">Tatkal Non-AC Classes (SL, 2S)</td>
                       <td className="p-3">11:00 AM</td>
-                      <td className="p-3 font-medium text-emerald-700">11:15 AM onwards</td>
+                      <td className="p-3 font-medium text-emerald-700">11:30 AM onwards</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
               <p className="text-xs text-slate-600 leading-relaxed">
-                <strong className="text-red-900">Warning:</strong> Attempting to circumvent the 15-minute opening restriction using personal retail IDs
+                <strong className="text-red-900">Warning:</strong> Attempting to circumvent the 30-minute opening restriction using personal retail IDs
                 is the single most common cause of Section 143 raids and agency blacklisting.
               </p>
             </section>
@@ -877,7 +877,7 @@ export default function IrctcAgentPage() {
             {/* ── 11. DAILY COMPLIANCE CHECKLIST ── */}
             <section id="daily-checklist" className="group rounded-3xl border border-orange-300/90 bg-gradient-to-br from-white to-orange-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(249,115,22,0.06)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(249,115,22,0.12)] hover:border-orange-400 scroll-mt-24">
               <div className="flex items-center gap-3 mb-3">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-orange-600 to-amber-600 font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#c2410c] to-[#9a3412] font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                   11
                 </span>
                 <div>

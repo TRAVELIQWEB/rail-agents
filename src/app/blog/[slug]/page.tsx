@@ -31,7 +31,9 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-  if (!post || !isPostPubliclyVisible(post)) return {};
+  if (!post || !isPostPubliclyVisible(post)) {
+    notFound();
+  }
 
   const canonicalUrl = post.canonicalUrl ?? `${siteConfig.url}/blog/${slug}`;
   const socialVideo = parseSocialVideoUrl(post.featuredVideoUrl);

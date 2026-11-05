@@ -319,7 +319,7 @@ export function FareCalculator() {
                   aria-pressed={form.category === "AC"}
                   onClick={() => handleCategoryChange("AC")}
                   className={`py-1.5 sm:py-2.5 px-2.5 sm:px-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ease-out cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500 ${form.category === "AC"
-                      ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-[0_4px_12px_rgba(249,115,22,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)] -translate-y-0.5"
+                      ? "bg-gradient-to-r from-[#c2410c] to-[#9a3412] text-white shadow-[0_4px_12px_rgba(249,115,22,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)] -translate-y-0.5"
                       : "text-stone-600 hover:text-stone-900 hover:bg-white/80 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0"
                     }`}
                 >
@@ -332,7 +332,7 @@ export function FareCalculator() {
                   aria-pressed={form.category === "NON_AC"}
                   onClick={() => handleCategoryChange("NON_AC")}
                   className={`py-1.5 sm:py-2.5 px-2.5 sm:px-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ease-out cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500 ${form.category === "NON_AC"
-                      ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-[0_4px_12px_rgba(249,115,22,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)] -translate-y-0.5"
+                      ? "bg-gradient-to-r from-[#c2410c] to-[#9a3412] text-white shadow-[0_4px_12px_rgba(249,115,22,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)] -translate-y-0.5"
                       : "text-stone-600 hover:text-stone-900 hover:bg-white/80 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0"
                     }`}
                 >
@@ -454,7 +454,7 @@ export function FareCalculator() {
             </div>
 
             {/* Distinct, Separated Total Payable Amount Card */}
-            <div className="mt-3.5 sm:mt-4 rounded-2xl bg-gradient-to-r from-orange-500 via-amber-500 to-amber-600 p-4 sm:p-5 text-white shadow-[0_4px_16px_rgba(249,115,22,0.25),inset_0_1px_1px_rgba(255,255,255,0.35)] border border-orange-400/40">
+            <div className="mt-3.5 sm:mt-4 rounded-2xl bg-gradient-to-r from-[#c2410c] via-[#a43b12] to-[#9a3412] p-4 sm:p-5 text-white shadow-[0_4px_16px_rgba(249,115,22,0.25),inset_0_1px_1px_rgba(255,255,255,0.35)] border border-orange-400/40">
               <div className="flex items-baseline justify-between gap-3">
                 <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-orange-100">
                   Total Payable Amount
@@ -511,7 +511,7 @@ export function FareCalculator() {
           <button
             type="button"
             onClick={() => setIsPrintModalOpen(true)}
-            className="rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 px-3 py-1.5 text-[11px] font-bold text-white shadow-[0_2px_8px_rgba(249,115,22,0.3)] active:scale-95 transition-all cursor-pointer whitespace-nowrap"
+            className="rounded-lg bg-gradient-to-r from-[#c2410c] to-[#9a3412] px-3 py-1.5 text-[11px] font-bold text-white shadow-[0_2px_8px_rgba(249,115,22,0.3)] active:scale-95 transition-all cursor-pointer whitespace-nowrap"
           >
             Print Slip
           </button>

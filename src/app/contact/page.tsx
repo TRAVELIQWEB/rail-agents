@@ -2,21 +2,25 @@ import { QueryPage } from "@/components/ui/QueryPage";
 import { siteConfig } from "@/config/site";
 
 export const metadata = {
-  title: "Contact",
+  title: "Contact RailAgents - Support & Railway Guidance Desk",
   description:
-    "Contact RailAgents with questions about IRCTC information, rail journeys, or other travel topics, including bus, air, and hotel travel.",
+    "Contact RailAgents for assistance with railway agent registration, IRCTC compliance rules, ticket booking inquiries, and passenger travel guidance.",
   alternates: { canonical: `${siteConfig.url}/contact` },
   openGraph: {
-    title: "Contact RailAgents",
+    title: "Contact RailAgents - Support & Railway Guidance Desk | RailAgents",
     description:
-      "Contact RailAgents with questions about IRCTC information, rail journeys, or other travel topics, including bus, air, and hotel travel.",
+      "Contact RailAgents for assistance with railway agent registration, IRCTC compliance rules, ticket booking inquiries, and passenger travel guidance.",
     url: `${siteConfig.url}/contact`,
+    siteName: siteConfig.name,
+    locale: "en_IN",
+    type: "website",
     images: [siteConfig.socialImage],
   },
   twitter: {
-    title: "Contact RailAgents",
+    card: "summary_large_image",
+    title: "Contact RailAgents - Support & Railway Guidance Desk | RailAgents",
     description:
-      "Contact RailAgents with questions about IRCTC information, rail journeys, or other travel topics, including bus, air, and hotel travel.",
+      "Contact RailAgents for assistance with railway agent registration, IRCTC compliance rules, ticket booking inquiries, and passenger travel guidance.",
     images: [siteConfig.socialImage],
   },
 };
@@ -29,9 +33,9 @@ export default function ContactPage() {
         "@type": "ContactPage",
         "@id": `${siteConfig.url}/contact#webpage`,
         url: `${siteConfig.url}/contact`,
-        name: "Contact RailAgents",
+        name: "Contact RailAgents - Support & Railway Guidance Desk",
         description:
-          "Contact RailAgents with questions about IRCTC information, rail journeys, or other travel topics, including bus, air, and hotel travel.",
+          "Contact RailAgents for assistance with railway agent registration, IRCTC compliance rules, ticket booking inquiries, and passenger travel guidance.",
         isPartOf: { "@id": `${siteConfig.url}/#website` },
         breadcrumb: { "@id": `${siteConfig.url}/contact#breadcrumb` },
         inLanguage: "en-IN",
@@ -43,7 +47,7 @@ export default function ContactPage() {
         "@type": "BreadcrumbList",
         "@id": `${siteConfig.url}/contact#breadcrumb`,
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          { "@type": "ListItem", position: 1, name: "Home", item: `${siteConfig.url}/` },
           { "@type": "ListItem", position: 2, name: "Contact", item: `${siteConfig.url}/contact` },
         ],
       },
@@ -58,7 +62,7 @@ export default function ContactPage() {
           __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
         }}
       />
-      <QueryPage />
+      <QueryPage mode="contact" />
     </>
   );
 }

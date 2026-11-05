@@ -130,7 +130,7 @@ export function WhyAndHow() {
                     Complex railway processes explained in simple language.
                   </p>
 
-                  <span className="mt-4 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#ffebd6] text-[#f97316] transition-transform duration-200 group-hover:translate-x-1 wide:h-8 wide:w-8">
+                  <span className="mt-4 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#ffebd6] text-[#f97316] transition-all duration-200 group-hover:translate-x-1 group-hover:bg-[var(--primary)] group-hover:text-white wide:h-8 wide:w-8">
                     <ArrowRight className="h-3.5 w-3.5 wide:h-4 wide:w-4" />
                   </span>
                 </div>
@@ -164,7 +164,7 @@ export function WhyAndHow() {
                     Detailed articles and videos to help you every time.
                   </p>
 
-                  <span className="mt-4 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#eef2ff] text-[#6366f1] transition-transform duration-200 group-hover:translate-x-1 wide:h-8 wide:w-8">
+                  <span className="mt-4 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#eef2ff] text-[#6366f1] transition-all duration-200 group-hover:translate-x-1 group-hover:bg-[#6366f1] group-hover:text-white wide:h-8 wide:w-8">
                     <ArrowRight className="h-3.5 w-3.5 wide:h-4 wide:w-4" />
                   </span>
                 </div>
@@ -203,7 +203,7 @@ export function WhyAndHow() {
                     Verify current rules, charges, and updates with official sources.
                   </p>
 
-                  <span className="mt-4 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#ffedd5] text-[#d97706] transition-transform duration-200 group-hover:translate-x-1 wide:h-8 wide:w-8">
+                  <span className="mt-4 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#ffedd5] text-[#d97706] transition-all duration-200 group-hover:translate-x-1 group-hover:bg-[#d97706] group-hover:text-white wide:h-8 wide:w-8">
                     <ArrowRight className="h-3.5 w-3.5 wide:h-4 wide:w-4" />
                   </span>
                 </div>
@@ -216,7 +216,7 @@ export function WhyAndHow() {
                       <div className="h-1.5 w-3/4 rounded-full bg-slate-100 wide:h-2" />
                     </div>
 
-                    <div className="absolute -right-3 -top-2 flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-amber-500 to-orange-400 text-white shadow-lg shadow-orange-300/50 wide:h-10 wide:w-10">
+                    <div className="absolute -right-3 -top-2 flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-[#9a3412] to-[#c2410c] text-white shadow-lg shadow-orange-300/50 wide:h-10 wide:w-10">
                       <Bell className="h-4 w-4 fill-white wide:h-5 wide:w-5" />
                     </div>
                   </div>
@@ -239,7 +239,7 @@ export function WhyAndHow() {
                     Useful information for new agents and everyday travellers.
                   </p>
 
-                  <span className="mt-4 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#ccfbf1] text-[#0d9488] transition-transform duration-200 group-hover:translate-x-1 wide:h-8 wide:w-8">
+                  <span className="mt-4 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#ccfbf1] text-[#0d9488] transition-all duration-200 group-hover:translate-x-1 group-hover:bg-[#0d9488] group-hover:text-white wide:h-8 wide:w-8">
                     <ArrowRight className="h-3.5 w-3.5 wide:h-4 wide:w-4" />
                   </span>
                 </div>
@@ -250,7 +250,7 @@ export function WhyAndHow() {
                       <UsersRound className="h-8 w-8 text-[#0d9488] wide:h-10 wide:w-10" />
                     </div>
 
-                    <div className="absolute -bottom-1 -right-2 flex h-8 w-8 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-400 to-amber-500 text-white shadow-md wide:h-9 wide:w-9">
+                    <div className="absolute -bottom-1 -right-2 flex h-8 w-8 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c2410c] to-[#9a3412] text-white shadow-md wide:h-9 wide:w-9">
                       <ShieldCheck className="h-4 w-4 fill-white wide:h-5 wide:w-5" />
                     </div>
                   </div>

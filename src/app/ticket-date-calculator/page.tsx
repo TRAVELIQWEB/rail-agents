@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description:
     "Calculate Indian Railways ticket booking opening dates with the official 60-day ARP rule and Tatkal timings (AC at 10 AM, Non-AC at 11 AM).",
   alternates: {
-    canonical: PAGE_SLUG,
+    canonical: PAGE_URL,
   },
   openGraph: {
     title:

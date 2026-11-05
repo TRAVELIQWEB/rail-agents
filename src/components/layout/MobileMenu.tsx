@@ -3,17 +3,17 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Calculator, CalendarDays, Menu, MessageCircle, Radio, TicketCheck, TrainFront, X } from "lucide-react";
-import { SearchForm } from "@/components/layout/SearchForm";
 import { InternalLink } from "@/components/ui/InternalLink";
 import { railTools } from "@/config/tools";
 
 const navItems = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "IRCTC Agent", href: "/irctc-agent-registration" },
+  { label: "Live Train", href: "/live-train-status" },
+  { label: "PNR Status", href: "/pnr-status" },
+  { label: "Guides", href: "/guides" },
   { label: "Tools", href: "/tools" },
   { label: "Blog", href: "/blog" },
-  { label: "Guides", href: "/guides" },
 ];
 
 export function MobileMenu() {
@@ -51,9 +51,8 @@ export function MobileMenu() {
         prefetch={false}
         aria-label="IRCTC Ticket Fare Calculator"
         title="Fare Calculator"
-        className={`flex h-11 w-11 items-center justify-center rounded-lg border border-[var(--primary-border)] bg-orange-50/70 text-[var(--primary-dark)] hover:bg-orange-100/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${
-          isCalcPage ? "hidden min-[380px]:flex" : "flex"
-        }`}
+        className={`flex h-11 w-11 items-center justify-center rounded-lg border border-[var(--primary-border)] bg-orange-50/70 text-[var(--primary-dark)] hover:bg-orange-100/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${isCalcPage ? "hidden min-[380px]:flex" : "flex"
+          }`}
       >
         <Calculator aria-hidden="true" className="h-4 w-4 sm:h-5 sm:w-5" />
       </InternalLink>
@@ -72,11 +71,10 @@ export function MobileMenu() {
         aria-expanded={isOpen}
         aria-controls="mobile-navigation"
         onClick={() => setIsOpen((open) => !open)}
-        className={`icon-action flex h-11 w-11 cursor-pointer items-center justify-center border border-[var(--primary-border)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${
-          isOpen
-            ? "bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] hover:text-white"
-            : ""
-        }`}
+        className={`icon-action flex h-11 w-11 cursor-pointer items-center justify-center border border-[var(--primary-border)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${isOpen
+          ? "bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] hover:text-white"
+          : ""
+          }`}
       >
         {isOpen ? <X className="h-4 w-4 sm:h-5 sm:w-5" /> : <Menu className="h-4 w-4 sm:h-5 sm:w-5" />}
       </button>
@@ -97,11 +95,10 @@ export function MobileMenu() {
                   prefetch={false}
                   current={isActive}
                   onClick={() => setIsOpen(false)}
-                  className={`flex min-h-11 items-center justify-between rounded-lg px-3 py-2 text-base font-[600] transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${
-                    isActive
-                      ? "bg-[var(--primary-soft)] text-[var(--primary-dark)]"
-                      : "text-[var(--body-text)]"
-                  }`}
+                  className={`flex min-h-11 items-center justify-between rounded-lg px-3 py-2 text-base font-[600] transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${isActive
+                    ? "bg-[var(--primary-soft)] text-[var(--primary-dark)]"
+                    : "text-[var(--body-text)]"
+                    }`}
                 >
                   <span>{item.label}</span>
                 </InternalLink>
@@ -125,11 +122,10 @@ export function MobileMenu() {
                     prefetch={false}
                     current={isToolActive}
                     onClick={() => setIsOpen(false)}
-                    className={`flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 text-sm font-[650] transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${
-                      isToolActive
-                        ? "bg-[var(--primary-soft)] text-[var(--primary-dark)] font-bold"
-                        : "text-[var(--navy)]"
-                    }`}
+                    className={`flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 text-sm font-[650] transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${isToolActive
+                      ? "bg-[var(--primary-soft)] text-[var(--primary-dark)] font-bold"
+                      : "text-[var(--navy)]"
+                      }`}
                   >
                     {tool.icon === "ticket" ? (
                       <TicketCheck className="h-4 w-4 shrink-0 text-[var(--primary)]" />
@@ -148,10 +144,6 @@ export function MobileMenu() {
               })}
             </div>
           </nav>
-
-          <div className="mt-3">
-            <SearchForm mobile />
-          </div>
 
           <InternalLink
             href="/contact"

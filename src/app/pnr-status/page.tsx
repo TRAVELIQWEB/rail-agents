@@ -575,7 +575,7 @@ function PnrStatusPageView({
         <section className="border-b border-orange-100 bg-white px-4 pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8">
           <div className="mx-auto flex w-full max-w-[1100px] items-center gap-3">
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-600"><TrainFront aria-hidden="true" className="h-5 w-5" /></span>
-            <div><h1 className="text-xl font-extrabold tracking-tight text-[#0b2240] sm:text-2xl">PNR status</h1><p className="mt-0.5 text-xs text-slate-600 sm:text-sm">Check your ticket and journey details using your 10-digit PNR.</p></div>
+            <div><h1 className="text-xl font-extrabold tracking-tight text-[#0b2240] sm:text-2xl">PNR Status Check</h1><p className="mt-0.5 text-xs text-slate-600 sm:text-sm">Check your ticket and journey details using your 10-digit PNR.</p></div>
           </div>
         </section>
 
@@ -712,6 +712,10 @@ function PnrStatusPageFallback() {
     <Header />
     <main className="flex-1 px-4 py-5">
       <div className="mx-auto w-full max-w-[1100px]">
+        <div className="mb-3 flex items-center gap-3">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-600"><TicketCheck aria-hidden="true" className="h-5 w-5" /></span>
+          <div><h1 className="text-xl font-extrabold tracking-tight text-[#0b2240] sm:text-2xl">PNR Status Check</h1><p className="mt-0.5 text-xs text-slate-600 sm:text-sm">Check your ticket and journey details using your 10-digit PNR.</p></div>
+        </div>
         <div aria-hidden="true" className="mb-4 animate-pulse rounded-2xl border border-slate-200 bg-white p-5"><div className="mb-4 h-5 w-48 rounded bg-slate-200" /><div className="flex gap-2"><div className="h-11 flex-1 rounded-lg bg-slate-100" /><div className="h-11 w-32 rounded-lg bg-orange-100" /></div></div>
         <PnrResultSkeleton />
       </div>

@@ -134,7 +134,7 @@ export default function TermsPage() {
               </div>
               <div className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-[15px] sm:leading-7">
                 <p>
-                  Nihal Singh is a fictional digital character and brand identity created for RailAgents. The character does not represent a real individual, railway employee, government official, or authorized representative of Indian Railways. The RailAgents platform is managed by Neeraj Garg, who is the real person behind this fictional identity. Content presented through Nihal Singh is part of the RailAgents platform and should not be interpreted as the independent statements, personal experiences, or professional credentials of an actual individual.
+                  Nihal Singh is a fictional digital character and brand identity created for RailAgents. The character does not represent a real individual, railway employee, government official, or authorized representative of Indian Railways. The RailAgents platform is managed and maintained by real human platform administrators. Content presented through Nihal Singh is part of the RailAgents platform and should not be interpreted as the independent statements, personal experiences, or professional credentials of an actual individual.
                 </p>
               </div>
             </div>

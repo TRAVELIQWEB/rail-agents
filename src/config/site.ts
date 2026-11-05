@@ -6,7 +6,7 @@ export const siteConfig = {
   socialImage: `${siteUrl}/images/railagents-og.jpg`,
   ogImage: "/images/railagents-og.jpg",
   whatsapp: {
-    number: "917835025025",
+    number: "919599550009",
     message:
       "Hi RailAgents, I need help regarding railway agent services. Please guide me with the process.",
   },

@@ -34,7 +34,13 @@ const features = [
   },
 ];
 
-export function QueryPage() {
+interface QueryPageProps {
+  mode?: "ask-nihal" | "contact";
+}
+
+export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
+  const isContact = mode === "contact";
+
   return (
     <div className="flex min-h-screen flex-col bg-[#fffdf9]">
       <Header />
@@ -62,35 +68,61 @@ export function QueryPage() {
                 {/* Top Badge */}
                 <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#f5d0be] bg-white/90 px-3.5 py-1 text-xs font-extrabold uppercase tracking-wider text-[#ea580c] shadow-sm backdrop-blur-sm">
                   <span className="h-2 w-2 rounded-full bg-[#f97316]" />
-                  ASK NIHAL SINGH • CONTACT
+                  {isContact ? "CONTACT RAILAGENTS • SUPPORT DESK" : "ASK NIHAL SINGH • RAILWAY GUIDANCE"}
                 </div>
 
                 {/* Main Heading */}
                 <h1 className="page-hero-title">
-                  Your railway question{" "}
-                  <span className="block">deserves a clear</span>
-                  <span className="hero-accent relative inline-block">
-                    answer.
-                    {/* Curved Underline */}
-                    <svg
-                      className="absolute -bottom-2 left-0 h-3 w-full text-[var(--primary)]"
-                      viewBox="0 0 200 12"
-                      fill="none"
-                    >
-                      <path
-                        d="M 2,8 Q 100,2 198,8"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                  </span>
+                  {isContact ? (
+                    <>
+                      Contact RailAgents —{" "}
+                      <span className="block">Support &amp; Travel</span>
+                      <span className="hero-accent relative inline-block">
+                        Guidance Desk.
+                        {/* Curved Underline */}
+                        <svg
+                          className="absolute -bottom-2 left-0 h-3 w-full text-[var(--primary)]"
+                          viewBox="0 0 200 12"
+                          fill="none"
+                        >
+                          <path
+                            d="M 2,8 Q 100,2 198,8"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      Ask Nihal Singh —{" "}
+                      <span className="block">Your Railway Question</span>
+                      <span className="hero-accent relative inline-block">
+                        Deserves a Clear Answer.
+                        {/* Curved Underline */}
+                        <svg
+                          className="absolute -bottom-2 left-0 h-3 w-full text-[var(--primary)]"
+                          viewBox="0 0 200 12"
+                          fill="none"
+                        >
+                          <path
+                            d="M 2,8 Q 100,2 198,8"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      </span>
+                    </>
+                  )}
                 </h1>
 
                 {/* Subtitle */}
                 <p className="page-hero-description mx-auto mt-5 max-w-md lg:mx-0">
-                  From IRCTC agent registration and railway bookings to bus, air,
-                  hotel, and other travel questions, tell us what you need help understanding.
+                  {isContact
+                    ? "Have questions about IRCTC agent registration, railway ticketing rules, or general travel guidance? Reach out to our team directly."
+                    : "From IRCTC agent registration and railway bookings to bus, air, hotel, and other travel questions, tell us what you need help understanding."}
                 </p>
 
                 {/* 3 Feature Rows */}

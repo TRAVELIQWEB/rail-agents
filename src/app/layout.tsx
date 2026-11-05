@@ -18,8 +18,14 @@ const structuredData = {
       "@type": "Organization",
       "@id": `${siteConfig.url}/#organization`,
       name: siteConfig.name,
+      alternateName: ["RailAgents Platform", "Rail Agents"],
       url: siteConfig.url,
-      logo: `${siteConfig.url}/icon.png`,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteConfig.url}/icon.png`,
+        width: 512,
+        height: 512,
+      },
       sameAs: [
         siteConfig.social.youtube,
         siteConfig.social.instagram,
@@ -31,7 +37,10 @@ const structuredData = {
       "@id": `${siteConfig.url}/#website`,
       url: siteConfig.url,
       name: siteConfig.name,
+      alternateName: ["Rail Agents", "RailAgents.in"],
       inLanguage: "en-IN",
+      description:
+        "Indian Railways agent guidance, live train running status, PNR status check, and IRCTC tools.",
       publisher: { "@id": `${siteConfig.url}/#organization` },
     },
   ],
@@ -40,17 +49,28 @@ const structuredData = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "RailAgents | Railway Agent Guidance & IRCTC Resources",
+    default: "RailAgents | Railway Agent Guidance, Live Status & IRCTC Tools",
     template: "%s | RailAgents",
   },
   description:
-    "Clear railway agent guidance, IRCTC agent information, and practical resources for railway services from RailAgents.",
+    "Explore practical railway agent guidance, live train running status, PNR status check, IRCTC calculators, and step-by-step booking tutorials on RailAgents.",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     type: "website",
     siteName: siteConfig.name,
-    title: "RailAgents | Railway Agent Guidance & IRCTC Resources",
+    title: "RailAgents | Railway Agent Guidance, Live Status & IRCTC Tools",
     description:
-      "Clear railway agent guidance, IRCTC agent information, and practical resources for railway services from RailAgents.",
+      "Explore practical railway agent guidance, live train running status, PNR status check, IRCTC calculators, and step-by-step booking tutorials on RailAgents.",
     url: siteConfig.url,
     images: [
       {
@@ -61,9 +81,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "RailAgents | Railway Agent Guidance & IRCTC Resources",
+    title: "RailAgents | Railway Agent Guidance, Live Status & IRCTC Tools",
     description:
-      "Clear railway agent guidance, IRCTC agent information, and practical resources for railway services from RailAgents.",
+      "Explore practical railway agent guidance, live train running status, PNR status check, IRCTC calculators, and step-by-step booking tutorials on RailAgents.",
     images: [siteConfig.socialImage],
   },
 };

@@ -41,14 +41,10 @@ export interface RailwayStation {
   state: string;
 }
 
-function getDefaultJourneyDate() {
-  return getTodayIST();
-}
-
 export function TicketDateCalculator() {
   const [fromInput, setFromInput] = useState<string>("");
   const [toInput, setToInput] = useState<string>("");
-  const [journeyDate, setJourneyDate] = useState<string>(getDefaultJourneyDate);
+  const [journeyDate, setJourneyDate] = useState<string>("");
 
   // Station search states (connected to MongoDB)
   const [fromSuggestions, setFromSuggestions] = useState<RailwayStation[]>([]);
@@ -66,8 +62,8 @@ export function TicketDateCalculator() {
 
   // Calendar month view state
   const [calendarViewDate, setCalendarViewDate] = useState<{ year: number; month: number }>(() => {
-    const defaultJourneyDate = parseCalendarDate(getDefaultJourneyDate()) || { year: 2026, month: 11, day: 2 };
-    return { year: defaultJourneyDate.year, month: defaultJourneyDate.month };
+    const today = parseCalendarDate(getTodayIST()) || { year: 2026, month: 11, day: 2 };
+    return { year: today.year, month: today.month };
   });
 
   // UI feedback states
@@ -203,9 +199,6 @@ export function TicketDateCalculator() {
   };
 
   const handleReset = () => {
-    const defaultJourneyDate = getDefaultJourneyDate();
-    const parsedDefaultDate = parseCalendarDate(defaultJourneyDate);
-
     setFromInput("");
     setToInput("");
     setFromSuggestions([]);
@@ -214,9 +207,10 @@ export function TicketDateCalculator() {
     setToOpen(false);
     setFromStationError(null);
     setToStationError(null);
-    setJourneyDate(defaultJourneyDate);
-    if (parsedDefaultDate) {
-      setCalendarViewDate({ year: parsedDefaultDate.year, month: parsedDefaultDate.month });
+    setJourneyDate("");
+    const today = parseCalendarDate(getTodayIST());
+    if (today) {
+      setCalendarViewDate({ year: today.year, month: today.month });
     }
   };
 
