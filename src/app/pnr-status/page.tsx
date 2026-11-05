@@ -1,17 +1,20 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { Suspense, useEffect, useRef, useState, type FormEvent } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
+  Copy,
+  Printer,
   BadgeCheck,
+  CheckCircle2,
+  ClipboardCheck,
   CircleHelp,
   Clock3,
   Info,
   Search,
   TicketCheck,
   TrainFront,
-  MapPin,
-  X,
 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -53,9 +56,63 @@ const faqs = [
   },
   {
     q: "Is this page showing live PNR results?",
-    a: "Yes. The PNR is sent to RailAgents’ railway status provider to retrieve the latest available status. The page does not save it in a user account or browser history.",
+    a: "Yes. Each lookup requests the latest available status from RailAgents’ railway provider. A private lookup link is kept in this browser session so refresh can restore your search; if session storage is unavailable, the PNR may appear in the page URL and browser history.",
   },
 ];
+
+const PNR_SESSION_KEY_PREFIX = "railagents:pnr-lookup:";
+const pendingPnrLookups = new Map<string, Promise<unknown>>();
+
+function readPnrFromSession(lookupId: string): string | null {
+  try {
+    const value = window.sessionStorage.getItem(`${PNR_SESSION_KEY_PREFIX}${lookupId}`);
+    return value && /^\d{10}$/.test(value) ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+function savePnrToSession(pnr: string): string | null {
+  try {
+    const bytes = window.crypto.getRandomValues(new Uint8Array(16));
+    const lookupId = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+    window.sessionStorage.setItem(`${PNR_SESSION_KEY_PREFIX}${lookupId}`, pnr);
+    return lookupId;
+  } catch {
+    return null;
+  }
+}
+
+function lookupUrl(pathname: string, currentSearch: string, lookupId: string | null, rawPnr?: string): string {
+  const params = new URLSearchParams(currentSearch);
+  params.delete("pnr");
+  params.delete("lookup");
+  if (lookupId) params.set("lookup", lookupId);
+  else if (rawPnr) params.set("pnr", rawPnr);
+  const query = params.toString();
+  return query ? `${pathname}?${query}` : pathname;
+}
+
+function fetchPnrLookup(pnr: string, forceRefresh = false): Promise<unknown> {
+  const lookupKey = `${pnr}:${forceRefresh ? "fresh" : "cached"}`;
+  const pending = pendingPnrLookups.get(lookupKey);
+  if (pending) return pending;
+
+  const request = (async () => {
+    const response = await fetch(`/api/pnr/${encodeURIComponent(pnr)}${forceRefresh ? "?refresh=1" : ""}`, { cache: "no-store" });
+    const body = await response.json();
+    if (!response.ok || body.success !== true || !body.data) {
+      throw new Error(typeof body.error === "string" ? body.error : "Could not retrieve this PNR. Please try again.");
+    }
+    return body.data as unknown;
+  })();
+  pendingPnrLookups.set(lookupKey, request);
+  void request.then(
+    () => { if (pendingPnrLookups.get(lookupKey) === request) pendingPnrLookups.delete(lookupKey); },
+    () => { if (pendingPnrLookups.get(lookupKey) === request) pendingPnrLookups.delete(lookupKey); },
+  );
+  return request;
+}
 
 type DataRecord = Record<string, unknown>;
 
@@ -194,10 +251,10 @@ function PnrPredictionPanel({ pnr, passengers, record }: { pnr: string; passenge
   const probability = displayValue(prediction && pickValue(prediction, ["confirmationProbability", "probability", "confirmationChance", "chancePercentage", "confirmationPercentage", "chance"]));
   const summary = displayValue(prediction && pickValue(prediction, ["message", "summary", "explanation", "reason", "predictionText", "description"]));
 
-  return <section className="mt-4 overflow-hidden rounded-xl border border-orange-200 bg-gradient-to-br from-orange-50 via-white to-amber-50">
+  return <section className="mt-4 overflow-hidden rounded-xl border border-orange-200 bg-white">
     <div className="flex flex-wrap items-center justify-between gap-3 border-b border-orange-100 px-4 py-3 sm:px-5">
       <div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 text-orange-700"><Info aria-hidden="true" className="h-5 w-5" /></span><div><h4 className="text-sm font-extrabold text-[#0b2240] sm:text-base">Ticket confirmation prediction</h4><p className="mt-0.5 text-xs text-slate-600">For your RAC or waitlisted passenger status</p></div></div>
-      <button type="button" onClick={checkPrediction} disabled={loading} className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[var(--primary)] px-4 text-xs font-bold text-white shadow-sm transition hover:brightness-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 disabled:cursor-wait disabled:opacity-60"><BadgeCheck aria-hidden="true" className={`h-4 w-4 ${loading ? "animate-pulse" : ""}`} />{loading ? "Checking prediction…" : result ? "Refresh prediction" : "Check confirmation chance"}</button>
+      <button type="button" onClick={checkPrediction} disabled={loading} className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-orange-600 px-4 text-xs font-bold text-white shadow-sm transition hover:bg-orange-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 disabled:cursor-wait disabled:opacity-60"><BadgeCheck aria-hidden="true" className={`h-4 w-4 ${loading ? "animate-pulse" : ""}`} />{loading ? "Checking prediction…" : result ? "Refresh prediction" : "Check confirmation chance"}</button>
     </div>
     {error && <p role="alert" className="mx-4 mt-3 rounded-lg border border-rose-200 bg-white px-3 py-2 text-xs font-semibold text-rose-800 sm:mx-5">{error}</p>}
     {Boolean(result) && <div aria-live="polite" className="space-y-3 p-4 sm:p-5">
@@ -212,214 +269,46 @@ function PnrPredictionPanel({ pnr, passengers, record }: { pnr: string; passenge
   </section>;
 }
 
-function formatLiveDateTime(value: unknown): string {
+function journeyDate(value: string) {
+  if (!/^\d{4}-\d{2}-\d{2}/.test(value)) return value;
+  const date = new Date(value.slice(0, 10) + "T12:00:00Z");
+  return Number.isNaN(date.getTime()) ? value : new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).format(date);
+}
+function formatPnrDateTime(value: unknown): string {
   if (typeof value !== "string") return displayValue(value);
   const date = new Date(value);
-  if (!Number.isFinite(date.getTime())) return value;
-  return new Intl.DateTimeFormat("en-IN", {
-    timeZone: "Asia/Kolkata",
-    day: "2-digit",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  }).format(date);
+  return Number.isFinite(date.getTime())
+    ? new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", hour12: false }).format(date)
+    : value;
 }
-
-function formatLiveTime(value: unknown): string {
-  if (typeof value !== "string") return displayValue(value);
-  const date = new Date(value);
-  if (!Number.isFinite(date.getTime())) return value;
-  return new Intl.DateTimeFormat("en-IN", {
-    timeZone: "Asia/Kolkata",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  }).format(date);
-}
-
-function getDelayPresentation(value: unknown) {
-  if (value === undefined || value === null || value === "" || !Number.isFinite(Number(value))) {
-    return { label: "Delay unknown", classes: "bg-slate-100 text-slate-600" };
+function journeyTime(value: string) {
+  const match = /^(\d{1,2}):(\d{2})(?::\d{2})?$/.exec(value);
+  if (!match) {
+    const date = new Date(value);
+    return /T\d{2}:\d{2}/.test(value) && Number.isFinite(date.getTime())
+      ? new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hour12: true }).format(date)
+      : value;
   }
-  const minutes = Number(value);
-  if (minutes > 0) return { label: `${minutes} min late`, classes: "bg-amber-100 text-amber-900" };
-  if (minutes < 0) return { label: `${Math.abs(minutes)} min early`, classes: "bg-sky-100 text-sky-800" };
-  return { label: "On time", classes: "bg-emerald-100 text-emerald-800" };
+  const h = Number(match[1]);
+  return h > 23 || Number(match[2]) > 59 ? value : String(h % 12 || 12).padStart(2, "0") + ":" + match[2] + (h >= 12 ? " PM" : " AM");
 }
-
-function TrainPositionIcon() {
-  return <span className="relative flex h-8 w-8 items-center justify-center rounded-full border border-blue-200 bg-blue-50 text-[#0b2240] shadow-sm">
-    <TrainFront aria-hidden="true" className="h-[21px] w-[21px] stroke-[2.25]" />
-  </span>;
+function StationName({ value }: { value: string }) {
+  const match = /^(.*?)\s*\(([^)]+)\)$/.exec(value);
+  return <p className="mt-1 break-words text-base font-bold tracking-tight text-[#0F172A] sm:text-lg">{match ? <>{match[1]} <span className="text-sm font-medium text-slate-500">({match[2]})</span></> : value === "—" ? "Station unavailable" : value}</p>;
 }
-
-function LiveRouteTimeline({ route, currentStationCode }: { route: DataRecord[]; currentStationCode: string }) {
-  if (route.length === 0) return null;
-  const normalizedCurrentCode = currentStationCode.trim().toUpperCase();
-  const apiPositionIndex = normalizedCurrentCode === "—" ? -1 : route.findIndex((stop) =>
-    displayValue(pickValue(stop, ["stationCode", "code"])).trim().toUpperCase() === normalizedCurrentCode,
-  );
-  const statusPositionIndex = apiPositionIndex < 0 ? route.findIndex((stop) => {
-    const stopStatus = displayValue(pickValue(stop, ["status"])).toLowerCase().replace(/[_-]/g, " ").trim();
-    return ["at station", "current", "present", "here"].includes(stopStatus);
-  }) : -1;
-  const currentIndex = apiPositionIndex >= 0 ? apiPositionIndex : statusPositionIndex;
-
-  return (
-    <section className="overflow-hidden rounded-xl border border-slate-200 bg-white" aria-label="Live train route timeline">
-      <div className="hidden grid-cols-[minmax(100px,0.8fr)_28px_minmax(150px,1.5fr)_minmax(100px,0.8fr)] items-center gap-3 border-b border-slate-200 bg-slate-50/80 px-5 py-3 text-[10px] font-extrabold uppercase tracking-[0.1em] text-slate-500 md:grid">
-        <span>Arrival · scheduled / actual / predicted</span><span aria-hidden="true" /><span>Station · running status</span><span className="text-right">Departure · scheduled / actual / predicted</span>
-      </div>
-      <ol className="relative divide-y divide-slate-100">
-        {route.map((stop, index) => {
-          const status = displayValue(pickValue(stop, ["status"])).toLowerCase();
-          const stationName = displayValue(pickValue(stop, ["stationName", "name"]));
-          const stationCode = displayValue(pickValue(stop, ["stationCode", "code"]));
-          const isCurrent = index === currentIndex;
-          const isPassed = currentIndex >= 0 && index < currentIndex;
-          const scheduledArrival = pickValue(stop, ["scheduledArrival"]);
-          const actualArrival = pickValue(stop, ["actualArrival"]);
-          const scheduledDeparture = pickValue(stop, ["scheduledDeparture"]);
-          const actualDeparture = pickValue(stop, ["actualDeparture"]);
-          const arrivalDelay = getDelayPresentation(pickValue(stop, ["delayArrival"]));
-          const departureDelay = getDelayPresentation(pickValue(stop, ["delayDeparture"]));
-          const stationTimestamp = pickValue(stop, ["scheduledArrival", "actualArrival", "predictedArrival", "estimatedArrival", "scheduledDeparture", "actualDeparture", "predictedDeparture", "estimatedDeparture"]);
-
-          return <li key={`${stationCode}-${displayValue(pickValue(stop, ["sequence"]))}-${index}`} className={`grid grid-cols-[minmax(0,1fr)_24px_minmax(0,1fr)] gap-x-2 gap-y-3 px-3 py-3 transition-colors md:grid-cols-[minmax(100px,0.8fr)_28px_minmax(150px,1.5fr)_minmax(100px,0.8fr)] md:items-center md:gap-3 md:px-5 md:py-3.5 ${isCurrent ? "bg-blue-50/80" : "bg-white hover:bg-slate-50/70"}`}>
-            <div className="col-start-1 row-start-2 space-y-1.5 pt-0.5 text-[10px] md:col-start-1 md:row-start-1 md:text-xs">
-              <p className="text-[9px] font-bold uppercase tracking-wide text-slate-400">Scheduled</p>
-              <p className="font-bold tabular-nums text-slate-600">{scheduledArrival === undefined ? "—" : formatLiveTime(scheduledArrival)}</p>
-              {actualArrival !== undefined && <p className="font-semibold tabular-nums text-emerald-700"><span className="text-[9px] font-bold uppercase tracking-wide text-emerald-600">Actual</span> {formatLiveTime(actualArrival)}</p>}
-              {pickValue(stop, ["predictedArrival"]) !== undefined && <p className="font-semibold tabular-nums text-blue-700"><span className="text-[9px] font-bold uppercase tracking-wide text-blue-600">Predicted</span> {formatLiveTime(pickValue(stop, ["predictedArrival"]))}</p>}
-              {pickValue(stop, ["estimatedArrival"]) !== undefined && <p className="font-semibold tabular-nums text-blue-700"><span className="text-[9px] font-bold uppercase tracking-wide text-blue-600">Estimated</span> {formatLiveTime(pickValue(stop, ["estimatedArrival"]))}</p>}
-              <p className={`inline-flex w-fit rounded-md px-1.5 py-0.5 font-bold ${arrivalDelay.classes}`}>{arrivalDelay.label}</p>
-            </div>
-            <div className="relative col-start-2 row-span-2 row-start-1 flex self-stretch items-center justify-center md:col-start-2 md:row-span-1 md:row-start-1">
-              {currentIndex < 0 ? (
-                <span aria-hidden="true" className="absolute left-1/2 z-0 block min-h-[24px] -translate-x-1/2 border-l-2 border-slate-300" style={{ top: index === 0 ? "50%" : 0, bottom: index === route.length - 1 ? "50%" : 0 }} />
-              ) : index < currentIndex ? (
-                <span aria-hidden="true" className="absolute left-1/2 z-0 block min-h-[24px] -translate-x-1/2 border-l-2 border-emerald-500" style={{ top: index === 0 ? "50%" : 0, bottom: 0 }} />
-              ) : index === currentIndex ? (
-                <>
-                  {index > 0 && <span aria-hidden="true" className="absolute left-1/2 top-0 z-0 block -translate-x-1/2 border-l-2 border-emerald-500" style={{ bottom: "50%" }} />}
-                  {index < route.length - 1 && <span aria-hidden="true" className="absolute bottom-0 left-1/2 top-1/2 z-0 block -translate-x-1/2 border-l-2 border-slate-300" />}
-                </>
-              ) : (
-                <span aria-hidden="true" className="absolute bottom-0 left-1/2 top-0 z-0 block -translate-x-1/2 border-l-2 border-slate-300" style={{ bottom: index === route.length - 1 ? "50%" : 0 }} />
-              )}
-              {isCurrent ? <span aria-label="Train's latest reported station" className="relative z-10 flex h-8 w-8 items-center justify-center"><span aria-hidden="true" className="absolute left-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-300 opacity-35 motion-safe:animate-ping" /><TrainPositionIcon /></span> : <span aria-hidden="true" className={`relative z-10 h-2.5 w-2.5 rounded-full shadow-sm ${isPassed ? "border border-emerald-600 bg-emerald-500" : "border-2 border-slate-300 bg-white"}`} />}
-            </div>
-            <div className="col-start-3 row-start-1 min-w-0 md:col-start-3 md:row-start-1">
-              <div className="flex flex-wrap items-center gap-1.5">
-                <h5 className={`text-sm font-extrabold leading-tight sm:text-base ${isCurrent ? "text-blue-950" : "text-[#0b2240]"}`}>{stationName}</h5>
-                {stationCode !== "—" && <span className="text-[10px] font-semibold tracking-wide text-slate-500">{stationCode}</span>}
-                <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${isCurrent ? "bg-blue-100 text-blue-800" : isPassed ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600"}`}>{isCurrent ? isPassed ? "Last reported" : "Train location" : isPassed ? "Departed" : status === "upcoming" ? "Upcoming" : status === "—" ? "Status unavailable" : status}</span>
-                {pickValue(stop, ["platform"]) !== undefined && <span className="rounded-md border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold text-amber-900">Platform {displayValue(pickValue(stop, ["platform"]))}</span>}
-              </div>
-              <div className="mt-1.5 flex flex-wrap gap-x-2 gap-y-1 text-[10px] text-slate-500">
-                {stationTimestamp !== undefined && <span>{formatLiveDateTime(stationTimestamp).split(",")[0]}</span>}
-                {pickValue(stop, ["sequence"]) !== undefined && <span>Stop {displayValue(pickValue(stop, ["sequence"]))}</span>}
-                {pickValue(stop, ["distanceFromOriginKm", "distanceKm", "distance"]) !== undefined && <span>{displayValue(pickValue(stop, ["distanceFromOriginKm", "distanceKm", "distance"]))} km from origin</span>}
-                {pickValue(stop, ["speedToNextStationKmph"]) !== undefined && <span>{displayValue(pickValue(stop, ["speedToNextStationKmph"]))} km/h to next</span>}
-                {pickValue(stop, ["provenance"]) !== undefined && <span className="capitalize">{displayValue(pickValue(stop, ["provenance"]))} timing</span>}
-              </div>
-            </div>
-            <div className="col-start-3 row-start-2 space-y-1.5 border-l border-slate-100 pl-3 pt-0.5 text-[10px] md:col-start-4 md:row-start-1 md:border-0 md:pl-0 md:text-right md:text-xs">
-              <p className="text-[9px] font-bold uppercase tracking-wide text-slate-400">Scheduled</p>
-              <p className="font-bold tabular-nums text-slate-600">{scheduledDeparture === undefined ? "—" : formatLiveTime(scheduledDeparture)}</p>
-              {actualDeparture !== undefined && <p className="font-semibold tabular-nums text-emerald-700"><span className="text-[9px] font-bold uppercase tracking-wide text-emerald-600">Actual</span> {formatLiveTime(actualDeparture)}</p>}
-              {pickValue(stop, ["predictedDeparture"]) !== undefined && <p className="font-semibold tabular-nums text-blue-700"><span className="text-[9px] font-bold uppercase tracking-wide text-blue-600">Predicted</span> {formatLiveTime(pickValue(stop, ["predictedDeparture"]))}</p>}
-              {pickValue(stop, ["estimatedDeparture"]) !== undefined && <p className="font-semibold tabular-nums text-blue-700"><span className="text-[9px] font-bold uppercase tracking-wide text-blue-600">Estimated</span> {formatLiveTime(pickValue(stop, ["estimatedDeparture"]))}</p>}
-              <p className={`ml-auto inline-flex w-fit rounded-md px-1.5 py-0.5 font-bold ${departureDelay.classes}`}>{departureDelay.label}</p>
-            </div>
-          </li>;
-        })}
-      </ol>
-    </section>
-  );
+function PassengerConfirmation({ status }: { status: string }) {
+  const kind = getPnrStatusKind(status);
+  const label = status === "—" ? pnrStatusLabels.unavailable : pnrStatusLabels[kind];
+  if (kind === "confirmed") return <span className="inline-flex cursor-default items-center gap-1.5 text-xs font-medium text-emerald-700"><span aria-hidden="true" className="h-2 w-2 rounded-full bg-emerald-600" />{label}</span>;
+  return <span className={`inline-flex cursor-default rounded-md border px-2 py-1 text-xs font-semibold ${getPnrStatusTone(status)}`}>{label}</span>;
 }
-
-function LiveTrainStatus({ trainNumber, journeyDate }: { trainNumber: string; journeyDate: string }) {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [liveResult, setLiveResult] = useState<unknown>(null);
-  const [dismissed, setDismissed] = useState(false);
-
-  async function checkStatus() {
-    setLoading(true);
-    setError("");
-    setLiveResult(null);
-    try {
-      const response = await fetch(`/api/trains/${encodeURIComponent(trainNumber)}/live?date=${encodeURIComponent(journeyDate)}`, { cache: "no-store" });
-      const body = await response.json();
-      if (!response.ok || body.success !== true || !body.data) {
-        throw new Error(typeof body.error === "string" ? body.error : "Could not retrieve live train status.");
-      }
-      setLiveResult(body.data);
-    } catch (lookupError) {
-      setError(lookupError instanceof Error ? lookupError.message : "Live train status lookup failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+function CopyPnr({ pnr }: { pnr: string }) {
+  const [message, setMessage] = useState("");
+  async function copy() {
+    try { await navigator.clipboard.writeText(pnr); setMessage("PNR copied"); }
+    catch { setMessage("Select the PNR to copy manually."); }
   }
-
-  const outer = asRecord(liveResult);
-  const record = outer ? asRecord(outer.data) ?? asRecord(outer.result) ?? outer : null;
-  const routeValue = record ? pickValue(record, ["route", "stations", "routeStations"]) : undefined;
-  const routeStops = Array.isArray(routeValue) ? routeValue.map(asRecord).filter((item): item is DataRecord => item !== null) : [];
-  const currentLocation = record ? asRecord(pickValue(record, ["currentLocation", "currentPosition"])) : null;
-  const trainInfo = record ? asRecord(pickValue(record, ["train"])) : null;
-  const sourceStation = trainInfo ? asRecord(pickValue(trainInfo, ["source", "origin"])) : null;
-  const destinationStation = trainInfo ? asRecord(pickValue(trainInfo, ["destination", "to"])) : null;
-  const sourceName = displayValue(sourceStation && pickValue(sourceStation, ["name", "stationName"]));
-  const sourceCode = displayValue(sourceStation && pickValue(sourceStation, ["code", "stationCode"]));
-  const destinationName = displayValue(destinationStation && pickValue(destinationStation, ["name", "stationName"]));
-  const destinationCode = displayValue(destinationStation && pickValue(destinationStation, ["code", "stationCode"]));
-  const currentStationCode = displayValue(currentLocation && pickValue(currentLocation, ["stationCode", "code"]));
-  const currentStationName = displayValue(currentLocation && pickValue(currentLocation, ["stationName", "name"]));
-  const currentSpeed = displayValue((currentLocation && pickValue(currentLocation, ["speedKmh", "speed"])) ?? (record && pickValue(record, ["speedKmh", "currentSpeedKmh"])));
-  const liveStatus = displayValue(record && pickValue(record, ["status", "trainStatus", "runningStatus"]));
-  const delayMinutes = displayValue((currentLocation && pickValue(currentLocation, ["delayMinutes"])) ?? (record && pickValue(record, ["delayMinutes", "delay"])));
-  const lastUpdated = displayValue(record && pickValue(record, ["lastUpdatedAt", "updatedAt", "generatedAt"]));
-  const isLive = record && pickValue(record, ["isLive"]) === true;
-  const trainName = displayValue((trainInfo && pickValue(trainInfo, ["name", "trainName"])) ?? (record && pickValue(record, ["trainName", "name"])));
-  const currentRouteIndex = currentStationCode === "—" ? -1 : routeStops.findIndex((stop) => displayValue(pickValue(stop, ["stationCode", "code"])) === currentStationCode);
-  const nextStation = currentRouteIndex >= 0
-    ? routeStops[currentRouteIndex + 1]
-    : routeStops.find((stop) => displayValue(pickValue(stop, ["status"])).toLowerCase() === "upcoming");
-  const nextStationName = displayValue(nextStation && pickValue(nextStation, ["stationName", "name"]));
-  const delayPresentation = getDelayPresentation(delayMinutes === "—" ? undefined : delayMinutes);
-
-  return (
-    <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_16px_40px_rgba(11,34,64,0.09)]">
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-gradient-to-r from-[#f4f8ff] via-white to-orange-50/70 px-4 py-4 sm:px-5 sm:py-5">
-        <div className="flex min-w-0 items-center gap-3"><span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#0b2240] text-white shadow-sm"><TrainFront aria-hidden="true" className="h-5 w-5" /></span><div className="min-w-0"><div className="flex flex-wrap items-center gap-x-2 gap-y-1"><h4 className="text-base font-extrabold text-[#0b2240] sm:text-lg">{trainName !== "—" ? trainName : "Live train status"}</h4><span className="rounded-md bg-[#0b2240] px-2 py-0.5 text-[11px] font-bold text-white">{trainNumber}</span></div><p className="mt-1 text-xs text-slate-600">Live running information for this journey</p></div></div>
-        <div className="ml-auto flex shrink-0 items-center gap-2">
-          <button type="button" onClick={checkStatus} disabled={loading || trainNumber === "—" || journeyDate === "—"} className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#0b2240] px-4 text-xs font-bold text-white shadow-sm transition hover:bg-[#15375d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 disabled:cursor-wait disabled:opacity-60 sm:text-sm">
-            <TrainFront aria-hidden="true" className={`h-4 w-4 ${loading ? "motion-safe:animate-pulse" : ""}`} />
-            {loading ? "Finding train…" : liveResult ? "Refresh status" : "Check live status"}
-          </button>
-          {Boolean(liveResult) && <button type="button" onClick={() => { setDismissed(true); setLiveResult(null); }} aria-label="Close live train status" title="Close live train status" className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 transition hover:border-slate-300 hover:bg-slate-50 hover:text-[#0b2240] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">
-            <X aria-hidden="true" className="h-4 w-4" />
-          </button>}
-        </div>
-      </div>
-      {loading && <div role="status" className="border-t border-slate-100 px-4 py-4 sm:px-5"><div className="mb-2 flex items-center gap-2 text-xs font-semibold text-slate-600"><span className="h-2 w-2 rounded-full bg-orange-500 motion-safe:animate-pulse" />Fetching the latest train position…</div><div className="h-2 motion-safe:animate-pulse rounded-full bg-slate-100"><div className="h-2 w-1/3 rounded-full bg-orange-200" /></div></div>}
-      {error && <p role="alert" className="mx-4 my-3 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 text-xs font-semibold text-rose-800 sm:mx-5">{error}</p>}
-      {!loading && !error && !liveResult && !dismissed && <div className="border-t border-slate-100 px-4 py-4 sm:px-5"><p className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-3 py-3 text-xs leading-5 text-slate-600">Check live status to see this train’s reported location, next stop, delay, and station-by-station timings.</p></div>}
-      {Boolean(liveResult) && <div aria-live="polite" className="border-t border-slate-100 p-3 sm:p-5">
-        {(sourceName !== "—" || destinationName !== "—") && <div className="mb-3 flex items-center gap-3 rounded-xl bg-[#0b2240] px-3 py-3 text-white sm:px-4"><div className="min-w-0 flex-1"><p className="text-[9px] font-bold uppercase tracking-[0.14em] text-blue-200">From</p><p className="mt-0.5 truncate text-sm font-extrabold">{sourceName}</p>{sourceCode !== "—" && <p className="text-[10px] font-semibold text-blue-200">{sourceCode}</p>}</div><ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0 text-orange-400" /><div className="min-w-0 flex-1 text-right"><p className="text-[9px] font-bold uppercase tracking-[0.14em] text-blue-200">To</p><p className="mt-0.5 truncate text-sm font-extrabold">{destinationName}</p>{destinationCode !== "—" && <p className="text-[10px] font-semibold text-blue-200">{destinationCode}</p>}</div></div>}
-        <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
-          <div className="rounded-xl border border-slate-200 bg-white p-3"><p className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-slate-500">Journey date</p><p className="mt-1 text-sm font-extrabold text-[#0b2240]">{journeyDate}</p></div>
-          <div className="rounded-xl border border-blue-100 bg-blue-50/60 p-3"><div className="flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-[0.12em] text-blue-800"><MapPin aria-hidden="true" className="h-3.5 w-3.5" />Last reported location</div><p className="mt-1 text-sm font-extrabold text-[#0b2240]">{currentStationName !== "—" ? currentStationName : "Not reported"}</p>{currentStationCode !== "—" && <p className="mt-0.5 text-xs text-slate-500">{currentStationCode}</p>}{currentSpeed !== "—" && <p className="mt-1 text-[11px] font-bold text-blue-800">{currentSpeed} km/h</p>}</div>
-          <div className="rounded-xl border border-slate-200 bg-white p-3"><p className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-slate-500">Next station</p><p className="mt-1 text-sm font-extrabold text-[#0b2240]">{nextStationName}</p>{nextStation && displayValue(pickValue(nextStation, ["stationCode", "code"])) !== "—" && <p className="mt-0.5 text-xs text-slate-500">{displayValue(pickValue(nextStation, ["stationCode", "code"]))}</p>}</div>
-          <div className="rounded-xl border border-slate-200 bg-white p-3"><p className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-slate-500">Train status & delay</p><div className="mt-1 flex flex-wrap items-center gap-2"><span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-extrabold ${isLive ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-700"}`}><span className={`h-2 w-2 rounded-full ${isLive ? "bg-emerald-600 motion-safe:animate-pulse" : "bg-slate-500"}`} />{isLive ? "Live" : liveStatus !== "—" ? liveStatus : "Unavailable"}</span><span className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${delayPresentation.classes}`}>{delayPresentation.label}</span></div>{lastUpdated !== "—" && <p className="mt-1.5 inline-flex items-center gap-1 text-[10px] text-slate-500"><Clock3 aria-hidden="true" className="h-3 w-3" />Updated {formatLiveDateTime(lastUpdated)}</p>}</div>
-        </div>
-        {routeStops.length > 0 ? <div className="mt-4"><div className="mb-2 flex flex-wrap items-center justify-between gap-2"><h4 className="text-sm font-extrabold text-[#0b2240]">Journey timeline</h4><div className="flex flex-wrap items-center gap-3 text-[10px] font-semibold text-slate-500"><span className="inline-flex items-center gap-1.5"><i className="h-2 w-2 rounded-full bg-emerald-500" />Departed</span><span className="inline-flex items-center gap-1.5"><i className="h-2 w-2 rounded-full bg-blue-600" />Train location</span><span className="inline-flex items-center gap-1.5"><i className="h-2 w-2 rounded-full bg-slate-300" />Upcoming / unknown</span></div></div><LiveRouteTimeline route={routeStops} currentStationCode={currentStationCode} /></div> : <p className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">Live status was returned, but station-wise route details are not available for this train and date.</p>}
-      </div>}
-    </div>
-  );
+  return <div className="group/copy relative flex items-center gap-2"><button type="button" title="Copy PNR" aria-label={message === "PNR copied" ? "PNR copied" : "Copy PNR number"} onClick={copy} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-orange-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"><Copy aria-hidden="true" className="h-4 w-4" /></button><span role="status" aria-live="polite" className="text-xs text-slate-600">{message}</span><span aria-hidden="true" className="pointer-events-none absolute right-0 top-full z-20 mt-1 whitespace-nowrap rounded bg-slate-900 px-2 py-1 text-[10px] text-white opacity-0 shadow transition-opacity group-hover/copy:opacity-100 group-focus-within/copy:opacity-100">Copy PNR</span></div>;
 }
 
 function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
@@ -451,19 +340,19 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
   const boardingStation = formatStation(boardingValue, trainRecord ?? record,
     ["boardingStationCode", "boardingPointCode", "boardingCode"],
     ["boardingStationName", "boardingPointName", "boardingName"]);
-  const departureTime = displayValue(pickValue(trainRecord ?? record, ["departureTime", "departTime", "depTime", "boardingTime", "departure", "scheduledDepartureTime", "journeyDepartureTime", "journeyDateRaw"]));
+  const departureTime = displayValue(pickValue(trainRecord ?? record, ["departureTime", "departTime", "depTime", "boardingTime", "departure", "scheduledDepartureTime", "journeyDepartureTime"]));
   const chartStatus = displayValue(chartingRecord ? pickValue(chartingRecord, ["status", "chartStatus", "chartingStatus"]) : pickValue(record, ["chartStatus", "chartingStatus"]));
   const chartPrepared = chartingRecord ? pickValue(chartingRecord, ["isPrepared", "prepared"]) : pickValue(record, ["chartPrepared", "isChartPrepared"]);
   const estimatedChartTime = displayValue(pickValue(chartingRecord ?? record, ["estimatedPreparationTime", "estimatedChartPreparationTime", "expectedPreparationTime", "estimatedAt"]));
-  const isWaitlisted = pickValue(record, ["isWaitlisted"]);
-  const bookingFare = displayValue(pickValue(trainRecord ?? record, ["bookingFare", "totalFare", "fare"]));
-  const responseMeta = asRecord(pickValue(outer, ["meta"]));
-  const generatedAt = displayValue(pickValue(record, ["generatedAt"]) ?? (responseMeta && pickValue(responseMeta, ["timestamp"])));
-  const source = displayValue(responseMeta ? pickValue(responseMeta, ["source"]) : undefined);
-  const executionTime = displayValue(responseMeta ? pickValue(responseMeta, ["executionTime"]) : undefined);
   const passengerRows = passengers.map((passenger, index) => {
     const booking = displayStatus(pickValue(passenger, ["bookingStatus", "booking", "bookingStatusDetails", "booking_status", "bookingStatusText"]));
     const current = displayStatus(pickValue(passenger, ["currentStatus", "current", "currentStatusDetails", "current_status", "currentStatusText", "status"]));
+    const allocation = asRecord(pickValue(passenger, ["currentStatus", "current", "currentStatusDetails", "current_status"]));
+    const parts = current.split(/\s*\/\s*/);
+    const allocated = /^(CNF|RAC)$/i.test(parts[0]) && parts.length >= 3;
+    const coach = displayValue((allocation && pickValue(allocation, ["coach", "coachId", "coachNumber", "coachNo"])) ?? (allocated ? parts[1] : undefined));
+    const seat = displayValue((allocation && pickValue(allocation, ["berth", "berthNo", "berthNumber", "seatNumber", "seatNo"])) ?? (allocated ? parts[2] : undefined));
+    const seatType = displayValue(allocation && pickValue(allocation, ["berthCode", "berthType", "seatType"]));
     const passengerFlags = [
       ["isConfirmed", "Confirmed", "emerald"],
       ["isRAC", "RAC", "blue"],
@@ -472,27 +361,17 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
     ] as const;
     const activeFlags = passengerFlags.filter(([key]) => pickValue(passenger, [key]) === true);
     const serial = displayValue(pickValue(passenger, ["serialNumber", "serialNo", "sNo", "sno"]));
-    const fare = displayValue(pickValue(passenger, ["totalFare", "fare", "amount"]));
-    const passengerChart = displayValue(pickValue(passenger, ["chartStatus", "chartingStatus", "chartPrepared"]) ?? (chartingRecord && pickValue(chartingRecord, ["status", "chartStatus", "chartingStatus"])));
-    const remarks = displayValue(pickValue(passenger, ["remarks", "remark", "remarksIfAny"]));
-    const trainStatus = displayValue(pickValue(passenger, ["trainStatus", "runningStatus"]));
     return {
       id: `${serial}-${index}`,
       serial: serial === "—" ? index + 1 : serial,
       booking,
       current,
+      coach,
+      seat,
+      seatType,
       activeFlags,
-      fare,
-      chart: passengerChart,
-      remarks,
-      trainStatus,
     };
   });
-  const journeyDetails = [
-    ["Train no.", trainNumber], ["Train", trainName], ["Train date", trainDate], ["Boarding date", boardingDate],
-    ["From", fromStation], ["To", toStation], ["Reserved up to", reservationUpto], ["Boarding point", boardingStation],
-    ["Class", journeyClass], ["Quota", quota],
-  ] as const;
   const passengerStatusCounts = passengerRows.reduce<Record<string, number>>((counts, passenger) => {
     const kind = getPnrStatusKind(passenger.current);
     if (kind !== "unavailable") counts[kind] = (counts[kind] ?? 0) + 1;
@@ -507,11 +386,11 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
   const bookingKinds = Object.keys(passengerBookingCounts) as Array<keyof typeof pnrStatusLabels>;
   const knownCurrentCount = Object.values(passengerStatusCounts).reduce((total, count) => total + count, 0);
   const unavailableCurrentCount = passengers.length - knownCurrentCount;
-  const providerOverallStatus = displayStatus(pickValue(record, ["currentStatus", "bookingStatus", "status"]));
+  const providerOverallStatus = displayStatus(pickValue(record, ["currentStatus", "status"]));
   const providerOverallKind = getPnrStatusKind(providerOverallStatus);
   const overallStatusText = passengerKinds.length === 1
     ? unavailableCurrentCount === 0
-      ? `All ${passengers.length === 1 ? "passenger" : "passengers"} ${pnrStatusLabels[passengerKinds[0]].toLowerCase()}`
+      ? passengerKinds[0] === "confirmed" ? "Ticket Confirmed" : pnrStatusLabels[passengerKinds[0]]
       : `${passengerStatusCounts[passengerKinds[0]]} current ${pnrStatusLabels[passengerKinds[0]].toLowerCase()} · ${unavailableCurrentCount} unavailable`
     : passengerKinds.length > 1
       ? [...passengerKinds.map((kind) => `${passengerStatusCounts[kind]} ${pnrStatusLabels[kind].toLowerCase()}`), ...(unavailableCurrentCount > 0 ? [`${unavailableCurrentCount} current unavailable`] : [])].join(" · ")
@@ -524,136 +403,185 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
     ? getPnrStatusTone(pnrStatusLabels[passengerKinds[0]])
     : providerOverallKind !== "unavailable" && passengerKinds.length === 0
       ? getPnrStatusTone(providerOverallStatus)
-      : "border-blue-100 bg-blue-50 text-blue-900";
+      : "border-slate-200 bg-slate-50 text-slate-700";
+  const isPrepared = chartPrepared === true || (chartPrepared !== false && /^(?:chart\s+)?prepared$/i.test(chartStatus.trim()));
+  const arrival = displayValue(pickValue(trainRecord ?? record, ["actualArrivalTime", "arrivalTimeActual", "actualArrival", "actual_arrival"]));
   const journeyOrigin = boardingStation !== "—" ? boardingStation : fromStation;
 
+  const trainLabel = `${trainNumber !== "—" ? `${trainNumber} · ` : ""}${trainName !== "—" ? trainName : "Train details unavailable"}`;
+  const chartLabel = isPrepared ? "Prepared" : chartPrepared === false ? "Not prepared" : chartStatus !== "—" ? chartStatus : "Status unavailable";
+  const isOverallConfirmed = getPnrStatusKind(overallStatusText) === "confirmed";
+
   return (
-    <section aria-labelledby="pnr-result-title" className="mt-4 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm sm:mt-5">
-      <div className="flex flex-wrap items-center justify-between gap-2 bg-[#101a30] px-4 py-2.5 text-white sm:px-5">
-        <div className="flex items-center gap-2"><span className="rounded bg-blue-600 px-2 py-0.5 text-[11px] font-extrabold">PNR</span><h3 id="pnr-result-title" className="font-mono text-sm font-extrabold tracking-wide">{pnr}</h3></div>
-        <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-semibold text-slate-200">{journeyClass !== "—" && <span>Class <strong className="text-white">{journeyClass}</strong></span>}{quota !== "—" && <span>Quota <strong className="text-white">{quota}</strong></span>}</div>
-      </div>
-      <div className="space-y-3 p-3 sm:p-4">
-        <section aria-label="Overall ticket status" className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-slate-50/80 px-3.5 py-3">
-          <div className="flex min-w-0 items-center gap-3"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-[#0b2240] shadow-sm"><TicketCheck aria-hidden="true" className="h-5 w-5" /></span><div><p className="text-[10px] font-extrabold uppercase tracking-wide text-slate-500">Current ticket status</p><p className="mt-0.5 text-xs text-slate-600">{passengers.length > 0 ? "Status for each passenger is shown below." : "Based on the provider response."}</p></div></div>
-          <span className={`inline-flex max-w-full rounded-full border px-3 py-1.5 text-xs font-extrabold ${overallStatusTone}`}>{overallStatusText}</span>
-        </section>
-
-        <section aria-label="Journey summary" className="rounded-xl border border-slate-200 bg-white p-3.5 sm:p-4">
-          <div className="flex flex-wrap items-start justify-between gap-2 border-b border-slate-100 pb-3">
-            <div className="min-w-0"><h4 className="text-sm font-extrabold text-[#0b2240] sm:text-base">{trainName}</h4><p className="mt-0.5 text-xs font-semibold text-slate-500">Train {trainNumber}</p></div>
-            {(journeyClass !== "—" || quota !== "—") && <div className="flex gap-1.5">{journeyClass !== "—" && <span className="rounded-md bg-blue-50 px-2 py-1 text-[10px] font-bold text-blue-800">{journeyClass}</span>}{quota !== "—" && <span className="rounded-md bg-orange-50 px-2 py-1 text-[10px] font-bold text-orange-800">{quota} quota</span>}</div>}
+    <div className="mx-auto mt-3 w-full max-w-[1100px] space-y-3 sm:mt-4">
+      <section aria-labelledby="pnr-result-title" className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-3 sm:px-5">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-50 text-orange-700"><TicketCheck aria-hidden="true" className="h-5 w-5" /></span>
+            <div className="min-w-0"><h3 id="pnr-result-title" className="text-lg font-bold tracking-tight text-slate-900 sm:text-xl">PNR {pnr}</h3></div>
           </div>
-          <div className="grid gap-3 py-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-center">
-            <div className="min-w-0"><p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Boarding station</p><p className="mt-1 break-words text-sm font-extrabold text-[#0b2240]">{journeyOrigin}</p></div>
-            <ArrowRight aria-hidden="true" className="hidden h-4 w-4 text-orange-500 sm:block" />
-            <div className="min-w-0 sm:text-right"><p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Destination</p><p className="mt-1 break-words text-sm font-extrabold text-[#0b2240]">{toStation}</p></div>
-          </div>
-          <div className="grid grid-cols-2 gap-2 border-t border-slate-100 pt-3 sm:grid-cols-3">
-            <div><p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Journey date</p><p className="mt-1 text-xs font-bold text-[#0b2240]">{trainDate}</p></div>
-            <div><p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Boarding date</p><p className="mt-1 text-xs font-bold text-[#0b2240]">{boardingDate}</p></div>
-            <div className="col-span-2 sm:col-span-1"><p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Departure details</p><p className="mt-1 break-words text-xs font-bold text-[#0b2240]">{departureTime}</p></div>
-          </div>
-          <details className="group mt-3 border-t border-slate-100 pt-2.5">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-2 text-xs font-bold text-[#0b2240] focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500"><span>More journey details</span><span aria-hidden="true" className="text-orange-700 transition group-open:rotate-180">⌄</span></summary>
-            <dl className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">{journeyDetails.map(([label, value]) => <div key={label} className="min-w-0 rounded-lg bg-slate-50 px-2.5 py-2"><dt className="text-[9px] font-bold uppercase tracking-wide text-slate-500">{label}</dt><dd className="mt-1 break-words text-xs font-semibold text-slate-800">{value}</dd></div>)}</dl>
-          </details>
+          <div className="flex items-center gap-2"><CopyPnr pnr={pnr} /><button type="button" onClick={() => window.print()} className="inline-flex h-11 items-center gap-2 rounded-lg border border-orange-200 bg-white px-3 text-sm font-semibold text-orange-700 transition hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 print:hidden"><Printer aria-hidden="true" className="h-4 w-4" /><span className="hidden sm:inline">Print</span></button></div>
+        </header>
+
+        <dl className="grid grid-cols-2 gap-x-4 gap-y-3 border-b border-slate-200 px-4 py-3 sm:grid-cols-4 sm:px-5">
+          <div className="min-w-0"><dt className="text-xs font-medium text-slate-500 sm:text-sm">Train number / name</dt><dd className="mt-1 break-words text-base font-bold text-slate-900 sm:text-lg">{trainLabel}</dd>{journeyClass !== "—" && <p className="mt-1 text-xs text-slate-600">{journeyClass}{quota !== "—" ? ` · ${quota === "GN" ? "General quota" : quota}` : ""}</p>}</div>
+          <div><dt className="text-xs font-medium text-slate-500 sm:text-sm">Journey date</dt><dd className="mt-1 text-sm font-bold text-slate-900 sm:text-base">{journeyDate(trainDate)}</dd></div>
+          <div><dt className="text-xs font-medium text-slate-500 sm:text-sm">Current status</dt><dd className="mt-1"><span className={`inline-flex max-w-full cursor-default items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-bold ${isOverallConfirmed ? "border-emerald-200 bg-emerald-50 text-emerald-800" : overallStatusTone}`}>{isOverallConfirmed && <CheckCircle2 aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />}{overallStatusText}</span></dd></div>
+          <div><dt className="text-xs font-medium text-slate-500 sm:text-sm">Chart prepared</dt><dd className="mt-1"><span className="inline-flex cursor-default items-center gap-1.5 rounded-md border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-800"><ClipboardCheck aria-hidden="true" className="h-3.5 w-3.5" />{chartLabel}</span></dd>{!isPrepared && estimatedChartTime !== "—" && <p className="mt-1 text-xs text-slate-600">Estimated {formatPnrDateTime(estimatedChartTime)}</p>}</div>
+        </dl>
+
+        <section aria-labelledby="pnr-passenger-title" className="px-4 py-3 sm:px-5">
+          <div className="mb-2 flex flex-wrap items-center justify-between gap-2"><h4 id="pnr-passenger-title" className="text-base font-bold text-slate-900">Passenger status</h4><span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">{passengers.length} {passengers.length === 1 ? "passenger" : "passengers"}</span></div>
+          {passengerRows.length > 0 ? <>
+            <div className="hidden overflow-hidden rounded-xl border border-slate-200 md:block">
+              <table className="w-full table-fixed border-collapse text-left text-sm">
+                <thead className="border-b border-orange-100 bg-orange-50 text-slate-800"><tr><th scope="col" className="w-[12%] px-4 py-2.5 font-semibold">S.No</th><th scope="col" className="w-[29%] px-4 py-2.5 font-semibold">Booking status</th><th scope="col" className="w-[35%] px-4 py-2.5 font-semibold">Current status</th><th scope="col" className="w-[24%] px-4 py-2.5 font-semibold">Confirmation</th></tr></thead>
+                <tbody className="divide-y divide-slate-200">{passengerRows.map((passenger) => <tr key={passenger.id} className="align-middle"><th scope="row" className="px-4 py-3 font-semibold text-slate-700">Passenger {passenger.serial}</th><td className="break-words px-4 py-3 font-mono text-xs text-slate-700">{passenger.booking}</td><td className="break-words px-4 py-3"><p className="font-mono text-xs font-semibold text-slate-900">{passenger.current}</p>{passenger.coach !== "—" || passenger.seat !== "—" ? <p className="mt-0.5 text-xs text-slate-600">{passenger.coach !== "—" ? `Coach ${passenger.coach}` : ""}{passenger.coach !== "—" && passenger.seat !== "—" ? " · " : ""}{passenger.seat !== "—" ? `Seat ${passenger.seat}` : ""}</p> : null}</td><td className="px-4 py-3"><PassengerConfirmation status={passenger.current} /></td></tr>)}</tbody>
+              </table>
+            </div>
+            <div className="divide-y divide-slate-200 rounded-xl border border-slate-200 md:hidden">{passengerRows.map((passenger) => <article key={passenger.id} className="space-y-2 p-3"><div className="flex items-center justify-between gap-3"><h5 className="font-semibold text-slate-900">Passenger {passenger.serial}</h5><PassengerConfirmation status={passenger.current} /></div><dl className="grid grid-cols-2 gap-2 text-xs"><div className="min-w-0"><dt className="text-slate-500">Booking status</dt><dd className="mt-1 break-words font-mono font-medium text-slate-800">{passenger.booking}</dd></div><div className="min-w-0"><dt className="text-slate-500">Current status</dt><dd className="mt-1 break-words font-mono font-semibold text-slate-900">{passenger.current}</dd></div></dl>{(passenger.coach !== "—" || passenger.seat !== "—") && <p className="text-xs font-medium text-slate-600">{passenger.coach !== "—" ? `Coach ${passenger.coach}` : ""}{passenger.coach !== "—" && passenger.seat !== "—" ? " · " : ""}{passenger.seat !== "—" ? `Seat ${passenger.seat}` : ""}</p>}</article>)}</div>
+          </> : <p className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-5 text-sm text-slate-600">Passenger details aren’t available in the railway provider’s response.</p>}
         </section>
+        <div className="border-t border-slate-200 px-4 py-2 sm:px-5"><PnrPredictionPanel pnr={pnr} passengers={passengers} record={record} /></div>
+      </section>
 
-        <section aria-label="Chart preparation status" className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-orange-200 bg-orange-50/60 px-3.5 py-3">
-          <div className="flex min-w-0 items-center gap-2.5"><span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-orange-700"><Clock3 aria-hidden="true" className="h-4 w-4" /></span><div><h4 className="text-xs font-extrabold text-[#0b2240]">Chart preparation</h4><p className="mt-0.5 text-[10px] leading-4 text-slate-600">Provider-reported status; estimates are shown separately.</p></div></div>
-          <div className="text-right"><span className={`inline-flex rounded-full border px-2.5 py-1 text-[11px] font-extrabold ${typeof chartPrepared === "boolean" ? chartPrepared ? "border-emerald-200 bg-emerald-50 text-emerald-800" : "border-amber-200 bg-amber-50 text-amber-900" : getPnrStatusTone(chartStatus)}`}>{typeof chartPrepared === "boolean" ? chartPrepared ? "Prepared" : "Not prepared" : chartStatus !== "—" ? chartStatus : "Not provided"}</span>
-            <p className="mt-1 text-[10px] text-slate-500">{estimatedChartTime !== "—" ? <>Estimated: <strong className="text-slate-700">{estimatedChartTime}</strong></> : "No preparation estimate provided"}</p>
-          </div>
-        </section>
+      <section aria-labelledby="pnr-train-details-title" className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <header className="mb-3 flex items-center gap-2.5"><span className="flex h-9 w-9 items-center justify-center rounded-lg bg-orange-50 text-orange-700"><TrainFront aria-hidden="true" className="h-5 w-5" /></span><div><h4 id="pnr-train-details-title" className="text-base font-bold text-slate-900">Train details</h4></div></header>
+        <div className="grid w-full grid-cols-[16px_minmax(0,1fr)] gap-x-4 md:grid-cols-[minmax(190px,0.9fr)_minmax(0,1.5fr)_minmax(220px,1fr)] md:items-center md:gap-x-5">
+          <div aria-hidden="true" className="col-start-1 row-start-1 row-end-3 flex flex-col items-center py-2 md:hidden"><span className="h-3 w-3 rounded-full border-[3px] border-blue-600 bg-white" /><span className="min-h-10 w-px flex-1 bg-slate-300" /><span className="h-3 w-3 rounded-full border-[3px] border-orange-600 bg-white" /></div>
+          <div className="col-start-2 min-w-0 pb-3 md:col-start-1 md:pb-0"><p className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Boarding from</p><StationName value={journeyOrigin} />{boardingDate !== "—" && boardingDate !== trainDate && <p className="mt-1.5 text-sm text-slate-600">Boarding date: {journeyDate(boardingDate)}</p>}{departureTime !== "—" && <p className="mt-1 text-sm font-semibold text-slate-900">Departs {journeyTime(departureTime)}</p>}</div>
+          <div aria-hidden="true" className="relative col-start-2 hidden h-8 items-center md:col-start-2 md:flex"><span className="absolute inset-x-0 top-1/2 -translate-y-1/2 border-t-2 border-dashed border-slate-300" /><span className="relative z-10 h-3 w-3 shrink-0 rounded-full border-2 border-blue-600 bg-white" /><TrainFront className="relative z-10 mx-auto h-5 w-5 shrink-0 text-orange-600" /><span className="relative z-10 h-3 w-3 shrink-0 rounded-full border-2 border-orange-600 bg-white" /></div>
+          <div className="col-start-2 min-w-0 md:col-start-3"><p className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Reservation up to</p><StationName value={reservationUpto !== "—" ? reservationUpto : toStation} />{arrival !== "—" && <p className="mt-2 text-sm text-slate-600">Arrival <strong>{journeyTime(arrival)}</strong></p>}</div>
+        </div>
+      </section>
 
-        <PnrPredictionPanel pnr={pnr} passengers={passengers} record={record} />
-
-        <section aria-labelledby="pnr-passenger-title" className="rounded-xl border border-slate-200 bg-white">
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 px-3.5 py-3"><h4 id="pnr-passenger-title" className="text-sm font-extrabold text-[#0b2240]">Passenger status</h4><span className="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-bold text-blue-800">{passengers.length} {passengers.length === 1 ? "passenger" : "passengers"}</span></div>
-          {passengerRows.length > 0 ? <div className="grid gap-2.5 p-3 sm:grid-cols-2 xl:grid-cols-3">
-            {passengerRows.map((passenger) => <article key={passenger.id} className="min-w-0 rounded-lg border border-slate-200 bg-white p-3">
-              <div className="mb-2.5 flex items-center justify-between gap-2"><h5 className="text-xs font-extrabold text-[#0b2240]">Passenger {passenger.serial}</h5><span className={`inline-flex max-w-[65%] rounded-full border px-2 py-1 text-[10px] font-bold ${getPnrStatusTone(passenger.current)}`}>{passenger.current === "—" ? "Status unavailable" : pnrStatusLabels[getPnrStatusKind(passenger.current)]}</span></div>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="min-w-0 rounded-md bg-blue-50/80 p-2"><p className="text-[9px] font-bold uppercase tracking-wide text-blue-800">Booked as</p><p className="mt-1 break-words text-xs font-bold text-[#0b2240]">{passenger.booking}</p></div>
-                <div className="min-w-0 rounded-md bg-emerald-50/80 p-2"><p className="text-[9px] font-bold uppercase tracking-wide text-emerald-800">Current status</p><p className="mt-1 break-words text-xs font-bold text-[#0b2240]">{passenger.current}</p></div>
-              </div>
-              {passenger.activeFlags.length > 0 && <div className="mt-2 flex flex-wrap gap-1">{passenger.activeFlags.map(([, label, tone]) => <span key={label} className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${tone === "emerald" ? "bg-emerald-50 text-emerald-700" : tone === "blue" ? "bg-blue-50 text-blue-700" : tone === "amber" ? "bg-amber-50 text-amber-700" : "bg-rose-50 text-rose-700"}`}>{label}</span>)}</div>}
-              <details className="group mt-2 border-t border-slate-100 pt-2">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 text-[10px] font-bold text-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500"><span>Fare and other details</span><span aria-hidden="true" className="text-orange-700 transition group-open:rotate-180">⌄</span></summary>
-                <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-2">{[["Fare", passenger.fare], ["Charting", passenger.chart], ["Remarks", passenger.remarks], ["Train status", passenger.trainStatus]].map(([label, value]) => <div key={label}><dt className="text-[9px] font-bold uppercase tracking-wide text-slate-500">{label}</dt><dd className="mt-0.5 break-words text-[11px] font-medium text-slate-800">{value}</dd></div>)}</dl>
-              </details>
-            </article>)}
-          </div> : <p className="px-3.5 py-3 text-xs text-slate-600">Passenger-level details were not included in the provider response.</p>}
-          <p className="border-t border-slate-100 px-3.5 py-2.5 text-[10px] leading-4 text-slate-500">Ticket status comes from the provider and may change before chart preparation.</p>
-        </section>
-
-        {trainNumber !== "—" && trainDate !== "—" && <details className="rounded-xl border border-slate-200 bg-white">
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3.5 py-3 text-xs font-bold text-[#0b2240] focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500"><span>Live train running status</span><span aria-hidden="true" className="text-orange-700">Open</span></summary>
-          <div className="border-t border-slate-100 px-3.5 pb-3.5"><LiveTrainStatus trainNumber={trainNumber} journeyDate={trainDate} /></div>
-        </details>}
-
-        {(isWaitlisted !== undefined || bookingFare !== "—" || generatedAt !== "—" || source !== "—" || executionTime !== "—") && <details className="rounded-xl border border-slate-200 bg-white">
-          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3.5 py-3 text-xs font-bold text-[#0b2240] focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500"><span>Additional ticket and lookup details</span><span aria-hidden="true" className="text-orange-700">Open</span></summary>
-          <dl className="grid gap-2 border-t border-slate-100 p-3 sm:grid-cols-2 lg:grid-cols-4">
-            {typeof isWaitlisted === "boolean" && <div className="rounded-lg bg-slate-50 p-2.5"><dt className="text-[9px] font-bold uppercase text-slate-500">Waitlisted</dt><dd className="mt-1 text-xs font-semibold text-slate-800">{isWaitlisted ? "Yes" : "No"}</dd></div>}
-            {bookingFare !== "—" && <div className="rounded-lg bg-slate-50 p-2.5"><dt className="text-[9px] font-bold uppercase text-slate-500">Booking fare</dt><dd className="mt-1 text-xs font-semibold text-slate-800">₹{Number(bookingFare).toLocaleString("en-IN")}</dd></div>}
-            {generatedAt !== "—" && <div className="rounded-lg bg-slate-50 p-2.5"><dt className="text-[9px] font-bold uppercase text-slate-500">Last updated</dt><dd className="mt-1 break-words text-xs font-semibold text-slate-800">{generatedAt}</dd></div>}
-            {source !== "—" && <div className="rounded-lg bg-slate-50 p-2.5"><dt className="text-[9px] font-bold uppercase text-slate-500">Data source</dt><dd className="mt-1 text-xs font-semibold uppercase text-slate-800">{source}</dd></div>}
-            {executionTime !== "—" && <div className="rounded-lg bg-slate-50 p-2.5"><dt className="text-[9px] font-bold uppercase text-slate-500">Lookup time</dt><dd className="mt-1 text-xs font-semibold text-slate-800">{executionTime} ms</dd></div>}
-          </dl>
-        </details>}
-      </div>
-    </section>
+    </div>
   );
 }
 
-export default function PnrStatusPage() {
-  const [pnr, setPnr] = useState("");
+function PnrResultSkeleton() {
+  return <div aria-busy="true" aria-label="Loading PNR ticket status" className="mx-auto mt-3 w-full max-w-[1100px] space-y-3 sm:mt-4">
+    <span className="sr-only">Loading the latest ticket status…</span>
+    <div className="animate-pulse overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <div className="flex items-center gap-3 border-b border-slate-100 px-4 py-4 sm:px-5"><span className="h-10 w-10 rounded-xl bg-orange-50" /><div className="space-y-2"><div className="h-4 w-40 rounded bg-slate-200" /><div className="h-3 w-24 rounded bg-slate-100" /></div></div>
+      <div className="grid grid-cols-2 gap-4 border-b border-slate-100 px-4 py-4 sm:grid-cols-4 sm:px-5">{[0, 1, 2, 3].map((item) => <div key={item} className="space-y-2"><div className="h-3 w-20 rounded bg-slate-100" /><div className="h-4 w-28 max-w-full rounded bg-slate-200" /></div>)}</div>
+      <div className="space-y-3 px-4 py-4 sm:px-5"><div className="h-4 w-32 rounded bg-slate-200" /><div className="h-10 w-full rounded-lg bg-orange-50" /><div className="h-12 w-full rounded-lg bg-slate-100" /></div>
+    </div>
+    <div className="animate-pulse rounded-2xl border border-slate-200 bg-white p-4"><div className="mb-5 h-5 w-32 rounded bg-slate-200" /><div className="flex items-center gap-3"><div className="h-4 w-32 rounded bg-slate-100" /><div className="h-1 flex-1 rounded bg-slate-200" /><div className="h-4 w-36 rounded bg-slate-100" /></div></div>
+  </div>;
+}
+
+function PnrStatusPageView({
+  router,
+  pathname,
+  searchString,
+  urlPnr,
+  lookupId,
+  queryIdentity,
+  hasUrlLookup,
+  initialPnr,
+  initialError,
+}: {
+  router: ReturnType<typeof useRouter>;
+  pathname: string;
+  searchString: string;
+  urlPnr: string | null;
+  lookupId: string | null;
+  queryIdentity: string;
+  hasUrlLookup: boolean;
+  initialPnr: string;
+  initialError: string;
+}) {
+  const [pnr, setPnr] = useState(() => initialPnr || (lookupId && typeof window !== "undefined" ? readPnrFromSession(lookupId) ?? "" : ""));
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(hasUrlLookup && !initialError);
+  const [error, setError] = useState(initialError);
+  const [canRetry, setCanRetry] = useState(false);
   const [result, setResult] = useState<unknown>(null);
+  const [resultPnr, setResultPnr] = useState("");
+  const [retryCount, setRetryCount] = useState(0);
+  const requestSequence = useRef(0);
+  const legacyLookupId = useRef<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    const sequence = ++requestSequence.current;
+    const isCurrentRequest = () => active && requestSequence.current === sequence;
+    if (initialError || !hasUrlLookup) return () => { active = false; };
+    if (lookupId && urlPnr !== null) {
+      router.replace(lookupUrl(pathname, searchString, lookupId), { scroll: false });
+      return () => { active = false; };
+    }
+    if (!lookupId && urlPnr !== null) {
+      if (!legacyLookupId.current) legacyLookupId.current = savePnrToSession(urlPnr);
+      if (legacyLookupId.current) {
+        router.replace(lookupUrl(pathname, searchString, legacyLookupId.current), { scroll: false });
+        return () => { active = false; };
+      }
+    }
+
+    if (!/^\d{10}$/.test(initialPnr)) return () => { active = false; };
+    fetchPnrLookup(initialPnr, retryCount > 0)
+      .then((data) => {
+        if (!isCurrentRequest()) return;
+        setResult(data);
+        setResultPnr(initialPnr);
+        setMessage("PNR status retrieved successfully.");
+      })
+      .catch((lookupError: unknown) => {
+        if (!isCurrentRequest()) return;
+        setError(lookupError instanceof Error ? lookupError.message : "PNR lookup failed. Please try again.");
+        setCanRetry(true);
+      })
+      .finally(() => {
+        if (isCurrentRequest()) setLoading(false);
+      });
+
+    return () => { active = false; };
+  }, [hasUrlLookup, initialError, initialPnr, lookupId, pathname, queryIdentity, retryCount, router, searchString, urlPnr]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
-    setResult(null);
+    setCanRetry(false);
     setMessage("");
     if (!/^\d{10}$/.test(pnr)) {
       setError("Enter a valid 10-digit PNR number.");
       return;
     }
+    setPnr(pnr);
+    setResult(null);
+    setResultPnr("");
     setLoading(true);
-    try {
-      const response = await fetch(`/api/pnr/${encodeURIComponent(pnr)}`, { cache: "no-store" });
-      const body = await response.json();
-      if (!response.ok || body.success !== true || !body.data) {
-        throw new Error(typeof body.error === "string" ? body.error : "Could not retrieve this PNR. Please try again.");
-      }
-      setResult(body.data);
-      setMessage("PNR status retrieved successfully.");
-    } catch (lookupError) {
-      setError(lookupError instanceof Error ? lookupError.message : "PNR lookup failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    const newLookupId = savePnrToSession(pnr);
+    router.push(lookupUrl(pathname, searchString, newLookupId, newLookupId ? undefined : pnr), { scroll: false });
+    if (!newLookupId) setRetryCount((count) => count + 1);
+  }
+
+  function retryLookup() {
+    if (!/^\d{10}$/.test(pnr)) return;
+    setResult(null);
+    setResultPnr("");
+    setError("");
+    setCanRetry(false);
+    setLoading(true);
+    setRetryCount((count) => count + 1);
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#fdfbf7] text-stone-900">
+    <div className="flex min-h-screen flex-col bg-[#F8FAFC] text-slate-900">
       <Header />
       <main className="flex-1">
-        <section className="border-b border-orange-100 bg-white px-4 py-4 sm:py-5">
-          <div className="site-container mx-auto flex max-w-5xl items-center gap-3">
+        <section className="border-b border-orange-100 bg-white px-4 pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8">
+          <div className="mx-auto flex w-full max-w-[1100px] items-center gap-3">
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-600"><TrainFront aria-hidden="true" className="h-5 w-5" /></span>
             <div><h1 className="text-xl font-extrabold tracking-tight text-[#0b2240] sm:text-2xl">PNR status</h1><p className="mt-0.5 text-xs text-slate-600 sm:text-sm">Check your ticket and journey details using your 10-digit PNR.</p></div>
           </div>
         </section>
 
         <section aria-labelledby="pnr-search-title" className="px-4 pb-6 pt-4 sm:pb-8">
-          <div className="site-container mx-auto max-w-5xl">
-            <div className="rounded-2xl border border-[#e8e1d8] bg-white p-4 shadow-sm sm:p-5">
+          <div className="mx-auto w-full max-w-[1100px]">
+            <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
                 <div className="mb-3 flex items-center gap-2.5">
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-50 text-[var(--primary)]"><TicketCheck aria-hidden="true" className="h-4 w-4" /></span>
                   <div><h2 id="pnr-search-title" className="text-base font-extrabold text-[#0b2240]">Find your booking status</h2><p className="mt-0.5 text-xs text-slate-600">Enter the 10-digit PNR printed on your ticket.</p></div>
@@ -672,31 +600,31 @@ export default function PnrStatusPage() {
                           setPnr(event.target.value.replace(/\D/g, "").slice(0, 10));
                           setMessage("");
                           setError("");
-                          setResult(null);
+                          setCanRetry(false);
                         }}
                         placeholder="e.g. 4335734389"
                         aria-describedby="pnr-hint pnr-message"
-                        className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3.5 text-base font-semibold tracking-[0.12em] text-[#0b2240] outline-none transition placeholder:font-normal placeholder:tracking-normal focus:border-orange-400 focus:ring-4 focus:ring-orange-100"
+                        className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3.5 text-base font-semibold tracking-[0.12em] text-[#0b2240] outline-none transition placeholder:font-normal placeholder:tracking-normal focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
                       />
                     </div>
-                    <button type="submit" disabled={loading} className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[var(--primary)] px-5 text-sm font-bold text-white shadow-sm transition hover:brightness-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 disabled:cursor-wait disabled:opacity-70">
+                    <button type="submit" disabled={loading} className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-orange-600 px-5 text-sm font-bold text-white shadow-sm transition hover:bg-orange-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 disabled:cursor-wait disabled:opacity-70">
                       <Search aria-hidden="true" className={`h-4 w-4 ${loading ? "animate-pulse" : ""}`} />
                       {loading ? "Checking…" : "Check PNR"}
                     </button>
                   </div>
                   <div className="mt-2 flex flex-wrap items-center justify-between gap-2"><p id="pnr-hint" className="text-[11px] text-slate-500">Digits only · PNR is 10 digits</p><span className="text-[11px] font-semibold tabular-nums text-slate-400">{pnr.length}/10</span></div>
-                  {message && <p id="pnr-message" aria-live="polite" className="mt-2 text-xs font-semibold text-emerald-700">{message}</p>}
+                  {message && <p id="pnr-message" aria-live="polite" className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700"><CheckCircle2 aria-hidden="true" className="h-3.5 w-3.5" />{message}</p>}
                   {!message && <span id="pnr-message" className="sr-only" aria-live="polite" />}
-                  {error && <p role="alert" className="mt-2 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-800">{error}</p>}
+                  {error && <div role="alert" className="mt-2 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2"><p className="text-xs font-semibold text-rose-800">{error}</p>{canRetry && <button type="button" onClick={retryLookup} className="inline-flex min-h-8 items-center justify-center rounded-md border border-orange-300 bg-white px-3 text-xs font-bold text-orange-700 transition hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">Retry</button>}</div>}
                 </form>
                 {loading && <p role="status" className="mt-2 flex items-center gap-2 text-xs font-semibold text-slate-600"><span className="h-2 w-2 animate-pulse rounded-full bg-orange-500" />Checking your PNR…</p>}
-                {!loading && !error && !result && <p className="mt-2 text-[11px] text-slate-500">Your ticket status and journey details will appear here.</p>}
+                {!hasUrlLookup && !loading && !error && !result && <p className="mt-2 text-[11px] text-slate-500">Your ticket status and journey details will appear here.</p>}
                 <details className="group mt-2 border-t border-slate-100 pt-2">
                   <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[11px] font-semibold text-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500"><Info aria-hidden="true" className="h-3.5 w-3.5" />How your PNR is used</summary>
                   <p className="mt-2 pl-5 text-[11px] leading-4 text-slate-600">Your PNR is sent to the configured railway status provider for this lookup. Avoid using a shared or public device.</p>
                 </details>
             </div>
-            {result !== null && <PnrResult response={result} pnr={pnr} />}
+            {loading ? <PnrResultSkeleton /> : result !== null && <PnrResult response={result} pnr={resultPnr} />}
 
             <section aria-labelledby="status-guide-title" className="mt-10 sm:mt-14">
               <div className="mb-5 max-w-2xl">
@@ -712,7 +640,7 @@ export default function PnrStatusPage() {
                       ? "border-blue-200 bg-blue-50 text-blue-800"
                       : "border-amber-200 bg-amber-50 text-amber-800";
                   return (
-                    <article key={status.code} className="rounded-2xl border border-[#eee2d6] bg-white p-5 shadow-sm sm:p-6">
+                    <article key={status.code} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
                       <span className={`inline-flex min-w-14 items-center justify-center rounded-lg border px-2.5 py-1 text-xs font-extrabold ${colors}`}>{status.code}</span>
                       <h3 className="mt-4 text-base font-extrabold text-[#0b2240]">{status.title}</h3>
                       <p className="mt-2 text-sm leading-6 text-slate-600">{status.body}</p>
@@ -723,17 +651,17 @@ export default function PnrStatusPage() {
             </section>
 
             <section className="mt-8 grid gap-4 md:grid-cols-2">
-              <article className="flex gap-4 rounded-2xl border border-[#eee2d6] bg-white p-5 sm:p-6">
+              <article className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-700"><Clock3 aria-hidden="true" className="h-5 w-5" /></span>
                 <div><h2 className="font-extrabold text-[#0b2240]">When is status final?</h2><p className="mt-2 text-sm leading-6 text-slate-600">Reservation status may change before chart preparation. Check the current official status close to departure for the latest update.</p><InternalLink href="/train-chart-preparation-time" className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-orange-700 hover:text-orange-800">View chart preparation guide <ArrowRight aria-hidden="true" className="h-4 w-4" /></InternalLink></div>
               </article>
-              <article className="flex gap-4 rounded-2xl border border-[#eee2d6] bg-white p-5 sm:p-6">
+              <article className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"><BadgeCheck aria-hidden="true" className="h-5 w-5" /></span>
                 <div><h2 className="font-extrabold text-[#0b2240]">Still on the waiting list?</h2><p className="mt-2 text-sm leading-6 text-slate-600">Your position can move as bookings change. Review your ticket’s terms and check official updates before you travel.</p><p className="mt-3 text-xs font-medium text-slate-500">Confirmation chances can vary by train, route, quota and date.</p></div>
               </article>
             </section>
 
-            <section aria-labelledby="pnr-faq-title" className="mt-10 rounded-2xl border border-[#eee2d6] bg-white p-5 shadow-sm sm:mt-14 sm:p-8">
+            <section aria-labelledby="pnr-faq-title" className="mt-10 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:mt-14 sm:p-8">
               <div className="mb-4 flex items-center gap-2"><CircleHelp aria-hidden="true" className="h-5 w-5 text-orange-600" /><h2 id="pnr-faq-title" className="text-xl font-extrabold text-[#0b2240]">Frequently asked questions</h2></div>
               <div className="divide-y divide-stone-100">
                 {faqs.map((faq) => <details key={faq.q} className="group py-4 first:pt-2 last:pb-1"><summary className="cursor-pointer list-none pr-6 text-sm font-bold text-slate-800 marker:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500">{faq.q}<span aria-hidden="true" className="float-right text-orange-700 transition group-open:rotate-45">＋</span></summary><p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">{faq.a}</p></details>)}
@@ -745,4 +673,53 @@ export default function PnrStatusPage() {
       <Footer />
     </div>
   );
+}
+
+function PnrStatusPageContent() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const searchString = searchParams.toString();
+  const urlPnr = searchParams.get("pnr");
+  const lookupId = searchParams.get("lookup");
+  const hasUrlLookup = searchParams.has("pnr") || searchParams.has("lookup");
+  const initialPnr = lookupId && typeof window !== "undefined"
+    ? readPnrFromSession(lookupId) ?? ""
+    : urlPnr ?? "";
+  const initialError = lookupId && typeof window !== "undefined" && !initialPnr
+    ? "This private lookup is no longer available in this browser session. Enter your PNR to check again."
+    : urlPnr !== null && !/^\d{10}$/.test(urlPnr) && !lookupId
+      ? "Enter a valid 10-digit PNR number."
+      : "";
+  const queryIdentity = lookupId ? `lookup:${lookupId}` : urlPnr !== null ? `pnr:${urlPnr}` : "empty";
+
+  return <PnrStatusPageView
+    key={queryIdentity}
+    router={router}
+    pathname={pathname}
+    searchString={searchString}
+    urlPnr={urlPnr}
+    lookupId={lookupId}
+    queryIdentity={queryIdentity}
+    hasUrlLookup={hasUrlLookup}
+    initialPnr={initialPnr}
+    initialError={initialError}
+  />;
+}
+
+function PnrStatusPageFallback() {
+  return <div className="flex min-h-screen flex-col bg-[#F8FAFC] text-slate-900">
+    <Header />
+    <main className="flex-1 px-4 py-5">
+      <div className="mx-auto w-full max-w-[1100px]">
+        <div aria-hidden="true" className="mb-4 animate-pulse rounded-2xl border border-slate-200 bg-white p-5"><div className="mb-4 h-5 w-48 rounded bg-slate-200" /><div className="flex gap-2"><div className="h-11 flex-1 rounded-lg bg-slate-100" /><div className="h-11 w-32 rounded-lg bg-orange-100" /></div></div>
+        <PnrResultSkeleton />
+      </div>
+    </main>
+    <Footer />
+  </div>;
+}
+
+export default function PnrStatusPage() {
+  return <Suspense fallback={<PnrStatusPageFallback />}><PnrStatusPageContent /></Suspense>;
 }

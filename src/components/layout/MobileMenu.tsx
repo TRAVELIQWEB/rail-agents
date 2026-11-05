@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Calculator, CalendarDays, Menu, MessageCircle, Radio, TicketCheck, X } from "lucide-react";
+import { Calculator, CalendarDays, Menu, MessageCircle, Radio, TicketCheck, TrainFront, X } from "lucide-react";
 import { SearchForm } from "@/components/layout/SearchForm";
 import { InternalLink } from "@/components/ui/InternalLink";
 import { railTools } from "@/config/tools";
@@ -137,6 +137,8 @@ export function MobileMenu() {
                       <CalendarDays className="h-4 w-4 shrink-0 text-[var(--primary)]" />
                     ) : tool.icon === "radio" ? (
                       <Radio className="h-4 w-4 shrink-0 text-[var(--primary)]" />
+                    ) : tool.icon === "train" ? (
+                      <TrainFront className="h-4 w-4 shrink-0 text-[var(--primary)]" />
                     ) : (
                       <Calculator className="h-4 w-4 shrink-0 text-[var(--primary)]" />
                     )}

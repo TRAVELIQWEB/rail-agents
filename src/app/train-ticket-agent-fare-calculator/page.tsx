@@ -142,7 +142,7 @@ export default function TrainTicketAgentFareCalculatorPage() {
 
       <main className="flex-1">
         {/* Warm Premium Hero Header Section (Matching Booking Date Calculator) */}
-        <section className="relative overflow-hidden border-b border-[#f2e6d9] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pt-6 pb-5 sm:pt-8 sm:pb-6 lg:pt-9 lg:pb-7">
+        <section className="relative overflow-hidden border-b border-[#f2e6d9] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8">
           {/* Subtle Ambient Radial Glows */}
           <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-72 w-[600px] rounded-full bg-gradient-to-br from-orange-200/35 via-amber-100/20 to-transparent blur-3xl" />
           <div className="pointer-events-none absolute -bottom-16 right-10 h-48 w-48 rounded-full bg-orange-100/40 blur-2xl" />

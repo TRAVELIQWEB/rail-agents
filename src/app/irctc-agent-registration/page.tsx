@@ -120,9 +120,9 @@ export default function IrctcAgentPage() {
         inLanguage: "en-IN",
         image: siteConfig.socialImage,
         author: {
-          "@type": "Person",
-          "@id": `${siteConfig.url}/about#nihal-singh`,
-          name: "Nihal Singh",
+          "@type": "Organization",
+          "@id": `${siteConfig.url}/#organization`,
+          name: siteConfig.name,
           url: `${siteConfig.url}/about`,
         },
         publisher: {

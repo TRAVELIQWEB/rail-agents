@@ -36,7 +36,13 @@ export default function AskNihalPage() {
         breadcrumb: { "@id": `${siteConfig.url}/ask-nihal#breadcrumb` },
         inLanguage: "en-IN",
         mainEntity: {
+          "@id": `${siteConfig.url}/#organization`,
+        },
+        about: {
+          "@type": "Brand",
           "@id": `${siteConfig.url}/about#nihal-singh`,
+          name: "Nihal Singh",
+          description: "Nihal Singh is a fictional digital character representing RailAgents.",
         },
       },
       {

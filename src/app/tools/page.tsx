@@ -7,7 +7,7 @@ import { railTools } from "@/config/tools";
 
 export const metadata: Metadata = {
   title: "Railway Tools & Calculators",
-  description: "Browse RailAgents tools for train fares, ticket dates, chart timings, PNR status, and cancellation refunds.",
+  description: "Browse RailAgents tools for live train status, train fares, ticket dates, chart timings, PNR status, and cancellation refunds.",
   alternates: { canonical: "/tools" },
 };
 
@@ -16,6 +16,7 @@ const icons = {
   calendar: CalendarDays,
   radio: Radio,
   ticket: TicketCheck,
+  train: TrainFront,
 };
 
 export default function ToolsPage() {
@@ -29,18 +30,18 @@ export default function ToolsPage() {
             <div className="absolute -bottom-40 left-[12%] h-72 w-72 rounded-full bg-blue-200/25 blur-3xl" />
             <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-orange-200/80 to-transparent" />
           </div>
-          <div className="site-container relative py-9 sm:py-11 lg:py-12">
-            <div className="mx-auto max-w-3xl text-center">
+          <div className="site-container relative pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8">
+            <div className="mx-auto max-w-6xl text-center">
               <span className="inline-flex items-center gap-2 rounded-full border border-orange-200/90 bg-white/85 px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--primary-dark)] shadow-[0_4px_14px_rgba(16,36,66,0.06)]">
                 <TrainFront aria-hidden="true" className="h-4 w-4" />
                 Your railway toolkit
               </span>
-              <h1 className="mt-3 text-3xl font-extrabold leading-[1.12] tracking-tight text-[var(--navy)] sm:text-4xl lg:text-[2.75rem]">
-                The right railway tool,
-                <span className="block text-[var(--primary)]">right when you need it</span>
+              <h1 className="mt-2 text-3xl font-extrabold leading-[1.12] tracking-tight text-[var(--navy)] sm:text-4xl lg:whitespace-nowrap lg:text-[clamp(1.75rem,2.4vw,2.4rem)]">
+                The right railway tool,{" "}
+                <span className="block text-[var(--primary)] lg:inline">right when you need it</span>
               </h1>
-              <p className="mx-auto mt-3 max-w-2xl text-[0.9375rem] leading-6 text-slate-600 sm:text-base sm:leading-7">
-                Plan your booking with simple tools for fares, ticket dates, chart timings, and PNR status.
+              <p className="mx-auto mt-2 max-w-2xl text-[0.9375rem] leading-6 text-slate-600 sm:text-base sm:leading-7">
+                Check train running status, plan ticket dates, review fares, and look up your PNR.
               </p>
             </div>
           </div>

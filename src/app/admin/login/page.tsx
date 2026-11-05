@@ -234,7 +234,7 @@ export default function AdminLoginPage() {
 
               <p className="pt-0.5 text-[11px] text-zinc-400">
                 By signing in, you agree to our{" "}
-                <Link href="/" className="font-semibold text-orange-400 hover:underline">
+                <Link href="/terms" className="font-semibold text-orange-400 hover:underline">
                   Terms &amp; Conditions
                 </Link>
               </p>

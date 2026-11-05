@@ -48,8 +48,9 @@ const DEFAULT_CHARTING_BASE_URL =
   "https://dev-api-rail.977-24-24-365.co.in/rail/integrations/charting";
 
 let isTrainIndexEnsured = false;
-let autoSyncPromise: Promise<void> | null = null;
-let fallbackTrainsCache: RailwayTrainDoc[] | null = null;
+let pendingEmptyTrainSync: Promise<SyncTrainsResult | null> | null = null;
+let fallbackTrainsCache: { trains: RailwayTrainDoc[]; expiresAt: number } | null = null;
+let pendingProviderTrains: Promise<RailwayTrainDoc[]> | null = null;
 
 export async function getTrainsCollection(): Promise<Collection<RailwayTrainDoc>> {
   const client = await clientPromise;
@@ -119,16 +120,29 @@ export async function fetchTrainsFromExternalProvider(): Promise<
     }
   }
 
-  fallbackTrainsCache = validTrains;
+  if (validTrains.length === 0) {
+    throw new Error("The railway train-list provider returned no valid trains.");
+  }
+
+  fallbackTrainsCache = { trains: validTrains, expiresAt: Date.now() + 30 * 60 * 1000 };
   return validTrains;
+}
+
+async function getCachedProviderTrains(): Promise<RailwayTrainDoc[]> {
+  if (fallbackTrainsCache && fallbackTrainsCache.expiresAt > Date.now()) return fallbackTrainsCache.trains;
+  if (!pendingProviderTrains) {
+    pendingProviderTrains = fetchTrainsFromExternalProvider()
+      .finally(() => { pendingProviderTrains = null; });
+  }
+  return pendingProviderTrains;
 }
 
 /**
  * Bulk upserts trains into the 'trains' collection in MongoDB.
  * Uses trainNumber as the unique key to prevent duplicate records.
  */
-export async function syncTrainsToDatabase(): Promise<SyncTrainsResult> {
-  const rawTrains = await fetchTrainsFromExternalProvider();
+export async function syncTrainsToDatabase(providerTrains?: RailwayTrainDoc[]): Promise<SyncTrainsResult> {
+  const rawTrains = providerTrains ?? await fetchTrainsFromExternalProvider();
   const collection = await getTrainsCollection();
 
   if (rawTrains.length === 0) {
@@ -188,6 +202,35 @@ export async function syncTrainsToDatabase(): Promise<SyncTrainsResult> {
   };
 }
 
+/** Share an empty-collection import across concurrent searches in this server process. */
+export async function populateTrainsIfEmpty(): Promise<SyncTrainsResult | null> {
+  if (!pendingEmptyTrainSync) {
+    pendingEmptyTrainSync = (async () => {
+      const collection = await getTrainsCollection();
+      if (await collection.countDocuments() > 0) return null;
+      return syncTrainsToDatabase(await getCachedProviderTrains());
+    })().finally(() => { pendingEmptyTrainSync = null; });
+  }
+  return pendingEmptyTrainSync;
+}
+
+/** Save provider matches for future train-number and train-name searches. */
+export async function saveTrainsToDatabase(trains: RailwayTrainDoc[]): Promise<void> {
+  if (trains.length === 0) return;
+  const collection = await getTrainsCollection();
+  const now = new Date().toISOString();
+  await collection.bulkWrite(trains.map((train) => ({
+    updateOne: {
+      filter: { trainNumber: train.trainNumber },
+      update: {
+        $set: { trainName: train.trainName, updatedAt: now },
+        $setOnInsert: { trainNumber: train.trainNumber, createdAt: now },
+      },
+      upsert: true,
+    },
+  })), { ordered: false });
+}
+
 function rankTrains(
   candidates: RailwayTrainDoc[],
   cleanQuery: string,
@@ -241,13 +284,13 @@ const PROMINENT_TRAIN_NUMBERS = [
 
 /**
  * Searches trains in MongoDB by trainNumber or trainName.
- * Automatically populates MongoDB if the collection is empty, and falls back
- * to provider memory cache if MongoDB is unavailable.
+ * Falls back to the railway provider when MongoDB is empty, unavailable, or
+ * has no match. The route saves provider results after responding.
  */
 export async function searchTrainsFromDatabase(
   query: string,
   limit = 10
-): Promise<{ trains: RailwayTrainDoc[]; totalInDb: number; source: "mongodb" | "provider-cache" }> {
+): Promise<{ trains: RailwayTrainDoc[]; totalInDb: number | null; source: "mongodb" | "railway-provider" }> {
   // Clean query if user selected formatted string like "12952 - MMCT TEJAS RAJ" or "MMCT TEJAS RAJ (12952)"
   const cleanQuery = query
     .replace(/^\d{4,5}\s*[-–]\s*/, "")
@@ -256,25 +299,10 @@ export async function searchTrainsFromDatabase(
   const rawDigitsMatch = query.trim().match(/^(\d{1,5})/);
   const effectiveQuery = rawDigitsMatch ? rawDigitsMatch[1] : cleanQuery;
 
+  let totalInDb: number | null = null;
   try {
     const collection = await getTrainsCollection();
-    let totalInDb = await collection.countDocuments();
-
-    // Auto-sync once if collection is empty
-    if (totalInDb === 0) {
-      if (!autoSyncPromise) {
-        autoSyncPromise = syncTrainsToDatabase()
-          .then(() => undefined)
-          .catch((err) => {
-            console.error("Auto-sync of train list to MongoDB failed:", err);
-          })
-          .finally(() => {
-            autoSyncPromise = null;
-          });
-      }
-      await autoSyncPromise;
-      totalInDb = await collection.countDocuments();
-    }
+    totalInDb = await collection.countDocuments();
 
     if (totalInDb > 0) {
       if (!effectiveQuery) {
@@ -308,14 +336,11 @@ export async function searchTrainsFromDatabase(
           .limit(limit - sorted.length)
           .toArray();
 
-        return {
-          trains: [
-            ...sorted,
-            ...rest.map((r) => ({ trainNumber: r.trainNumber, trainName: r.trainName })),
-          ],
-          totalInDb,
-          source: "mongodb",
-        };
+        const trains = [
+          ...sorted,
+          ...rest.map((r) => ({ trainNumber: r.trainNumber, trainName: r.trainName })),
+        ];
+        if (trains.length > 0) return { trains, totalInDb, source: "mongodb" };
       }
 
       const escaped = effectiveQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -337,28 +362,26 @@ export async function searchTrainsFromDatabase(
         trainName: c.trainName,
       }));
 
-      return {
-        trains: rankTrains(candidates, effectiveQuery, limit),
-        totalInDb,
-        source: "mongodb",
-      };
+      const trains = rankTrains(candidates, effectiveQuery, limit);
+      if (trains.length > 0) return { trains, totalInDb, source: "mongodb" };
     }
   } catch (dbErr) {
-    console.warn("MongoDB train search unavailable, falling back to provider cache:", dbErr);
+    console.warn("MongoDB train search unavailable, checking the railway provider:", dbErr);
   }
 
-  // Fallback to in-memory cache from external provider
-  const allTrains = fallbackTrainsCache ?? (await fetchTrainsFromExternalProvider());
+  const allTrains = await getCachedProviderTrains();
   if (!effectiveQuery) {
     const defaults: RailwayTrainDoc[] = [];
     for (const num of PROMINENT_TRAIN_NUMBERS) {
       const found = allTrains.find((t) => t.trainNumber === num);
       if (found) defaults.push(found);
     }
+    const defaultNumbers = new Set(defaults.map((train) => train.trainNumber));
+    const remaining = allTrains.filter((train) => !defaultNumbers.has(train.trainNumber));
     return {
-      trains: defaults.slice(0, limit),
-      totalInDb: allTrains.length,
-      source: "provider-cache",
+      trains: [...defaults, ...remaining].slice(0, limit),
+      totalInDb,
+      source: "railway-provider",
     };
   }
 
@@ -371,8 +394,8 @@ export async function searchTrainsFromDatabase(
 
   return {
     trains: rankTrains(filtered.slice(0, limit * 6), effectiveQuery, limit),
-    totalInDb: allTrains.length,
-    source: "provider-cache",
+    totalInDb,
+    source: "railway-provider",
   };
 }
 

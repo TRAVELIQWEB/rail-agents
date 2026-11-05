@@ -24,42 +24,41 @@ import { siteConfig } from "@/config/site";
 import { InteractiveButton } from "@/components/ui/InteractiveButton";
 
 export const metadata: Metadata = {
-  title: "About Nihal Singh | 20 Years Experience in Railway Agent Guidance",
+  title: "About Nihal Singh | The Digital Face of RailAgents",
   description:
-    "Meet Nihal Singh, who brings 20 years of hands-on experience in railway-agent operations. Learn practical railway booking rules, agent dos and don'ts, fraud prevention, and registration guides on RailAgents.",
+    "Meet Nihal Singh, the fictional digital character created to represent RailAgents—a railway information and guidance platform managed by Neeraj Garg. Explore practical railway booking rules, agent dos and don'ts, and registration guides.",
   keywords: [
     "Nihal Singh",
+    "RailAgents about",
     "Railway agent guidance",
     "IRCTC agent rules",
-    "Train ticket agent experience",
     "Railway ticketing procedures",
     "Tatkal booking rules",
     "Railway agent registration",
-    "RailAgents about",
   ],
   alternates: { canonical: `${siteConfig.url}/about` },
   openGraph: {
-    title: "About Nihal Singh | 20 Years Experience in Railway Agent Guidance – RailAgents",
+    title: "About Nihal Singh | The Digital Face of RailAgents",
     description:
-      "Meet Nihal Singh, bringing 20 years of hands-on railway ticketing and agent experience. Discover clear rules, operational best practices, and honest guidance.",
+      "Meet Nihal Singh, the fictional digital character created to represent RailAgents, managed by Neeraj Garg. Discover clear railway rules, operational best practices, and honest travel guidance.",
     url: `${siteConfig.url}/about`,
     siteName: siteConfig.name,
     locale: "en_IN",
-    type: "profile",
+    type: "website",
     images: [
       {
         url: siteConfig.socialImage,
         width: 1200,
         height: 630,
-        alt: "About Nihal Singh - Railway Agent Guidance",
+        alt: "About Nihal Singh - The Digital Face of RailAgents",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "About Nihal Singh | 20 Years Experience in Railway Agent Guidance",
+    title: "About Nihal Singh | The Digital Face of RailAgents",
     description:
-      "Explore practical insights, rule breakdowns, and honest advice for railway ticketing agents from 20-year veteran Nihal Singh.",
+      "Meet Nihal Singh, the fictional digital character representing RailAgents, managed by Neeraj Garg. Explore practical railway rules and guidance.",
     images: [siteConfig.socialImage],
   },
 };
@@ -200,9 +199,9 @@ export default function AboutPage() {
         "@type": "AboutPage",
         "@id": `${siteConfig.url}/about#webpage`,
         "url": `${siteConfig.url}/about`,
-        "name": "About Nihal Singh | Railway Agent Guidance – RailAgents",
+        "name": "About Nihal Singh | The Digital Face of RailAgents",
         "description":
-          "Learn about Nihal Singh, his railway-agent experience, and the educational guidance provided through RailAgents.",
+          "Meet Nihal Singh, a fictional digital character created to represent RailAgents, an educational railway information platform managed by Neeraj Garg.",
         "inLanguage": "en-IN",
         "isPartOf": {
           "@id": `${siteConfig.url}/#website`,
@@ -214,25 +213,19 @@ export default function AboutPage() {
           "@id": `${siteConfig.url}/about#breadcrumb`,
         },
         "mainEntity": {
+          "@id": `${siteConfig.url}/#organization`,
+        },
+        "about": {
           "@id": `${siteConfig.url}/about#nihal-singh`,
         },
       },
       {
-        "@type": "Person",
+        "@type": "Brand",
         "@id": `${siteConfig.url}/about#nihal-singh`,
         "name": "Nihal Singh",
-        "jobTitle": "Railway Agent Guide and Educator",
         "description":
-          "Shares practical educational guidance about railway-agent operations, booking procedures, applicable rules, and fraud prevention.",
+          "Nihal Singh is a fictional digital character and brand identity created to represent RailAgents, a platform managed by Neeraj Garg.",
         "url": `${siteConfig.url}/about`,
-        "knowsAbout": [
-          "Railway ticketing procedures",
-          "IRCTC agent rules",
-          "Tatkal booking regulations",
-          "TDR filing and refund procedures",
-          "Railway agent business practices",
-          "Ticket cancellation guidelines"
-        ],
       },
       {
         "@type": "BreadcrumbList",
@@ -452,37 +445,40 @@ export default function AboutPage() {
         </section>
 
         {/* =========================================================
-            SECTION 2: MEET NIHAL SINGH
+            SECTION 2: MEET NIHAL SINGH — THE DIGITAL FACE OF RAILAGENTS
         ========================================================== */}
-        <section className="bg-white py-12 sm:py-16 lg:py-20 border-b border-slate-100">
+        <section
+          aria-labelledby="meet-nihal-heading"
+          className="bg-white py-12 sm:py-16 lg:py-20 border-b border-slate-100"
+        >
           <div className="site-container">
-            <div className="grid gap-10 lg:grid-cols-12 lg:gap-12 xl:gap-14">
+            <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12 xl:gap-14">
 
-              {/* Left Column: Story & Narrative (7 cols) */}
+              {/* Left Column: Disclosure & Brand Identity Narrative (7 cols) */}
               <div className="lg:col-span-7">
-                <div className="mb-2.5 inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">
+                <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">
                   <HelpCircle className="h-3.5 w-3.5" />
-                  Experience-Based Perspective
+                  Digital Brand Identity
                 </div>
-                <h2 className="text-2xl font-[900] tracking-tight text-[var(--navy)] sm:text-3xl lg:text-[2.25rem]">
-                  Meet Nihal Singh
+                <h2
+                  id="meet-nihal-heading"
+                  className="text-2xl font-[900] tracking-tight text-[var(--navy)] sm:text-3xl lg:text-[2.25rem]"
+                >
+                  Meet Nihal Singh — The Digital Face of RailAgents
                 </h2>
 
                 <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-slate-600 sm:text-base sm:leading-8">
                   <p>
-                    With 20 years of hands-on experience in the railway-agent field, Nihal Singh
-                    has seen the industry transition from traditional paper forms to digital booking
-                    portals, evolving security mechanisms, and changing cancellation and refund rules.
+                    Nihal Singh is a fictional digital character created to represent RailAgents and make railway-related information more accessible, understandable, and engaging for travelers.
                   </p>
                   <p>
-                    Rather than acting as a distant corporate figure or presenting himself as an
-                    official authority, Nihal positions himself as an approachable, practical guide.
-                    Having observed firsthand where beginners stumble, where miscommunication with
-                    passengers happens, and where agents encounter operational stress, his purpose is
-                    straightforward: to make practical railway knowledge easier to understand and apply.
+                    Nihal Singh is not a real individual. The character serves as the digital identity of RailAgents, helping present railway information, travel guidance, and platform updates in a friendly and approachable manner.
                   </p>
                   <p>
-                    Nihal places deep emphasis on three core realities:
+                    Behind this fictional identity is <strong className="font-bold text-[var(--navy)]">Neeraj Garg</strong>, the real person responsible for managing and maintaining the RailAgents platform. While Nihal Singh represents the public-facing personality of RailAgents, the platform&apos;s operations and published information are managed by a real human.
+                  </p>
+                  <p>
+                    RailAgents values transparency and responsible communication. Nihal Singh is a fictional brand character and does not represent an actual person, Indian Railways employee, government official, or authorized railway representative.
                   </p>
                 </div>
 
@@ -505,8 +501,8 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              {/* Right Column: 3 Realities Cards in Vertical Stack matching full container (5 cols) */}
-              <div className="flex flex-col justify-center space-y-4 lg:col-span-5">
+              {/* Right Column: Core Focus Pillars (5 cols) */}
+              <div className="space-y-4 lg:col-span-5">
                 <div className="rounded-2xl border border-slate-200/90 bg-[#fffdfa] p-5 shadow-2xs transition-all hover:border-orange-200 hover:shadow-xs">
                   <div className="flex items-start gap-3.5">
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
@@ -543,7 +539,6 @@ export default function AboutPage() {
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </section>
@@ -921,7 +916,7 @@ export default function AboutPage() {
                     </span>
                   </summary>
                   <p className="mt-3.5 border-t border-slate-100 pt-3.5 text-sm leading-relaxed text-slate-600">
-                    Nihal Singh brings 20 years of working experience in the railway-agent industry. Having witnessed the transition from manual forms to digital booking platforms, he shares practical knowledge, common agent pitfalls, and compliance advice so others can operate smoothly and responsibly.
+                    Nihal Singh is a fictional digital character created to represent RailAgents and make railway-related information more accessible, understandable, and engaging. Behind this fictional identity is Neeraj Garg, the real person responsible for managing and maintaining the RailAgents platform.
                   </p>
                 </details>
 
@@ -1063,6 +1058,24 @@ export default function AboutPage() {
                 </span>
               </div>
 
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="fictional-character-disclaimer" className="bg-white py-8 sm:py-10">
+          <div className="site-container max-w-5xl">
+            <div className="flex items-start gap-3 rounded-2xl border border-orange-100 bg-[#fffaf5] p-5 sm:gap-4 sm:p-6">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-[#ea580c]">
+                <Info aria-hidden="true" className="h-4 w-4" />
+              </span>
+              <div>
+                <h2 id="fictional-character-disclaimer" className="text-base font-bold text-[var(--navy)] sm:text-lg">
+                  Disclaimer: Fictional Character
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
+                  <strong>Nihal Singh is a fictional character, not a real person.</strong> He serves as the digital identity of RailAgents for sharing railway-related information and guidance. The character is managed by <strong>Neeraj Garg</strong>. Nihal Singh is not affiliated with or an official representative of Indian Railways, IRCTC, or any government authority.
+                </p>
+              </div>
             </div>
           </div>
         </section>

@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { searchStationsFromDatabase, getStationsCount } from "@/lib/stations";
+import { after, NextRequest, NextResponse } from "next/server";
+import { searchStationsFromDatabase, searchStationsFromProvider, getStationsCount, populateStationsIfEmpty, saveStationsToDatabase } from "@/lib/stations";
 
 export const runtime = "nodejs";
 
@@ -7,7 +7,7 @@ function jsonResponse(data: unknown, status = 200) {
   return NextResponse.json(data, {
     status,
     headers: {
-      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      "Cache-Control": "no-store, max-age=0",
       "X-Content-Type-Options": "nosniff",
     },
   });
@@ -15,34 +15,44 @@ function jsonResponse(data: unknown, status = 200) {
 
 /**
  * GET /api/stations
- * Searches stations directly from the permanent MongoDB collection.
+ * Searches MongoDB first, then returns provider results while saving missing data.
  * Query parameters:
  *  - `q`: Search string (station code or station name)
  *  - `limit`: Maximum matching results (default: 10, max: 10)
  */
 export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const query = searchParams.get("q") || "";
+  const limit = 10;
+  let totalInDb: number | null = null;
+
   try {
-    const { searchParams } = new URL(request.url);
-    const query = searchParams.get("q") || "";
-    const limit = 10; // Max 10 matching results per request
-
-    const [stations, totalInDb] = await Promise.all([
-      searchStationsFromDatabase(query, limit),
-      getStationsCount(),
-    ]);
-
-    return jsonResponse({
-      success: true,
-      source: "mongodb",
-      totalInDb,
-      count: stations.length,
-      stations,
-    });
+    totalInDb = await getStationsCount();
+    const stations = totalInDb > 0 ? await searchStationsFromDatabase(query, limit) : [];
+    if (stations.length > 0) {
+      return jsonResponse({ success: true, source: "mongodb", totalInDb, count: stations.length, stations });
+    }
   } catch (error: unknown) {
-    console.error("MongoDB station search failed:", error);
-    return jsonResponse(
-      { error: "Unable to retrieve stations from database." },
-      500
-    );
+    console.error("Database station search failed; checking the railway provider:", error);
+  }
+
+  try {
+    const stations = await searchStationsFromProvider(query, limit);
+    const databaseWasEmpty = totalInDb === 0;
+    after(async () => {
+      try {
+        if (databaseWasEmpty) {
+          await populateStationsIfEmpty();
+        } else {
+          await saveStationsToDatabase(stations);
+        }
+      } catch (error) {
+        console.error("Could not save railway provider stations to MongoDB:", error);
+      }
+    });
+    return jsonResponse({ success: true, source: "railway-provider", totalInDb, count: stations.length, stations });
+  } catch (providerError) {
+    console.error("Railway station provider fallback failed:", providerError);
+    return jsonResponse({ success: false, error: "Station search is temporarily unavailable. Please try again." }, 503);
   }
 }

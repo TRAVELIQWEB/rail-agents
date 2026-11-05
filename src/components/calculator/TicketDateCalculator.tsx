@@ -41,16 +41,13 @@ export interface RailwayStation {
   state: string;
 }
 
-const DEFAULT_FROM_STATION = "New Delhi (NDLS)";
-const DEFAULT_TO_STATION = "Mumbai Central (MMCT)";
-
 function getDefaultJourneyDate() {
   return getTodayIST();
 }
 
 export function TicketDateCalculator() {
-  const [fromInput, setFromInput] = useState<string>(DEFAULT_FROM_STATION);
-  const [toInput, setToInput] = useState<string>(DEFAULT_TO_STATION);
+  const [fromInput, setFromInput] = useState<string>("");
+  const [toInput, setToInput] = useState<string>("");
   const [journeyDate, setJourneyDate] = useState<string>(getDefaultJourneyDate);
 
   // Station search states (connected to MongoDB)
@@ -58,7 +55,8 @@ export function TicketDateCalculator() {
   const [toSuggestions, setToSuggestions] = useState<RailwayStation[]>([]);
   const [fromLoading, setFromLoading] = useState<boolean>(false);
   const [toLoading, setToLoading] = useState<boolean>(false);
-  const [stationError, setStationError] = useState<string | null>(null);
+  const [fromStationError, setFromStationError] = useState<string | null>(null);
+  const [toStationError, setToStationError] = useState<string | null>(null);
 
   // Station dropdown states
   const [fromOpen, setFromOpen] = useState(false);
@@ -109,10 +107,11 @@ export function TicketDateCalculator() {
     const timer = setTimeout(async () => {
       setFromLoading(true);
       try {
-        const res = await fetch(`/api/stations?q=${encodeURIComponent(cleanQ)}&limit=10`);
+        const res = await fetch(`/api/stations?q=${encodeURIComponent(cleanQ)}&limit=10`, { cache: "no-store" });
         if (!res.ok) throw new Error("Search failed");
         const data = await res.json();
-        if (!isCancelled && data.stations) {
+        if (data.success !== true || !Array.isArray(data.stations)) throw new Error("Invalid station search response");
+        if (!isCancelled) {
           setFromSuggestions(
             data.stations.map((s: { stationCode: string; stationName: string }) => ({
               code: s.stationCode,
@@ -121,11 +120,14 @@ export function TicketDateCalculator() {
               state: "",
             }))
           );
-          setStationError(null);
+          setFromStationError(null);
         }
       } catch (err) {
         console.error("From station search error:", err);
-        if (!isCancelled) setStationError("Search is temporarily unavailable. You can still enter station manually.");
+        if (!isCancelled) {
+          setFromSuggestions([]);
+          setFromStationError("Search is temporarily unavailable. You can still enter station manually.");
+        }
       } finally {
         if (!isCancelled) setFromLoading(false);
       }
@@ -146,10 +148,11 @@ export function TicketDateCalculator() {
     const timer = setTimeout(async () => {
       setToLoading(true);
       try {
-        const res = await fetch(`/api/stations?q=${encodeURIComponent(cleanQ)}&limit=10`);
+        const res = await fetch(`/api/stations?q=${encodeURIComponent(cleanQ)}&limit=10`, { cache: "no-store" });
         if (!res.ok) throw new Error("Search failed");
         const data = await res.json();
-        if (!isCancelled && data.stations) {
+        if (data.success !== true || !Array.isArray(data.stations)) throw new Error("Invalid station search response");
+        if (!isCancelled) {
           setToSuggestions(
             data.stations.map((s: { stationCode: string; stationName: string }) => ({
               code: s.stationCode,
@@ -158,11 +161,14 @@ export function TicketDateCalculator() {
               state: "",
             }))
           );
-          setStationError(null);
+          setToStationError(null);
         }
       } catch (err) {
         console.error("To station search error:", err);
-        if (!isCancelled) setStationError("Search is temporarily unavailable. You can still enter station manually.");
+        if (!isCancelled) {
+          setToSuggestions([]);
+          setToStationError("Search is temporarily unavailable. You can still enter station manually.");
+        }
       } finally {
         if (!isCancelled) setToLoading(false);
       }
@@ -200,8 +206,14 @@ export function TicketDateCalculator() {
     const defaultJourneyDate = getDefaultJourneyDate();
     const parsedDefaultDate = parseCalendarDate(defaultJourneyDate);
 
-    setFromInput(DEFAULT_FROM_STATION);
-    setToInput(DEFAULT_TO_STATION);
+    setFromInput("");
+    setToInput("");
+    setFromSuggestions([]);
+    setToSuggestions([]);
+    setFromOpen(false);
+    setToOpen(false);
+    setFromStationError(null);
+    setToStationError(null);
     setJourneyDate(defaultJourneyDate);
     if (parsedDefaultDate) {
       setCalendarViewDate({ year: parsedDefaultDate.year, month: parsedDefaultDate.month });
@@ -435,6 +447,8 @@ export function TicketDateCalculator() {
                   }}
                   onChange={(e) => {
                     setFromInput(e.target.value);
+                    setFromSuggestions([]);
+                    setFromStationError(null);
                     setFromOpen(true);
                   }}
                   placeholder="Enter origin station"
@@ -460,9 +474,9 @@ export function TicketDateCalculator() {
                     <div className="px-3 py-4 text-center text-xs text-stone-500">
                       Searching stations...
                     </div>
-                  ) : stationError && fromSuggestions.length === 0 ? (
+                  ) : fromStationError && fromSuggestions.length === 0 ? (
                     <div className="px-3 py-3 text-center text-xs text-rose-600">
-                      {stationError}
+                      {fromStationError}
                     </div>
                   ) : fromSuggestions.length === 0 ? (
                     <div className="px-3 py-4 text-center text-xs text-stone-500">
@@ -534,6 +548,8 @@ export function TicketDateCalculator() {
                   }}
                   onChange={(e) => {
                     setToInput(e.target.value);
+                    setToSuggestions([]);
+                    setToStationError(null);
                     setToOpen(true);
                   }}
                   placeholder="Enter destination station"
@@ -559,9 +575,9 @@ export function TicketDateCalculator() {
                     <div className="px-3 py-4 text-center text-xs text-stone-500">
                       Searching stations...
                     </div>
-                  ) : stationError && toSuggestions.length === 0 ? (
+                  ) : toStationError && toSuggestions.length === 0 ? (
                     <div className="px-3 py-3 text-center text-xs text-rose-600">
-                      {stationError}
+                      {toStationError}
                     </div>
                   ) : toSuggestions.length === 0 ? (
                     <div className="px-3 py-4 text-center text-xs text-stone-500">

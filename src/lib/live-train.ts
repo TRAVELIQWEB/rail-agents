@@ -2,6 +2,10 @@ import "server-only";
 
 const DEFAULT_LIVE_TRAIN_URL = "https://dev-api-rail.977-24-24-365.co.in/rail/integrations/trains/:trainNumber/live";
 
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return typeof value === "object" && value !== null && !Array.isArray(value) ? value as Record<string, unknown> : null;
+}
+
 export async function fetchLiveTrainStatus(trainNumber: string, date: string): Promise<unknown> {
   const apiKey = process.env.RAILWAY_API_KEY;
   if (!apiKey) throw new Error("Live train status is not configured on the server.");
@@ -41,6 +45,17 @@ export async function fetchLiveTrainStatus(trainNumber: string, date: string): P
   }
   if ("success" in body && body.success === false) {
     throw new Error("The live train provider could not retrieve this train right now.");
+  }
+
+  const outer = asRecord(body);
+  const journey = asRecord(outer?.data) ?? asRecord(outer?.result) ?? outer;
+  const reportedDate = journey?.startDate ?? journey?.journeyDate ?? journey?.date;
+  if (typeof reportedDate !== "string" || reportedDate.slice(0, 10) !== date) {
+    throw new Error("The railway provider did not return data for the selected journey date. Please try again later.");
+  }
+  const reportedTrainNumber = journey?.trainNumber;
+  if (reportedTrainNumber !== undefined && String(reportedTrainNumber) !== trainNumber) {
+    throw new Error("The railway provider returned a different train. Please try again later.");
   }
   return body;
 }

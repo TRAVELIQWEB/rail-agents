@@ -283,6 +283,7 @@ export function TrainChartPreparationTime() {
   const [trainSuggestions, setTrainSuggestions] = useState<TrainSuggestion[]>([]);
   const [trainDropdownOpen, setTrainDropdownOpen] = useState<boolean>(false);
   const [trainSearchLoading, setTrainSearchLoading] = useState<boolean>(false);
+  const [trainSearchError, setTrainSearchError] = useState<string | null>(null);
   const trainDropdownRef = useRef<HTMLDivElement>(null);
 
   // Boarding station dropdown states
@@ -347,14 +348,20 @@ export function TrainChartPreparationTime() {
     const timer = setTimeout(async () => {
       setTrainSearchLoading(true);
       try {
-        const res = await fetch(`/api/trains?q=${encodeURIComponent(cleanQ)}&limit=10`);
+        const res = await fetch(`/api/trains?q=${encodeURIComponent(cleanQ)}&limit=10`, { cache: "no-store" });
         if (!res.ok) throw new Error("Train search failed");
         const data = await res.json();
-        if (!isCancelled && Array.isArray(data.trains)) {
+        if (data.success !== true || !Array.isArray(data.trains)) throw new Error("Invalid train search response");
+        if (!isCancelled) {
           setTrainSuggestions(data.trains);
+          setTrainSearchError(null);
         }
       } catch (err) {
         console.error("Train search error:", err);
+        if (!isCancelled) {
+          setTrainSuggestions([]);
+          setTrainSearchError("Train search is temporarily unavailable. You can enter the train number manually.");
+        }
       } finally {
         if (!isCancelled) setTrainSearchLoading(false);
       }
@@ -381,7 +388,8 @@ export function TrainChartPreparationTime() {
 
       try {
         const res = await fetch(
-          `/api/charting?trainNumber=${encodeURIComponent(resolvedTrainNo)}&date=${encodeURIComponent(dateIso)}`
+          `/api/charting?trainNumber=${encodeURIComponent(resolvedTrainNo)}&date=${encodeURIComponent(dateIso)}`,
+          { cache: "no-store" }
         );
         const json = await res.json();
 
@@ -398,14 +406,17 @@ export function TrainChartPreparationTime() {
         setRemoteClusterFilter("ALL");
 
         // Determine active boarding station
-        if (data.stations.length > 0) {
+        const availableBoardingStations = data.stations.slice(0, -1);
+        if (availableBoardingStations.length > 0) {
           const targetCode = preferredStationCode || selectedBoardingCode;
-          const exists = data.stations.some((s) => s.stationCode === targetCode);
+          const exists = availableBoardingStations.some((s) => s.stationCode === targetCode);
           if (exists && targetCode) {
             setSelectedBoardingCode(targetCode);
           } else {
-            setSelectedBoardingCode(data.stations[0].stationCode);
+            setSelectedBoardingCode(availableBoardingStations[0].stationCode);
           }
+        } else {
+          setSelectedBoardingCode("");
         }
       } catch (err: unknown) {
         console.error("Charting fetch error:", err);
@@ -421,20 +432,26 @@ export function TrainChartPreparationTime() {
     [selectedBoardingCode]
   );
 
+  // The final route stop is a destination, not a boarding station.
+  const boardingStations = useMemo(
+    () => chartingData?.stations.slice(0, -1) ?? [],
+    [chartingData]
+  );
+
   // Currently selected boarding station object & stop index
   const selectedStationInfo = useMemo<{
     station: TrainChartStation;
     stopIndex: number;
   } | null>(() => {
-    if (!chartingData || chartingData.stations.length === 0) return null;
-    const idx = chartingData.stations.findIndex(
+    if (boardingStations.length === 0) return null;
+    const idx = boardingStations.findIndex(
       (s) => s.stationCode === selectedBoardingCode
     );
     if (idx >= 0) {
-      return { station: chartingData.stations[idx], stopIndex: idx + 1 };
+      return { station: boardingStations[idx], stopIndex: idx + 1 };
     }
-    return { station: chartingData.stations[0], stopIndex: 1 };
-  }, [chartingData, selectedBoardingCode]);
+    return { station: boardingStations[0], stopIndex: 1 };
+  }, [boardingStations, selectedBoardingCode]);
 
   // Find remote charting station full name if available in the route
   const getRemoteStationDisplay = useCallback(
@@ -460,15 +477,14 @@ export function TrainChartPreparationTime() {
 
   // Filtered stations for Boarding Station dropdown
   const filteredBoardingDropdownStations = useMemo(() => {
-    if (!chartingData) return [];
     const q = boardingFilterQuery.trim().toLowerCase();
-    if (!q) return chartingData.stations;
-    return chartingData.stations.filter(
+    if (!q) return boardingStations;
+    return boardingStations.filter(
       (s) =>
         s.stationCode.toLowerCase().includes(q) ||
         s.stationName.toLowerCase().includes(q)
     );
-  }, [chartingData, boardingFilterQuery]);
+  }, [boardingStations, boardingFilterQuery]);
 
   // Filtered stations for the full station-wise table
   const filteredTableStations = useMemo(() => {
@@ -602,6 +618,8 @@ export function TrainChartPreparationTime() {
                   onFocus={() => setTrainDropdownOpen(true)}
                   onChange={(e) => {
                     setTrainQuery(e.target.value);
+                    setTrainSuggestions([]);
+                    setTrainSearchError(null);
                     setSelectedTrainNumber("");
                     setChartingData(null);
                     setSelectedBoardingCode("");
@@ -617,6 +635,8 @@ export function TrainChartPreparationTime() {
                       type="button"
                       onClick={() => {
                         setTrainQuery("");
+                        setTrainSuggestions([]);
+                        setTrainSearchError(null);
                         setSelectedTrainNumber("");
                         setChartingData(null);
                         setSelectedBoardingCode("");
@@ -662,6 +682,8 @@ export function TrainChartPreparationTime() {
                     <div className="px-3 py-5 text-center text-xs text-stone-500">
                       {trainSearchLoading
                         ? "Searching trains…"
+                        : trainSearchError
+                          ? trainSearchError
                         : trainQuery.trim()
                           ? "No matching train found. Check the number or name and try again."
                           : "Start typing a train number or name to search."}
@@ -708,7 +730,7 @@ export function TrainChartPreparationTime() {
                 </label>
                 {chartingData && (
                   <span className="text-[10px] font-bold text-orange-700">
-                    {chartingData.stations.length} Route Stops
+                    {boardingStations.length} Boarding Stops
                   </span>
                 )}
               </div>
@@ -716,7 +738,7 @@ export function TrainChartPreparationTime() {
               <button
                 id="boarding-station-btn"
                 type="button"
-                disabled={!chartingData || chartingData.stations.length === 0}
+                disabled={boardingStations.length === 0}
                 onClick={() => setBoardingDropdownOpen((prev) => !prev)}
                 className="w-full h-12 rounded-xl border border-slate-200 bg-slate-50/70 px-3 text-left text-base font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none flex items-center justify-between gap-2 cursor-pointer disabled:opacity-50"
               >
@@ -1257,8 +1279,8 @@ export function TrainChartPreparationTime() {
                   <button
                     type="button"
                     onClick={() => {
-                      if (chartingData.stations.length > 0) {
-                        setSelectedBoardingCode(chartingData.stations[0].stationCode);
+                      if (boardingStations.length > 0) {
+                        setSelectedBoardingCode(boardingStations[0].stationCode);
                       }
                       setTableStationSearch("");
                       setRemoteClusterFilter("ALL");
@@ -1408,7 +1430,7 @@ export function TrainChartPreparationTime() {
                         ) + 1;
                       const isOrigin = stopNumber === 1;
                       const isDestination = stopNumber === chartingData.stations.length;
-                      const isSelected = stn.stationCode === selectedBoardingCode;
+                      const isSelected = !isDestination && stn.stationCode === selectedBoardingCode;
                       const isRemoteDifferent =
                         stn.chartRemoteStation &&
                         stn.chartRemoteStation !== stn.stationCode;
@@ -1422,11 +1444,11 @@ export function TrainChartPreparationTime() {
                       return (
                         <tr
                           key={stn.stationCode}
-                          onClick={() => setSelectedBoardingCode(stn.stationCode)}
-                          className={`transition-colors cursor-pointer ${
+                          onClick={isDestination ? undefined : () => setSelectedBoardingCode(stn.stationCode)}
+                          className={`transition-colors ${isDestination ? "cursor-default" : "cursor-pointer"} ${
                             isSelected
                               ? "bg-orange-50/90 hover:bg-orange-100/70"
-                              : "hover:bg-stone-50/90"
+                              : isDestination ? "" : "hover:bg-stone-50/90"
                           }`}
                         >
                           {/* Stop # */}
@@ -1568,7 +1590,7 @@ export function TrainChartPreparationTime() {
                     chartingData.stations.findIndex((s) => s.stationCode === stn.stationCode) + 1;
                   const isOrigin = stopNumber === 1;
                   const isDestination = stopNumber === chartingData.stations.length;
-                  const isSelected = stn.stationCode === selectedBoardingCode;
+                  const isSelected = !isDestination && stn.stationCode === selectedBoardingCode;
                   const remoteStation = stn.chartRemoteStation || stn.stationCode;
                   const isRemoteDifferent = remoteStation !== stn.stationCode;
                   const firstIso = formatIsoDateTimeIST(stn.firstChartDateTime);
@@ -1580,9 +1602,9 @@ export function TrainChartPreparationTime() {
                   return (
                     <article
                       key={stn.stationCode}
-                      onClick={() => setSelectedBoardingCode(stn.stationCode)}
-                      className={`cursor-pointer px-4 py-3.5 transition-colors ${
-                        isSelected ? "bg-orange-50" : "bg-white active:bg-stone-50"
+                      onClick={isDestination ? undefined : () => setSelectedBoardingCode(stn.stationCode)}
+                      className={`px-4 py-3.5 transition-colors ${isDestination ? "cursor-default" : "cursor-pointer"} ${
+                        isSelected ? "bg-orange-50" : isDestination ? "bg-white" : "bg-white active:bg-stone-50"
                       }`}
                     >
                       <div className="flex items-start justify-between gap-3">

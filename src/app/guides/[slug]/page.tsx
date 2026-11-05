@@ -102,9 +102,9 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
         articleSection: guide.category,
         image: siteConfig.socialImage,
         author: {
-          "@type": "Person",
-          "@id": `${siteConfig.url}/about#nihal-singh`,
-          name: "Nihal Singh",
+          "@type": "Organization",
+          "@id": `${siteConfig.url}/#organization`,
+          name: siteConfig.name,
           url: `${siteConfig.url}/about`,
         },
         publisher: {
@@ -345,6 +345,9 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
                     </h3>
                     <p className="mt-1 text-xs sm:text-sm text-stone-600 max-w-md">
                       Reach out directly to Nihal Singh or join our community for clear, verified answers on IRCTC rules and registrations.
+                    </p>
+                    <p className="mt-1.5 text-[11px] text-stone-400">
+                      Nihal Singh is a fictional digital character representing RailAgents.
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2.5 shrink-0">

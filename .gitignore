@@ -16,23 +16,29 @@
 # next.js
 /.next/
 /out/
+dist/
 
 # production
 /build
 
-# misc
+# misc & OS
 .DS_Store
+Thumbs.db
 *.pem
 
-# debug
+# debug & logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+*.log
 
-# env files (can opt-in for committing if needed)
-.env*
-!.env.example
+# env files (strictly ignore all .env variants and .env.example per repository policy)
+.env
+.env.*
+.env*.local
+.env.example
+.env.*.example
 
 # vercel
 .vercel

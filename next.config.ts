@@ -23,6 +23,11 @@ const nextConfig: NextConfig = {
         destination: "/ticket-date-calculator",
         permanent: true,
       },
+      {
+        source: "/terms-and-conditions",
+        destination: "/terms",
+        permanent: true,
+      },
     ];
   },
 };

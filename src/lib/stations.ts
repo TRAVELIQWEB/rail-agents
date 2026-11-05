@@ -17,6 +17,32 @@ export interface SyncStationsResult {
 }
 
 let isIndexEnsured = false;
+let providerStationCache: { stations: RailwayStationDoc[]; expiresAt: number } | null = null;
+let pendingProviderStations: Promise<RailwayStationDoc[]> | null = null;
+let pendingEmptyDatabaseSync: Promise<SyncStationsResult | null> | null = null;
+
+function normalizeStationQuery(query: string): string {
+  return query.replace(/\s*\([A-Z0-9]+\)\s*$/i, "").trim();
+}
+
+function rankStationMatches(stations: RailwayStationDoc[], query: string, limit: number): RailwayStationDoc[] {
+  const qLower = query.toLowerCase();
+  return stations.sort((a, b) => {
+    const aCode = a.stationCode.toLowerCase();
+    const bCode = b.stationCode.toLowerCase();
+    const aName = a.stationName.toLowerCase();
+    const bName = b.stationName.toLowerCase();
+
+    if (aCode === qLower && bCode !== qLower) return -1;
+    if (bCode === qLower && aCode !== qLower) return 1;
+    if (aCode.startsWith(qLower) && !bCode.startsWith(qLower)) return -1;
+    if (bCode.startsWith(qLower) && !aCode.startsWith(qLower)) return 1;
+    if (aName.startsWith(qLower) && !bName.startsWith(qLower)) return -1;
+    if (bName.startsWith(qLower) && !aName.startsWith(qLower)) return 1;
+    if (aName.length !== bName.length) return aName.length - bName.length;
+    return aName.localeCompare(bName);
+  }).slice(0, limit);
+}
 
 export async function getStationsCollection(): Promise<Collection<RailwayStationDoc>> {
   const client = await clientPromise;
@@ -86,15 +112,47 @@ export async function fetchStationsFromExternalProvider(): Promise<{ stationCode
     }
   }
 
+  if (validStations.length === 0) {
+    throw new Error("The railway station provider returned no valid stations.");
+  }
+
   return validStations;
+}
+
+async function getCachedProviderStations(): Promise<RailwayStationDoc[]> {
+  if (providerStationCache && providerStationCache.expiresAt > Date.now()) return providerStationCache.stations;
+  if (!pendingProviderStations) {
+    pendingProviderStations = fetchStationsFromExternalProvider()
+      .then((stations) => {
+        providerStationCache = { stations, expiresAt: Date.now() + 30 * 60 * 1000 };
+        return stations;
+      })
+      .finally(() => { pendingProviderStations = null; });
+  }
+  return pendingProviderStations;
+}
+
+/** Search the railway provider when the database is empty, unavailable, or missing a station. */
+export async function searchStationsFromProvider(query: string, limit = 10): Promise<RailwayStationDoc[]> {
+  const stations = await getCachedProviderStations();
+  const cleanQuery = normalizeStationQuery(query);
+  if (!cleanQuery) {
+    const prominentCodes = ["NDLS", "HWH", "CSTM", "MAS", "PNBE", "SBC", "JP", "BSB", "ADI", "LKO"];
+    const prominent = prominentCodes.flatMap((code) => stations.filter((station) => station.stationCode === code));
+    const remaining = stations.filter((station) => !prominentCodes.includes(station.stationCode));
+    return [...prominent, ...remaining].slice(0, limit);
+  }
+  const lower = cleanQuery.toLowerCase();
+  const matches = stations.filter((station) => station.stationCode.toLowerCase().startsWith(lower) || station.stationName.toLowerCase().includes(lower));
+  return rankStationMatches(matches, cleanQuery, limit);
 }
 
 /**
  * Bulk upserts stations into the 'stations' collection.
  * Uses stationCode as the unique key to prevent duplicate records.
  */
-export async function syncStationsToDatabase(): Promise<SyncStationsResult> {
-  const rawStations = await fetchStationsFromExternalProvider();
+export async function syncStationsToDatabase(providerStations?: RailwayStationDoc[]): Promise<SyncStationsResult> {
+  const rawStations = providerStations ?? await fetchStationsFromExternalProvider();
   const collection = await getStationsCollection();
 
   if (rawStations.length === 0) {
@@ -154,13 +212,41 @@ export async function syncStationsToDatabase(): Promise<SyncStationsResult> {
   };
 }
 
+/** Populate an empty collection once per server process, sharing concurrent requests. */
+export async function populateStationsIfEmpty(): Promise<SyncStationsResult | null> {
+  if (!pendingEmptyDatabaseSync) {
+    pendingEmptyDatabaseSync = (async () => {
+      if (await getStationsCount() > 0) return null;
+      return syncStationsToDatabase(await getCachedProviderStations());
+    })().finally(() => { pendingEmptyDatabaseSync = null; });
+  }
+  return pendingEmptyDatabaseSync;
+}
+
+/** Save stations returned by a provider lookup so subsequent searches can use MongoDB. */
+export async function saveStationsToDatabase(stations: RailwayStationDoc[]): Promise<void> {
+  if (stations.length === 0) return;
+  const collection = await getStationsCollection();
+  const now = new Date().toISOString();
+  await collection.bulkWrite(stations.map((station) => ({
+    updateOne: {
+      filter: { stationCode: station.stationCode },
+      update: {
+        $set: { stationName: station.stationName, updatedAt: now },
+        $setOnInsert: { stationCode: station.stationCode, createdAt: now },
+      },
+      upsert: true,
+    },
+  })), { ordered: false });
+}
+
 /**
  * Searches stations in MongoDB by stationCode or stationName.
  * Limits results to max 10 matching results per request.
  */
 export async function searchStationsFromDatabase(query: string, limit = 10): Promise<RailwayStationDoc[]> {
   const collection = await getStationsCollection();
-  const cleanQuery = query.replace(/\s*\([A-Z0-9]+\)\s*$/, "").trim();
+  const cleanQuery = normalizeStationQuery(query);
 
   // If query is empty, return top prominent railway hubs
   if (!cleanQuery) {
@@ -224,38 +310,7 @@ export async function searchStationsFromDatabase(query: string, limit = 10): Pro
     stationName: c.stationName,
   }));
 
-  const qLower = cleanQuery.toLowerCase();
-
-  // Sort with accurate relevance ranking
-  candidates.sort((a, b) => {
-    const aCode = a.stationCode.toLowerCase();
-    const bCode = b.stationCode.toLowerCase();
-    const aName = a.stationName.toLowerCase();
-    const bName = b.stationName.toLowerCase();
-
-    // 1. Exact code match
-    if (aCode === qLower && bCode !== qLower) return -1;
-    if (bCode === qLower && aCode !== qLower) return 1;
-
-    // 2. Starts with code
-    if (aCode.startsWith(qLower) && !bCode.startsWith(qLower)) return -1;
-    if (bCode.startsWith(qLower) && !aCode.startsWith(qLower)) return 1;
-
-    // 3. Name starts with query (e.g. PATNA JN before BHAWANIPATNA)
-    const aNameStarts = aName.startsWith(qLower);
-    const bNameStarts = bName.startsWith(qLower);
-    if (aNameStarts && !bNameStarts) return -1;
-    if (bNameStarts && !aNameStarts) return 1;
-
-    // 4. Shorter name is generally more direct
-    if (aName.length !== bName.length) {
-      return aName.length - bName.length;
-    }
-
-    return aName.localeCompare(bName);
-  });
-
-  return candidates.slice(0, limit);
+  return rankStationMatches(candidates, cleanQuery, limit);
 }
 
 /**

@@ -45,7 +45,7 @@ export default function TrainChartPreparationTimePage() {
       <Header />
 
       <main className="flex-1">
-        <section className="relative overflow-hidden border-b border-orange-100 bg-gradient-to-b from-white via-white to-orange-50/70 py-8 sm:py-10">
+        <section className="relative overflow-hidden border-b border-orange-100 bg-gradient-to-b from-white via-white to-orange-50/70 pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-56 w-[500px] rounded-full bg-gradient-to-br from-orange-200/30 via-amber-100/15 to-transparent blur-3xl"
@@ -53,14 +53,14 @@ export default function TrainChartPreparationTimePage() {
 
           <div className="site-container relative z-10">
             <div className="mx-auto max-w-5xl text-center">
-              <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/90 px-3 py-1 text-xs font-semibold tracking-wide text-orange-700 shadow-sm">
+              <p className="mb-2 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/90 px-3 py-1 text-xs font-semibold tracking-wide text-orange-700 shadow-sm">
                 <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-orange-500" />
                 Indian Railways charting guide
               </p>
               <h1 className="text-3xl font-extrabold leading-[1.08] tracking-tight text-[#0b2240] sm:text-4xl lg:text-5xl">
                 Train Chart <span className="text-[var(--primary)]">Preparation Time</span>
               </h1>
-              <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+              <p className="mx-auto mt-2 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
                 Find the first and final reservation chart times for your train and boarding station.
               </p>
             </div>

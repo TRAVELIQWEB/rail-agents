@@ -27,6 +27,9 @@ export function FinalAskCta() {
           <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-[var(--body-text)]">
             Connect with Nihal Singh for practical guidance on ticketing rules, routes, and smooth passenger bookings.
           </p>
+          <p className="mt-1 text-[11px] leading-snug text-slate-500">
+            Nihal Singh is a fictional digital character representing RailAgents.
+          </p>
         </div>
 
         <InternalLink
