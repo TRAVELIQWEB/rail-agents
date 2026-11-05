@@ -4,11 +4,39 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { InternalLink } from "@/components/ui/InternalLink";
 import { railTools } from "@/config/tools";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Railway Tools & Calculators",
-  description: "Browse RailAgents tools for live train status, train fares, ticket dates, chart timings, PNR status, and cancellation refunds.",
-  alternates: { canonical: "/tools" },
+  title: "Railway Tools & Online Calculators",
+  description:
+    "Access free Indian Railways tools from RailAgents: Live Train Running Status, PNR Status Check, Ticket Booking Date Calculator, Train Fare Breakdown, and Chart Timings.",
+  alternates: {
+    canonical: `${siteConfig.url}/tools`,
+  },
+  openGraph: {
+    title: "Railway Tools & Online Calculators | RailAgents",
+    description:
+      "Access free Indian Railways tools from RailAgents: Live Train Running Status, PNR Status Check, Ticket Booking Date Calculator, Train Fare Breakdown, and Chart Timings.",
+    url: `${siteConfig.url}/tools`,
+    siteName: siteConfig.name,
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: siteConfig.socialImage,
+        width: 1200,
+        height: 630,
+        alt: "Railway Tools & Online Calculators - RailAgents",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Railway Tools & Online Calculators | RailAgents",
+    description:
+      "Access free Indian Railways tools from RailAgents: Live Train Running Status, PNR Status Check, Ticket Booking Date Calculator, Train Fare Breakdown, and Chart Timings.",
+    images: [siteConfig.socialImage],
+  },
 };
 
 const icons = {
@@ -19,9 +47,50 @@ const icons = {
   train: TrainFront,
 };
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": `${siteConfig.url}/tools#webpage`,
+      url: `${siteConfig.url}/tools`,
+      name: "Railway Tools & Online Calculators | RailAgents",
+      description:
+        "Access free Indian Railways tools from RailAgents: Live Train Running Status, PNR Status Check, Ticket Booking Date Calculator, Train Fare Breakdown, and Chart Timings.",
+      isPartOf: { "@id": `${siteConfig.url}/#website` },
+      about: { "@id": `${siteConfig.url}/#organization` },
+      inLanguage: "en-IN",
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${siteConfig.url}/tools#breadcrumb`,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: `${siteConfig.url}/`,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Tools",
+          item: `${siteConfig.url}/tools`,
+        },
+      ],
+    },
+  ],
+};
+
 export default function ToolsPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+        }}
+      />
       <Header />
       <main className="min-h-[65vh] bg-[var(--background)]">
         <section className="relative isolate overflow-hidden border-b border-orange-100 bg-[linear-gradient(118deg,#fff8f1_0%,#fffdfa_48%,#f1f6ff_100%)]">
@@ -60,7 +129,7 @@ export default function ToolsPage() {
             </span>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
             {railTools.map((tool) => {
               const Icon = icons[tool.icon];
               return (
@@ -68,23 +137,29 @@ export default function ToolsPage() {
                   key={tool.href}
                   href={tool.href}
                   prefetch={false}
-                  className="group flex min-h-[185px] flex-col rounded-2xl border border-[#e8eaf0] bg-white p-4 shadow-[0_5px_20px_rgba(16,36,66,0.04)] transition duration-200 hover:-translate-y-1 hover:border-orange-200 hover:shadow-[0_14px_32px_rgba(16,36,66,0.1)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:p-5"
+                  className="group flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-md"
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-[var(--primary)] ring-1 ring-orange-100 transition-colors group-hover:bg-orange-100">
-                      <Icon aria-hidden="true" className="h-5 w-5" />
-                    </span>
-                    <span className="rounded-full bg-[#fff4eb] px-2.5 py-1 text-[11px] font-bold text-[var(--primary-dark)]">
-                      {tool.badge}
-                    </span>
+                  <div>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-[var(--primary-dark)] ring-1 ring-orange-200/70 transition-colors group-hover:bg-orange-100/80">
+                        <Icon aria-hidden="true" className="h-5 w-5" />
+                      </span>
+                      <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-700">
+                        {tool.badge}
+                      </span>
+                    </div>
+
+                    <h3 className="mt-4 text-lg font-bold text-[var(--navy)] group-hover:text-[var(--primary-dark)]">
+                      {tool.title}
+                    </h3>
+                    <p className="mt-1 text-sm leading-relaxed text-slate-600">
+                      {tool.description}
+                    </p>
                   </div>
-                  <h3 className="mt-4 text-base font-bold leading-snug text-[var(--navy)] group-hover:text-[var(--primary-dark)]">
-                    {tool.title}
-                  </h3>
-                  <p className="mt-1.5 flex-1 text-sm leading-5 text-slate-600">{tool.description}</p>
-                  <span className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-[var(--primary-dark)]">
-                    Open tool
-                    <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--primary-dark)] group-hover:underline">
+                    Use tool
+                    <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </span>
                 </InternalLink>
               );

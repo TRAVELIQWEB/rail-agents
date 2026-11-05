@@ -11,8 +11,26 @@ const nextConfig: NextConfig = {
     ],
   },
   reactCompiler: true,
+  async headers() {
+    return [
+      {
+        source: "/pnr-status",
+        headers: [{ key: "Referrer-Policy", value: "no-referrer" }],
+      },
+    ];
+  },
   async redirects() {
     return [
+      {
+        source: "/about-us",
+        destination: "/about",
+        permanent: true,
+      },
+      {
+        source: "/contact-us",
+        destination: "/contact",
+        permanent: true,
+      },
       {
         source: "/fare-calculator",
         destination: "/train-ticket-agent-fare-calculator",
@@ -26,6 +44,71 @@ const nextConfig: NextConfig = {
       {
         source: "/terms-and-conditions",
         destination: "/terms",
+        permanent: true,
+      },
+      {
+        source: "/privacy",
+        destination: "/terms",
+        permanent: true,
+      },
+      {
+        source: "/privacy-policy",
+        destination: "/terms",
+        permanent: true,
+      },
+      {
+        source: "/disclaimer",
+        destination: "/about",
+        permanent: true,
+      },
+      {
+        source: "/live-status",
+        destination: "/live-train-status",
+        permanent: true,
+      },
+      {
+        source: "/live-train",
+        destination: "/live-train-status",
+        permanent: true,
+      },
+      {
+        source: "/pnr",
+        destination: "/pnr-status",
+        permanent: true,
+      },
+      {
+        source: "/agent-registration",
+        destination: "/irctc-agent-registration",
+        permanent: true,
+      },
+      {
+        source: "/irctc-agent",
+        destination: "/irctc-agent-registration",
+        permanent: true,
+      },
+      {
+        source: "/irctc-rules",
+        destination: "/irctc-agent-rules-regulations",
+        permanent: true,
+      },
+      {
+        source: "/cancellation-calculator",
+        destination: "/irctc-cancellation-refund-calculator",
+        permanent: true,
+      },
+      {
+        source: "/refund-calculator",
+        destination: "/irctc-cancellation-refund-calculator",
+        permanent: true,
+      },
+      {
+        source: "/chart-timing",
+        destination: "/train-chart-preparation-time",
+        permanent: true,
+      },
+      {
+        source: "/chart-preparation",
+        destination: "/train-chart-preparation-time",
         permanent: true,
       },
     ];

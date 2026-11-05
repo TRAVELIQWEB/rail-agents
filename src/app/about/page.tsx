@@ -24,9 +24,9 @@ import { siteConfig } from "@/config/site";
 import { InteractiveButton } from "@/components/ui/InteractiveButton";
 
 export const metadata: Metadata = {
-  title: "About Nihal Singh | The Digital Face of RailAgents",
+  title: "About RailAgents | Nihal Singh, Fictional Digital Character",
   description:
-    "Meet Nihal Singh, the fictional digital character created to represent RailAgents—a railway information and guidance platform managed by Neeraj Garg. Explore practical railway booking rules, agent dos and don'ts, and registration guides.",
+    "Learn about RailAgents, our railway education mission, practical booking guidance, and Nihal Singh, the fictional digital character who shares railway information.",
   keywords: [
     "Nihal Singh",
     "RailAgents about",
@@ -37,10 +37,11 @@ export const metadata: Metadata = {
     "Railway agent registration",
   ],
   alternates: { canonical: `${siteConfig.url}/about` },
+  robots: { index: true, follow: true },
   openGraph: {
-    title: "About Nihal Singh | The Digital Face of RailAgents",
+    title: "About RailAgents | Nihal Singh, Fictional Digital Character",
     description:
-      "Meet Nihal Singh, the fictional digital character created to represent RailAgents, managed by Neeraj Garg. Discover clear railway rules, operational best practices, and honest travel guidance.",
+      "Learn about RailAgents, our railway education mission, practical booking guidance, and Nihal Singh, the fictional digital character who shares railway information.",
     url: `${siteConfig.url}/about`,
     siteName: siteConfig.name,
     locale: "en_IN",
@@ -50,15 +51,15 @@ export const metadata: Metadata = {
         url: siteConfig.socialImage,
         width: 1200,
         height: 630,
-        alt: "About Nihal Singh - The Digital Face of RailAgents",
+        alt: "About RailAgents and its fictional digital character Nihal Singh",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "About Nihal Singh | The Digital Face of RailAgents",
+    title: "About RailAgents | Nihal Singh, Fictional Digital Character",
     description:
-      "Meet Nihal Singh, the fictional digital character representing RailAgents, managed by Neeraj Garg. Explore practical railway rules and guidance.",
+      "Learn about RailAgents, our railway education mission, practical booking guidance, and Nihal Singh, the fictional digital character who shares railway information.",
     images: [siteConfig.socialImage],
   },
 };
@@ -199,9 +200,9 @@ export default function AboutPage() {
         "@type": "AboutPage",
         "@id": `${siteConfig.url}/about#webpage`,
         "url": `${siteConfig.url}/about`,
-        "name": "About Nihal Singh | The Digital Face of RailAgents",
+        "name": "About RailAgents | Nihal Singh, Fictional Digital Character",
         "description":
-          "Meet Nihal Singh, a fictional digital character created to represent RailAgents, an educational railway information platform managed by Neeraj Garg.",
+          "RailAgents provides educational railway information and guidance. Nihal Singh is its fictional digital character.",
         "inLanguage": "en-IN",
         "isPartOf": {
           "@id": `${siteConfig.url}/#website`,
@@ -224,7 +225,7 @@ export default function AboutPage() {
         "@id": `${siteConfig.url}/about#nihal-singh`,
         "name": "Nihal Singh",
         "description":
-          "Nihal Singh is a fictional digital character and brand identity created to represent RailAgents, a platform managed by Neeraj Garg.",
+          "Nihal Singh is a fictional digital character and brand identity created to represent RailAgents.",
         "url": `${siteConfig.url}/about`,
       },
       {
@@ -452,43 +453,78 @@ export default function AboutPage() {
           className="bg-white py-12 sm:py-16 lg:py-20 border-b border-slate-100"
         >
           <div className="site-container">
-            <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12 xl:gap-14">
+            {/* Main Balanced Two-Column Section (Desktop: Left Portrait ~40%, Right Content ~60%) */}
+            <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-14">
 
-              {/* Left Column: Disclosure & Brand Identity Narrative (7 cols) */}
-              <div className="lg:col-span-7">
+              {/* Mobile Heading First (< lg) */}
+              <div className="block lg:hidden text-center sm:text-left">
                 <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">
                   <HelpCircle className="h-3.5 w-3.5" />
-                  Digital Brand Identity
+                  <span>Digital Brand Identity</span>
                 </div>
-                <h2
-                  id="meet-nihal-heading"
-                  className="text-2xl font-[900] tracking-tight text-[var(--navy)] sm:text-3xl lg:text-[2.25rem]"
-                >
+                <h2 className="text-2xl font-[900] tracking-tight text-[var(--navy)] sm:text-3xl">
                   Meet Nihal Singh — The Digital Face of RailAgents
                 </h2>
+                <div className="mt-2 h-1 w-20 rounded-full bg-gradient-to-r from-orange-500 to-amber-400 mx-auto sm:mx-0" />
+              </div>
 
-                <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-slate-600 sm:text-base sm:leading-8">
+              {/* Left Column: Nihal Singh High-Resolution Branded Portrait */}
+              <div className="flex justify-center lg:col-span-5 xl:col-span-5">
+                <div className="relative w-full max-w-[320px] sm:max-w-[380px] lg:max-w-[420px]">
+                  <Image
+                    src="/images/nihal-singh-avatar.webp"
+                    alt="Nihal Singh — Fictional Digital Brand Character for RailAgents"
+                    width={1024}
+                    height={1024}
+                    className="h-auto w-full object-contain drop-shadow-md rounded-3xl"
+                    priority
+                  />
+                </div>
+              </div>
+
+              {/* Right Column: Narrative, Factual Disclosures & Action Buttons */}
+              <div className="lg:col-span-7 xl:col-span-7">
+                {/* Desktop Heading (Hidden on Mobile) */}
+                <div className="hidden lg:block">
+                  <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">
+                    <HelpCircle className="h-3.5 w-3.5" />
+                    <span>Digital Brand Identity</span>
+                  </div>
+
+                  <h2
+                    id="meet-nihal-heading"
+                    className="text-2xl font-[900] tracking-tight text-[var(--navy)] sm:text-3xl lg:text-[2.25rem] leading-[1.18]"
+                  >
+                    Meet Nihal Singh — The Digital Face of RailAgents
+                  </h2>
+
+                  <div className="mt-2.5 h-1 w-20 rounded-full bg-gradient-to-r from-orange-500 to-amber-400" />
+                </div>
+
+                {/* 4 Transparency & Character Narrative Paragraphs */}
+                <div className="mt-5 space-y-3.5 text-[15px] leading-relaxed text-slate-600 sm:text-base sm:leading-8">
                   <p>
-                    Nihal Singh is a fictional digital character created to represent RailAgents and make railway-related information more accessible, understandable, and engaging for travelers.
+                    Nihal Singh is a fictional digital character and the digital face of RailAgents, created to make railway-related information and travel guidance more accessible, understandable, and engaging for travelers.
                   </p>
                   <p>
-                    Nihal Singh is not a real individual. The character serves as the digital identity of RailAgents, helping present railway information, travel guidance, and platform updates in a friendly and approachable manner.
+                    Nihal Singh does not represent a real individual. The character serves as the digital face of RailAgents, helping present railway information, travel guidance, and platform updates in a friendly and approachable manner.
                   </p>
                   <p>
-                    Behind this fictional identity is <strong className="font-bold text-[var(--navy)]">Neeraj Garg</strong>, the real person responsible for managing and maintaining the RailAgents platform. While Nihal Singh represents the public-facing personality of RailAgents, the platform&apos;s operations and published information are managed by a real human.
+                    As the digital face of the platform, Nihal Singh helps travelers and agents navigate railway booking rules, understand ticketing procedures, and access clear guidance with confidence.
                   </p>
                   <p>
-                    RailAgents values transparency and responsible communication. Nihal Singh is a fictional brand character and does not represent an actual person, Indian Railways employee, government official, or authorized railway representative.
+                    RailAgents values transparency and responsible communication. Nihal Singh is a fictional digital character and does not represent an actual person, Indian Railways employee, government official, or authorized railway representative.
                   </p>
                 </div>
 
+                {/* Action CTA Buttons */}
                 <div className="mt-7 flex flex-wrap items-center gap-3">
                   <Link
                     href="/ask-nihal"
                     className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-bold text-white shadow-xs transition-colors hover:bg-[#ea580c]"
                   >
                     <MessageCircle className="h-4 w-4" />
-                    Send a Question to Nihal
+                    <span>Send a Question to Nihal</span>
                   </Link>
                   <a
                     href={whatsappUrl}
@@ -496,50 +532,55 @@ export default function AboutPage() {
                     rel="noopener noreferrer"
                     className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-[var(--navy)] shadow-2xs transition-colors hover:border-orange-300 hover:bg-orange-50/50"
                   >
-                    Chat on WhatsApp
+                    <svg className="h-4 w-4 fill-emerald-600" viewBox="0 0 24 24">
+                      <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.27-2.42 5.82a8.19 8.19 0 0 1-5.82 2.42c-1.48 0-2.93-.39-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.25-1.5-1.4-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.44 1.03 2.61c.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.1-.23-.17-.48-.29" />
+                    </svg>
+                    <span>Chat on WhatsApp</span>
                   </a>
                 </div>
               </div>
 
-              {/* Right Column: Core Focus Pillars (5 cols) */}
-              <div className="space-y-4 lg:col-span-5">
-                <div className="rounded-2xl border border-slate-200/90 bg-[#fffdfa] p-5 shadow-2xs transition-all hover:border-orange-200 hover:shadow-xs">
-                  <div className="flex items-start gap-3.5">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
-                      <CheckCircle2 className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <p className="text-sm font-bold text-[var(--navy)]">Understanding Applicable Rules</p>
-                      <p className="mt-1 text-xs leading-relaxed text-slate-600">Knowing authorized booking windows, pricing structures, and refund eligibility protects both the agent and the passenger.</p>
-                    </div>
+            </div>
+
+            {/* Three Information Cards Below the Main Two-Column Layout (3-Column Desktop Grid) */}
+            <div className="mt-12 sm:mt-14 grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div className="rounded-2xl border border-slate-200/90 bg-[#fffdfa] p-5 shadow-2xs transition-all hover:border-orange-200 hover:shadow-xs">
+                <div className="flex items-start gap-3.5">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                    <CheckCircle2 className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-bold text-[var(--navy)]">Understanding Applicable Rules</p>
+                    <p className="mt-1 text-xs leading-relaxed text-slate-600">Knowing authorized booking windows, pricing structures, and refund eligibility protects both the agent and the passenger.</p>
                   </div>
                 </div>
+              </div>
 
-                <div className="rounded-2xl border border-slate-200/90 bg-[#fffdfa] p-5 shadow-2xs transition-all hover:border-orange-200 hover:shadow-xs">
-                  <div className="flex items-start gap-3.5">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
-                      <CheckCircle2 className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <p className="text-sm font-bold text-[var(--navy)]">Learning from Frequent Mistakes</p>
-                      <p className="mt-1 text-xs leading-relaxed text-slate-600">Most operational hurdles—from incorrect name spellings to unverified TDR claims—are preventable with disciplined workflows.</p>
-                    </div>
+              <div className="rounded-2xl border border-slate-200/90 bg-[#fffdfa] p-5 shadow-2xs transition-all hover:border-orange-200 hover:shadow-xs">
+                <div className="flex items-start gap-3.5">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                    <CheckCircle2 className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-bold text-[var(--navy)]">Learning from Frequent Mistakes</p>
+                    <p className="mt-1 text-xs leading-relaxed text-slate-600">Most operational hurdles—from incorrect name spellings to unverified TDR claims—are preventable with disciplined workflows.</p>
                   </div>
                 </div>
+              </div>
 
-                <div className="rounded-2xl border border-slate-200/90 bg-[#fffdfa] p-5 shadow-2xs transition-all hover:border-orange-200 hover:shadow-xs">
-                  <div className="flex items-start gap-3.5">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
-                      <CheckCircle2 className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <p className="text-sm font-bold text-[var(--navy)]">Clear, Realistic Answers</p>
-                      <p className="mt-1 text-xs leading-relaxed text-slate-600">Encouraging readers to seek clarification on challenging scenarios rather than taking risky or unauthorized shortcuts.</p>
-                    </div>
+              <div className="rounded-2xl border border-slate-200/90 bg-[#fffdfa] p-5 shadow-2xs transition-all hover:border-orange-200 hover:shadow-xs">
+                <div className="flex items-start gap-3.5">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                    <CheckCircle2 className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-bold text-[var(--navy)]">Clear, Realistic Answers</p>
+                    <p className="mt-1 text-xs leading-relaxed text-slate-600">Encouraging readers to seek clarification on challenging scenarios rather than taking risky or unauthorized shortcuts.</p>
                   </div>
                 </div>
               </div>
             </div>
+
           </div>
         </section>
 
@@ -916,7 +957,7 @@ export default function AboutPage() {
                     </span>
                   </summary>
                   <p className="mt-3.5 border-t border-slate-100 pt-3.5 text-sm leading-relaxed text-slate-600">
-                    Nihal Singh is a fictional digital character created to represent RailAgents and make railway-related information more accessible, understandable, and engaging. Behind this fictional identity is Neeraj Garg, the real person responsible for managing and maintaining the RailAgents platform.
+                    Nihal Singh is a fictional digital character and the digital face of RailAgents, created to share railway-related information and travel guidance. Nihal Singh does not represent a real individual or an official representative of Indian Railways or IRCTC.
                   </p>
                 </details>
 
@@ -1073,7 +1114,7 @@ export default function AboutPage() {
                   Disclaimer: Fictional Character
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
-                  <strong>Nihal Singh is a fictional character, not a real person.</strong> He serves as the digital identity of RailAgents for sharing railway-related information and guidance. The character is managed by <strong>Neeraj Garg</strong>. Nihal Singh is not affiliated with or an official representative of Indian Railways, IRCTC, or any government authority.
+                  Nihal Singh is a fictional digital character and the digital face of RailAgents, created to share railway-related information and travel guidance. Nihal Singh does not represent a real individual or an official representative of Indian Railways or IRCTC.
                 </p>
               </div>
             </div>

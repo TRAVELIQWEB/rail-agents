@@ -10,25 +10,23 @@ import { Logo } from "@/components/layout/Logo";
 import { InternalLink } from "@/components/ui/InternalLink";
 
 const quickLinks = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Fare Calculator", href: "/train-ticket-agent-fare-calculator" },
+  { label: "Live Train Status", href: "/live-train-status" },
+  { label: "PNR Status Check", href: "/pnr-status" },
+  { label: "Train Fare Calculator", href: "/train-ticket-agent-fare-calculator" },
   { label: "Ticket Date Calculator", href: "/ticket-date-calculator" },
   { label: "Chart Preparation Time", href: "/train-chart-preparation-time" },
-  { label: "Blog", href: "/blog" },
-  { label: "Guides", href: "/guides" },
-  { label: "Contact Us", href: "/contact" },
+  { label: "Refund Calculator", href: "/irctc-cancellation-refund-calculator" },
+  { label: "All Railway Tools", href: "/tools" },
 ];
 
 const supportLinks = [
-  { label: "IRCTC Agent Information", href: "/irctc-agent-registration" },
-  { label: "Agent Rules & Regulations", href: "/irctc-agent-rules-regulations" },
-  { label: "Fare Calculator", href: "/train-ticket-agent-fare-calculator" },
-  { label: "Ticket Date Calculator", href: "/ticket-date-calculator" },
-  { label: "Blog Articles", href: "/blog" },
-  { label: "Railway Guides", href: "/guides" },
+  { label: "Railway Agent Guides", href: "/guides" },
+  { label: "IRCTC Agent Registration", href: "/irctc-agent-registration" },
+  { label: "Rules & Regulations", href: "/irctc-agent-rules-regulations" },
   { label: "Ask Nihal Singh", href: "/ask-nihal" },
-  { label: "Contact & Support", href: "/contact" },
+  { label: "Blog & Railway Insights", href: "/blog" },
+  { label: "About Us", href: "/about" },
+  { label: "Contact Us", href: "/contact" },
   { label: "Terms & Conditions", href: "/terms" },
 ];
 
@@ -75,8 +73,8 @@ export function Footer() {
             </ul>
           </div>
 
-          <FooterLinkColumn title="Quick Links" items={quickLinks} />
-          <FooterLinkColumn title="Support" items={supportLinks} />
+          <FooterLinkColumn title="Railway Tools" items={quickLinks} />
+          <FooterLinkColumn title="Guidance & Support" items={supportLinks} />
 
           <div className="text-center md:text-left">
             <h2 className="text-base font-[800] text-white">Stay Updated</h2>

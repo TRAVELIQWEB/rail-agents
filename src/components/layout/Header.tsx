@@ -3,17 +3,17 @@
 import { usePathname } from "next/navigation";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { Logo } from "@/components/layout/Logo";
-import { SearchForm } from "@/components/layout/SearchForm";
 import { InternalLink } from "@/components/ui/InternalLink";
 import { InteractiveButton } from "@/components/ui/InteractiveButton";
 
 const navItems = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "IRCTC Agent", href: "/irctc-agent-registration" },
+  { label: "Live Train", href: "/live-train-status" },
+  { label: "PNR Status", href: "/pnr-status" },
+  { label: "Guides", href: "/guides" },
   { label: "Tools", href: "/tools" },
   { label: "Blog", href: "/blog" },
-  { label: "Guides", href: "/guides" },
 ];
 
 export function Header() {
@@ -53,8 +53,7 @@ export function Header() {
 
         </nav>
 
-        <div className="hidden shrink-0 items-center gap-2 justify-self-end min-[1080px]:flex xl:gap-3">
-          <SearchForm />
+        <div className="hidden shrink-0 items-center justify-self-end min-[1080px]:flex">
           <InteractiveButton
             as="link"
             href="/contact"

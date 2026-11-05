@@ -6,6 +6,9 @@
   --primary: #f97316;
   --primary-hover: #ea580c;
   --primary-dark: #c2410c;
+  --primary-action: #c2410c;
+  --primary-action-hover: #9a3412;
+  --primary-text: #c2410c;
   --primary-soft: #fff7ed;
   --primary-light: #ffedd5;
   --primary-border: #fed7aa;
@@ -50,7 +53,7 @@ body {
 }
 
 .page-hero-title .hero-accent {
-  color: var(--primary);
+  color: var(--primary-text);
 }
 
 .home-hero-title {
@@ -251,18 +254,18 @@ input[type="number"] {
     scroll-behavior: auto;
   }
 
-  @media (max-width: 380px) {
-    .home-hero-title {
-      font-size: 1.5rem;
-    }
-  }
-
   *,
   *::before,
   *::after {
     animation: none;
     scroll-behavior: auto;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .home-hero-title {
+    font-size: 1.5rem;
   }
 }
 
@@ -333,14 +336,14 @@ input[type="number"] {
 }
 
 .blog-content a {
-  color: var(--primary);
+  color: var(--primary-text);
   text-decoration: underline;
   text-underline-offset: 3px;
   font-weight: 650;
 }
 
 .blog-content a:hover {
-  color: var(--primary-hover);
+  color: var(--primary-action-hover);
 }
 
 /* Explicit Button styling inside blog articles to prevent global link color and underline overrides */
@@ -349,7 +352,7 @@ input[type="number"] {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  background-color: #ea580c !important; /* solid orange */
+  background-color: var(--primary-action) !important;
   color: #ffffff !important;            /* crisp white text */
   text-decoration: none !important;
   font-weight: 800 !important;
@@ -362,7 +365,7 @@ input[type="number"] {
 
 .blog-content a.blog-btn-primary:hover,
 .blog-content .blog-btn-primary:hover {
-  background-color: #c2410c !important;
+  background-color: var(--primary-action-hover) !important;
   color: #ffffff !important;
   text-decoration: none !important;
   transform: translateY(-1px);
@@ -387,7 +390,7 @@ input[type="number"] {
 .blog-content a.blog-btn-secondary:hover,
 .blog-content .blog-btn-secondary:hover {
   background-color: #f8fafc !important;
-  color: #ea580c !important;
+  color: var(--primary-action-hover) !important;
   border-color: #f97316 !important;
   text-decoration: none !important;
   transform: translateY(-1px);
@@ -608,7 +611,7 @@ input[type="number"] {
   top: 0;
   bottom: 0;
   width: 4px;
-  background-color: #f97316;
+  background-color: var(--primary-action);
   pointer-events: none;
 }
 
@@ -767,7 +770,7 @@ input[type="number"] {
 }
 
 .uiverse-btn:focus-visible {
-  outline: 2px solid var(--primary);
+  outline: 2px solid var(--primary-action-hover);
   outline-offset: 3px;
 }
 
@@ -1274,13 +1277,13 @@ input[type="number"] {
 
 /* InteractiveButton inside Matte Dark Admin Theme */
 .admin-dark-theme .uiverse-btn.uiverse-cta-orange {
-  background: #ea580c !important;
+  background: var(--primary-action) !important;
   border-color: #f97316 !important;
   box-shadow: none !important;
 }
 
 .admin-dark-theme .uiverse-btn.uiverse-cta-orange:hover {
-  background: #f97316 !important;
+  background: var(--primary-action-hover) !important;
 }
 
 .admin-dark-theme .uiverse-cta-orange .uiverse-content {
@@ -1456,7 +1459,7 @@ input[type="number"] {
   40% {
     letter-spacing: 2px;
     transform: translateX(24px);
-    color: var(--primary);
+    color: var(--primary-text);
   }
 
   80% {
@@ -1779,4 +1782,142 @@ input[type="number"] {
   to {
     transform: translateY(-0.12em);
   }
+}
+
+/* Keep RailAgents orange for accents; use higher-contrast orange for text and controls. */
+:where(
+  [class~="bg-orange-400"],
+  [class~="bg-orange-500"],
+  [class~="bg-orange-600"],
+  [class*="bg-orange-400/"],
+  [class*="bg-orange-500/"],
+  [class*="bg-orange-600/"],
+  [class*="bg-[#f97316]/"],
+  [class*="bg-[#ea580c]/"],
+  [class*="bg-[var(--primary)]/"],
+  [class~="bg-[#f97316]"],
+  [class~="bg-[#ea580c]"],
+  [class~="bg-[var(--primary)]"]
+)[class~="text-white"] {
+  background-color: var(--primary-action) !important;
+}
+
+:where(
+  [class~="bg-orange-400"],
+  [class~="bg-orange-500"],
+  [class~="bg-orange-600"],
+  [class*="bg-orange-400/"],
+  [class*="bg-orange-500/"],
+  [class*="bg-orange-600/"],
+  [class*="bg-[#f97316]/"],
+  [class*="bg-[#ea580c]/"],
+  [class*="bg-[var(--primary)]/"],
+  [class~="bg-[#f97316]"],
+  [class~="bg-[#ea580c]"],
+  [class~="bg-[var(--primary)]"]
+)[class~="text-white"]:is(:hover, :active) {
+  background-color: var(--primary-action-hover) !important;
+}
+
+.group:hover :where(
+  [class*="group-hover:bg-[var(--primary)]"],
+  [class*="group-hover:bg-[#f97316]"],
+  [class*="group-hover:bg-[#ea580c]"],
+  [class*="group-hover:bg-orange-500"],
+  [class*="group-hover:bg-orange-600"]
+)[class*="group-hover:text-white"] {
+  background-color: var(--primary-action) !important;
+  color: #ffffff !important;
+}
+
+.group:hover :where([class*="group-hover:text-white"]),
+.group:hover :where([class*="group-hover:text-white"]) svg {
+  color: #ffffff !important;
+}
+
+:where([class*="hover:text-white"]):is(:hover, :active),
+:where([class*="hover:text-white"]):is(:hover, :active) svg,
+:where([class~="text-white"]) > svg {
+  color: #ffffff !important;
+}
+
+:where(
+  [class~="bg-orange-400"],
+  [class~="bg-orange-500"],
+  [class~="bg-orange-600"],
+  [class~="bg-[#f97316]"],
+  [class~="bg-[#ea580c]"],
+  [class~="bg-[var(--primary)]"]
+)[class~="text-white"]:focus-visible {
+  outline-color: var(--primary-action-hover) !important;
+  outline-offset: 2px !important;
+}
+
+:where(
+  [class~="text-[var(--primary)]"],
+  [class~="text-[#f97316]"],
+  [class~="text-[#ea580c]"],
+  [class*="text-[#f97316]/"],
+  [class*="text-[#ea580c]/"],
+  [class*="text-orange-400/"],
+  [class*="text-orange-500/"],
+  [class*="text-orange-600/"],
+  [class~="text-orange-400"],
+  [class~="text-orange-500"],
+  [class~="text-orange-600"]
+):not(svg):not([class*="hover:text-white"]:hover):not(.group:hover [class*="group-hover:text-white"]):not(.admin-dark-theme *):not([class~="bg-[#0f1115]"] *) {
+  color: var(--primary-text) !important;
+}
+
+:where(
+  [class~="text-[var(--primary)]"],
+  [class~="text-[#f97316]"],
+  [class~="text-[#ea580c]"],
+  [class*="text-[#f97316]/"],
+  [class*="text-[#ea580c]/"],
+  [class*="text-orange-400/"],
+  [class*="text-orange-500/"],
+  [class*="text-orange-600/"],
+  [class~="text-orange-400"],
+  [class~="text-orange-500"],
+  [class~="text-orange-600"]
+):not(svg):not([class*="hover:text-white"]:hover):not(.group:hover [class*="group-hover:text-white"]):not(.admin-dark-theme *):not([class~="bg-[#0f1115]"] *) > svg:not([class~="text-white"]) {
+  color: var(--primary) !important;
+}
+
+:where(
+  [class*="hover:text-[var(--primary)]"],
+  [class*="hover:text-[var(--primary-hover)]"],
+  [class*="hover:text-[#f97316]"],
+  [class*="hover:text-[#ea580c]"],
+  [class*="hover:text-orange-500"],
+  [class*="hover:text-orange-600"],
+  [class*="hover:text-orange-700"]
+):hover:not(.admin-dark-theme *):not([class~="bg-[#0f1115]"] *) {
+  color: var(--primary-action-hover) !important;
+}
+
+.group:hover :where(
+  [class*="group-hover:text-[var(--primary)]"],
+  [class*="group-hover:text-[#ea580c]"],
+  [class*="group-hover:text-orange-500"],
+  [class*="group-hover:text-orange-600"],
+  [class*="group-hover:text-orange-700"]
+):not(.admin-dark-theme *):not([class~="bg-[#0f1115]"] *) {
+  color: var(--primary-action-hover) !important;
+}
+
+:where(
+  [class*="focus-visible:outline-[var(--primary)]"],
+  [class*="focus-visible:outline-orange-500"],
+  [class*="focus-visible:outline-[#f97316]"]
+):focus-visible:not(.admin-dark-theme *):not([class~="bg-[#0f1115]"] *) {
+  outline-color: var(--primary-action-hover) !important;
+}
+
+:where(
+  [class*="focus:border-[var(--primary)]"],
+  [class*="focus-within:border-[var(--primary)]"]
+):is(:focus, :focus-within):not(.admin-dark-theme *):not([class~="bg-[#0f1115]"] *) {
+  border-color: var(--primary-action-hover) !important;
 }

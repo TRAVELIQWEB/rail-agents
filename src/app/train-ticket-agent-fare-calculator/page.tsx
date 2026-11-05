@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  CreditCard,
-  Users,
-  ShieldCheck,
   ArrowRight,
   ArrowDown,
-  Calculator,
   Percent,
   Receipt,
   CheckCircle2,
-  XCircle,
-  HelpCircle,
 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -188,7 +182,7 @@ export default function TrainTicketAgentFareCalculatorPage() {
                   {/* Left: 5-Step Explanation + Component Breakdown */}
                   <div className="lg:col-span-7 space-y-4">
                     <div className="group rounded-2xl border border-[#ede1d3] bg-[#faf6f0]/80 p-5 transition-all duration-300 hover:bg-white hover:border-orange-300 hover:shadow-[0_8px_24px_rgba(249,115,22,0.08)]">
-                      <span className="inline-block rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-2xs">
+                      <span className="inline-block rounded-lg bg-gradient-to-r from-[#c2410c] to-[#9a3412] px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-2xs">
                         Worked Example: 1 Adult in AC Class (Base Fare ₹1,500)
                       </span>
 
@@ -361,7 +355,7 @@ export default function TrainTicketAgentFareCalculatorPage() {
                         aria-hidden="true"
                       />
 
-                      <div className="w-full rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-amber-600 px-4 py-3.5 text-white shadow-[0_4px_14px_rgba(249,115,22,0.28)] transition-transform duration-200 hover:scale-[1.01]">
+                      <div className="w-full rounded-xl bg-gradient-to-r from-[#c2410c] via-[#a43b12] to-[#9a3412] px-4 py-3.5 text-white shadow-[0_4px_14px_rgba(249,115,22,0.28)] transition-transform duration-200 hover:scale-[1.01]">
                         <span className="block text-sm sm:text-base font-black">
                           Total Customer Payable Amount
                         </span>
@@ -552,7 +546,7 @@ export default function TrainTicketAgentFareCalculatorPage() {
                 <div className="mt-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs font-bold">
                   <Link
                     href="/irctc-agent-registration"
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-2 text-white shadow-[0_3px_10px_rgba(249,115,22,0.3)] hover:from-orange-600 hover:to-amber-600 hover:-translate-y-0.5 transition-all duration-150"
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#c2410c] to-[#9a3412] px-4 py-2 text-white shadow-[0_3px_10px_rgba(249,115,22,0.3)] hover:from-[#9a3412] hover:to-[#7c2d12] hover:-translate-y-0.5 transition-all duration-150"
                   >
                     <span>Step-by-Step Registration Guide</span>
                     <ArrowRight className="h-3.5 w-3.5" />

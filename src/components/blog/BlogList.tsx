@@ -237,11 +237,11 @@ export function BlogList({ posts }: BlogListProps) {
     : filtered;
 
   return (
-    <div className="space-y-6 sm:space-y-10">
+    <div className="space-y-5 sm:space-y-8">
       {/* ── 3. FEATURED ARTICLES ("Worth Your Attention") ── */}
       {isSpotlightVisible && featuredPost && (
-        <section aria-labelledby="featured-journal-heading" className="space-y-6">
-          <div className="border-b border-[#f0e4d7] pb-4">
+        <section aria-labelledby="featured-journal-heading" className="space-y-4 sm:space-y-5">
+          <div className="border-b border-[#f0e4d7] pb-3 sm:pb-3.5">
             <div className="flex items-center gap-2 text-xs font-[800] uppercase tracking-wider text-[var(--primary-dark)]">
               <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
               <span>Editorial Spotlight</span>

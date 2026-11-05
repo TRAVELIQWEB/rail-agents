@@ -1,12 +1,16 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Compass, Search } from "lucide-react";
+import { ArrowLeft, Compass } from "lucide-react";
 import { ParticleText } from "@/components/ui/ParticleText";
+
+export const metadata: Metadata = {
+  title: "Page Not Found",
+  robots: { index: false, follow: false },
+};
 
 export default function NotFound() {
   return (
-    <div className="relative flex min-h-[calc(100vh-140px)] flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#fffdfa] via-[#fff9f2] to-[#fff4e8] px-4 py-16 text-center sm:px-6">
+      <div className="relative flex min-h-[calc(100vh-140px)] flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#fffdfa] via-[#fff9f2] to-[#fff4e8] px-4 py-16 text-center sm:px-6">
       {/* Subtle background ambient circles */}
       <div
         aria-hidden="true"
@@ -70,12 +74,20 @@ export default function NotFound() {
           </Link>
 
           <Link
-            href="/blog"
+            href="/guides"
             prefetch={false}
             className="inline-flex h-12 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-6 text-sm font-bold text-slate-700 shadow-2xs backdrop-blur-xs transition hover:bg-white hover:border-slate-300 cursor-pointer"
           >
             <Compass className="h-4 w-4 text-[var(--primary)]" />
             <span>Explore Railway Guides</span>
+          </Link>
+
+          <Link
+            href="/tools"
+            prefetch={false}
+            className="inline-flex h-12 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-6 text-sm font-bold text-slate-700 shadow-2xs backdrop-blur-xs transition hover:bg-white hover:border-slate-300 cursor-pointer"
+          >
+            <span>Railway Tools</span>
           </Link>
         </div>
       </div>

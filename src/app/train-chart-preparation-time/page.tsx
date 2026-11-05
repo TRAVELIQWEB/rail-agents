@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description:
     "Check exact station-wise IRCTC reservation chart preparation timings (First Chart, Second Final Chart, and Remote Charting Station) for any Indian Railways train by number or name.",
   alternates: {
-    canonical: PAGE_SLUG,
+    canonical: PAGE_URL,
   },
   openGraph: {
     title:

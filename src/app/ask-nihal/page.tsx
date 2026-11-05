@@ -2,21 +2,25 @@ import { QueryPage } from "@/components/ui/QueryPage";
 import { siteConfig } from "@/config/site";
 
 export const metadata = {
-  title: "Ask Nihal Singh About Railway Services",
+  title: "Ask Nihal Singh - Railway Questions & Travel Guidance",
   description:
-    "Ask Nihal Singh for guidance on railway agent registration, IRCTC information, booking questions, and railway services.",
+    "Ask Nihal Singh for straightforward guidance on railway booking rules, IRCTC agent queries, ticket confirmation, and passenger travel.",
   alternates: { canonical: `${siteConfig.url}/ask-nihal` },
   openGraph: {
-    title: "Ask Nihal Singh About Railway Services | RailAgents",
+    title: "Ask Nihal Singh - Railway Questions & Travel Guidance | RailAgents",
     description:
-      "Ask Nihal Singh for guidance on railway agent registration, IRCTC information, booking questions, and railway services.",
+      "Ask Nihal Singh for straightforward guidance on railway booking rules, IRCTC agent queries, ticket confirmation, and passenger travel.",
     url: `${siteConfig.url}/ask-nihal`,
+    siteName: siteConfig.name,
+    locale: "en_IN",
+    type: "website",
     images: [siteConfig.socialImage],
   },
   twitter: {
-    title: "Ask Nihal Singh About Railway Services | RailAgents",
+    card: "summary_large_image",
+    title: "Ask Nihal Singh - Railway Questions & Travel Guidance | RailAgents",
     description:
-      "Ask Nihal Singh for guidance on railway agent registration, IRCTC information, booking questions, and railway services.",
+      "Ask Nihal Singh for straightforward guidance on railway booking rules, IRCTC agent queries, ticket confirmation, and passenger travel.",
     images: [siteConfig.socialImage],
   },
 };
@@ -64,7 +68,7 @@ export default function AskNihalPage() {
           __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
         }}
       />
-      <QueryPage />
+      <QueryPage mode="ask-nihal" />
     </>
   );
 }

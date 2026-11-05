@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   ShieldAlert,
@@ -228,31 +229,47 @@ export default function IrctcAgentRulesPage() {
         {/* =========================================================
             HERO INTRODUCTORY SECTION
         ========================================================== */}
-        <section className="relative overflow-hidden border-b border-[#f2e6dc] bg-gradient-to-b from-[#fffbf7] via-white to-[#fffaf5] py-7 sm:py-9 lg:py-10">
-          <div className="site-container max-w-5xl">
+        <section className="relative isolate overflow-hidden border-b border-[#f2e6dc] bg-gradient-to-b from-[#fffbf7] via-white to-[#fffaf5]">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-0 right-0 hidden w-[48%] overflow-hidden lg:block"
+          >
+            <Image
+              src="/images/hero-railway-bg.webp"
+              alt=""
+              fill
+              priority
+              sizes="48vw"
+              className="object-cover object-right opacity-55"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#fffbf7] via-[#fffbf7]/75 to-transparent" />
+            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white/50 to-transparent" />
+          </div>
+
+          <div className="site-container relative z-10 max-w-6xl py-7 sm:py-9 lg:py-10">
             <div className="inline-flex items-center gap-2 rounded-full border border-orange-200/80 bg-orange-50/80 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-orange-700 mb-3 shadow-2xs">
               <Scale size={13} className="text-orange-600" />
               <span>Official Regulatory &amp; Compliance Standards</span>
             </div>
 
-            <h1 className="page-hero-title">
+            <h1 className="page-hero-title max-w-3xl">
               IRCTC Agent Rules &amp; Regulations:{" "}
               <span className="hero-accent block sm:inline">What Every Railway Agent Must Know</span>
             </h1>
 
-            <p className="page-hero-description mt-3.5">
+            <p className="page-hero-description mt-3.5 max-w-2xl">
               Working as an IRCTC railway agent involves more than booking train tickets. Agents need to understand
               registration requirements, customer responsibilities, permitted booking practices, applicable charges,
               cancellation and refund procedures, and the activities they must avoid.
             </p>
 
-            <p className="mt-3 text-sm sm:text-base leading-relaxed text-slate-600">
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
               This guide explains the key rules and practical dos and don&apos;ts that aspiring and existing railway agents
               should understand. Because requirements may change and can differ by scheme, always verify important
               decisions against the latest applicable IRCTC policy and official instructions.
             </p>
 
-            <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-slate-500 border-t border-slate-200/70 pt-4">
+            <div className="mt-6 flex max-w-3xl flex-wrap items-center gap-4 border-t border-slate-200/70 pt-4 text-xs text-slate-500">
               <div className="flex items-center gap-1.5 font-medium">
                 <Clock size={14} className="text-slate-400" />
                 <span>Last reviewed: <strong className="text-slate-800 font-semibold">{lastReviewedDate}</strong></span>
@@ -565,7 +582,7 @@ export default function IrctcAgentRulesPage() {
                     </p>
                     <p className="mt-1 text-xs text-slate-600">
                       <strong>Practical Example:</strong> A cyber cafe owner uses their personal IRCTC ID during Tatkal hours
-                      because their commercial wallet balance is low or they want to bypass the commercial 15-minute lock.
+                      because their commercial wallet balance is low or they want to bypass the commercial 30-minute lock.
                     </p>
                     <p className="mt-1 text-xs text-emerald-800 bg-emerald-50/60 p-2 rounded-lg font-medium">
                       <strong>Correct Way:</strong> Every commercial transaction must pass exclusively through your authorized RSP portal using your official agent credentials.
@@ -947,7 +964,7 @@ export default function IrctcAgentRulesPage() {
                       Tatkal Booking Dos:
                     </h4>
                     <ul className="space-y-2 text-xs text-emerald-950">
-                      <li>• Observe Tatkal opening windows: AC Tatkal opens for agents at <strong>10:15 AM</strong> (15-min lock); Non-AC Tatkal opens for agents at <strong>11:15 AM</strong>.</li>
+                      <li>• Observe Tatkal opening windows: AC Tatkal opens for agents at <strong>10:30 AM</strong> (30-min lock); Non-AC Tatkal opens for agents at <strong>11:30 AM</strong>.</li>
                       <li>• Verify government photo ID details for each passenger before attempting Tatkal bookings.</li>
                       <li>• Always input the passenger&apos;s own phone number for direct Tatkal OTP authentication.</li>
                       <li>• Inform customers in advance that confirmed Tatkal tickets are non-refundable upon cancellation under railway rules.</li>

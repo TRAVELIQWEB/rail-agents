@@ -14,6 +14,7 @@ const availableInternalRoutes = new Set([
   "/pnr-status",
   "/tools",
   "/live-train-status",
+  "/terms",
   "/videos",
   "/guides",
   "/blog",

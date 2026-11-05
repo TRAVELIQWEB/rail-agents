@@ -1,8 +1,7 @@
-
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const rawSecretPath =
     process.env.ADMIN_SECRET_PATH ||
@@ -13,44 +12,31 @@ export async function middleware(request: NextRequest) {
   const sessionCookie = request.cookies.get("railagents_admin_session");
   const hasSession = Boolean(sessionCookie?.value);
 
-  // 1. Private admin entry URL alias (if configured)
+  // Private admin entry URL alias (when configured).
   if (secretPath && secretPath.startsWith("/") && pathname === secretPath) {
-    if (hasSession) {
-      return NextResponse.redirect(
-        new URL("/admin/dashboard", request.url)
-      );
-    }
     return NextResponse.redirect(
-      new URL("/admin/login", request.url)
+      new URL(hasSession ? "/admin/dashboard" : "/admin/login", request.url),
     );
   }
 
-  // 2. Login page: direct access permitted
+  // Allow the login page, redirecting an active session to the dashboard.
   if (pathname === "/admin/login") {
-    if (hasSession) {
-      return NextResponse.redirect(
-        new URL("/admin/dashboard", request.url)
-      );
-    }
-    return NextResponse.next();
+    return hasSession
+      ? NextResponse.redirect(new URL("/admin/dashboard", request.url))
+      : NextResponse.next();
   }
 
-  // 3. Admin protected pages (/admin, /admin/dashboard, /admin/posts, etc.)
+  // Protect admin pages and keep the dashboard as the admin landing page.
   if (pathname === "/admin" || pathname.startsWith("/admin/")) {
     if (!hasSession) {
-      return NextResponse.redirect(
-        new URL("/admin/login", request.url)
-      );
+      return NextResponse.redirect(new URL("/admin/login", request.url));
     }
 
     if (pathname === "/admin") {
-      return NextResponse.redirect(
-        new URL("/admin/dashboard", request.url)
-      );
+      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
     }
   }
 
-  // 4. Pass through all other requests
   return NextResponse.next();
 }
 

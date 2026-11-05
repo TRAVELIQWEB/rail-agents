@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Compass, RotateCcw } from "lucide-react";
+import { ArrowLeft, RotateCcw } from "lucide-react";
 import { ParticleText } from "@/components/ui/ParticleText";
 
 export default function GlobalError({
