@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 import { fetchLiveTrainStatus } from "@/lib/live-train";
+import { readRailwaySnapshot, saveRailwaySnapshot } from "@/lib/railway-snapshots";
 
 export const runtime = "nodejs";
 
@@ -17,10 +18,32 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
     return NextResponse.json({ error: "Provide a valid journey date in YYYY-MM-DD format." }, { status: 400 });
   }
 
+  const snapshotId = `${trainNumber}:${date}`;
+  if (request.nextUrl.searchParams.get("refresh") !== "1") {
+    try {
+      const cached = await readRailwaySnapshot("live", snapshotId);
+      if (cached !== null) {
+        return NextResponse.json(
+          { success: true, source: "mongodb", data: cached },
+          { headers: { "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" } },
+        );
+      }
+    } catch (error) {
+      console.error("Live train snapshot lookup failed; checking the railway provider:", error);
+    }
+  }
+
   try {
     const data = await fetchLiveTrainStatus(trainNumber, date);
+    after(async () => {
+      try {
+        await saveRailwaySnapshot("live", snapshotId, data);
+      } catch (error) {
+        console.error("Could not save live train snapshot:", error);
+      }
+    });
     return NextResponse.json(
-      { success: true, data },
+      { success: true, source: "railway-provider", data },
       { headers: { "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" } },
     );
   } catch (error) {

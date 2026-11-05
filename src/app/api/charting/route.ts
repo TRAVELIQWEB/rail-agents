@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 import { fetchTrainChartingFromExternalProvider } from "@/lib/trains";
+import { readRailwaySnapshot, saveRailwaySnapshot } from "@/lib/railway-snapshots";
 
 export const runtime = "nodejs";
 
@@ -41,10 +42,28 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const snapshotId = `${trainNumber}:${rawDate}`;
+    if (searchParams.get("refresh") !== "1") {
+      try {
+        const cached = await readRailwaySnapshot("charting", snapshotId);
+        if (cached !== null) return jsonResponse({ success: true, source: "mongodb", data: cached });
+      } catch (error) {
+        console.error("Charting snapshot lookup failed; checking the railway provider:", error);
+      }
+    }
+
     const chartingData = await fetchTrainChartingFromExternalProvider(trainNumber, rawDate);
+    after(async () => {
+      try {
+        await saveRailwaySnapshot("charting", snapshotId, chartingData);
+      } catch (error) {
+        console.error("Could not save charting snapshot:", error);
+      }
+    });
 
     return jsonResponse({
       success: true,
+      source: "railway-provider",
       data: chartingData,
     });
   } catch (error: unknown) {

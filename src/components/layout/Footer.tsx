@@ -29,6 +29,7 @@ const supportLinks = [
   { label: "Railway Guides", href: "/guides" },
   { label: "Ask Nihal Singh", href: "/ask-nihal" },
   { label: "Contact & Support", href: "/contact" },
+  { label: "Terms & Conditions", href: "/terms" },
 ];
 
 const socialLinks = [

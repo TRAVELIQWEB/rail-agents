@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
-import { searchTrainsFromDatabase } from "@/lib/trains";
+import { after, NextRequest, NextResponse } from "next/server";
+import { populateTrainsIfEmpty, saveTrainsToDatabase, searchTrainsFromDatabase } from "@/lib/trains";
 
 export const runtime = "nodejs";
 
@@ -7,7 +7,7 @@ function jsonResponse(data: unknown, status = 200) {
   return NextResponse.json(data, {
     status,
     headers: {
-      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
+      "Cache-Control": "no-store, max-age=0",
       "X-Content-Type-Options": "nosniff",
     },
   });
@@ -28,6 +28,19 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(Math.max(1, Number.isFinite(rawLimit) ? rawLimit : 10), 15);
 
     const { trains, totalInDb, source } = await searchTrainsFromDatabase(query, limit);
+    if (source === "railway-provider") {
+      after(async () => {
+        try {
+          if (totalInDb === 0) {
+            await populateTrainsIfEmpty();
+          } else {
+            await saveTrainsToDatabase(trains);
+          }
+        } catch (error) {
+          console.error("Could not save railway provider trains to MongoDB:", error);
+        }
+      });
+    }
 
     return jsonResponse({
       success: true,

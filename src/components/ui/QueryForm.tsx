@@ -161,6 +161,9 @@ export function QueryForm() {
           <Lock aria-hidden="true" className="h-3.5 w-3.5" />
           Your query opens in WhatsApp; you choose when to send it.
         </p>
+        <p className="text-center text-[11px] leading-relaxed text-slate-400">
+          Nihal Singh is a fictional digital character representing RailAgents.
+        </p>
       </form>
     </div>
   );

@@ -256,6 +256,9 @@ export function Hero() {
                   </InternalLink>
                 ))}
               </div>
+              <p className="mt-3 border-t border-slate-100 pt-2.5 text-center text-[11px] leading-snug text-slate-400">
+                Nihal Singh is a fictional digital character representing RailAgents.
+              </p>
             </div>
           </div>
 

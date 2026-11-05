@@ -138,13 +138,17 @@ export default async function BlogPostPage({ params }: Props) {
         headline: post.title,
         description: post.excerpt,
         url: canonicalUrl,
-        author: {
-          "@type": "Person",
-          name: post.author,
-          ...(post.author?.toLowerCase().includes("nihal")
-            ? { "@id": `${siteConfig.url}/about#nihal-singh` }
-            : {}),
-        },
+        author: post.author?.toLowerCase().includes("nihal")
+          ? {
+              "@type": "Organization",
+              "@id": `${siteConfig.url}/#organization`,
+              name: siteConfig.name,
+              url: `${siteConfig.url}/about`,
+            }
+          : {
+              "@type": "Person",
+              name: post.author,
+            },
         publisher: { "@id": `${siteConfig.url}/#organization` },
         datePublished: post.publishedAt || undefined,
         dateModified: post.updatedAt || post.publishedAt || undefined,

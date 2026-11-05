@@ -47,7 +47,7 @@ export default function TicketDateCalculatorPage() {
 
       <main className="flex-1">
         {/* Compact & Clean Hero Header */}
-        <section className="relative overflow-hidden border-b border-[#f2e6d9] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pt-9 pb-8 sm:pt-12 sm:pb-10">
+        <section className="relative overflow-hidden border-b border-[#f2e6d9] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-56 w-[500px] rounded-full bg-gradient-to-br from-orange-200/30 via-amber-100/15 to-transparent blur-3xl"
@@ -55,14 +55,14 @@ export default function TicketDateCalculatorPage() {
 
           <div className="site-container relative z-10">
             <div className="mx-auto max-w-4xl text-center">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white px-3 py-1.5 text-xs font-semibold text-orange-700"><CalendarDays className="h-3.5 w-3.5" /> Plan your next journey</div>
+              <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white px-3 py-1.5 text-xs font-semibold text-orange-700"><CalendarDays className="h-3.5 w-3.5" /> Plan your next journey</div>
               <h1 className="text-3xl sm:text-4xl lg:text-[2.65rem] font-extrabold text-[#0b2240] tracking-tight leading-tight">
                 Railway Ticket{" "}
                 <span className="text-[var(--primary)] ">
                   Booking Date Calculator
                 </span>
               </h1>
-              <p className="mx-auto mt-4 max-w-xl text-sm sm:text-base text-slate-600 leading-relaxed">
+              <p className="mx-auto mt-2 max-w-xl text-sm sm:text-base text-slate-600 leading-relaxed">
                 Calculate Normal 60-day Advance Reservation opening dates and Tatkal booking schedules.
               </p>
             </div>

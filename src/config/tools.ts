@@ -3,7 +3,7 @@ export type RailTool = {
   href: string;
   description: string;
   badge: string;
-  icon: "calculator" | "calendar" | "radio" | "ticket";
+  icon: "calculator" | "calendar" | "radio" | "ticket" | "train";
 };
 
 export const railTools: RailTool[] = [
@@ -41,5 +41,12 @@ export const railTools: RailTool[] = [
     description: "Check booking details, passenger status, and chart information.",
     badge: "PNR status",
     icon: "ticket",
+  },
+  {
+    title: "Live Train Status",
+    href: "/live-train-status",
+    description: "Check a train’s reported running status, location, and station-by-station timings.",
+    badge: "Live status",
+    icon: "train",
   },
 ];
