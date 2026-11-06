@@ -78,6 +78,11 @@ const supportAreas = [
 
 const guideLinks = [
   {
+    title: "List of IRCTC Principal Service Providers (Updated 29-03-2025)",
+    href: "/irctc-principal-service-providers-updated-29-03-2025",
+    description: "Complete directory of authorized B2B, ICS, B2C, G2G, and Overseas GSA providers with admin contacts and official PDF.",
+  },
+  {
     title: "IRCTC Agent Rules & Regulations Guide",
     href: "/irctc-agent-rules-regulations",
     description: "Crucial compliance responsibilities, permitted booking practices, service charges, and penalty avoidance.",
@@ -91,11 +96,6 @@ const guideLinks = [
     title: "Documents Required for IRCTC Agent Registration",
     href: "/guides/documents-irctc-agent-registration",
     description: "Complete checklist of identity, address, digital signature, and shop ownership documents.",
-  },
-  {
-    title: "IRCTC Agent Registration Process Explained",
-    href: "/guides/registration-process-explained",
-    description: "Step-by-step walkthrough of application submission, e-KYC, and terminal activation.",
   },
 ];
 

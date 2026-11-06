@@ -34,6 +34,17 @@ const categoryIcons: Record<string, React.ElementType> = {
   "Business Tips": Briefcase,
 };
 
+// Color-coded category badges mapped to the global design system
+const categoryBadgeStyles: Record<string, string> = {
+  "Getting Started": "bg-[#ECFDF5] text-[#15803D] border border-emerald-200/70",
+  "IRCTC Agent": "bg-[#EFF6FF] text-[#2563EB] border border-blue-200/70",
+  "Booking": "bg-[#F0FDFA] text-[#0D9488] border border-teal-200/70",
+  "Tatkal": "bg-[#FFF7ED] text-[#C2410C] border border-orange-200/70",
+  "Cancellation & Refund": "bg-[#FFF1F2] text-[#BE123C] border border-rose-200/70",
+  "Troubleshooting": "bg-[#FFFBEB] text-[#B45309] border border-amber-200/70",
+  "Business Tips": "bg-[#F5F3FF] text-[#7C3AED] border border-violet-200/70",
+};
+
 export function GuidesDirectory() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<GuideCategory>("All");
@@ -240,11 +251,16 @@ export function GuidesDirectory() {
           {visibleGuides.map((guide) => (
             <article
               key={guide.slug}
-              className="group flex h-full flex-col justify-between rounded-2xl border border-[#f0e1d5] bg-white p-5 sm:p-6 shadow-xs transition-all duration-200 hover:border-orange-300 hover:shadow-md"
+              className="group flex h-full flex-col justify-between rounded-2xl border border-[#f0e1d5] bg-white p-5 sm:p-6 shadow-xs transition-all duration-200 hover:border-blue-200 hover:shadow-md"
             >
               <div>
                 <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-                  <span className="inline-flex shrink-0 whitespace-nowrap rounded-full bg-[#fff1e7] px-2 py-1 text-[0.625rem] font-[800] uppercase tracking-[0.04em] text-[#d95e0d] sm:px-3 sm:text-[0.7rem] sm:tracking-[0.07em]">
+                  <span
+                    className={`inline-flex shrink-0 whitespace-nowrap rounded-full px-2.5 py-1 text-[0.625rem] font-[800] uppercase tracking-[0.04em] sm:px-3 sm:text-[0.7rem] sm:tracking-[0.07em] ${
+                      categoryBadgeStyles[guide.category] ||
+                      "bg-[#EFF6FF] text-[#2563EB] border border-blue-200/70"
+                    }`}
+                  >
                     {guide.category}
                   </span>
                   <span className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-[11px] font-medium text-slate-400">
@@ -253,10 +269,10 @@ export function GuidesDirectory() {
                   </span>
                 </div>
 
-                <h3 className="text-base sm:text-lg font-[800] leading-snug text-[var(--navy)] group-hover:text-[var(--primary-dark)] transition-colors">
+                <h3 className="text-base sm:text-lg font-[800] leading-snug text-[var(--navy)] group-hover:text-[#2563EB] transition-colors">
                   <Link
                     href={`/guides/${guide.slug}`}
-                    className="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] rounded-xs"
+                    className="focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB] rounded-xs"
                   >
                     {guide.title}
                   </Link>
@@ -273,7 +289,7 @@ export function GuidesDirectory() {
                 </span>
                 <Link
                   href={`/guides/${guide.slug}`}
-                  className="inline-flex items-center gap-1 text-xs font-[750] text-[var(--primary-dark)] hover:text-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                  className="inline-flex items-center gap-1 rounded-full bg-[#EFF6FF] px-3 py-1 text-xs font-[750] text-[#2563EB] transition-colors hover:bg-[#DBEAFE] hover:text-[#1D4ED8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
                 >
                   Read Guide <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                 </Link>

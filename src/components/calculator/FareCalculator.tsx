@@ -99,7 +99,7 @@ export function FareCalculator() {
   const isOverMaxPassengers = form.adults + form.children > 6;
 
   return (
-    <div className="w-full max-w-5xl mx-auto">
+    <div className="site-tool-container">
       {/* Outer Shell: Warm Sand & Amber Orange Theme */}
       <div className="relative rounded-2xl bg-[#fffcf8] p-2.5 sm:p-5 lg:p-6 shadow-[0_4px_24px_rgba(249,115,22,0.06),0_1px_4px_rgba(0,0,0,0.04)] border border-[#f2e6d9] hover:shadow-[0_8px_30px_rgba(249,115,22,0.09)] transition-all duration-300 overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-2.5 sm:gap-5 lg:gap-8 items-stretch">

@@ -111,6 +111,54 @@ const nextConfig: NextConfig = {
         destination: "/train-chart-preparation-time",
         permanent: true,
       },
+      // Legacy article URLs -> redirect to closest relevant page/tool (while /refund-process-for-wrong-mobile-number serves a dedicated restored page)
+      {
+        source: "/tatkal-ticket-booking-timings-change-irctc",
+        destination: "/guides/tatkal-booking-guide-agents",
+        permanent: true,
+      },
+      {
+        source: "/irctc-online-ticket-booking-convenience-fees",
+        destination: "/train-ticket-agent-fare-calculator",
+        permanent: true,
+      },
+      {
+        source: "/indian-railways-ticket-booking-diwali-2025",
+        destination: "/ticket-date-calculator",
+        permanent: true,
+      },
+      {
+        source: "/indian-railways-new-trains-bihar-2025",
+        destination: "/live-train-status",
+        permanent: true,
+      },
+      // Legacy WordPress category and team paths -> permanent redirect to relevant HTML sections
+      // Note: Do NOT redirect missing /wp-content/* or /wp-includes/* CSS/JS/image files to HTML pages
+      {
+        source: "/category/train",
+        destination: "/blog",
+        permanent: true,
+      },
+      {
+        source: "/category/irctc",
+        destination: "/blog",
+        permanent: true,
+      },
+      {
+        source: "/category/:path*",
+        destination: "/blog",
+        permanent: true,
+      },
+      {
+        source: "/team-category/developer",
+        destination: "/about",
+        permanent: true,
+      },
+      {
+        source: "/team-category/:path*",
+        destination: "/about",
+        permanent: true,
+      },
     ];
   },
 };

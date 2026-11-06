@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
   Calculator,
   CalendarClock,
   ChevronDown,
-  Clipboard,
-  Printer,
   RotateCcw,
   ShieldCheck,
   TrainFront,
@@ -86,11 +84,13 @@ function PassengerChoices({
           </button>
         ))}
         <label className="sr-only" htmlFor={inputId}>
-          {label}, enter a number
+          {label}, enter a number from 1 to 12
         </label>
         <input
           id={inputId}
           type="number"
+          min="1"
+          max="12"
           placeholder="Qty"
           className={`${fieldClassName} mt-0 h-9 sm:h-10 w-16 px-2 text-center text-xs sm:text-sm font-bold`}
         />
@@ -101,39 +101,6 @@ function PassengerChoices({
 
 export function IRCTCCancellationRefundCalculator() {
   const calculatorRootRef = useRef<HTMLDivElement>(null);
-  const [copyStatus, setCopyStatus] = useState("");
-
-  async function copyRefundSummary() {
-    const root = calculatorRootRef.current;
-    if (!root) return;
-
-    const value = (id: string) => root.querySelector(`#${id}`)?.textContent?.trim() ?? "";
-    const breakdown = [...root.querySelectorAll("#refundResults .refund-line")]
-      .map((line) => line.textContent?.replace(/\s+/g, " ").trim())
-      .filter(Boolean)
-      .join("\n");
-    const summary = [
-      "IRCTC Cancellation & Refund Estimate",
-      `Estimated refund: ${value("finalNetRefundDisplay")}`,
-      `Ticket amount paid: ${value("receiptGrandTotalPaid")}`,
-      `Cancellation charges: ${value("finalRailwayCutDisplay")}`,
-      "",
-      "Refund breakdown:",
-      breakdown,
-      "",
-      value("ruleExplanationText"),
-    ]
-      .filter((line) => line !== "")
-      .join("\n");
-
-    try {
-      await navigator.clipboard.writeText(summary);
-      setCopyStatus("Refund summary copied.");
-    } catch (error) {
-      console.error("Unable to copy the refund summary.", error);
-      setCopyStatus("Could not copy the summary. Check clipboard permissions and try again.");
-    }
-  }
 
   useEffect(() => {
     if (calculatorRootRef.current) {
@@ -148,7 +115,9 @@ export function IRCTCCancellationRefundCalculator() {
     >
       <style>{`
         .refund-calculator {
-          background: #f8fafc;
+          background:
+            radial-gradient(ellipse at 85% 5%, rgb(255 237 213 / 35%), transparent 24rem),
+            linear-gradient(180deg, #fffdfa 0%, #faf6f0 55%, #fffdfa 100%);
         }
         @media (min-width: 1024px) {
           .refund-calculator #calculatorLayout {
@@ -168,14 +137,14 @@ export function IRCTCCancellationRefundCalculator() {
         .refund-calculator .active-card,
         .refund-calculator .active-pill,
         .refund-calculator .active-green-pill {
-          border-color: #0891b2 !important;
-          background: #ecfeff !important;
-          color: #0b2240 !important;
+          border-color: #ea580c !important;
+          background: #fff7ed !important;
+          color: #9a3412 !important;
           font-weight: 700 !important;
           box-shadow:
             inset 0 1px 1px rgb(255 255 255 / 80%),
-            0 0 0 2px rgb(8 145 178 / 14%),
-            0 3px 8px rgb(8 145 178 / 10%) !important;
+            0 0 0 2px rgb(249 115 22 / 20%),
+            0 4px 12px rgb(249 115 22 / 10%) !important;
         }
         .refund-calculator button:not(:disabled) {
           transition:
@@ -261,7 +230,7 @@ export function IRCTCCancellationRefundCalculator() {
         .refund-calculator #refundResults > section > div:first-child {
           position: relative;
           overflow: hidden;
-          background: #0b2240;
+          background: linear-gradient(135deg, #0b2240 0%, #0f2747 65%, #183b63 100%);
         }
         .refund-calculator #receiptPerPaxFormulaBadge {
           border: 1px solid #fbd38d;
@@ -316,36 +285,22 @@ export function IRCTCCancellationRefundCalculator() {
             overflow-wrap: anywhere;
           }
         }
-        @media print {
-          body * { visibility: hidden !important; }
-          #refundResults, #refundResults * { visibility: visible !important; }
-          #refundResults {
-            position: absolute !important;
-            inset: 0 auto auto 0 !important;
-            width: 100% !important;
-            max-width: none !important;
-            padding: 0 !important;
-          }
-          #refundResults > section {
-            box-shadow: none !important;
-            border: 0 !important;
-          }
-          #refundResults .no-print { display: none !important; }
-        }
       `}</style>
 
-      <div className="mx-auto max-w-[1480px] px-3 pt-4 sm:px-6 sm:pt-7 lg:px-8">
+      <div className="mx-auto max-w-[1480px] px-3 pt-5 sm:px-6 sm:pt-8 lg:px-8">
         <div className="mb-5 flex flex-wrap items-center gap-3 rounded-2xl border border-[#efdfd2] bg-white/90 p-3 shadow-[0_4px_18px_rgba(15,39,71,0.04)] sm:p-3.5">
           <div className="flex flex-wrap gap-2">
             <button type="button" id="toggleRuleRegimeBtn">
               <TrainFront aria-hidden="true" className="mr-1.5 inline h-4 w-4" />
-              Train rules: <span id="ruleRegimeBadge" />
+              Train rules: <span id="ruleRegimeBadge">Regular trains (48h / 12h / 4h)</span>
             </button>
-            <button type="button" id="toggleRoundingBtn" />
+            <button type="button" id="toggleRoundingBtn">
+              ₹5 rounding: <span id="roundingStateBadge">On</span>
+            </button>
           </div>
         </div>
 
-        <div id="calculatorLayout" className="grid min-w-0 grid-cols-1 items-start gap-5 lg:gap-7">
+        <div className="grid min-w-0 grid-cols-1 items-start gap-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(340px,.85fr)] lg:gap-7">
           <div className="min-w-0 space-y-5">
             <section className="calculator-panel min-w-0 border bg-white p-4 sm:p-6">
               <SectionTitle
@@ -386,9 +341,9 @@ export function IRCTCCancellationRefundCalculator() {
 
               <div id="agentPgSubBar" className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-cyan-100 bg-cyan-50/60 p-3">
                 <p className="min-w-0 flex-1 text-xs leading-relaxed text-slate-600">
-                  <span id="agentPgDescription" />
+                  Agent payment gateway rate is 0.75% up to ₹2,000 and 1% above ₹2,000.
                 </p>
-                <button type="button" id="togglePgBtn">Payment gateway</button>
+                <button type="button" id="togglePgBtn">Payment gateway: On</button>
               </div>
 
               <div className="mt-5 grid min-w-0 gap-5 sm:grid-cols-2">
@@ -430,8 +385,8 @@ export function IRCTCCancellationRefundCalculator() {
               <div className="mt-5 border-t border-slate-100 pt-4">
                 <p className="mb-2 text-sm font-semibold text-slate-800">Applicable cancellation rule set</p>
                 <div className="flex flex-wrap gap-2">
-                  <button type="button" id="regimeActualBtn" className="regime-choice" />
-                  <button type="button" id="regimeRumoredBtn" className="regime-choice" />
+                  <button type="button" id="regimeActualBtn" className="regime-choice">Regular trains · 48h / 12h / 4h</button>
+                  <button type="button" id="regimeRumoredBtn" className="regime-choice">Vande Bharat Sleeper / Amrit Bharat II · 72h / 8h</button>
                 </div>
               </div>
             </section>
@@ -443,9 +398,22 @@ export function IRCTCCancellationRefundCalculator() {
                 step="02"
                 description="Set the exact cancellation and departure times, or select a time band."
               />
-              <p id="slabSectionTitleLabel" className="mb-2 text-sm font-semibold text-slate-800" />
+              <p id="slabSectionTitleLabel" className="mb-2 text-sm font-semibold text-slate-800">
+                Quick time bands · Regular trains (48h / 12h / 4h)
+              </p>
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-5">
-                <div id="quickTimeBandOptions" className="contents" />
+                {[
+                  ["80", "slabBtn1Title", "More than 48 hours", "slabBtn1Sub", "Flat cancellation charge"],
+                  ["14.83", "slabBtn2Title", "48 to 12 hours", "slabBtn2Sub", "25% cancellation charge"],
+                  ["9", "slabBtn3Title", "Under 12h to over 4h", "slabBtn3Sub", "50%, before chart preparation"],
+                  ["2", "slabBtn4Title", "Chart prepared / under 4h", "slabBtn4Sub", "Confirmed: no refund"],
+                  ["0.25", null, "Under 30 minutes", null, "Waitlist rules may apply"],
+                ].map(([hours, titleId, title, subId, sub]) => (
+                  <button key={hours} type="button" data-hours={hours} className={`slab-btn ${choiceButtonClassName} min-h-[72px]`}>
+                    <span id={titleId || undefined} className="block font-semibold text-[#0f2747]">{title}</span>
+                    <span id={subId || undefined} className="mt-1 block text-xs text-slate-500">{sub}</span>
+                  </button>
+                ))}
               </div>
 
               <div className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2">
@@ -495,17 +463,17 @@ export function IRCTCCancellationRefundCalculator() {
                 <p className="mt-1 text-xs text-slate-500">Include railway fare, catering, IRCTC and agent fees, payment gateway charge and insurance.</p>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 font-semibold text-slate-500">₹</span>
-                  <input id="enteredGrandTotalInput" type="number" step="0.01" placeholder="Enter total ticket amount" className={`${fieldClassName} pl-8`} />
+                  <input id="enteredGrandTotalInput" type="number" min="0" step="0.01" placeholder="Enter total ticket amount" className={`${fieldClassName} pl-8`} />
                 </div>
               </div>
               <div id="pureFareInputPanel" className="mt-4 hidden grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
                   <label htmlFor="pureTotalFareInput" className="text-sm font-semibold text-slate-800">Total railway fare (including GST)</label>
-                  <input id="pureTotalFareInput" type="number" step="1" placeholder="Enter total railway fare" className={fieldClassName} />
+                  <input id="pureTotalFareInput" type="number" min="0" step="1" placeholder="Enter total railway fare" className={fieldClassName} />
                 </div>
                 <div>
                   <label htmlFor="purePerPaxFareInput" className="text-sm font-semibold text-slate-800">Railway fare per passenger</label>
-                  <input id="purePerPaxFareInput" type="number" step="1" placeholder="Enter fare per passenger" className={fieldClassName} />
+                  <input id="purePerPaxFareInput" type="number" min="0" step="1" placeholder="Enter fare per passenger" className={fieldClassName} />
                 </div>
               </div>
 
@@ -526,7 +494,7 @@ export function IRCTCCancellationRefundCalculator() {
                       </span>
                       <div>
                         <p className="text-sm font-bold text-[#0f2747]">Catering included</p>
-                      <p className="mt-0.5 text-xs text-slate-500">Enter the total charge or its per-passenger amount.</p>
+                        <p className="mt-0.5 text-xs text-slate-500">Enter the total charge or its per-passenger amount.</p>
                       </div>
                     </div>
                     <div className="flex gap-2">
@@ -537,14 +505,18 @@ export function IRCTCCancellationRefundCalculator() {
                   <div id="cateringInputsArea" className="mt-3 hidden gap-3">
                     <div>
                       <label htmlFor="totalCateringInput" className="text-xs font-semibold text-slate-700">Total catering charge (including GST)</label>
-                      <input id="totalCateringInput" type="number" step="1" placeholder="Enter total catering charge" className={fieldClassName} />
+                      <input id="totalCateringInput" type="number" min="0" step="1" placeholder="Enter total catering charge" className={fieldClassName} />
                     </div>
                     <div>
                       <label htmlFor="perPaxCateringInput" className="text-xs font-semibold text-slate-700">Catering per passenger</label>
-                      <input id="perPaxCateringInput" type="number" step="1" placeholder="Enter catering per passenger" className={fieldClassName} />
+                      <input id="perPaxCateringInput" type="number" min="0" step="1" placeholder="Enter catering per passenger" className={fieldClassName} />
                     </div>
                     <p className="text-xs text-slate-500">Excluding GST: <strong id="catExGstDisplay">₹0.00</strong> · GST: <strong id="catGstDisplay">₹0.00</strong></p>
-                    <div id="cateringPresetOptions" className="flex flex-wrap gap-2" />
+                    <div className="flex flex-wrap gap-2">
+                      {[["363", "Vande Bharat"], ["150", "₹150"], ["300", "₹300"]].map(([value, label]) => (
+                        <button key={value} type="button" data-food={value} className={`food-preset-btn ${quietButtonClassName} min-h-8 px-2 text-xs`}>{value === "363" ? "₹363 · " : ""}{label}</button>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
@@ -556,7 +528,7 @@ export function IRCTCCancellationRefundCalculator() {
                       </span>
                       <div>
                         <p className="text-sm font-bold text-[#0f2747]">Travel insurance included</p>
-                      <p className="mt-0.5 text-xs text-slate-500">Select the rate and refund eligibility if applicable.</p>
+                        <p className="mt-0.5 text-xs text-slate-500">Select the rate and refund eligibility if applicable.</p>
                       </div>
                     </div>
                     <div className="flex gap-2">
@@ -568,9 +540,10 @@ export function IRCTCCancellationRefundCalculator() {
                     <div>
                       <span className="text-xs font-semibold text-slate-700">Rate per passenger</span>
                       <div className="mt-2 flex flex-wrap gap-2">
-                        <div id="insurancePresetOptions" className="contents" />
+                        <button type="button" data-insrate="0.45" className={`ins-rate-btn ${quietButtonClassName} min-h-9 text-xs`}>₹0.45</button>
+                        <button type="button" data-insrate="0.35" className={`ins-rate-btn ${quietButtonClassName} min-h-9 text-xs`}>₹0.35</button>
                         <label className="sr-only" htmlFor="customInsRateInput">Custom insurance rate per passenger</label>
-                        <input id="customInsRateInput" type="number" step="0.05" placeholder="Custom" className={`${fieldClassName} mt-0 h-9 w-24`} />
+                        <input id="customInsRateInput" type="number" min="0" step="0.05" placeholder="Custom" className={`${fieldClassName} mt-0 h-9 w-24`} />
                       </div>
                     </div>
                     <label htmlFor="insRefundableCheckbox" className="flex items-center gap-2 text-xs text-slate-700">
@@ -585,10 +558,10 @@ export function IRCTCCancellationRefundCalculator() {
                 <button
                   type="button"
                   id="calculateRefundBtn"
-                  className="inline-flex min-h-12 flex-1 items-center justify-center rounded-xl bg-[#0b2240] px-6 py-3 text-sm sm:text-base font-extrabold text-white shadow-[0_3px_10px_rgba(11,34,64,0.16)] transition-all hover:-translate-y-0.5 hover:bg-[#12345c] hover:shadow-[0_6px_16px_rgba(11,34,64,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-700 cursor-pointer"
+                  className="inline-flex min-h-12 flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 px-6 py-3 text-sm sm:text-base font-extrabold text-white shadow-[0_4px_16px_rgba(249,115,22,0.35)] transition-all hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(249,115,22,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 cursor-pointer"
                 >
                   <Calculator aria-hidden="true" className="mr-2 h-5 w-5" />
-                  <span id="calculateRefundButtonText">Calculate Refund</span>
+                  Calculate Refund
                 </button>
                 <button
                   type="button"
@@ -613,7 +586,21 @@ export function IRCTCCancellationRefundCalculator() {
               </summary>
               <div className="border-t border-[#f0e3d5] p-4 sm:p-6 bg-white/70">
                 <p id="activeTestBadge" className="mb-3 text-xs text-stone-500">No scenario selected</p>
-                <div id="verificationScenarioOptions" className="flex flex-wrap gap-2" />
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    ["TC_REFERENCE", "Reference ticket"],
+                    ["TC1", "Personal ID · 3AC"],
+                    ["TC2", "Agent · PG up to ₹2,000"],
+                    ["TC3", "Agent · PG above ₹2,000"],
+                    ["TC4", "Waitlist · under 30 minutes"],
+                    ["TC5", "Train cancelled"],
+                    ["TC_VBSLEEPER", "Sleeper train · 72h / 8h"],
+                  ].map(([value, label]) => (
+                    <button key={value} type="button" data-testcase={value} className={`testcase-btn ${quietButtonClassName} min-h-9 text-xs`}>
+                      {label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </details>
           </div>
@@ -672,61 +659,35 @@ export function IRCTCCancellationRefundCalculator() {
                   </div>
                   <span id="receiptPaxBadge" className="rounded-full border border-white/20 bg-white/5 px-2.5 py-1 text-xs text-orange-100">Ready to calculate</span>
                 </div>
-                <p id="finalNetRefundDisplay" className="mt-5 break-words text-4xl font-extrabold tracking-tight tabular-nums sm:text-5xl">—</p>
+                <p id="finalNetRefundDisplay" className="mt-5 break-words text-4xl font-extrabold tracking-tight tabular-nums sm:text-5xl">₹0.00</p>
                 <p id="perPaxNetRefundSub" className="mt-1 text-xs text-slate-300">Calculate to see the estimated refund</p>
                 <div className="mt-5 grid grid-cols-2 gap-3 border-t border-white/15 pt-4">
                   <div>
                     <p className="text-[11px] text-slate-300">Cancellation charges</p>
-                    <p id="finalRailwayCutDisplay" className="mt-1 text-lg font-bold tabular-nums">—</p>
-                    <p id="perPaxRailwayCutSub" className="mt-0.5 text-[11px] text-slate-300">Shown after calculation</p>
+                    <p id="finalRailwayCutDisplay" className="mt-1 text-lg font-bold tabular-nums">- ₹0.00</p>
+                    <p id="perPaxRailwayCutSub" className="mt-0.5 text-[11px] text-slate-300">₹0.00 / passenger</p>
                   </div>
                   <div>
                     <p className="text-[11px] text-slate-300">Ticket amount paid</p>
-                    <p id="receiptGrandTotalPaid" className="mt-1 text-lg font-bold tabular-nums">—</p>
+                    <p id="receiptGrandTotalPaid" className="mt-1 text-lg font-bold tabular-nums">₹0.00</p>
                   </div>
                 </div>
               </div>
 
               <div className="p-4 sm:p-5">
-                <div className="no-print mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-                  <p className="text-xs font-semibold text-slate-500">Share or print this estimate</p>
-                  <div className="flex flex-wrap gap-2">
-                    <button type="button" id="copyRefundSummaryBtn" onClick={copyRefundSummary} disabled className={`${quietButtonClassName} disabled:cursor-not-allowed disabled:opacity-50`}>
-                      <Clipboard aria-hidden="true" className="mr-1.5 h-4 w-4" />
-                      Copy summary
-                    </button>
-                    <button type="button" id="printRefundReportBtn" onClick={() => window.print()} disabled className={`${quietButtonClassName} disabled:cursor-not-allowed disabled:opacity-50`}>
-                      <Printer aria-hidden="true" className="mr-1.5 h-4 w-4" />
-                      Print
-                    </button>
-                  </div>
-                  <p id="copySummaryStatus" className="w-full text-xs font-medium text-emerald-700" role="status" aria-live="polite">{copyStatus}</p>
-                </div>
                 <div className="flex items-center gap-2">
                   <ShieldCheck aria-hidden="true" className="h-4 w-4 text-orange-600" />
                   <h2 className="text-sm font-bold text-[#0f2747]">Refund breakdown</h2>
                 </div>
                 <p id="receiptBookingSourceTag" className="mt-1 text-xs text-slate-500">Agent ID</p>
 
-                <details className="mt-4 rounded-xl border border-slate-200 bg-slate-50">
-                  <summary className="cursor-pointer px-3 py-2.5 text-xs font-bold text-[#0b2240] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-700">
-                    Understand the refund terms
-                  </summary>
-                  <div className="grid gap-2 border-t border-slate-200 px-3 py-3 text-xs leading-relaxed text-slate-600 sm:grid-cols-2">
-                    <p><strong className="text-slate-800">Cancellation charge:</strong> The railway deduction applied under the selected ticket status and cancellation timing.</p>
-                    <p><strong className="text-slate-800">Other deductions:</strong> Applicable booking and payment fees shown separately in the breakdown.</p>
-                    <p><strong className="text-slate-800">Estimated refund:</strong> An estimate based on the entered fare and ticket details.</p>
-                    <p><strong className="text-slate-800">PRS calculation:</strong> The detailed rows above show the fare base, charge, tax and rounding components.</p>
-                  </div>
-                </details>
-
                 <div className="mt-3">
-                  <div className="refund-line"><span>IRCTC convenience fee</span><span id="receiptIrctcFee">—</span></div>
-                  <div id="receiptInsuranceRow" className="refund-line" style={{ display: "none" }}><span>Travel insurance (<span id="receiptInsStatusText">Refundable</span>)</span><span id="receiptInsuranceFee">—</span></div>
-                  <div id="receiptPgBaseRow" className="refund-line"><span>Payment gateway calculation base</span><span id="receiptPgBaseVal">—</span></div>
-                  <div id="receiptPgFeeRow" className="refund-line"><span>Payment gateway fee · <span id="receiptPgSlabLabel">Shown after calculation</span></span><span id="receiptPgFee">—</span></div>
-                  <div id="receiptAgentFeeRow" className="refund-line"><span>Agent service fee</span><span id="receiptAgentFee">—</span></div>
-                  <div className="refund-line font-semibold"><span>Railway fare and catering total</span><span id="receiptPureRailwayTotal">—</span></div>
+                  <div className="refund-line"><span>IRCTC convenience fee</span><span id="receiptIrctcFee">- ₹0.00</span></div>
+                  <div id="receiptInsuranceRow" className="refund-line" style={{ display: "none" }}><span>Travel insurance (<span id="receiptInsStatusText">Refundable</span>)</span><span id="receiptInsuranceFee">₹0.00</span></div>
+                  <div id="receiptPgBaseRow" className="refund-line"><span>Payment gateway calculation base</span><span id="receiptPgBaseVal">₹0.00</span></div>
+                  <div id="receiptPgFeeRow" className="refund-line"><span>Payment gateway fee · <span id="receiptPgSlabLabel">Shown after calculation</span></span><span id="receiptPgFee">- ₹0.00</span></div>
+                  <div id="receiptAgentFeeRow" className="refund-line"><span>Agent service fee</span><span id="receiptAgentFee">- ₹0.00</span></div>
+                  <div className="refund-line font-semibold"><span>Railway fare and catering total</span><span id="receiptPureRailwayTotal">₹0.00</span></div>
                 </div>
 
                 <div className="mt-5 border-t border-slate-200 pt-4">
@@ -735,21 +696,21 @@ export function IRCTCCancellationRefundCalculator() {
                     <span id="receiptPerPaxFormulaBadge" className="rounded bg-cyan-50 px-2 py-1 text-xs font-semibold text-[#0b2240]">Calculated when you click Calculate refund</span>
                   </div>
                   <div className="mt-2">
-                    <div className="refund-line"><span>Railway fare for <span id="receiptCancelPaxCount">—</span> cancelling passenger(s)</span><span id="receiptCancellingTrainFare">—</span></div>
-                    <div id="receiptCateringRow" className="refund-line"><span>Catering for cancelling passengers</span><span id="receiptCancellingCatering">—</span></div>
-                    <div id="receiptExGstBaseRow" className="refund-line"><span>Cancellation base before GST</span><span id="receiptExGstBaseVal">—</span></div>
-                    <div className="refund-line"><span id="receiptBaseCancelCutLabel">Base cancellation charge</span><span id="receiptBaseCancelCut">—</span></div>
-                    <div className="refund-line"><span>GST on cancellation charge</span><span id="receiptGstCancelCut">—</span></div>
-                    <div className="refund-line"><span>Additional rounding</span><span id="receiptRoundingCut">—</span></div>
-                    <div className="refund-line font-bold text-rose-700"><span>Total railway cancellation charge</span><span id="receiptTotalRailwayCut">—</span></div>
+                    <div className="refund-line"><span>Railway fare for <span id="receiptCancelPaxCount">—</span> cancelling passenger(s)</span><span id="receiptCancellingTrainFare">₹0.00</span></div>
+                    <div id="receiptCateringRow" className="refund-line"><span>Catering for cancelling passengers</span><span id="receiptCancellingCatering">₹0.00</span></div>
+                    <div id="receiptExGstBaseRow" className="refund-line"><span>Cancellation base before GST</span><span id="receiptExGstBaseVal">₹0.00</span></div>
+                    <div className="refund-line"><span id="receiptBaseCancelCutLabel">Base cancellation charge</span><span id="receiptBaseCancelCut">- ₹0.00</span></div>
+                    <div className="refund-line"><span>GST on cancellation charge</span><span id="receiptGstCancelCut">- ₹0.00</span></div>
+                    <div className="refund-line"><span>Additional rounding</span><span id="receiptRoundingCut">- ₹0.00</span></div>
+                    <div className="refund-line font-bold text-rose-700"><span>Total railway cancellation charge</span><span id="receiptTotalRailwayCut">- ₹0.00</span></div>
                   </div>
                 </div>
 
                 <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 px-3">
-                  <div className="refund-line"><span>Railway fare and catering</span><span id="receiptNetTrainRefund">—</span></div>
-                  <div className="refund-line"><span>Cancellation charge</span><span id="receiptNetFoodRefund">—</span></div>
-                  <div id="receiptNetInsRefundRow" className="refund-line"><span>Insurance refund</span><span id="receiptNetInsRefund">—</span></div>
-                  <div className="refund-line font-bold text-[#0f2747]"><span>Estimated bank refund</span><span id="receiptFinalBankRefund">—</span></div>
+                  <div className="refund-line"><span>Railway fare and catering</span><span id="receiptNetTrainRefund">₹0.00</span></div>
+                  <div className="refund-line"><span>Cancellation charge</span><span id="receiptNetFoodRefund">- ₹0.00</span></div>
+                  <div id="receiptNetInsRefundRow" className="refund-line"><span>Insurance refund</span><span id="receiptNetInsRefund">+ ₹0.00</span></div>
+                  <div className="refund-line font-bold text-[#0f2747]"><span>Estimated bank refund</span><span id="receiptFinalBankRefund">₹0.00</span></div>
                 </div>
 
                 <div id="ruleExplanationAlert" className="mt-4 rounded-xl border border-orange-100 bg-orange-50/60 p-3.5">

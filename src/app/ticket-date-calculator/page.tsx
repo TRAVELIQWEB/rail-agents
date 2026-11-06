@@ -74,7 +74,7 @@ export default function TicketDateCalculatorPage() {
           aria-label="Railway Ticket Booking Date Calculator"
           className="relative py-6 sm:py-8 lg:py-10 bg-gradient-to-b from-[#f7f0e6]/60 via-[#faf6f0] to-[#fdfbf7] pb-14 lg:pb-12"
         >
-          <div className="site-container relative px-2 sm:px-4">
+          <div className="w-full relative">
             <TicketDateCalculator />
           </div>
         </section>

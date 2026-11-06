@@ -140,7 +140,7 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
       />
       <Header />
 
-      <main className="relative flex-1 pb-16 sm:pb-24">
+      <main className="relative flex-1 overflow-x-clip pb-16 sm:pb-24">
         {/* Ambient Top Background Glows */}
         <div
           aria-hidden="true"
@@ -416,6 +416,13 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
                 </p>
 
                 <div className="mt-4 space-y-2">
+                  <Link
+                    href="/irctc-principal-service-providers-updated-29-03-2025"
+                    className="flex items-center justify-between gap-2 rounded-xl border border-orange-200 bg-orange-50/60 p-3 text-xs font-bold text-orange-950 hover:border-orange-300 hover:bg-orange-100/70 hover:text-orange-700 hover:shadow-xs transition-all"
+                  >
+                    <span>IRCTC PSP Directory (Updated)</span>
+                    <ArrowRight className="h-3.5 w-3.5 text-orange-600" />
+                  </Link>
                   <Link
                     href="/train-ticket-agent-fare-calculator"
                     className="flex items-center justify-between gap-2 rounded-xl border border-stone-200 bg-white p-3 text-xs font-bold text-stone-800 hover:border-orange-300 hover:text-orange-600 hover:shadow-xs transition-all"
