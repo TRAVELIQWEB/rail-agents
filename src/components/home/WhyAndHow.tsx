@@ -85,7 +85,7 @@ export function WhyAndHow() {
                 href="/about"
                 label="Know More About Us"
                 size="md"
-                variant="orange"
+                variant="blue"
               />
             </div>
           </div>

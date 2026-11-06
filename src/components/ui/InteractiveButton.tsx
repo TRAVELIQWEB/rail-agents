@@ -7,7 +7,16 @@ type InteractiveButtonBaseProps = {
   label: string;
   sublabel?: string;
   icon?: React.ReactNode;
-  variant?: "orange" | "secondary" | "dark";
+  variant?:
+    | "orange"
+    | "blue"
+    | "navy"
+    | "green"
+    | "teal"
+    | "violet"
+    | "rose"
+    | "secondary"
+    | "dark";
   size?: "sm" | "md" | "lg";
   className?: string;
 };
@@ -45,12 +54,19 @@ export function InteractiveButton(props: InteractiveButtonProps) {
       ? "uiverse-cta-lg"
       : "uiverse-cta-md";
 
-  const variantClass =
-    variant === "secondary"
-      ? "uiverse-cta-secondary"
-      : variant === "dark"
-      ? "uiverse-cta-dark"
-      : "uiverse-cta-orange";
+  const variantClassMap: Record<NonNullable<InteractiveButtonBaseProps["variant"]>, string> = {
+    orange: "uiverse-cta-orange",
+    blue: "uiverse-cta-blue",
+    navy: "uiverse-cta-navy",
+    green: "uiverse-cta-green",
+    teal: "uiverse-cta-teal",
+    violet: "uiverse-cta-violet",
+    rose: "uiverse-cta-rose",
+    secondary: "uiverse-cta-secondary",
+    dark: "uiverse-cta-dark",
+  };
+
+  const variantClass = variantClassMap[variant];
 
   const combinedClass = `uiverse-btn single-line-btn ${sizeClass} ${variantClass} ${className}`;
 

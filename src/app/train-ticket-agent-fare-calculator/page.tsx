@@ -155,7 +155,7 @@ export default function TrainTicketAgentFareCalculatorPage() {
 
         {/* Calculator Interactive Form Section */}
         <section className="relative py-2 sm:py-6 lg:py-7 bg-gradient-to-b from-[#f7f0e6]/60 via-[#faf6f0] to-[#fdfbf7] pb-16 lg:pb-12">
-          <div className="site-container relative px-2 sm:px-4">
+          <div className="w-full relative">
             <FareCalculator />
           </div>
         </section>

@@ -398,7 +398,7 @@ export function TicketDateCalculator() {
   };
 
   return (
-    <div className={`${styles.calculator} w-full max-w-6xl mx-auto space-y-6`}>
+    <div className={`${styles.calculator} site-tool-container space-y-6`}>
 
       {/* ══════════════════════════════════════════════════════════════════════
           2. RAILWAY JOURNEY DETAILS FORM

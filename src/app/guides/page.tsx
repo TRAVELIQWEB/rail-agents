@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BookOpen, Calculator, ShieldCheck, ArrowRight, Sparkles } from "lucide-react";
+import { BookOpen, Building2, Calculator, ShieldCheck, ArrowRight, Sparkles, FileText } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { GuidesDirectory } from "@/components/guides/GuidesDirectory";
@@ -142,6 +142,43 @@ export default function GuidesPage() {
             
             {/* Guides Directory with Search, Categories, Featured Guide & Grid */}
             <GuidesDirectory />
+
+            {/* ══ 2B. DEDICATED RESOURCE SECTION: IRCTC PSP DIRECTORY ══ */}
+            <section
+              aria-labelledby="psp-directory-heading"
+              className="relative overflow-hidden rounded-3xl border border-orange-200/90 bg-gradient-to-br from-white via-[#fffdfa] to-orange-50/40 p-6 sm:p-8 shadow-[0_4px_24px_rgba(249,115,22,0.06)] transition-all hover:border-orange-300 hover:shadow-md"
+            >
+              <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
+                <div className="space-y-2.5">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-orange-100/90 px-3.5 py-1 text-xs font-[800] uppercase tracking-wider text-[var(--primary-dark)]">
+                    <Building2 className="h-3.5 w-3.5" aria-hidden="true" />
+                    Official PSP Reference Directory • Updated 29-03-2025
+                  </div>
+                  <h2
+                    id="psp-directory-heading"
+                    className="text-xl sm:text-2xl font-[850] tracking-[-0.03em] text-[var(--navy)]"
+                  >
+                    List of IRCTC Principal Service Providers (PSPs)
+                  </h2>
+                  <p className="text-xs sm:text-sm leading-relaxed text-slate-600 max-w-2xl">
+                    Verify authorized IRCTC Principal Service Providers before applying for an agent ID.
+                    Browse the complete directory of B2B (34), Internet Cafe Scheme / ICS (73), B2C (25),
+                    G2G, TIES, Overseas GSAs, and E-Governance providers with admin phone numbers, emails, and the official PDF.
+                  </p>
+                </div>
+
+                <div className="pt-2 md:pt-0 shrink-0">
+                  <Link
+                    href="/irctc-principal-service-providers-updated-29-03-2025"
+                    className="single-line-btn inline-flex min-h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-[var(--primary)] px-6 py-3 text-sm font-[800] text-white shadow-xs transition-all hover:bg-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                  >
+                    <FileText className="h-4 w-4 text-white" aria-hidden="true" />
+                    <span>View PSP Directory</span>
+                    <ArrowRight className="h-4 w-4 text-white" aria-hidden="true" />
+                  </Link>
+                </div>
+              </div>
+            </section>
 
             {/* ══ 3. DEDICATED TOOL SECTION: FARE CALCULATOR ══ */}
             <section

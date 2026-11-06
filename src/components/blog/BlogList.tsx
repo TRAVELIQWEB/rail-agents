@@ -21,6 +21,26 @@ interface BlogListProps {
   posts: BlogPost[];
 }
 
+function getBlogCategoryBadgeClass(category: string): string {
+  const normalized = category.toLowerCase();
+  if (normalized.includes("refund") || normalized.includes("cancel")) {
+    return "bg-[#FFF1F2] text-[#BE123C] border border-rose-200/80";
+  }
+  if (normalized.includes("pnr") || normalized.includes("confirm") || normalized.includes("guide")) {
+    return "bg-[#ECFDF5] text-[#15803D] border border-emerald-200/80";
+  }
+  if (normalized.includes("fare") || normalized.includes("charge") || normalized.includes("agent")) {
+    return "bg-[#F5F3FF] text-[#7C3AED] border border-violet-200/80";
+  }
+  if (normalized.includes("chart") || normalized.includes("travel") || normalized.includes("train")) {
+    return "bg-[#EFF6FF] text-[#2563EB] border border-blue-200/80";
+  }
+  if (normalized.includes("tatkal") || normalized.includes("booking")) {
+    return "bg-[#FFF7ED] text-[#C2410C] border border-orange-200/80";
+  }
+  return "bg-[#F0FDFA] text-[#0D9488] border border-teal-200/80";
+}
+
 function PostMediaThumbnail({
   post,
   size = "large",
@@ -271,7 +291,7 @@ export function BlogList({ posts }: BlogListProps) {
               <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center gap-3">
-                    <span className="inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-[800] uppercase tracking-wider text-[var(--primary-dark)]">
+                    <span className={`inline-flex rounded-full px-3 py-1 text-xs font-[800] uppercase tracking-wider ${getBlogCategoryBadgeClass(featuredPost.category)}`}>
                       {featuredPost.category}
                     </span>
                     {featuredPost.publishedAt && (
@@ -304,7 +324,7 @@ export function BlogList({ posts }: BlogListProps) {
                   </div>
                   <Link
                     href={`/blog/${featuredPost.slug}`}
-                    className="single-line-btn inline-flex items-center gap-1.5 whitespace-nowrap text-xs font-[800] text-[var(--primary-dark)] hover:text-[var(--primary-hover)] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                    className="single-line-btn inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-[#EFF6FF] px-3.5 py-1.5 text-xs font-[800] text-[#2563EB] hover:bg-[#DBEAFE] hover:text-[#1D4ED8] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
                   >
                     <span>Read full article</span>
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
@@ -495,7 +515,7 @@ function ArticleEditorialCard({ post, isWide = false }: { post: BlogPost; isWide
           <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
             <div className="space-y-3">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="inline-flex rounded-full bg-orange-100 px-3 py-1 text-xs font-[800] uppercase tracking-wider text-[var(--primary-dark)]">
+                <span className={`inline-flex rounded-full px-3 py-1 text-xs font-[800] uppercase tracking-wider ${getBlogCategoryBadgeClass(post.category)}`}>
                   {post.category}
                 </span>
                 {publishDate && (
@@ -550,7 +570,7 @@ function ArticleEditorialCard({ post, isWide = false }: { post: BlogPost; isWide
 
           {/* Category Tag Pill */}
           <div className="absolute left-3 top-3 z-30 pointer-events-none">
-            <span className="inline-flex max-w-full items-center whitespace-nowrap rounded-full bg-white/95 px-2.5 py-0.5 text-[10px] font-[800] uppercase tracking-wider text-[var(--primary-dark)] shadow-xs">
+            <span className={`inline-flex max-w-full items-center whitespace-nowrap rounded-full px-2.5 py-0.5 text-[10px] font-[800] uppercase tracking-wider shadow-xs backdrop-blur-xs ${getBlogCategoryBadgeClass(post.category)}`}>
               {post.category}
             </span>
           </div>
@@ -583,7 +603,7 @@ function ArticleEditorialCard({ post, isWide = false }: { post: BlogPost; isWide
 
         <Link
           href={`/blog/${post.slug}`}
-          className="inline-flex items-center gap-1 font-[750] text-[var(--primary-dark)] hover:text-[var(--primary-hover)] transition-colors"
+          className="inline-flex items-center gap-1 font-[750] text-[#2563EB] hover:text-[#1D4ED8] transition-colors"
         >
           <span>Read article</span>
           <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />

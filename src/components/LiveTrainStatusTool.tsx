@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   RefreshCw,
@@ -1044,15 +1044,32 @@ function validateLookup(trainNumber: string, date: string): string {
   return "";
 }
 
-export function LiveTrainStatusTool() {
+export function LiveTrainStatusTool({ embedded = false }: { embedded?: boolean } = {}) {
   const searchParams = useSearchParams();
   const queryTrain = searchParams.get("train") ?? "";
   const queryDate = searchParams.get("date") ?? "";
-  return <LiveTrainStatusSearch key={`${queryTrain}:${queryDate}`} queryTrain={queryTrain} queryDate={queryDate} />;
+  return (
+    <LiveTrainStatusSearch
+      key={`${queryTrain}:${queryDate}`}
+      queryTrain={queryTrain}
+      queryDate={queryDate}
+      embedded={embedded}
+    />
+  );
 }
 
-function LiveTrainStatusSearch({ queryTrain, queryDate }: { queryTrain: string; queryDate: string }) {
+function LiveTrainStatusSearch({
+  queryTrain,
+  queryDate,
+  embedded = false,
+}: {
+  queryTrain: string;
+  queryDate: string;
+  embedded?: boolean;
+}) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const [trainQuery, setTrainQuery] = useState(queryTrain);
   const [journeyDate, setJourneyDate] = useState(queryDate);
@@ -1130,10 +1147,168 @@ function LiveTrainStatusSearch({ queryTrain, queryDate }: { queryTrain: string; 
     setJourneyDate(dVal);
     setLookup({ trainNumber: tNum, journeyDate: dVal });
 
-    const params = new URLSearchParams();
+    const params = new URLSearchParams(searchParams.toString());
     params.set("train", tNum);
     params.set("date", dVal);
-    router.replace(`/live-train-status?${params.toString()}`, { scroll: false });
+    router.replace(`${pathname || "/live-train-status"}?${params.toString()}`, { scroll: false });
+  }
+
+  const searchFormCard = (
+    <div
+      ref={searchContainerRef}
+      className={
+        embedded
+          ? "relative rounded-xl border border-slate-200 bg-white p-4 shadow-xs sm:p-5 text-left"
+          : "relative mx-auto mt-5 rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-lg max-w-2xl text-left"
+      }
+    >
+      <form onSubmit={(e) => submitLookup(e)} className="grid gap-3 sm:grid-cols-[1fr_170px_auto] items-end">
+        {/* Train Input with Autocomplete */}
+        <div className="relative">
+          <label htmlFor="live-train-search-input" className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+            Train Name or Number
+          </label>
+          <div className="relative flex items-center">
+            <TrainFront className="absolute left-3.5 h-4 w-4 text-slate-400" />
+            <input
+              id="live-train-search-input"
+              type="text"
+              autoComplete="off"
+              value={trainQuery}
+              onChange={(e) => {
+                const val = e.target.value;
+                setTrainQuery(val);
+                if (!val.trim()) {
+                  setTrainSuggestions([]);
+                }
+                setDropdownOpen(true);
+              }}
+              onFocus={() => setDropdownOpen(true)}
+              placeholder="e.g. 19712 or Jaipur Exp"
+              className="h-11 w-full rounded-xl border border-slate-200 bg-[#fffdfa] pl-10 pr-3 text-sm font-semibold text-[var(--navy)] outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100 placeholder:text-slate-400"
+            />
+          </div>
+
+          {/* Autocomplete Dropdown */}
+          {dropdownOpen && (trainSuggestions.length > 0 || searchLoading) && (
+            <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-60 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl">
+              {searchLoading && (
+                <div className="p-3 text-center text-xs text-slate-500">
+                  Searching trains...
+                </div>
+              )}
+              {trainSuggestions.map((item) => (
+                <button
+                  key={item.trainNumber}
+                  type="button"
+                  onClick={() => {
+                    setTrainQuery(`${item.trainNumber} - ${item.trainName}`);
+                    setDropdownOpen(false);
+                    const targetDate = journeyDate || todayInIndia();
+                    setJourneyDate(targetDate);
+                    submitLookup(undefined, item.trainNumber, targetDate);
+                  }}
+                  className="flex w-full items-center justify-between px-3.5 py-2.5 text-left text-xs font-semibold hover:bg-orange-50/70 border-b border-slate-50 last:border-0"
+                >
+                  <span className="font-extrabold text-[var(--navy)]">
+                    {item.trainNumber} - {item.trainName}
+                  </span>
+                  <span className="rounded bg-orange-100 px-1.5 py-0.5 text-[10px] font-bold text-orange-700">
+                    Select
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Journey Date */}
+        <div>
+          <label htmlFor="live-train-journey-date" className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+            Journey Date
+          </label>
+          <div className="relative flex items-center">
+            <Calendar className="absolute left-3.5 h-4 w-4 text-slate-400 pointer-events-none" />
+            <input
+              id="live-train-journey-date"
+              type="date"
+              value={journeyDate}
+              onChange={(e) => setJourneyDate(e.target.value)}
+              className="h-11 w-full rounded-xl border border-slate-200 bg-[#fffdfa] pl-10 pr-2 text-xs font-semibold text-[var(--navy)] outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
+            />
+          </div>
+        </div>
+
+        {/* Search Button */}
+        <button
+          type="submit"
+          className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 text-sm font-bold text-white shadow-xs transition hover:bg-[#ea580c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] cursor-pointer"
+        >
+          <Search className="h-4 w-4" />
+          <span>Check Status</span>
+        </button>
+      </form>
+
+      {validationError && (
+        <p className="mt-3 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-800">
+          {validationError}
+        </p>
+      )}
+    </div>
+  );
+
+  if (embedded) {
+    return (
+      <div className="space-y-4">
+        {searchFormCard}
+
+        {lookup ? (
+          <div className="site-tool-container">
+            <LiveTrainStatusResult
+              key={`${lookup.trainNumber}-${lookup.journeyDate}`}
+              trainNumber={lookup.trainNumber}
+              journeyDate={lookup.journeyDate}
+              onDateChange={(newDate) => {
+                setJourneyDate(newDate);
+                submitLookup(undefined, lookup.trainNumber, newDate);
+              }}
+            />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--navy)]">
+                <TrainFront className="h-4 w-4 text-orange-600" />
+                <span>Search by Train No. or Name</span>
+              </div>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                Enter any 3–6 digit Indian Railway train number or select from live autocomplete suggestions.
+              </p>
+            </div>
+            <div className="rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--navy)]">
+                <MapPin className="h-4 w-4 text-orange-600" />
+                <span>Station-Wise Running Timeline</span>
+              </div>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                View current train position, platform numbers, arrival/departure delays, and upcoming halts.
+              </p>
+            </div>
+            <div className="rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5">
+              <div className="flex items-center gap-2 text-xs font-bold text-[var(--navy)]">
+                <Clock className="h-4 w-4 text-orange-600" />
+                <span>Select Start / Journey Date</span>
+              </div>
+              <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                Choose the train’s journey date (defaults to today in IST) and switch dates anytime in the result bar.
+              </p>
+            </div>
+          </div>
+        )}
+
+        <LiveTrainStatusGuide embedded />
+      </div>
+    );
   }
 
   return (
@@ -1143,7 +1318,7 @@ function LiveTrainStatusSearch({ queryTrain, queryDate }: { queryTrain: string; 
       <main className="flex-1 pb-16">
         {/* ══ MMT-STYLE TOP SEARCH HERO SECTION (WHITE & ORANGE THEME, MAX-W 1240PX) ══ */}
         <section className="relative border-b border-[#f4e4d4] bg-gradient-to-b from-[#fffcf8] via-[#faf6f0] to-[#f6efe6] pt-6 pb-8 sm:pt-8 sm:pb-10">
-          <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6 text-center">
+          <div className="site-tool-container text-center">
             {/* Header Badge */}
             <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3.5 py-1 text-xs font-[800] uppercase tracking-wider text-[#ea580c] shadow-2xs">
               <span className="h-2 w-2 rounded-full bg-[#f97316] animate-pulse" />
@@ -1158,106 +1333,12 @@ function LiveTrainStatusSearch({ queryTrain, queryDate }: { queryTrain: string; 
             </p>
 
             {/* MMT-Style Unified Search Card */}
-            <div
-              ref={searchContainerRef}
-              className="relative mx-auto mt-5 rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-lg max-w-2xl text-left"
-            >
-              <form onSubmit={(e) => submitLookup(e)} className="grid gap-3 sm:grid-cols-[1fr_170px_auto] items-end">
-                {/* Train Input with Autocomplete */}
-                <div className="relative">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                    Train Name or Number
-                  </label>
-                  <div className="relative flex items-center">
-                    <TrainFront className="absolute left-3.5 h-4 w-4 text-slate-400" />
-                    <input
-                      type="text"
-                      autoComplete="off"
-                      value={trainQuery}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setTrainQuery(val);
-                        if (!val.trim()) {
-                          setTrainSuggestions([]);
-                        }
-                        setDropdownOpen(true);
-                      }}
-                      onFocus={() => setDropdownOpen(true)}
-                      placeholder="e.g. 19712 or Jaipur Exp"
-                      className="h-11 w-full rounded-xl border border-slate-200 bg-[#fffdfa] pl-10 pr-3 text-sm font-semibold text-[var(--navy)] outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100 placeholder:text-slate-400"
-                    />
-                  </div>
-
-                  {/* Autocomplete Dropdown */}
-                  {dropdownOpen && (trainSuggestions.length > 0 || searchLoading) && (
-                    <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-60 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl">
-                      {searchLoading && (
-                        <div className="p-3 text-center text-xs text-slate-500">
-                          Searching trains...
-                        </div>
-                      )}
-                      {trainSuggestions.map((item) => (
-                        <button
-                          key={item.trainNumber}
-                          type="button"
-                          onClick={() => {
-                            setTrainQuery(`${item.trainNumber} - ${item.trainName}`);
-                            setDropdownOpen(false);
-                            const targetDate = journeyDate || todayInIndia();
-                            setJourneyDate(targetDate);
-                            submitLookup(undefined, item.trainNumber, targetDate);
-                          }}
-                          className="flex w-full items-center justify-between px-3.5 py-2.5 text-left text-xs font-semibold hover:bg-orange-50/70 border-b border-slate-50 last:border-0"
-                        >
-                          <span className="font-extrabold text-[var(--navy)]">
-                            {item.trainNumber} - {item.trainName}
-                          </span>
-                          <span className="rounded bg-orange-100 px-1.5 py-0.5 text-[10px] font-bold text-orange-700">
-                            Select
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Journey Date */}
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                    Journey Date
-                  </label>
-                  <div className="relative flex items-center">
-                    <Calendar className="absolute left-3.5 h-4 w-4 text-slate-400 pointer-events-none" />
-                    <input
-                      type="date"
-                      value={journeyDate}
-                      onChange={(e) => setJourneyDate(e.target.value)}
-                      className="h-11 w-full rounded-xl border border-slate-200 bg-[#fffdfa] pl-10 pr-2 text-xs font-semibold text-[var(--navy)] outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
-                    />
-                  </div>
-                </div>
-
-                {/* Search Button */}
-                <button
-                  type="submit"
-                  className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 text-sm font-bold text-white shadow-xs transition hover:bg-[#ea580c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] cursor-pointer"
-                >
-                  <Search className="h-4 w-4" />
-                  <span>Check Status</span>
-                </button>
-              </form>
-
-              {validationError && (
-                <p className="mt-3 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-800">
-                  {validationError}
-                </p>
-              )}
-            </div>
+            {searchFormCard}
           </div>
         </section>
 
         {/* ══ RESULTS CONTAINER (MAX-W 1240PX FOR 2560PX SCREEN ALIGNMENT) ══ */}
-        <div className="mx-auto w-full max-w-[1240px] px-4 sm:px-6">
+        <div className="site-tool-container">
           {lookup && (
             <LiveTrainStatusResult
               key={`${lookup.trainNumber}-${lookup.journeyDate}`}
@@ -1270,9 +1351,74 @@ function LiveTrainStatusSearch({ queryTrain, queryDate }: { queryTrain: string; 
             />
           )}
         </div>
+
+        <LiveTrainStatusGuide />
       </main>
 
       <Footer />
     </div>
+  );
+}
+
+function LiveTrainStatusGuide({ embedded = false }: { embedded?: boolean }) {
+  const guideItems = [
+    {
+      icon: MapPin,
+      title: "Last reported location",
+      text: "This is the latest location available in the feed, so it may not be the train’s exact position right now.",
+    },
+    {
+      icon: Clock,
+      title: "Actual and scheduled times",
+      text: "The station timeline shows a verified actual time when available; otherwise, it shows the scheduled time.",
+    },
+    {
+      icon: RefreshCw,
+      title: "Updates and journey date",
+      text: "Check the data-updated time, use Refresh for a new check, and select the date the train starts its journey.",
+    },
+  ];
+
+  return (
+    <section
+      aria-labelledby="live-status-guide-heading"
+      className={`site-tool-container ${embedded ? "mt-6" : "mt-10"} space-y-4`}
+    >
+      <div className="max-w-3xl">
+        <p className="text-xs font-extrabold uppercase tracking-[0.12em] text-orange-700">
+          Quick guide
+        </p>
+        <h2
+          id="live-status-guide-heading"
+          className="mt-1 text-xl font-extrabold tracking-tight text-[var(--navy)] sm:text-2xl"
+        >
+          How to read live train status
+        </h2>
+        <p className="mt-1 text-sm leading-6 text-slate-600">
+          Use the location, station timeline, and update time together to understand the latest available journey information.
+        </p>
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {guideItems.map(({ icon: Icon, title, text }) => (
+          <article
+            key={title}
+            className="rounded-xl border border-slate-200 bg-white p-4"
+          >
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-50 text-orange-700">
+                <Icon aria-hidden="true" className="h-4 w-4" />
+              </span>
+              <h3 className="text-sm font-bold text-[var(--navy)]">{title}</h3>
+            </div>
+            <p className="mt-2 text-xs leading-5 text-slate-600">{text}</p>
+          </article>
+        ))}
+      </div>
+
+      <p className="rounded-lg border border-orange-100 bg-orange-50/60 px-3.5 py-3 text-xs leading-5 text-slate-700">
+        Live updates can be delayed or temporarily unavailable. If a station has no verified actual time, use its scheduled time as a reference and check again before departure.
+      </p>
+    </section>
   );
 }

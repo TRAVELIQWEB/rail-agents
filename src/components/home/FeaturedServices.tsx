@@ -20,7 +20,8 @@ const keyServices = [
     href: "/live-train-status",
     badge: "Real-Time Tracking",
     icon: TrainFront,
-    color: "from-orange-500/10 to-amber-500/10 text-orange-600",
+    color: "bg-[#EFF6FF] text-[#2563EB] ring-[#BFDBFE]",
+    actionColor: "text-[#2563EB]",
   },
   {
     title: "PNR Status Check",
@@ -30,7 +31,8 @@ const keyServices = [
     href: "/pnr-status",
     badge: "Live Verification",
     icon: TicketCheck,
-    color: "from-blue-500/10 to-cyan-500/10 text-blue-600",
+    color: "bg-[#ECFDF5] text-[#15803D] ring-[#BBF7D0]",
+    actionColor: "text-[#15803D]",
   },
   {
     title: "Railway Agent Guides",
@@ -40,7 +42,8 @@ const keyServices = [
     href: "/guides",
     badge: "Knowledge Base",
     icon: BookOpen,
-    color: "from-emerald-500/10 to-teal-500/10 text-emerald-600",
+    color: "bg-[#F0FDFA] text-[#0D9488] ring-[#99F6E4]",
+    actionColor: "text-[#0D9488]",
   },
   {
     title: "Train Ticket Fare Calculator",
@@ -50,7 +53,8 @@ const keyServices = [
     href: "/train-ticket-agent-fare-calculator",
     badge: "Fee Breakdown",
     icon: Calculator,
-    color: "from-purple-500/10 to-pink-500/10 text-purple-600",
+    color: "bg-[#F5F3FF] text-[#7C3AED] ring-[#DDD6FE]",
+    actionColor: "text-[#7C3AED]",
   },
   {
     title: "Ticket Booking Date Calculator",
@@ -60,7 +64,8 @@ const keyServices = [
     href: "/ticket-date-calculator",
     badge: "60-Day ARP",
     icon: CalendarDays,
-    color: "from-amber-500/10 to-orange-500/10 text-amber-600",
+    color: "bg-[#FFF7ED] text-[#C2410C] ring-[#FED7AA]",
+    actionColor: "text-[#C2410C]",
   },
   {
     title: "Train Chart Preparation Time",
@@ -70,7 +75,8 @@ const keyServices = [
     href: "/train-chart-preparation-time",
     badge: "PRS Timings",
     icon: Clock3,
-    color: "from-sky-500/10 to-indigo-500/10 text-sky-600",
+    color: "bg-[#F0FDFA] text-[#0D9488] ring-[#99F6E4]",
+    actionColor: "text-[#0D9488]",
   },
   {
     title: "Ask Nihal Singh",
@@ -80,7 +86,8 @@ const keyServices = [
     href: "/ask-nihal",
     badge: "Digital Guidance",
     icon: MessageCircle,
-    color: "from-rose-500/10 to-orange-500/10 text-rose-600",
+    color: "bg-[#FFF1F2] text-[#BE123C] ring-[#FECDD3]",
+    actionColor: "text-[#BE123C]",
   },
   {
     title: "About RailAgents",
@@ -90,7 +97,8 @@ const keyServices = [
     href: "/about",
     badge: "Our Mission",
     icon: Info,
-    color: "from-slate-500/10 to-slate-700/10 text-slate-700",
+    color: "bg-[#EFF6FF] text-[#102B4E] ring-[#BFDBFE]",
+    actionColor: "text-[#2563EB]",
   },
 ];
 
@@ -133,7 +141,7 @@ export function FeaturedServices() {
                 <div>
                   <div className="flex items-center justify-between gap-2">
                     <span
-                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${service.color} ring-1 ring-black/5 transition-transform duration-200 group-hover:scale-105`}
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ring-1 transition-transform duration-200 group-hover:scale-105 ${service.color}`}
                     >
                       <Icon aria-hidden="true" className="h-5 w-5" />
                     </span>
@@ -150,7 +158,9 @@ export function FeaturedServices() {
                   </p>
                 </div>
 
-                <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-xs font-bold text-[var(--primary)]">
+                <div
+                  className={`mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-xs font-bold ${service.actionColor}`}
+                >
                   <span>Open {service.shortTitle}</span>
                   <ArrowRight
                     aria-hidden="true"

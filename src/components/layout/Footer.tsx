@@ -22,6 +22,7 @@ const quickLinks = [
 const supportLinks = [
   { label: "Railway Agent Guides", href: "/guides" },
   { label: "IRCTC Agent Registration", href: "/irctc-agent-registration" },
+  { label: "IRCTC PSP Directory", href: "/irctc-principal-service-providers-updated-29-03-2025" },
   { label: "Rules & Regulations", href: "/irctc-agent-rules-regulations" },
   { label: "Ask Nihal Singh", href: "/ask-nihal" },
   { label: "Blog & Railway Insights", href: "/blog" },
