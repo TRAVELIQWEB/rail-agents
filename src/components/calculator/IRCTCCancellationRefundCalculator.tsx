@@ -14,11 +14,11 @@ import {
 import { initializeIRCTCCalculator } from "@/lib/irctc-cancellation-calculator";
 
 const fieldClassName =
-  "mt-1.5 h-10 sm:h-11 w-full min-w-0 rounded-xl border border-[#e4d5c4] bg-white px-3 text-xs sm:text-sm font-semibold text-stone-900 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02),0_1px_2px_rgba(0,0,0,0.03)] outline-none transition-all placeholder:text-stone-400 hover:border-orange-300 focus:border-orange-500 focus:shadow-[inset_0_1px_2px_rgba(0,0,0,0.04),0_0_0_3px_rgba(249,115,22,0.18)]";
+  "mt-1.5 h-10 sm:h-11 w-full min-w-0 rounded-xl border border-[#e4d5c4] bg-white px-3 text-xs sm:text-sm font-semibold text-stone-900 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02),0_1px_2px_rgba(0,0,0,0.04)] focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200";
 const quietButtonClassName =
-  "inline-flex min-h-9 sm:min-h-10 items-center justify-center rounded-xl border border-[#e4d5c4] bg-white px-3.5 py-1.5 sm:py-2 text-xs sm:text-sm font-bold text-stone-700 shadow-[0_1px_3px_rgba(0,0,0,0.03)] transition-all hover:border-orange-300 hover:bg-[#fff9f3] hover:text-orange-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 cursor-pointer";
+  "inline-flex min-h-9 sm:min-h-10 items-center justify-center rounded-xl border border-[#e4d5c4] bg-white px-3.5 py-1.5 sm:py-2 text-xs sm:text-sm font-bold text-stone-700 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all hover:border-orange-300 hover:bg-[#fffaf5]";
 const choiceButtonClassName =
-  "min-h-11 sm:min-h-12 rounded-xl border border-[#e4d5c4] bg-[#faf6f0]/70 px-3.5 py-2 sm:py-2.5 text-left text-xs sm:text-sm text-stone-700 shadow-[0_1px_2px_rgba(0,0,0,0.03)] transition-all hover:-translate-y-0.5 hover:border-orange-300 hover:bg-white hover:text-stone-900 hover:shadow-[0_4px_12px_rgba(249,115,22,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 cursor-pointer";
+  "min-h-11 sm:min-h-12 rounded-xl border border-[#e4d5c4] bg-[#faf6f0]/70 px-3.5 py-2 sm:py-2.5 text-left text-xs sm:text-sm text-stone-700 shadow-[0_1px_2px_rgba(0,0,0,0.03)] transition-all hover:border-orange-300 hover:bg-white";
 
 function SectionTitle({
   icon,
@@ -77,7 +77,7 @@ function PassengerChoices({
             key={count}
             type="button"
             {...{ [dataName]: count }}
-            className={`${className} inline-flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-[#e4d5c4] bg-white p-0 text-center text-xs sm:text-sm font-bold text-stone-700 shadow-2xs transition-all hover:-translate-y-0.5 hover:border-orange-300 hover:bg-[#fff9f3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 cursor-pointer`}
+            className={`${className} inline-flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-[#e4d5c4] bg-white p-0 text-center text-xs sm:text-sm font-bold text-stone-700 shadow-[0_1px_2px_rgba(0,0,0,0.03)] transition-all hover:border-orange-300 hover:bg-[#fffaf5]`}
             aria-label={`${label}: ${count}`}
           >
             {count}
@@ -401,17 +401,22 @@ export function IRCTCCancellationRefundCalculator() {
               <p id="slabSectionTitleLabel" className="mb-2 text-sm font-semibold text-slate-800">
                 Quick time bands · Regular trains (48h / 12h / 4h)
               </p>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-5">
+              <div id="quickTimeBandOptions" className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-5">
                 {[
-                  ["80", "slabBtn1Title", "More than 48 hours", "slabBtn1Sub", "Flat cancellation charge"],
-                  ["14.83", "slabBtn2Title", "48 to 12 hours", "slabBtn2Sub", "25% cancellation charge"],
-                  ["9", "slabBtn3Title", "Under 12h to over 4h", "slabBtn3Sub", "50%, before chart preparation"],
-                  ["2", "slabBtn4Title", "Chart prepared / under 4h", "slabBtn4Sub", "Confirmed: no refund"],
-                  ["0.25", null, "Under 30 minutes", null, "Waitlist rules may apply"],
-                ].map(([hours, titleId, title, subId, sub]) => (
-                  <button key={hours} type="button" data-hours={hours} className={`slab-btn ${choiceButtonClassName} min-h-[72px]`}>
-                    <span id={titleId || undefined} className="block font-semibold text-[#0f2747]">{title}</span>
-                    <span id={subId || undefined} className="mt-1 block text-xs text-slate-500">{sub}</span>
+                  ["80", "More than 48 hours", "Flat cancellation charge"],
+                  ["14.83", "48 to 12 hours", "25% cancellation charge"],
+                  ["9", "Under 12h to over 4h", "50%, before chart preparation"],
+                  ["2", "Chart prepared / under 4h", "Confirmed: no refund"],
+                  ["0.25", "Under 30 minutes", "Waitlist rules may apply"],
+                ].map(([hours, title, sub]) => (
+                  <button
+                    key={hours}
+                    type="button"
+                    data-time-band={hours}
+                    className={`slab-btn ${choiceButtonClassName} min-h-[72px]`}
+                  >
+                    <span className="block font-semibold text-[#0f2747]">{title}</span>
+                    <span className="mt-1 block text-xs text-slate-500">{sub}</span>
                   </button>
                 ))}
               </div>
@@ -513,8 +518,8 @@ export function IRCTCCancellationRefundCalculator() {
                     </div>
                     <p className="text-xs text-slate-500">Excluding GST: <strong id="catExGstDisplay">₹0.00</strong> · GST: <strong id="catGstDisplay">₹0.00</strong></p>
                     <div className="flex flex-wrap gap-2">
-                      {[["363", "Vande Bharat"], ["150", "₹150"], ["300", "₹300"]].map(([value, label]) => (
-                        <button key={value} type="button" data-food={value} className={`food-preset-btn ${quietButtonClassName} min-h-8 px-2 text-xs`}>{value === "363" ? "₹363 · " : ""}{label}</button>
+                      {[['363', 'Vande Bharat'], ['150', '₹150'], ['300', '₹300']].map(([value, label]) => (
+                        <button key={value} type="button" data-food={value} className={`food-preset-btn ${quietButtonClassName} min-h-8 px-2 text-xs`}>{value === '363' ? '₹363 · ' : ''}{label}</button>
                       ))}
                     </div>
                   </div>
@@ -558,7 +563,7 @@ export function IRCTCCancellationRefundCalculator() {
                 <button
                   type="button"
                   id="calculateRefundBtn"
-                  className="inline-flex min-h-12 flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 px-6 py-3 text-sm sm:text-base font-extrabold text-white shadow-[0_4px_16px_rgba(249,115,22,0.35)] transition-all hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(249,115,22,0.45)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 cursor-pointer"
+                  className="inline-flex min-h-12 flex-1 items-center justify-center rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 px-6 py-3 text-sm sm:text-base font-extrabold text-white shadow-[0_4px_14px_rgba(249,115,22,0.2)]"
                 >
                   <Calculator aria-hidden="true" className="mr-2 h-5 w-5" />
                   Calculate Refund
@@ -577,7 +582,7 @@ export function IRCTCCancellationRefundCalculator() {
             </section>
 
             <details className="rounded-2xl border border-[#ede1d3] bg-[#fffcf8] shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-all">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-4 text-xs sm:text-sm font-bold text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500 sm:px-6">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 p-4 text-xs sm:text-sm font-bold text-stone-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500">
                 <span className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-orange-500" />
                   Load a built-in verification scenario
@@ -683,7 +688,7 @@ export function IRCTCCancellationRefundCalculator() {
 
                 <div className="mt-3">
                   <div className="refund-line"><span>IRCTC convenience fee</span><span id="receiptIrctcFee">- ₹0.00</span></div>
-                  <div id="receiptInsuranceRow" className="refund-line" style={{ display: "none" }}><span>Travel insurance (<span id="receiptInsStatusText">Refundable</span>)</span><span id="receiptInsuranceFee">₹0.00</span></div>
+                  <div id="receiptInsuranceRow" className="refund-line" style={{ display: "none" }}><span>Travel insurance (<span id="receiptInsStatusText">Refundable</span>)</span><span id="receiptInsuranceFee">+ ₹0.00</span></div>
                   <div id="receiptPgBaseRow" className="refund-line"><span>Payment gateway calculation base</span><span id="receiptPgBaseVal">₹0.00</span></div>
                   <div id="receiptPgFeeRow" className="refund-line"><span>Payment gateway fee · <span id="receiptPgSlabLabel">Shown after calculation</span></span><span id="receiptPgFee">- ₹0.00</span></div>
                   <div id="receiptAgentFeeRow" className="refund-line"><span>Agent service fee</span><span id="receiptAgentFee">- ₹0.00</span></div>
@@ -739,7 +744,7 @@ export function IRCTCCancellationRefundCalculator() {
               <tbody className="divide-y divide-slate-100 text-slate-600">
                 <tr><th className="p-3 font-medium">Early</th><td className="p-3">More than 48 hours: class-wise flat charge</td><td className="p-3">More than 72 hours: 25% cancellation charge</td></tr>
                 <tr><th className="p-3 font-medium">Medium</th><td className="p-3">48 to 12 hours: 25% cancellation charge</td><td className="p-3">72 to 8 hours: 50% cancellation charge</td></tr>
-                <tr><th className="p-3 font-medium">Late</th><td className="p-3">Under 12 and over 4 hours before chart: 50% charge</td><td className="p-3">72 to 8 hours: 50% cancellation charge</td></tr>
+                <tr><th className="p-3 font-medium">Late</th><td className="p-3">Under 12 and over 4 hours before chart: 50% charge</td><td className="p-3">Under 8 hours before chart: 50% cancellation charge</td></tr>
                 <tr><th className="p-3 font-medium">Chart prepared / no-refund window</th><td className="p-3">Chart prepared or under 4 hours: no refund for confirmed tickets</td><td className="p-3">Chart prepared or under 8 hours: no refund for confirmed tickets</td></tr>
               </tbody>
             </table>
