@@ -28,7 +28,10 @@ export function MobileMenu() {
       if (!menuRef.current?.contains(event.target as Node)) setIsOpen(false);
     }
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setIsOpen(false);
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        menuRef.current?.querySelector<HTMLButtonElement>("button[aria-controls='mobile-navigation']")?.focus();
+      }
     }
 
     document.addEventListener("pointerdown", handlePointerDown);
@@ -82,7 +85,7 @@ export function MobileMenu() {
       {isOpen ? (
         <div
           id="mobile-navigation"
-          className="absolute right-0 top-[calc(100%+8px)] z-50 w-[min(22rem,calc(100vw-2rem))] rounded-2xl border border-[var(--primary-border)] bg-white p-4 shadow-[0_20px_48px_rgba(18,48,85,0.16)]"
+          className="absolute right-0 top-[calc(100%+8px)] z-50 max-h-[calc(100dvh-6rem)] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-2xl border border-[var(--primary-border)] bg-white p-4 shadow-[0_20px_48px_rgba(18,48,85,0.16)]"
         >
           <nav aria-label="Mobile navigation" className="grid gap-1">
             {navItems.map((item) => {

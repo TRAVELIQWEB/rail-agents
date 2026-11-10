@@ -15,7 +15,6 @@ import {
   MapPin,
   Clock,
   CalendarDays,
-  Sparkles,
   Copy,
   Check,
   Share2,
@@ -23,39 +22,45 @@ import {
   AlertCircle,
   ArrowRight,
   Radio,
-  HelpCircle,
   X,
 } from "lucide-react";
 import { addCalendarDays } from "@/lib/railway-calculator-logic";
 import type { TrainChartingResponse, TrainChartStation } from "@/lib/trains";
+import { describeChartingStation } from "@/lib/charting-station";
 
 interface TrainSuggestion {
   trainNumber: string;
   trainName: string;
 }
 
-const CHARTING_FAQS = [
-  {
-    q: "When is the first reservation chart prepared in Indian Railways?",
-    a: "According to IRCTC and Indian Railways PRS rules, the First Reservation Chart is typically prepared 8 to 10 hours before the scheduled departure of the train from its originating or remote charting station. For morning trains departing between 05:00 AM and 02:00 PM, the first chart is usually prepared the previous night between 08:00 PM and 09:00 PM.",
-  },
-  {
-    q: "What is the Second (Final) Reservation Chart and when is it prepared?",
-    a: "The Second (Final) Chart is prepared approximately 30 minutes (ranging from 15 to 30 minutes) before the scheduled departure of the train. It accounts for Current Booking tickets, last-minute cancellations, and final upgrades for RAC or waitlisted passengers.",
-  },
-  {
-    q: "What does 'Remote Charting Station' mean for intermediate boarding stations?",
-    a: "Large trains divide their route into multiple remote charting zones (quotas). If your boarding station is a smaller halt (for example, Borivali on train 12952), its reservation chart is prepared along with its parent Remote Charting Station (Surat). Therefore, the chart for Borivali is finalized at the exact same time as Surat's chart.",
-  },
-  {
-    q: "When does IRCTC Current Booking open for vacant seats?",
-    a: "Current Booking opens immediately after the First Reservation Chart is prepared and remains open up to 5–10 minutes before the Second (Final) Chart is prepared (typically 30 minutes before train departure).",
-  },
-  {
-    q: "What happens to Waitlisted (WL) e-tickets after chart preparation?",
-    a: "If all passengers on an IRCTC e-ticket remain fully waitlisted (GNWL/RLWL/PQWL/TQWL) after the chart is prepared for their boarding station, the ticket is automatically cancelled by IRCTC and the refund (minus clerkage) is credited back to the booking account.",
-  },
-];
+const chartingStyles = {
+  self: { panel: "border-blue-100 bg-blue-50/60", badge: "border-blue-100 bg-white text-blue-900" },
+  remote: { panel: "border-amber-200 bg-amber-50/70", badge: "border-amber-200 bg-amber-100/60 text-amber-900" },
+  unknown: { panel: "border-slate-200 bg-slate-50", badge: "border-slate-200 bg-white text-slate-600" },
+};
+
+function RouteStationCard({ station, code, journeyDate, destination = false }: {
+  station: TrainChartStation | undefined;
+  code: string;
+  journeyDate: string;
+  destination?: boolean;
+}) {
+  const date = station?.day != null ? addCalendarDays(journeyDate, station.day - 1) : null;
+  const dateLabel = date ? new Date(`${date}T00:00:00+05:30`).toLocaleDateString("en-IN", {
+    timeZone: "Asia/Kolkata", day: "2-digit", month: "short", year: "numeric",
+  }) : "Not available";
+  return (
+    <div className="min-w-0 rounded-lg border border-orange-100 bg-white p-3 sm:p-3.5">
+      <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500">{destination ? "Destination Station" : "Origin Station"}</p>
+      <p className="mt-2 break-words text-sm font-extrabold leading-snug text-[#102B46]">{station?.stationName || code || "Not available"}</p>
+      {code && <p className="mt-1 break-words font-mono text-xs text-slate-600">({code})</p>}
+      <div className="mt-3 space-y-1 border-t border-orange-100 pt-3 text-xs text-slate-600">
+        <p>{dateLabel}</p>
+        <p>{destination ? "Arrival" : "Departure"}: <strong className="text-[#102B46]">{(destination ? station?.arrivalTime : station?.departureTime) || "Not available"}</strong></p>
+      </div>
+    </div>
+  );
+}
 
 /**
  * Formats an ISO date-time string like "2026-11-03T08:55:00.000+05:30" into a readable IST string
@@ -164,11 +169,9 @@ export function TrainChartPreparationTime() {
 
   // Route table filter states
   const [tableStationSearch, setTableStationSearch] = useState<string>("");
-  const [expandedStationCode, setExpandedStationCode] = useState<string | null>(null);
 
   // UI feedback states
   const [copied, setCopied] = useState<boolean>(false);
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [, setTick] = useState<number>(0);
 
   // 1-second live tick for countdowns
@@ -323,15 +326,9 @@ export function TrainChartPreparationTime() {
     return null;
   }, [boardingStations, selectedBoardingCode]);
 
-  // Find remote charting station full name if available in the route
-  const getRemoteStationDisplay = useCallback(
-    (remoteCode: string | null): string => {
-      if (!remoteCode) return "Origin Station";
-      if (!chartingData) return remoteCode;
-      const found = chartingData.stations.find((s) => s.stationCode === remoteCode);
-      return found ? `${found.stationName} (${found.stationCode})` : remoteCode;
-    },
-    [chartingData]
+  const canShowResults = Boolean(
+    selectedTrainNumber && /^\d{4}-\d{2}-\d{2}$/.test(journeyDate)
+    && chartingData && selectedStationInfo && !chartingLoading,
   );
 
   // Filtered stations for Boarding Station dropdown
@@ -358,7 +355,6 @@ export function TrainChartPreparationTime() {
     setSelectedTrainNumber(trn.trainNumber);
     setTrainQuery(`${trn.trainNumber} - ${trn.trainName}`);
     setSelectedBoardingCode("");
-    setExpandedStationCode(null);
     setChartingData(null);
     setChartingError(null);
     setTrainDropdownOpen(false);
@@ -378,8 +374,15 @@ export function TrainChartPreparationTime() {
       return;
     }
     if (selectedTrainNumber && /^\d{4}-\d{2}-\d{2}$/.test(newDate)) {
-      const selectedDay = selectedStationInfo?.station.day ?? 1;
-      const originDate = addCalendarDays(newDate, 1 - selectedDay);
+      const selectedDay = selectedStationInfo?.station.day;
+      if (selectedStationInfo && selectedDay === null) {
+        chartRequestId.current += 1;
+        setChartingData(null);
+        setChartingLoading(false);
+        setChartingError("Journey day is not available for this station. Select your train again to reload the route for the new date.");
+        return;
+      }
+      const originDate = typeof selectedDay === "number" ? addCalendarDays(newDate, 1 - selectedDay) : newDate;
       void fetchChartingSchedule(selectedTrainNumber, originDate, selectedBoardingCode);
     }
   };
@@ -388,6 +391,7 @@ export function TrainChartPreparationTime() {
     setSelectedBoardingCode(station.stationCode);
     setBoardingDropdownOpen(false);
     setBoardingFilterQuery("");
+    if (station.day === null) return;
     if (selectedTrainNumber) {
       const originDate = addCalendarDays(journeyDate, 1 - station.day);
       void fetchChartingSchedule(selectedTrainNumber, originDate, station.stationCode);
@@ -403,9 +407,10 @@ export function TrainChartPreparationTime() {
     const text = [
       `🚂 IRCTC Train Chart Preparation Schedule`,
       `Train: ${chartingData.trainNumber} - ${chartingData.trainName} (${chartingData.originStation} ➔ ${chartingData.destinationStation})`,
-      `Boarding Station: ${stn.stationName} (${stn.stationCode}) • Day ${stn.day}`,
+      `Boarding Station: ${stn.stationName} (${stn.stationCode}) • Day ${stn.day ?? "Not available"}`,
       `Scheduled Departure: ${stn.departureTime || stn.arrivalTime || "—"} HRS`,
-      `Charting Quota Station: ${getRemoteStationDisplay(stn.chartRemoteStation)}`,
+      `Chart preparation station: ${describeChartingStation(stn, chartingData.stations).display}`,
+      ...(describeChartingStation(stn, chartingData.stations).label ? [describeChartingStation(stn, chartingData.stations).label] : []),
       `1st Reservation Chart: ${firstIso?.fullLabel || "Not available"}`,
       `2nd (Final) Chart: ${secondIso?.fullLabel || "Not available"}`,
       `Checked via RailAgents.in`,
@@ -426,8 +431,9 @@ export function TrainChartPreparationTime() {
       `🚂 *IRCTC Train Chart Preparation Timing*\n` +
         `• *Train:* ${chartingData.trainNumber} - ${chartingData.trainName}\n` +
         `• *Boarding Station:* ${stn.stationName} (${stn.stationCode})\n` +
-        `• *Scheduled Dep:* ${stn.departureTime || stn.arrivalTime || "—"} (Day ${stn.day})\n` +
-        `• *Remote Charting Station:* ${getRemoteStationDisplay(stn.chartRemoteStation)}\n` +
+        `• *Scheduled Dep:* ${stn.departureTime || stn.arrivalTime || "—"} (Day ${stn.day ?? "Not available"})\n` +
+        `• *Chart preparation station:* ${describeChartingStation(stn, chartingData.stations).display}\n` +
+        (describeChartingStation(stn, chartingData.stations).label ? `• *${describeChartingStation(stn, chartingData.stations).label}*\n` : "") +
         `• *1st Chart Time:* *${firstIso?.fullLabel || "Not available"}*\n` +
         `• *2nd (Final) Chart:* *${secondIso?.fullLabel || "Not available"}*\n` +
         `Checked on RailAgents.in`
@@ -436,7 +442,7 @@ export function TrainChartPreparationTime() {
   };
 
   return (
-    <div className="site-tool-container space-y-4 sm:space-y-5">
+    <div className="site-tool-container space-y-3">
       {/* ══════════════════════════════════════════════════════════════════════
           1. SEARCH BAR: TRAIN NUMBER/NAME + JOURNEY DATE + BOARDING STATION
          ══════════════════════════════════════════════════════════════════════ */}
@@ -449,7 +455,7 @@ export function TrainChartPreparationTime() {
               </span>
               <h2
                 id="chart-search-heading"
-                className="text-base font-bold text-[#0F172A] sm:text-lg"
+                className="text-sm font-bold text-[#0F172A]"
               >
                 Check Train Chart Timing
               </h2>
@@ -608,12 +614,12 @@ export function TrainChartPreparationTime() {
                 type="button"
                 disabled={boardingStations.length === 0}
                 onClick={() => setBoardingDropdownOpen((prev) => !prev)}
-                className="flex h-11 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 text-left text-[13px] font-medium text-[#0F172A] transition-colors hover:border-[#F97316] focus:border-[#F97316] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 disabled:cursor-not-allowed disabled:opacity-60"
+                className="flex min-h-11 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 py-2 text-left text-[13px] font-medium text-[#0F172A] transition-colors hover:border-[#F97316] focus:border-[#F97316] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <div className="flex items-center gap-2 min-w-0">
                   <MapPin className="h-4 w-4 shrink-0 text-[#A34C22]" />
                   {selectedStationInfo ? (
-                    <span className="truncate">
+                    <span className="min-w-0 break-words">
                       {selectedStationInfo.station.stationName} (
                       {selectedStationInfo.station.stationCode})
                     </span>
@@ -641,7 +647,7 @@ export function TrainChartPreparationTime() {
               )}
 
               {boardingDropdownOpen && chartingData && (
-                <div className="absolute left-0 top-[calc(100%+6px)] z-50 w-full sm:w-80 max-h-72 overflow-hidden rounded-lg border border-[#E2E8F0] bg-white shadow-md flex flex-col">
+                <div className="absolute left-0 top-[calc(100%+6px)] z-50 max-h-72 w-full max-w-[calc(100vw-2rem)] overflow-hidden rounded-lg border border-[#E2E8F0] bg-white shadow-md flex flex-col sm:right-0 sm:left-auto sm:w-80">
                   <div className="p-2 border-b border-[#E5EAF0] bg-[#F5F7FA]/70">
                     <div className="relative">
                       <Search className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#64748B]" />
@@ -662,7 +668,6 @@ export function TrainChartPreparationTime() {
                     ) : (
                       filteredBoardingDropdownStations.map((stn, idx) => {
                         const isSelected = stn.stationCode === selectedBoardingCode;
-                        const firstChart = formatIsoDateTimeIST(stn.firstChartDateTime);
                         return (
                           <button
                             key={stn.stationCode}
@@ -686,11 +691,7 @@ export function TrainChartPreparationTime() {
                                 )}
                               </div>
                               <span className="text-[10.5px] text-[#64748B] block">
-                                Day {stn.day} •{" "}
-                                {stn.departureTime
-                                  ? `Dep ${stn.departureTime}`
-                                  : `Arr ${stn.arrivalTime}`}{" "}
-                                • 1st Chart: {firstChart?.time12 || "Not available"}
+                                Boarding stop · Day {stn.day ?? "Not available"}
                               </span>
                             </div>
                             <span className="shrink-0 font-mono text-[10.5px] font-extrabold px-2 py-0.5 rounded bg-[#F5F7FA] text-[#26374A]">
@@ -751,10 +752,10 @@ export function TrainChartPreparationTime() {
         </div>
       )}
 
-      {!chartingData && !chartingError && (
+      {!canShowResults && !chartingError && (
         <section
           aria-live="polite"
-          className="rounded-2xl border border-[#E5EAF0] bg-white px-5 py-8 text-center shadow-sm sm:py-10"
+          className="rounded-2xl border border-[#E5EAF0] bg-white px-4 py-5 text-center shadow-sm"
         >
           <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-[#FFF5EF] text-[#A34C22]">
             {chartingLoading ? <Clock className="h-5 w-5 animate-pulse" /> : <TrainFront className="h-5 w-5" />}
@@ -762,6 +763,8 @@ export function TrainChartPreparationTime() {
           <h3 className="mt-3 text-base font-bold text-[#102B46]">
             {chartingLoading
               ? "Loading chart schedule"
+              : chartingData && !selectedStationInfo
+                ? "Select your boarding station"
               : selectedTrainNumber && !journeyDate
                 ? "Choose your journey date"
                 : "Search for a train to get started"}
@@ -769,6 +772,8 @@ export function TrainChartPreparationTime() {
           <p className="mx-auto mt-1 max-w-md text-sm leading-relaxed text-[#64748B]">
             {chartingLoading
               ? "We’re retrieving the chart timings and route stations."
+              : chartingData && !selectedStationInfo
+                ? "Step 3 of 3: Choose your boarding station in the form above. Your chart timings and route details will appear here once all three fields are complete."
               : selectedTrainNumber && !journeyDate
                 ? "The train is selected. Choose a date above to load its route, then select your boarding station."
                 : "Enter a train number or name, choose a journey date, then select your boarding station."}
@@ -777,91 +782,16 @@ export function TrainChartPreparationTime() {
         </section>
       )}
 
-      {chartingData && !selectedStationInfo && !chartingLoading && (
-        <p role="status" className="rounded-lg border border-[#E5EAF0] bg-white px-3 py-2 text-xs text-[#64748B]">
-          Train route loaded. Choose your boarding station above and set the journey date to view its chart timings.
-        </p>
-      )}
-
       {/* ══════════════════════════════════════════════════════════════════════
           2. JOURNEY TIMELINE AND SELECTED STATION CHART TIMINGS
          ══════════════════════════════════════════════════════════════════════ */}
-      {chartingData && selectedStationInfo && (() => {
+      {canShowResults && chartingData && selectedStationInfo && (() => {
         const station = selectedStationInfo.station;
-        const originStation = chartingData.stations[0];
-        const destinationStation = chartingData.stations[chartingData.stations.length - 1];
-        const boardingDate = addCalendarDays(chartingData.journeyDate, Math.max(0, station.day - 1));
+        const originStation = chartingData.stations.find((item) => item.stationCode === chartingData.originStation);
+        const destinationStation = chartingData.stations.find((item) => item.stationCode === chartingData.destinationStation);
+        const boardingDate = station.day === null ? null : addCalendarDays(chartingData.journeyDate, station.day - 1);
         const compactDate = (iso: string) => new Date(`${iso}T00:00:00+05:30`).toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata", weekday: "short", day: "2-digit", month: "short", year: "numeric" });
-        const stationJourneyDate = (day: number) => {
-          if (!/^\d{4}-\d{2}-\d{2}$/.test(chartingData.journeyDate) || !Number.isFinite(day)) return null;
-          return compactDate(addCalendarDays(chartingData.journeyDate, Math.max(0, day - 1)));
-        };
-        const renderRouteCard = (
-          routeStation: TrainChartStation | undefined,
-          label: string,
-          timeLabel: "Departure" | "Arrival"
-        ) => {
-          const stationTime =
-            timeLabel === "Departure"
-              ? routeStation?.departureTime
-              : routeStation?.arrivalTime;
-
-          return (
-            <div className="flex min-w-0 flex-col justify-start rounded-lg border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] p-3.5 sm:p-4">
-              <p className="text-[11.5px] font-extrabold uppercase tracking-[0.08em] text-[#525252]">
-                {label}
-              </p>
-              <p className="mt-1.5 w-full break-words text-base font-extrabold leading-snug text-[#171717]">
-                {routeStation ? (
-                  <>
-                    {routeStation.stationName}{" "}
-                    <span className="font-mono text-[13px] font-bold text-[#525252]">
-                      ({routeStation.stationCode})
-                    </span>
-                  </>
-                ) : (
-                  "Station unavailable"
-                )}
-              </p>
-              <div className="my-2.5 border-t border-[#FED7AA]" />
-              <p className="flex items-start gap-2 text-[12.5px] font-semibold leading-snug text-[#525252]">
-                <CalendarDays
-                  aria-hidden="true"
-                  strokeWidth={2.25}
-                  className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#EA580C]"
-                />
-                <span>
-                  {routeStation
-                    ? stationJourneyDate(routeStation.day) || "Date unavailable"
-                    : "Date unavailable"}
-                  {routeStation && typeof routeStation.day === "number" && (
-                    <span className="font-bold text-[#171717]"> · Day {routeStation.day}</span>
-                  )}
-                </span>
-              </p>
-              <p className="mt-1.5 flex items-center gap-2 text-[12.5px] font-semibold leading-snug text-[#525252]">
-                <Clock
-                  aria-hidden="true"
-                  strokeWidth={2.25}
-                  className="h-3.5 w-3.5 shrink-0 text-[#EA580C]"
-                />
-                <span>
-                  {timeLabel}:{" "}
-                  <strong className="font-extrabold tabular-nums text-[#171717]">
-                    {stationTime || "Time unavailable"}
-                  </strong>
-                </span>
-              </p>
-            </div>
-          );
-        };
-        const routeStationDisplay = (code: string) => {
-          const routeStation = chartingData.stations.find((item) => item.stationCode === code);
-          return routeStation ? `${routeStation.stationName} (${routeStation.stationCode})` : code;
-        };
-        const chartStationCode = station.chartRemoteStation || chartingData.originStation;
-        const chartStationDisplay = routeStationDisplay(chartStationCode);
-        const chartStationIsBoardingStation = chartStationCode === station.stationCode;
+        const chartStation = describeChartingStation(station, chartingData.stations);
         const chartCards = [
           { heading: "01 · First Chart", iso: station.firstChartDateTime },
           { heading: "02 · Final Chart", iso: station.secondChartDateTime },
@@ -876,7 +806,7 @@ export function TrainChartPreparationTime() {
                 <TrainFront aria-hidden="true" strokeWidth={2.25} className="h-4 w-4 shrink-0 text-[#EA580C]" />
                 <h2
                   id="boarding-station-spotlight-heading"
-                  className="min-w-0 truncate text-lg font-extrabold leading-tight text-[#171717] sm:text-[19px]"
+                  className="min-w-0 break-words text-lg font-extrabold leading-tight text-[#171717] sm:text-[19px]"
                 >
                   {chartingData.trainNumber} · {chartingData.trainName}
                 </h2>
@@ -887,10 +817,10 @@ export function TrainChartPreparationTime() {
               </span>
             </header>
 
-            <div className="grid grid-cols-1 gap-3 p-3 sm:gap-3.5 sm:p-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,2.8fr)_minmax(0,1.1fr)] lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)_minmax(0,1fr)] md:items-stretch">
-              {renderRouteCard(originStation, "Origin Station", "Departure")}
+            <div className="grid grid-cols-1 gap-3 p-3 sm:p-4 md:grid-cols-[minmax(0,1fr)_minmax(0,3fr)_minmax(0,1fr)]">
+              <RouteStationCard station={originStation} code={chartingData.originStation} journeyDate={chartingData.journeyDate} />
 
-              <div className="flex min-w-0 flex-col justify-between rounded-lg border-2 border-[#EA580C] bg-[#FFFFFF] p-3.5 sm:p-4">
+              <div className="grid min-w-0 gap-3 rounded-lg border border-orange-100 bg-orange-50/30 p-3">
                 <div className="min-w-0 w-full">
                   <p className="text-xs font-black uppercase tracking-[0.08em] text-[#EA580C]">
                     YOUR BOARDING STATION
@@ -909,7 +839,7 @@ export function TrainChartPreparationTime() {
                         className="h-3.5 w-3.5 shrink-0 text-[#EA580C]"
                       />
                       <span>
-                        {compactDate(boardingDate)}
+                        {boardingDate ? compactDate(boardingDate) : "Not available"}
                         {typeof station.day === "number" && (
                           <span className="font-bold text-[#171717]"> · Day {station.day}</span>
                         )}
@@ -936,19 +866,15 @@ export function TrainChartPreparationTime() {
                       </span>
                     </span>
                   </div>
-                  {!chartStationIsBoardingStation && (
-                    <p className="mt-1.5 break-words text-xs font-semibold leading-snug text-[#525252]">
-                      Chart preparation station:{" "}
-                      <strong className="font-extrabold text-[#171717]">
-                        {chartStationDisplay}
-                      </strong>
-                    </p>
-                  )}
+                  <div data-charting-kind={chartStation.kind} className={`mt-3 rounded-lg border p-3 ${chartingStyles[chartStation.kind].panel}`}>
+                    <p className="text-[11px] font-bold uppercase tracking-wide text-slate-600">Chart preparation station</p>
+                    <p className="mt-1 break-words text-base font-extrabold leading-snug text-[#102B46]">{chartStation.display}</p>
+                    {chartStation.label && <span className={`mt-2 inline-flex rounded-md border px-2 py-1 text-xs font-bold ${chartingStyles[chartStation.kind].badge}`}>{chartStation.label}</span>}
+                  </div>
                 </div>
 
-                <div className="my-3 border-t border-[#FED7AA]" />
 
-                <div className="grid min-w-0 grid-cols-1 items-stretch gap-2 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-2.5">
+                <div className="grid min-w-0 grid-cols-2 items-stretch gap-2 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-2.5">
                   {chartCards.map(({ heading, iso }, index) => {
                     const timing = formatIsoDateTimeIST(iso);
                     const scheduleStatus = getScheduleStatus(iso);
@@ -960,7 +886,7 @@ export function TrainChartPreparationTime() {
                               {heading}
                             </h4>
                             <p
-                              className={`mt-1.5 break-words text-2xl font-black leading-tight tabular-nums tracking-tight sm:text-[26px] ${
+                              className={`mt-1.5 break-words text-xl font-black leading-tight tabular-nums tracking-tight sm:text-[26px] ${
                                 timing && !chartingLoading
                                   ? "text-[#171717]"
                                   : "text-[#525252]"
@@ -990,7 +916,7 @@ export function TrainChartPreparationTime() {
                         {index === 0 && (
                           <div
                             aria-hidden="true"
-                            className="flex items-center justify-center py-0.5 sm:px-0.5 sm:py-0"
+                            className="hidden items-center justify-center py-0.5 sm:flex sm:px-0.5 sm:py-0"
                           >
                             <ArrowRight strokeWidth={2.5} className="h-5 w-5 shrink-0 rotate-90 text-[#EA580C] sm:rotate-0" />
                           </div>
@@ -1001,7 +927,7 @@ export function TrainChartPreparationTime() {
                 </div>
               </div>
 
-              {renderRouteCard(destinationStation, "Destination Station", "Arrival")}
+              <RouteStationCard station={destinationStation} code={chartingData.destinationStation} journeyDate={chartingData.journeyDate} destination />
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#FED7AA] bg-[#FFFFFF] px-3 py-2.5 sm:px-4">
@@ -1036,13 +962,13 @@ export function TrainChartPreparationTime() {
       })()}
 
 
-      {chartingData && chartingData.stations.length > 0 && (
+      {canShowResults && chartingData && chartingData.stations.length > 0 && (
         <>
           <section aria-labelledby="route-stations-heading" className="overflow-hidden rounded-xl border border-[#E5EAF0] bg-white">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E5EAF0] px-3 py-2.5 sm:px-4">
               <div>
                 <h2 id="route-stations-heading" className="text-sm font-bold text-[#102B46]">Route stations</h2>
-                <p className="mt-0.5 text-xs text-[#64748B]">Select a station to see its chart timings above.</p>
+                <p className="mt-0.5 text-xs text-[#64748B]">Arrival, departure and both chart timings for each station.</p>
               </div>
               <label className="relative block w-full sm:w-56">
                 <Search aria-hidden="true" className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#64748B]" />
@@ -1050,290 +976,69 @@ export function TrainChartPreparationTime() {
                 <input type="search" value={tableStationSearch} onChange={(event) => setTableStationSearch(event.target.value)} placeholder="Find a station" className="h-9 w-full rounded-lg border border-[#E5EAF0] bg-white pl-8 pr-3 text-xs text-[#26374A] outline-none focus:border-[#087F70] focus:ring-2 focus:ring-[#087F70]/15" />
               </label>
             </div>
-            <table className="w-full table-fixed text-left" aria-label="Train route station arrival and departure times">
-              <colgroup><col className="w-[52%] sm:w-[58%]" /><col className="w-[17%] sm:w-[15%]" /><col className="w-[17%] sm:w-[15%]" /><col className="w-[14%] sm:w-[12%]" /></colgroup>
-              <thead className="bg-[#F5F7FA] text-[10px] font-bold uppercase tracking-wide text-[#64748B]">
-                <tr><th scope="col" className="px-2 py-2.5 sm:px-4">Station</th><th scope="col" className="px-1 py-2.5 text-center sm:px-2">Arrival</th><th scope="col" className="px-1 py-2.5 text-center sm:px-2">Departure</th><th scope="col" className="px-1 py-2.5 text-center sm:px-2">Day</th></tr>
-              </thead>
-              <tbody className="divide-y divide-[#E5EAF0] text-xs">
-                {filteredTableStations.length === 0 ? (
-                  <tr><td colSpan={4} className="px-3 py-6 text-center text-[#64748B]">No stations match your search.</td></tr>
-                ) : filteredTableStations.map((stationRow) => {
-                  const originalIndex = chartingData.stations.indexOf(stationRow);
-                  const isOrigin = originalIndex === 0;
-                  const isDestination = originalIndex === chartingData.stations.length - 1;
-                  const isExpanded = stationRow.stationCode === expandedStationCode;
-                  const remoteStation = stationRow.chartRemoteStation;
-                  const remoteStationDisplay = getRemoteStationDisplay(remoteStation);
-                  const firstChart = formatIsoDateTimeIST(stationRow.firstChartDateTime);
-                  const secondChart = formatIsoDateTimeIST(stationRow.secondChartDateTime);
-                  const rowBoardingDateLabel =
-                    /^\d{4}-\d{2}-\d{2}$/.test(chartingData.journeyDate) &&
-                    Number.isFinite(stationRow.day)
-                      ? new Date(
-                          `${addCalendarDays(chartingData.journeyDate, Math.max(0, stationRow.day - 1))}T00:00:00+05:30`
-                        ).toLocaleDateString("en-IN", {
-                          timeZone: "Asia/Kolkata",
-                          weekday: "short",
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })
-                      : null;
-                  const rowChartCards = [
-                    {
-                      heading: "01 · First Chart",
-                      iso: stationRow.firstChartDateTime,
-                      timing: firstChart,
-                    },
-                    {
-                      heading: "02 · Final Chart",
-                      iso: stationRow.secondChartDateTime,
-                      timing: secondChart,
-                    },
-                  ];
-                  const toggleExpanded = () => setExpandedStationCode((current) =>
-                    current === stationRow.stationCode ? null : stationRow.stationCode
-                  );
-                  return (
-                    <Fragment key={`${stationRow.stationCode}-${originalIndex}`}>
-                    <tr onClick={toggleExpanded} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); toggleExpanded(); } }} tabIndex={0} aria-expanded={isExpanded} className={`cursor-pointer transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-[#EA580C] ${isExpanded ? "bg-[#FFFFFF]" : "bg-white hover:bg-[#FFFCFA]"}`}>
-                      <td className={`border-l-[3px] px-2 py-2 sm:px-4 sm:py-2.5 ${isExpanded ? "border-l-[#EA580C]" : "border-l-transparent"}`}>
-                        <div className="flex min-w-0 items-center gap-1.5 sm:gap-2"><span className="shrink-0 font-mono text-[9px] font-bold text-[#525252] sm:text-[10px]">{stationRow.stationCode}</span><span className="min-w-0 truncate font-bold text-[#171717]">{stationRow.stationName}</span>{isExpanded && <span className="hidden shrink-0 rounded bg-[#EA580C] px-1.5 py-0.5 text-[8.5px] font-bold text-white sm:inline">Details open</span>}{isOrigin && <span className="hidden shrink-0 text-[9px] font-semibold text-[#525252] sm:inline">Origin</span>}{isDestination && <span className="hidden shrink-0 text-[9px] font-semibold text-[#525252] sm:inline">Destination</span>}</div>
-                      </td>
-                      <td className="px-1 py-2 text-center font-semibold tabular-nums text-[#171717] sm:px-2 sm:py-2.5">{stationRow.arrivalTime || "—"}</td>
-                      <td className="px-1 py-2 text-center font-semibold tabular-nums text-[#171717] sm:px-2 sm:py-2.5">{stationRow.departureTime || "—"}</td>
-                      <td className="px-1 py-2 text-center font-semibold tabular-nums text-[#525252] sm:px-2 sm:py-2.5">{stationRow.day}</td>
-                    </tr>
-                    <tr aria-hidden={!isExpanded}>
-                      <td colSpan={4} className="p-0">
-                        <div className={`grid transition-[grid-template-rows,opacity] duration-200 ease-out ${isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
-                          <div className="min-h-0 overflow-hidden">
-                            <div className="border-l-[3px] border-t border-l-[#EA580C] border-t-[#FED7AA] bg-[#FFFFFF] p-3 sm:p-4">
-                              <div className="flex min-w-0 flex-col justify-between rounded-lg border-2 border-[#EA580C] bg-[#FFFFFF] p-3.5 sm:p-4">
-                                <div className="min-w-0 w-full">
-                                  <p className="text-xs font-black uppercase tracking-[0.08em] text-[#EA580C]">
-                                    YOUR BOARDING STATION
-                                  </p>
-                                  <h3 className="mt-1 w-full break-words text-lg font-extrabold leading-snug text-[#171717] sm:text-xl">
-                                    {stationRow.stationName}{" "}
-                                    <span className="font-mono text-sm font-bold text-[#525252] sm:text-[15px]">
-                                      ({stationRow.stationCode})
-                                    </span>
-                                  </h3>
-                                  <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[12.5px] font-semibold leading-snug text-[#525252]">
-                                    <span className="inline-flex items-center gap-1.5">
-                                      <CalendarDays
-                                        aria-hidden="true"
-                                        strokeWidth={2.25}
-                                        className="h-3.5 w-3.5 shrink-0 text-[#EA580C]"
-                                      />
-                                      <span>
-                                        {rowBoardingDateLabel || "Date unavailable"}
-                                        {typeof stationRow.day === "number" && (
-                                          <span className="font-bold text-[#171717]">
-                                            {" "}
-                                            · Day {stationRow.day}
-                                          </span>
-                                        )}
-                                      </span>
-                                    </span>
-                                    <span className="inline-flex flex-wrap items-center gap-x-2">
-                                      <Clock
-                                        aria-hidden="true"
-                                        strokeWidth={2.25}
-                                        className="h-3.5 w-3.5 shrink-0 text-[#EA580C]"
-                                      />
-                                      <span>
-                                        Arrival:{" "}
-                                        <strong className="font-extrabold tabular-nums text-[#171717]">
-                                          {stationRow.arrivalTime || "—"}
-                                        </strong>
-                                      </span>
-                                      <span className="font-bold text-[#525252]">·</span>
-                                      <span>
-                                        Departure:{" "}
-                                        <strong className="font-extrabold tabular-nums text-[#171717]">
-                                          {stationRow.departureTime || "—"}
-                                        </strong>
-                                      </span>
-                                    </span>
-                                  </div>
-                                  <p className="mt-1.5 break-words text-xs font-semibold leading-snug text-[#525252]">
-                                    Chart preparation station:{" "}
-                                    <strong className="font-extrabold text-[#171717]">
-                                      {remoteStationDisplay}
-                                    </strong>
-                                  </p>
-                                </div>
-
-                                <div className="my-3 border-t border-[#FED7AA]" />
-
-                                <div className="grid min-w-0 grid-cols-1 items-stretch gap-2 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:gap-2.5">
-                                  {rowChartCards.map(({ heading, iso, timing }, index) => {
-                                    const scheduleStatus = getScheduleStatus(iso);
-                                    return (
-                                      <Fragment key={heading}>
-                                        <div className="flex min-w-0 flex-col justify-between rounded-md border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-3 py-3 sm:px-3.5">
-                                          <div>
-                                            <h4 className="text-xs font-black uppercase tracking-[0.06em] text-[#EA580C] sm:text-[13px]">
-                                              {heading}
-                                            </h4>
-                                            <p
-                                              className={`mt-1.5 break-words text-2xl font-black leading-tight tabular-nums tracking-tight sm:text-[26px] ${
-                                                timing ? "text-[#171717]" : "text-[#525252]"
-                                              }`}
-                                            >
-                                              {timing?.time12 || "Not available"}
-                                            </p>
-                                            <p className="mt-1 break-words text-xs font-bold leading-snug text-[#525252]">
-                                              {timing
-                                                ? `${timing.dateLabel} · IST`
-                                                : "Date not available"}
-                                            </p>
-                                          </div>
-                                          {timing && scheduleStatus.state !== "unknown" && (
-                                            <ChartScheduleStatus
-                                              status={scheduleStatus}
-                                              mounted={mounted}
-                                            />
-                                          )}
-                                        </div>
-                                        {index === 0 && (
-                                          <div
-                                            aria-hidden="true"
-                                            className="flex items-center justify-center py-0.5 sm:px-0.5 sm:py-0"
-                                          >
-                                            <ArrowRight
-                                              strokeWidth={2.5}
-                                              className="h-5 w-5 shrink-0 rotate-90 text-[#EA580C] sm:rotate-0"
-                                            />
-                                          </div>
-                                        )}
-                                      </Fragment>
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                              <p className="mt-2.5 text-[11.5px] font-semibold leading-tight text-[#525252]">
-                                Scheduled times; actual chart preparation isn’t confirmed.
-                              </p>
-                            </div>
+            <div className="overflow-x-auto" role="region" aria-label="Station and chart timings" tabIndex={0}>
+              <table className="w-full min-w-[780px] table-fixed text-left" aria-label="Train route and chart preparation times">
+                <colgroup>
+                  <col className="w-[30%]" /><col className="w-[10%]" /><col className="w-[10%]" />
+                  <col className="w-[6%]" /><col className="w-[22%]" /><col className="w-[22%]" />
+                </colgroup>
+                <thead className="bg-slate-100 text-[11px] font-extrabold uppercase tracking-wide text-slate-700">
+                  <tr>
+                    <th scope="col" className="border-r border-slate-200 px-4 py-3 text-[#102B46]">Station</th>
+                    <th scope="col" className="px-2 py-3 text-center">Arrival</th>
+                    <th scope="col" className="px-2 py-2.5 text-center">Departure</th>
+                    <th scope="col" className="px-2 py-2.5 text-center">Day</th>
+                    <th scope="col" className="border-l-2 border-orange-200 bg-orange-100/70 px-3 py-3 text-orange-900">First Chart</th>
+                    <th scope="col" className="border-l-2 border-teal-200 bg-teal-100/60 px-3 py-3 text-teal-900">Second Chart</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 text-sm">
+                  {filteredTableStations.length === 0 ? (
+                    <tr><td colSpan={6} className="px-3 py-6 text-center text-[#64748B]">No stations match your search.</td></tr>
+                  ) : filteredTableStations.map((stationRow) => {
+                    const index = chartingData.stations.indexOf(stationRow);
+                    const isLastStation = index === chartingData.stations.length - 1;
+                    const selected = stationRow.stationCode === selectedBoardingCode;
+                    const chartStation = describeChartingStation(stationRow, chartingData.stations);
+                    return (
+                      <tr key={stationRow.stationCode + "-" + index} className={selected ? "bg-orange-50/40" : "bg-white hover:bg-[#FFFCFA]"}>
+                        <th scope="row" className="border-r border-slate-200 px-4 py-3 text-left">
+                          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                            <span className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] font-bold text-slate-600">{stationRow.stationCode}</span>
+                            <span className="font-bold text-[#171717]">{stationRow.stationName}</span>
+                            {index === 0 && <span className="text-[11px] font-medium text-slate-600">Origin</span>}
+                            {index === chartingData.stations.length - 1 && <span className="text-[9px] text-[#64748B]">Destination</span>}
+                            {selected && <span className="rounded border border-orange-200 bg-orange-50 px-1.5 py-0.5 text-[10px] font-bold text-orange-900">Your boarding</span>}
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-                    </Fragment>
-                  );
-                })}
-              </tbody>
-            </table>
+                          <div className="mt-2 break-words text-xs font-medium leading-relaxed text-slate-600">
+                            <span className="block">Chart preparation: <strong className="font-bold text-[#102B46]">{chartStation.display}</strong></span>
+                            {chartStation.label && <span className={`mt-1 inline-flex rounded border px-1.5 py-0.5 text-[11px] font-semibold ${chartingStyles[chartStation.kind].badge}`}>{chartStation.label}</span>}
+                          </div>
+                        </th>
+                        <td className="bg-slate-50/50 px-2 py-3 text-center font-semibold tabular-nums text-[#171717]">{stationRow.arrivalTime || "—"}</td>
+                        <td className="px-2 py-2.5 text-center font-semibold tabular-nums text-[#171717]">{stationRow.departureTime || "—"}</td>
+                        <td className="px-2 py-2.5 text-center font-semibold text-slate-700">{stationRow.day ?? "Not available"}</td>
+                        {[stationRow.firstChartDateTime, stationRow.secondChartDateTime].map((iso, chartIndex) => {
+                          const timing = isLastStation ? null : formatIsoDateTimeIST(iso);
+                          return (
+                            <td key={chartIndex} className={"border-l-2 px-3 py-3 align-top " + (chartIndex === 0 ? "border-orange-200 bg-orange-50/40" : "border-teal-200 bg-teal-50/40")}>
+                              <p className={"text-base font-extrabold tabular-nums " + (chartIndex === 0 ? "text-orange-950" : "text-teal-950")}>{isLastStation ? "—" : timing?.time12 || "Not available"}</p>
+                              {timing && <p className="mt-1 text-xs font-medium leading-5 text-slate-600">{timing.dateLabel} · IST</p>}
+                              {timing && <ChartScheduleStatus status={getScheduleStatus(iso)} mounted={mounted} />}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <p className="border-t border-[#E5EAF0] px-4 py-2 text-[11px] text-[#64748B]">Scheduled chart timings from the provider; actual preparation is not confirmed. Swipe horizontally on small screens to view all columns.</p>
+
           </section>
         </>
       )}
-      {/* ══════════════════════════════════════════════════════════════════════
-          4. IRCTC CHART PREPARATION RULES & AGENT REFERENCE GUIDE
-         ══════════════════════════════════════════════════════════════════════ */}
-      <section aria-labelledby="chart-rules-heading" className="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        {/* Left: Official IRCTC Charting Rules Summary */}
-        <div className="lg:col-span-5">
-          <div className="rounded-2xl bg-white p-5 border border-[#E5EAF0] h-full flex flex-col gap-4">
-            <div className="flex flex-1 flex-col gap-3">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-[#FFF5EF] border border-[#E87535]/25 px-3 py-1 text-[10.5px] font-extrabold uppercase tracking-wider text-[#A34C22]">
-                <Sparkles className="h-3 w-3 text-[#A34C22]" />
-                <span>IRCTC PRS Charting Rules</span>
-              </div>
-              <h3
-                id="chart-rules-heading"
-                className="text-base sm:text-lg font-extrabold text-[#102B46]"
-              >
-                How Indian Railways Reservation Charting Works
-              </h3>
-              <p className="text-xs text-[#64748B] leading-relaxed">
-                Indian Railways prepares reservation charts in two stages for every train and remote location quota station:
-              </p>
-
-              <div className="flex flex-1 flex-col justify-evenly gap-2.5 pt-1">
-                <div className="flex-1 rounded-xl bg-[#F5F7FA] border border-[#E5EAF0]/80 p-3">
-                  <p className="text-xs font-extrabold text-[#102B46]">
-                    1. Morning Trains (05:00 AM – 02:00 PM)
-                  </p>
-                  <p className="mt-0.5 text-[11.5px] text-[#64748B] leading-relaxed">
-                    First chart is prepared the <strong>previous night between 8:00 PM and 9:00 PM IST</strong> so waitlisted passengers know their confirmation status before going to sleep.
-                  </p>
-                </div>
-
-                <div className="flex-1 rounded-xl bg-[#F5F7FA] border border-[#E5EAF0]/80 p-3">
-                  <p className="text-xs font-extrabold text-[#102B46]">
-                    2. Afternoon &amp; Night Trains (02:00 PM – 05:00 AM)
-                  </p>
-                  <p className="mt-0.5 text-[11.5px] text-[#64748B] leading-relaxed">
-                    First chart is typically prepared <strong>8 to 10 hours before</strong> the scheduled departure from the originating or remote charting station.
-                  </p>
-                </div>
-
-                <div className="flex-1 rounded-xl bg-[#F5F7FA] border border-[#E5EAF0]/80 p-3">
-                  <p className="text-xs font-extrabold text-[#102B46]">
-                    3. Second Chart &amp; Current Booking
-                  </p>
-                  <p className="mt-0.5 text-[11.5px] text-[#64748B] leading-relaxed">
-                    Current booking opens right after the First Chart and closes when the <strong>Second (Final) Chart</strong> is prepared (~30 minutes prior to departure).
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-[#E5EAF0] bg-[#F5F7FA] p-3.5 text-xs text-[#26374A]">
-              <p className="font-bold text-[#A34C22]">Agent Tip: Remote Location Quotas (RLWL)</p>
-              <p className="mt-1 text-[11px] text-[#64748B] leading-relaxed">
-                Always check the <strong>Charting Station</strong> column above. Even if a train departs late at night from an intermediate halt, its chart may be locked hours earlier at the parent Remote Charting Station.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Right: Interactive FAQ Accordion */}
-        <div className="lg:col-span-7">
-          <div className="rounded-2xl bg-white p-5 border border-[#E5EAF0] h-full">
-            <div className="flex items-center gap-2 pb-3 mb-3 border-b border-[#E5EAF0]">
-              <HelpCircle className="h-4 w-4 text-[#A34C22]" />
-              <h3 className="text-sm sm:text-base font-extrabold text-[#102B46]">
-                Frequently Asked Questions (Chart Preparation Timing)
-              </h3>
-            </div>
-
-            <div className="divide-y divide-[#E5EAF0]">
-              {CHARTING_FAQS.map((item, idx) => {
-                const isOpen = openFaqIndex === idx;
-                return (
-                  <div key={item.q} className="py-3 first:pt-1 last:pb-1">
-                    <button
-                      type="button"
-                      onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                      aria-expanded={isOpen}
-                      className="w-full text-left flex items-start justify-between gap-3 cursor-pointer group"
-                    >
-                      <span className="text-xs sm:text-sm font-extrabold text-[#102B46] group-hover:text-[#A34C22] transition-colors">
-                        {item.q}
-                      </span>
-                      <ChevronDown
-                        className={`h-4 w-4 shrink-0 text-[#64748B] mt-0.5 transition-transform duration-200 ${
-                          isOpen ? "rotate-180 text-[#A34C22]" : ""
-                        }`}
-                      />
-                    </button>
-                    {isOpen && (
-                      <p className="mt-2 text-xs text-[#64748B] leading-relaxed pr-4">
-                        {item.a}
-                      </p>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

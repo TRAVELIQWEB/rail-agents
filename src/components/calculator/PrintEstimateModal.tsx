@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import styles from "./FareCalculator.module.css";
 import { Printer, X, Info, Check, Copy } from "lucide-react";
 import { CalculationResult, formatINR } from "@/lib/fare-calculator";
 import { InteractiveButton } from "@/components/ui/InteractiveButton";
@@ -20,18 +21,38 @@ export function PrintEstimateModal({
 }: PrintEstimateModalProps) {
   const [copied, setCopied] = useState(false);
   const slipRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!isOpen) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+      }
+      if (e.key !== "Tab") return;
+      const controls = modalRef.current?.querySelectorAll<HTMLElement>(
+        'button:not(:disabled), a[href], input:not(:disabled), [tabindex="0"]',
+      );
+      const first = controls?.[0];
+      const last = controls?.[controls.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
     }
-    if (isOpen) {
-      document.addEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "hidden";
-    }
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    modalRef.current?.querySelector<HTMLButtonElement>('button[aria-label="Close estimate modal"]')?.focus();
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus();
     };
   }, [isOpen, onClose]);
 
@@ -206,14 +227,15 @@ export function PrintEstimateModal({
 
   return (
     <div
+      ref={modalRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby="estimate-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+      className={`${styles.estimateModal} fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200`}
     >
-      <div className="relative flex max-h-[92vh] w-full max-w-2xl flex-col rounded-2xl bg-white shadow-2xl overflow-hidden border border-orange-200">
+      <div className="relative flex max-h-[calc(100dvh-1rem)] sm:max-h-[92dvh] w-full max-w-2xl flex-col rounded-2xl bg-white shadow-2xl overflow-hidden border border-orange-200">
         {/* Header Actions Bar (hidden in print) */}
-        <div className="flex items-center justify-between border-b border-slate-200 bg-[#fffaf5] px-4 py-3 sm:px-6 print:hidden">
+        <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-[#fffaf5] px-4 py-3 sm:px-6 print:hidden">
           <div className="flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-100 text-[var(--primary)]">
               <Printer className="h-4 w-4" />
@@ -268,7 +290,7 @@ export function PrintEstimateModal({
         <div
           ref={slipRef}
           id="printable-estimate-slip"
-          className="overflow-y-auto p-5 sm:p-7 text-slate-800 bg-white print:p-0 print:overflow-visible"
+          className="min-h-0 overflow-y-auto p-3 sm:p-7 text-slate-800 bg-white print:p-0 print:overflow-visible"
         >
           {/* Slip Header */}
           <div className="border-b-2 border-dashed border-orange-200 pb-5">
@@ -301,7 +323,7 @@ export function PrintEstimateModal({
               <span className="font-bold text-[var(--navy)] text-sm">
                 {result.category === "AC" ? "AC (Air Conditioned)" : "Non-AC (Sleeper/2S)"}
               </span>
-              <span className="block text-[11px] text-slate-600 truncate">
+              <span className="block text-[11px] text-slate-600">
                 {result.category === "AC" ? "IRCTC: ₹35.40 • Agent: ₹40" : "IRCTC: ₹17.70 • Agent: ₹20"}
               </span>
             </div>
@@ -320,7 +342,7 @@ export function PrintEstimateModal({
               <span className="font-bold text-slate-700 text-xs">
                 {result.railwayFare <= 2000 ? "0.75% (≤ ₹2,000)" : "1.00% (> ₹2,000)"}
               </span>
-              <span className="block text-[10px] text-slate-500 truncate">
+              <span className="block text-[10px] text-slate-500">
                 {result.pgAppliedRateDescription}
               </span>
             </div>
@@ -337,7 +359,7 @@ export function PrintEstimateModal({
               Itemized Charge Breakdown
             </h3>
             <div className="rounded-xl border border-slate-200 overflow-hidden">
-              <table className="w-full text-left text-xs sm:text-sm">
+              <table className={`${styles.slipTable} w-full text-left text-xs sm:text-sm`}>
                 <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
                   <tr>
                     <th className="py-2.5 px-3 sm:px-4">Charge Component</th>
@@ -444,7 +466,7 @@ export function PrintEstimateModal({
               <p className="text-[11px] mt-0.5">Assistance with IRCTC authorized bookings & travel planning</p>
             </div>
             <div className="text-right">
-              <div className="h-10 border-b border-slate-300 w-36 ml-auto" />
+              <div className="ml-auto h-10 w-36 max-w-full border-b border-slate-300" />
               <p className="mt-1 text-[11px] font-medium text-slate-600">Authorized Agent Stamp / Sign</p>
             </div>
           </div>

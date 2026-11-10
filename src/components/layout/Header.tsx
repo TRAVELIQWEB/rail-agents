@@ -1,6 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import Link from "next/link";
+import { railTools } from "@/config/tools";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { Logo } from "@/components/layout/Logo";
 import { InternalLink } from "@/components/ui/InternalLink";
@@ -18,9 +21,10 @@ const navItems = [
 
 export function Header() {
   const pathname = usePathname();
+  const [toolsOpen, setToolsOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[#f4e4d4]/80 bg-[#fffdfa]/95 backdrop-blur-md shadow-[0_2px_15px_rgba(249,115,22,0.04)]">
+    <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/95 backdrop-blur-md shadow-[0_2px_15px_rgba(15,39,71,0.04)]">
       <div className="site-container grid h-[60px] sm:h-[72px] grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 sm:gap-2.5 min-[1080px]:grid-cols-[auto_minmax(0,1fr)_auto] min-[1080px]:gap-3 xl:gap-4 2xl:h-[78px]">
         <div className="justify-self-start min-w-0">
           <Logo />
@@ -34,6 +38,62 @@ export function Header() {
             const isActive =
               pathname === item.href ||
               (item.href !== "/" && pathname.startsWith(`${item.href}/`));
+
+            if (item.href === "/tools") {
+              return (
+                <div
+                  key={item.href}
+                  className="relative"
+                  onMouseEnter={() => setToolsOpen(true)}
+                  onMouseLeave={() => setToolsOpen(false)}
+                  onBlur={(event) => {
+                    if (!event.currentTarget.contains(event.relatedTarget)) setToolsOpen(false);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Escape") {
+                      event.stopPropagation();
+                      event.currentTarget.querySelector<HTMLAnchorElement>("a")?.focus();
+                      setToolsOpen(false);
+                    }
+                  }}
+                >
+                  <Link
+                    href="/tools"
+                    prefetch={false}
+                    aria-current={isActive ? "page" : undefined}
+                    aria-expanded={toolsOpen}
+                    aria-controls="header-tools-links"
+                    onFocus={() => setToolsOpen(true)}
+                    onClick={() => setToolsOpen(false)}
+                    className={`inline-flex items-center whitespace-nowrap rounded-full px-2 py-1.5 text-[14px] font-[600] leading-none transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:px-2.5 xl:text-[15px] min-[1440px]:text-[16px] ${isActive
+                      ? "bg-[#ffefe6] text-[var(--primary)] shadow-xs"
+                      : "text-[var(--navy)] hover:bg-[#fff7f0] hover:text-[var(--primary)]"
+                    }`}
+                  >
+                    Tools
+                  </Link>
+                  {toolsOpen && (
+                    <div id="header-tools-links" className="absolute left-1/2 top-full w-64 -translate-x-1/2 pt-3">
+                      <ul aria-label="Railway tools" className="space-y-1 rounded-2xl border border-orange-100 bg-white p-2 shadow-[0_8px_30px_rgba(15,39,71,0.12)]">
+                        {[{ href: "/tools", shortTitle: "All Railway Tools" }, ...railTools].map((tool) => (
+                          <li key={tool.href}>
+                            <Link
+                              href={tool.href}
+                              prefetch={false}
+                              aria-current={pathname === tool.href ? "page" : undefined}
+                              onClick={() => setToolsOpen(false)}
+                              className={`block rounded-lg px-3 py-2.5 text-sm font-semibold transition-colors hover:bg-orange-50 hover:text-[#C6530A] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#F97316] ${pathname === tool.href ? "bg-orange-50 text-[#C6530A]" : "text-[var(--navy)]"}`}
+                            >
+                              {tool.shortTitle}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              );
+            }
 
             return (
               <InternalLink

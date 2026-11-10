@@ -35,7 +35,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    if (!rawDate || !/^\d{4}-\d{2}-\d{2}$/.test(rawDate)) {
+    const parsedDate = new Date(`${rawDate}T00:00:00.000Z`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(rawDate) || !Number.isFinite(parsedDate.getTime()) || parsedDate.toISOString().slice(0, 10) !== rawDate) {
       return jsonResponse(
         { error: "Please provide a valid journey date in YYYY-MM-DD format." },
         400

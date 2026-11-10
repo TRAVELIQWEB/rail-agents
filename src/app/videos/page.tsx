@@ -90,7 +90,7 @@ export default async function VideoGuidesPage() {
         }}
       />
       <Header />
-      <main className="relative flex-1 overflow-hidden bg-[#fff9f5] pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8">
+      <main className="relative flex-1 overflow-hidden bg-[#fff9f5] pt-4 pb-4">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -left-24 top-20 h-72 w-72 rounded-full bg-orange-100/50 blur-[90px]"

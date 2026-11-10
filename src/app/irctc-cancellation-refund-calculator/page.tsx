@@ -1,5 +1,6 @@
+import { AllToolsLink } from "@/components/tools/AllToolsLink";
 import type { Metadata } from "next";
-import { BadgeCheck, Calculator, Clock3, TrainFront } from "lucide-react";
+import { BadgeCheck, Clock3 } from "lucide-react";
 
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -51,52 +52,32 @@ export default function IRCTCCancellationRefundCalculatorPage() {
       <Header />
 
       <main className="flex-1">
-        <section className="relative border-b border-slate-200 bg-[#f8fafc] pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8">
+        <AllToolsLink />
+        <section className="compact-tool-heading relative border-b border-slate-200/80 bg-[#f8fafc] py-4 sm:py-5">
           <div className="site-container relative">
-            <div className="grid items-center gap-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(280px,.65fr)] lg:gap-8">
-              <div className="max-w-3xl">
-                <p className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/80 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.13em] text-orange-800 shadow-sm">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-white px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-orange-800 shadow-2xs">
                   <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
-                  RailAgents · Railway utility
+                  Railway Utility Tool
                 </p>
-                <h1 className="page-hero-title mt-2 text-[1.75rem] leading-tight sm:text-4xl lg:text-[2.75rem]">
-                  IRCTC Cancellation
-                  <span className="hero-accent block">&amp; Refund Calculator</span>
+                <h1 className="mt-1 text-xl sm:text-2xl font-black tracking-tight text-[#0F2747]">
+                  IRCTC Cancellation <span className="text-[#C6530A]">&amp; Refund Calculator</span>
                 </h1>
-                <p className="page-hero-description mt-1.5 max-w-2xl">
-                  Calculate your estimated train ticket cancellation refund
-                  using the original PRS-based calculation algorithm.
-                </p>
-                <p className="mt-1 max-w-2xl text-xs leading-relaxed text-slate-500 sm:text-sm">
-                  Enter your ticket details below to review cancellation
-                  charges, other deductions and the estimated refund.
+                <p className="mt-0.5 text-xs text-slate-600 sm:text-sm">
+                  Estimate PRS cancellation charges, clerkage fees, and your net bank refund breakdown.
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-[#17365d] bg-[#0b2240] p-3 text-white shadow-[0_8px_24px_rgba(11,34,64,0.12)] sm:p-4">
-                <div className="flex items-center gap-3 border-b border-white/10 pb-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500 text-white shadow-sm shadow-orange-950/20">
-                    <Calculator aria-hidden="true" className="h-5 w-5" />
-                  </span>
-                  <div>
-                    <p className="text-sm font-bold">A clearer refund estimate</p>
-                    <p className="mt-0.5 text-xs text-slate-300">Built for railway ticket workflows</p>
-                  </div>
-                </div>
-                <ul className="mt-3 grid gap-2 text-xs text-slate-200">
-                  <li className="flex items-center gap-2.5">
-                    <BadgeCheck aria-hidden="true" className="h-4 w-4 shrink-0 text-orange-300" />
-                    PRS-based cancellation rules
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <TrainFront aria-hidden="true" className="h-4 w-4 shrink-0 text-orange-300" />
-                    Class and passenger-wise breakdown
-                  </li>
-                  <li className="flex items-center gap-2.5">
-                    <Clock3 aria-hidden="true" className="h-4 w-4 shrink-0 text-orange-300" />
-                    Time-band and chart-status scenarios
-                  </li>
-                </ul>
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
+                <span className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 shadow-2xs">
+                  <BadgeCheck aria-hidden="true" className="h-3.5 w-3.5 text-orange-600" />
+                  Official PRS Rules
+                </span>
+                <span className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 shadow-2xs">
+                  <Clock3 aria-hidden="true" className="h-3.5 w-3.5 text-orange-600" />
+                  Time-Band Scenarios
+                </span>
               </div>
             </div>
           </div>

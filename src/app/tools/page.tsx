@@ -1,42 +1,69 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { legacyToolDestination } from "@/lib/tool-navigation";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { RailwayToolsWorkspace } from "@/components/tools/RailwayToolsWorkspace";
+import { railTools } from "@/config/tools";
 import { siteConfig } from "@/config/site";
 
-export const metadata: Metadata = {
-  title: "Railway Tools & Online Calculators",
-  description:
-    "Access free Indian Railways tools from RailAgents: Live Train Running Status, PNR Status Check, Ticket Booking Date Calculator, Train Fare Breakdown, and Chart Timings.",
-  alternates: {
-    canonical: `${siteConfig.url}/tools`,
-  },
-  openGraph: {
-    title: "Railway Tools & Online Calculators | RailAgents",
-    description:
-      "Access free Indian Railways tools from RailAgents: Live Train Running Status, PNR Status Check, Ticket Booking Date Calculator, Train Fare Breakdown, and Chart Timings.",
-    url: `${siteConfig.url}/tools`,
-    siteName: siteConfig.name,
-    locale: "en_IN",
-    type: "website",
-    images: [
-      {
-        url: siteConfig.socialImage,
-        width: 1200,
-        height: 630,
-        alt: "Railway Tools & Online Calculators - RailAgents",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Railway Tools & Online Calculators | RailAgents",
-    description:
-      "Access free Indian Railways tools from RailAgents: Live Train Running Status, PNR Status Check, Ticket Booking Date Calculator, Train Fare Breakdown, and Chart Timings.",
-    images: [siteConfig.socialImage],
-  },
+const OVERVIEW_TITLE = "Free Railway Tools — Live Train, PNR, Fare & Refund";
+const OVERVIEW_FULL_TITLE = `${OVERVIEW_TITLE} | RailAgents`;
+const OVERVIEW_DESCRIPTION =
+  "Access free railway tools to check live train status, PNR, ticket fares, cancellation refunds, booking dates and chart preparation.";
+
+type ToolsPageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
+
+export async function generateMetadata({
+  searchParams,
+}: ToolsPageProps): Promise<Metadata> {
+  const resolvedParams = searchParams ? await searchParams : {};
+  const hasToolWorkspaceState = Boolean(
+    resolvedParams.tool || resolvedParams.pnr || resolvedParams.lookup,
+  );
+
+  return {
+    title: OVERVIEW_TITLE,
+    description: OVERVIEW_DESCRIPTION,
+    alternates: {
+      canonical: `${siteConfig.url}/tools`,
+    },
+    robots: hasToolWorkspaceState
+      ? {
+          index: false,
+          follow: true,
+        }
+      : {
+          index: true,
+          follow: true,
+        },
+    openGraph: {
+      title: OVERVIEW_FULL_TITLE,
+      description: OVERVIEW_DESCRIPTION,
+      url: `${siteConfig.url}/tools`,
+      siteName: siteConfig.name,
+      locale: "en_IN",
+      type: "website",
+      images: [
+        {
+          url: siteConfig.socialImage,
+          width: 1200,
+          height: 630,
+          alt: OVERVIEW_FULL_TITLE,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: OVERVIEW_FULL_TITLE,
+      description: OVERVIEW_DESCRIPTION,
+      images: [siteConfig.socialImage],
+    },
+  };
+}
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -45,12 +72,20 @@ const structuredData = {
       "@type": "CollectionPage",
       "@id": `${siteConfig.url}/tools#webpage`,
       url: `${siteConfig.url}/tools`,
-      name: "Railway Tools & Online Calculators | RailAgents",
-      description:
-        "Access free Indian Railways tools from RailAgents: Live Train Running Status, PNR Status Check, Ticket Booking Date Calculator, Train Fare Breakdown, and Chart Timings.",
+      name: OVERVIEW_FULL_TITLE,
+      description: OVERVIEW_DESCRIPTION,
       isPartOf: { "@id": `${siteConfig.url}/#website` },
       about: { "@id": `${siteConfig.url}/#organization` },
       inLanguage: "en-IN",
+      mainEntity: {
+        "@type": "ItemList",
+        itemListElement: railTools.map((tool, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: tool.shortTitle,
+          url: `${siteConfig.url}${tool.href}`,
+        })),
+      },
     },
     {
       "@type": "BreadcrumbList",
@@ -77,9 +112,9 @@ function ToolsWorkspaceFallback() {
   return (
     <div
       aria-hidden="true"
-      className="flex flex-col gap-4 md:flex-row md:items-stretch md:gap-5 lg:gap-6"
+      className="tools-layout"
     >
-      <div className="hidden min-h-[520px] shrink-0 rounded-2xl border border-slate-200 bg-white p-3 md:block md:w-[215px] lg:w-[250px]">
+      <div className="hidden rounded-2xl border border-slate-200 bg-white p-3 md:block">
         <div className="h-4 w-28 rounded bg-slate-200" />
         <div className="mt-3 space-y-2">
           {[0, 1, 2, 3, 4, 5].map((item) => (
@@ -89,16 +124,24 @@ function ToolsWorkspaceFallback() {
       </div>
       <div className="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-white p-5">
         <div className="h-6 w-52 rounded bg-slate-200" />
-        <div className="mt-2 h-4 w-80 rounded bg-slate-100" />
-        <div className="mt-5 h-32 rounded-xl bg-slate-50" />
+        <div className="mt-2 h-4 w-full max-w-80 rounded bg-slate-100" />
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[0, 1, 2, 3, 4, 5].map((item) => (
+            <div key={item} className="h-40 rounded-xl bg-slate-50" />
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-export default function ToolsPage() {
+export default async function ToolsPage({ searchParams }: ToolsPageProps) {
+  const params = searchParams ? await searchParams : {};
+  if ("tool" in params || "pnr" in params || "lookup" in params) {
+    redirect(legacyToolDestination(params));
+  }
   return (
-    <div className="flex min-h-screen flex-col bg-[#F8FAFC]">
+    <div className="flex flex-col bg-[#FFFFFF]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -106,9 +149,7 @@ export default function ToolsPage() {
         }}
       />
       <Header />
-      <main className="flex-1 pb-6">
-        <h1 className="sr-only">Railway Tools &amp; Online Calculators</h1>
-
+      <main className="pb-5 sm:pb-6">
         {/* Two-Column Railway Tools Workspace */}
         <div className="tools-workspace-container pt-3 sm:pt-4">
           <Suspense fallback={<ToolsWorkspaceFallback />}>

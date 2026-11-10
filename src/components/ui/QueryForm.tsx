@@ -50,21 +50,22 @@ export function QueryForm() {
   }
 
   return (
-    <div className="relative isolate w-full rounded-[32px] border border-[#fee4d0] bg-white p-5 shadow-[0_20px_50px_rgba(249,115,22,0.08),0_4px_16px_rgba(15,39,71,0.04)] sm:p-6">
+    <div className="relative isolate w-full rounded-3xl border border-[#fee4d0] bg-white p-5 shadow-[0_16px_40px_rgba(249,115,22,0.08),0_4px_16px_rgba(15,39,71,0.04)] sm:p-6 lg:p-7">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-12 -top-12 -z-10 h-64 w-64 rounded-full bg-orange-100/60 blur-3xl"
       />
 
-      <div className="mb-4 flex flex-col items-center gap-3 text-center md:flex-row md:items-start md:text-left">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#c2410c] to-[#9a3412] text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)]">
+      {/* Form Card Header - Consistently left-aligned */}
+      <div className="mb-4 flex items-start gap-3.5 text-left">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#ea580c] to-[#f97316] text-white shadow-xs">
           <MessageCircle aria-hidden="true" className="h-5 w-5 fill-white/20 text-white" />
         </div>
         <div>
-          <h2 className="text-xl font-extrabold tracking-tight text-[#0f2747] sm:text-2xl">
+          <h2 className="text-lg font-extrabold tracking-tight text-[#0f2747] sm:text-xl">
             How can we help you?
           </h2>
-          <p className="mt-1 text-xs leading-relaxed text-slate-500 sm:text-sm">
+          <p className="mt-0.5 text-xs sm:text-[13px] leading-relaxed text-slate-500">
             Write your question and connect directly with our agent on WhatsApp.
           </p>
         </div>
@@ -87,15 +88,15 @@ export function QueryForm() {
         </p>
       ) : null}
 
-      <form noValidate onSubmit={handleSubmit} className="space-y-3">
+      <form noValidate onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label
             htmlFor="query-input"
-            className="mb-1.5 block text-sm font-bold text-[#0f2747]"
+            className="mb-1.5 block text-xs sm:text-sm font-bold text-[#0f2747]"
           >
             Your Query
           </label>
-          <div className="relative rounded-2xl border border-slate-200/80 bg-[#fffdfa] p-3.5 shadow-inner transition-all focus-within:border-[var(--primary)] focus-within:ring-4 focus-within:ring-orange-100">
+          <div className="relative rounded-2xl border border-slate-200/90 bg-[#fffdfa] p-3.5 shadow-2xs transition-all focus-within:border-[var(--primary)] focus-within:ring-4 focus-within:ring-orange-100">
             <FileText
               aria-hidden="true"
               className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400"
@@ -114,7 +115,7 @@ export function QueryForm() {
               aria-invalid={Boolean(queryError)}
               aria-describedby={queryError ? "query-error query-count" : "query-count"}
               placeholder="Type your railway or travel question here..."
-              className="h-32 min-h-[110px] max-h-[140px] w-full resize-y bg-transparent px-7 pb-5 pt-0 text-base leading-relaxed text-[#0f2747] outline-none placeholder:text-slate-400"
+              className="h-32 min-h-[110px] max-h-[160px] w-full resize-y bg-transparent px-7 pb-5 pt-0 text-sm sm:text-base leading-relaxed text-[#0f2747] outline-none placeholder:text-slate-400"
             />
             <span
               id="query-count"
@@ -130,7 +131,7 @@ export function QueryForm() {
           ) : null}
         </div>
 
-        <div className="flex justify-center pt-1">
+        <div className="flex flex-col items-center justify-center gap-2.5 pt-1">
           <button
             type="submit"
             disabled={isSubmitting}
@@ -154,18 +155,15 @@ export function QueryForm() {
               </div>
             </div>
             <span>
-              {isSubmitting ? "Opening WhatsApp..." : "Send me"}
+              {isSubmitting ? "Opening WhatsApp..." : "Send on WhatsApp"}
             </span>
           </button>
-        </div>
 
-        <p className="flex items-center justify-center gap-1.5 text-center text-xs text-slate-400">
-          <Lock aria-hidden="true" className="h-3.5 w-3.5" />
-          Your query opens in WhatsApp; you choose when to send it.
-        </p>
-        <p className="text-center text-[11px] leading-relaxed text-slate-400">
-          Nihal Singh is a fictional digital character representing RailAgents.
-        </p>
+          <p className="flex items-center gap-1.5 text-[11px] text-slate-400">
+            <Lock aria-hidden="true" className="h-3 w-3 text-slate-400" />
+            <span>Direct WhatsApp connection • Fast &amp; free</span>
+          </p>
+        </div>
       </form>
     </div>
   );

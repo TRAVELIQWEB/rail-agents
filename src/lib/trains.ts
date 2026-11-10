@@ -21,8 +21,8 @@ export interface TrainChartStation {
   stationName: string;
   arrivalTime: string;
   departureTime: string;
-  day: number;
-  distance: string;
+  day: number | null;
+  distance: string | null;
   chartTimeLocal: string | null;
   chartOneDayOffset: number | null;
   chartTwoTimeLocal: string | null;
@@ -38,7 +38,7 @@ export interface TrainChartingResponse {
   journeyDate: string;
   originStation: string;
   destinationStation: string;
-  knownChartCount: number;
+  knownChartCount: number | null;
   stations: TrainChartStation[];
 }
 
@@ -466,6 +466,12 @@ export async function fetchTrainChartingFromExternalProvider(
   }
 
   const raw = data as Record<string, unknown>;
+  if (String(raw.trainNumber).trim() !== cleanTrainNo) {
+    throw new Error("The charting provider returned a different train.");
+  }
+  if (raw.journeyDate != null && raw.journeyDate !== cleanDate) {
+    throw new Error("The charting provider returned a different journey date.");
+  }
   const rawStations = raw.stations as Array<Record<string, unknown>>;
 
   const stations: TrainChartStation[] = rawStations.map((s) => ({
@@ -473,8 +479,8 @@ export async function fetchTrainChartingFromExternalProvider(
     stationName: String(s.stationName ?? "").trim(),
     arrivalTime: String(s.arrivalTime ?? "").trim(),
     departureTime: String(s.departureTime ?? "").trim(),
-    day: typeof s.day === "number" ? s.day : Number(s.day) || 1,
-    distance: String(s.distance ?? "0.0").trim(),
+    day: s.day != null && String(s.day).trim() !== "" && Number.isInteger(Number(s.day)) && Number(s.day) > 0 ? Number(s.day) : null,
+    distance: s.distance != null && String(s.distance).trim() !== "" ? String(s.distance).trim() : null,
     chartTimeLocal: typeof s.chartTimeLocal === "string" && s.chartTimeLocal.trim() ? s.chartTimeLocal.trim() : null,
     chartOneDayOffset: typeof s.chartOneDayOffset === "number" ? s.chartOneDayOffset : null,
     chartTwoTimeLocal: typeof s.chartTwoTimeLocal === "string" && s.chartTwoTimeLocal.trim() ? s.chartTwoTimeLocal.trim() : null,
@@ -500,7 +506,7 @@ export async function fetchTrainChartingFromExternalProvider(
     originStation: String(raw.originStation ?? "").trim().toUpperCase(),
     destinationStation: String(raw.destinationStation ?? "").trim().toUpperCase(),
     knownChartCount:
-      typeof raw.knownChartCount === "number" ? raw.knownChartCount : stations.length,
+      typeof raw.knownChartCount === "number" ? raw.knownChartCount : null,
     stations,
   };
 }

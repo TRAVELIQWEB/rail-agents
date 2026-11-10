@@ -93,13 +93,16 @@ const toolAliases: Record<string, RailToolId> = {
   "train-chart-preparation-time": "chart",
 };
 
-export function resolveRailTool(param?: string | null): RailTool {
-  if (!param) return railTools[0];
+export function findRailTool(param?: string | null): RailTool | null {
+  if (!param) return null;
   const normalized = param.trim().toLowerCase().replace(/^\/+/, "");
   const matchedId = toolAliases[normalized];
   if (matchedId) {
-    const found = railTools.find((tool) => tool.id === matchedId);
-    if (found) return found;
+    return railTools.find((tool) => tool.id === matchedId) ?? null;
   }
-  return railTools[0];
+  return null;
+}
+
+export function resolveRailTool(param?: string | null): RailTool {
+  return findRailTool(param) ?? railTools[0];
 }

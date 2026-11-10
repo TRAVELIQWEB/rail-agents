@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useMemo, useState } from "react";
+import styles from "./FareCalculator.module.css";
 import {
   ChevronDown,
   RotateCcw,
@@ -99,13 +100,13 @@ export function FareCalculator() {
   const isOverMaxPassengers = form.adults + form.children > 6;
 
   return (
-    <div className="site-tool-container">
+    <div className={`site-tool-container ${styles.calculator}`}>
       {/* Outer Shell: Warm Sand & Amber Orange Theme */}
       <div className="relative rounded-2xl bg-[#fffcf8] p-2.5 sm:p-5 lg:p-6 shadow-[0_4px_24px_rgba(249,115,22,0.06),0_1px_4px_rgba(0,0,0,0.04)] border border-[#f2e6d9] hover:shadow-[0_8px_30px_rgba(249,115,22,0.09)] transition-all duration-300 overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-2.5 sm:gap-5 lg:gap-8 items-stretch">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-2.5 sm:gap-5 lg:gap-8 items-stretch">
 
           {/* Left Column: Passenger & Category Inputs (7 cols) */}
-          <div className="lg:col-span-7 flex flex-col justify-between space-y-2 sm:space-y-4">
+          <div className="xl:col-span-7 flex flex-col justify-between space-y-2 sm:space-y-4">
 
             {/* Passenger Workspace Header */}
             <div>
@@ -280,7 +281,7 @@ export function FareCalculator() {
                       <span className="text-xs sm:text-sm font-extrabold text-stone-900 block tabular-nums">
                         {result.totalPassengers} Pax
                       </span>
-                      <span className="text-stone-400 text-[10px] sm:text-xs hidden sm:inline truncate">
+                      <span className="text-stone-400 text-[10px] sm:text-xs block">
                         ({result.adults} Adults, {result.children} Children)
                       </span>
                     </div>
@@ -360,7 +361,7 @@ export function FareCalculator() {
                   type="button"
                   onClick={handleCopySummary}
                   aria-label="Copy fare estimate breakdown to clipboard"
-                  className="w-full sm:w-auto text-center rounded-lg border border-[#e4d5c4] bg-white px-1.5 sm:px-3.5 py-1.5 text-[11px] sm:text-xs font-bold text-stone-700 shadow-2xs hover:bg-[#faf6f0] hover:border-orange-300 hover:text-stone-900 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 transition-all duration-150 cursor-pointer truncate focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500"
+                  className="w-full sm:w-auto text-center rounded-lg border border-[#e4d5c4] bg-white px-1.5 sm:px-3.5 py-1.5 text-[11px] sm:text-xs font-bold text-stone-700 shadow-2xs hover:bg-[#faf6f0] hover:border-orange-300 hover:text-stone-900 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 transition-all duration-150 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500"
                 >
                   {copiedSummary ? "Copied" : "Copy"}
                 </button>
@@ -378,7 +379,7 @@ export function FareCalculator() {
           </div>
 
           {/* Right Column: Clean, Well-Defined Fare Summary Statement (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col justify-between pt-5 mt-3 border-t-2 border-dashed border-[#ecdccb] lg:pt-0 lg:mt-0 lg:border-t-0" aria-live="polite" aria-atomic="true">
+          <div className="xl:col-span-5 flex flex-col justify-between pt-5 mt-3 border-t-2 border-dashed border-[#ecdccb] xl:pt-0 xl:mt-0 xl:border-t-0" aria-live="polite" aria-atomic="true">
             {/* Top group: Header + Fare Summary Content Card */}
             <div className="space-y-2 sm:space-y-3">
               {/* Summary Header aligned with left column header */}
@@ -433,7 +434,7 @@ export function FareCalculator() {
                   <div className="grid grid-cols-12 px-3.5 py-3 sm:py-3.5 text-xs bg-[#fdfbf7]">
                     <div className="col-span-7 pr-1">
                       <span className="text-stone-700 font-bold block">Payment Gateway (PG)</span>
-                      <span className="inline-block text-[9.5px] font-semibold text-amber-800 bg-amber-100/70 border border-amber-200/80 px-1.5 py-0.2 rounded mt-0.5 whitespace-nowrap">
+                      <span className="inline-block text-[9.5px] font-semibold text-amber-800 bg-amber-100/70 border border-amber-200/80 px-1.5 py-0.2 rounded mt-0.5 whitespace-normal">
                         {result.railwayFare > 2000 ? "1% on (Fare + IRCTC)" : "0.75% on (Fare + IRCTC)"}
                       </span>
                     </div>
@@ -473,48 +474,12 @@ export function FareCalculator() {
               {result.railwayFare <= 0 && (
                 <div className="mt-2 pt-2 border-t border-white/20">
                   <span className="text-[11px] sm:text-xs text-orange-100/90 font-medium block leading-snug">
-                    Enter passenger fare details on the left to calculate total amount.
+                    Enter passenger fare details to calculate the total amount.
                   </span>
                 </div>
               )}
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Floating Sticky Bottom Bar for Mobile Viewport */}
-      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-[#fffcf8]/95 backdrop-blur-md border-t border-[#ede1d3] px-3 py-2 shadow-[0_-4px_16px_rgba(0,0,0,0.06)] flex items-center justify-between gap-2">
-        <div className="min-w-0 pr-1">
-          <span className="text-[9px] font-bold text-stone-500 uppercase tracking-wider block truncate">
-            Total ({result.category === "AC" ? "AC" : "Non-AC"})
-          </span>
-          <span className="text-base font-black text-orange-600 leading-tight block truncate tabular-nums">
-            {result.railwayFare > 0 ? formatINR(result.finalTotalPayable) : "—"}
-          </span>
-        </div>
-        <div className="flex items-center gap-1.5 shrink-0">
-          <button
-            type="button"
-            onClick={handleReset}
-            className="rounded-lg border border-[#e4d5c4] bg-white p-1.5 text-stone-600 shadow-2xs hover:bg-[#faf6f0] active:scale-95 transition-all cursor-pointer"
-            title="Reset"
-          >
-            <RotateCcw className="h-3.5 w-3.5" />
-          </button>
-          <button
-            type="button"
-            onClick={handleCopySummary}
-            className="rounded-lg border border-[#e4d5c4] bg-white px-2.5 py-1.5 text-[11px] font-bold text-stone-700 shadow-2xs hover:bg-[#faf6f0] active:scale-95 transition-all cursor-pointer"
-          >
-            {copiedSummary ? "Copied" : "Copy"}
-          </button>
-          <button
-            type="button"
-            onClick={() => setIsPrintModalOpen(true)}
-            className="rounded-lg bg-gradient-to-r from-[#c2410c] to-[#9a3412] px-3 py-1.5 text-[11px] font-bold text-white shadow-[0_2px_8px_rgba(249,115,22,0.3)] active:scale-95 transition-all cursor-pointer whitespace-nowrap"
-          >
-            Print Slip
-          </button>
         </div>
       </div>
 

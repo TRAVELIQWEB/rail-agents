@@ -1,3 +1,4 @@
+import { AllToolsLink } from "@/components/tools/AllToolsLink";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { LiveTrainStatusTool } from "@/components/LiveTrainStatusTool";
@@ -105,10 +106,11 @@ function LiveTrainStatusFallback() {
     <div className="flex min-h-screen flex-col bg-[#fffdfa] text-[var(--navy)]">
       <Header />
       <main className="flex-1">
-        <section className="border-b border-[#f4e4d4] bg-gradient-to-b from-[#fffcf8] to-[#f6efe6] px-4 py-6 sm:px-6 sm:py-8">
-          <div className="site-tool-container text-center">
-            <h1 className="page-hero-title">Live Train <span className="hero-accent">Running Status</span></h1>
-            <p className="page-hero-description mx-auto mt-2 max-w-xl">Check real-time train location, delay status, platform numbers, and station timetables.</p>
+        <AllToolsLink />
+        <section className="border-b border-[#f4e4d4] bg-gradient-to-b from-[#fffcf8] to-[#f6efe6] py-3">
+          <div className="site-tool-container">
+            <h1 className="text-xl font-extrabold leading-tight tracking-tight text-[var(--navy)] sm:text-2xl">Live Train <span className="hero-accent">Running Status</span></h1>
+            <p className="mt-1 max-w-xl text-xs leading-5 text-slate-600">Check real-time train location, delay status, platform numbers, and station timetables.</p>
           </div>
         </section>
         <div aria-busy="true" aria-label="Loading live train status tool" className="site-tool-container space-y-4 py-6">

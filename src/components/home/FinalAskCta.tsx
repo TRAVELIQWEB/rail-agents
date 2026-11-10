@@ -5,9 +5,9 @@ import { ArrowRight } from "lucide-react";
 export function FinalAskCta() {
   return (
     <section className="site-container pb-10 pt-2 sm:pb-12 lg:pb-14 wide:pb-16">
-      <div className="relative isolate grid grid-cols-1 justify-items-center gap-3 overflow-hidden rounded-[32px] border border-[#f2d9bf] bg-[linear-gradient(135deg,#fff8f1_0%,#fffdf9_40%,#fff1e3_100%)] px-4 py-5 text-center shadow-[0_18px_48px_rgba(249,115,22,0.08)] sm:grid-cols-[74px_minmax(0,1fr)_auto] sm:items-center sm:justify-items-stretch sm:gap-6 sm:px-8 sm:py-5 sm:text-left lg:gap-8 wide:gap-10 wide:px-10 wide:py-6">
+      <div className="relative isolate grid grid-cols-1 justify-items-center gap-3 overflow-hidden rounded-[32px] border border-[#f5d4b8] bg-[linear-gradient(135deg,#ffffff_0%,#fffaf5_55%,#fff1e5_100%)] px-4 py-5 text-center shadow-[0_18px_48px_rgba(249,115,22,0.08)] sm:grid-cols-[74px_minmax(0,1fr)_auto] sm:items-center sm:justify-items-stretch sm:gap-6 sm:px-8 sm:py-5 sm:text-left lg:gap-8 wide:gap-10 wide:px-10 wide:py-6">
         <div aria-hidden="true" className="absolute -right-8 -top-12 -z-10 h-52 w-52 rounded-full bg-white/70 blur-3xl" />
-        <div aria-hidden="true" className="absolute -left-10 bottom-0 -z-10 h-44 w-44 rounded-full bg-[#fed7aa]/40 blur-3xl" />
+        <div aria-hidden="true" className="absolute -left-10 bottom-0 -z-10 h-44 w-44 rounded-full bg-[#fed7aa]/25 blur-3xl" />
 
         <div className="relative h-[78px] w-[48px] shrink-0 sm:h-[100px] sm:w-[74px]">
           <Image

@@ -285,7 +285,7 @@ export function Hero() {
                 <InternalLink
                   href="/tools"
                   prefetch={false}
-                  className="inline-flex items-center gap-1 text-xs font-bold text-[var(--primary)] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:hidden"
+                  className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-xs font-bold text-[var(--primary)] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:hidden"
                 >
                   <span>All tools</span>
                   <ChevronRight aria-hidden="true" className="h-3.5 w-3.5" />

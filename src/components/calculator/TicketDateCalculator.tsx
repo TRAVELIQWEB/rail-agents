@@ -44,7 +44,22 @@ export interface RailwayStation {
 export function TicketDateCalculator() {
   const [fromInput, setFromInput] = useState<string>("");
   const [toInput, setToInput] = useState<string>("");
+  const [fromCode, setFromCode] = useState("");
+  const [toCode, setToCode] = useState("");
   const [journeyDate, setJourneyDate] = useState<string>("");
+  const bookingColumnsRef = useRef<HTMLDivElement>(null);
+  const calendarSectionRef = useRef<HTMLElement>(null);
+  const scheduleBodyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const calendar = calendarSectionRef.current;
+    if (!calendar) return;
+    const observer = new ResizeObserver(() => {
+      bookingColumnsRef.current?.style.setProperty("--booking-card-height", `${calendar.getBoundingClientRect().height}px`);
+    });
+    observer.observe(calendar);
+    return () => observer.disconnect();
+  }, []);
 
   // Station search states (connected to MongoDB)
   const [fromSuggestions, setFromSuggestions] = useState<RailwayStation[]>([]);
@@ -187,6 +202,8 @@ export function TicketDateCalculator() {
     const temp = fromInput;
     setFromInput(toInput);
     setToInput(temp);
+    setFromCode(toCode);
+    setToCode(fromCode);
   };
 
   const handleJourneyDateChange = (dateIso: string) => {
@@ -201,6 +218,8 @@ export function TicketDateCalculator() {
   const handleReset = () => {
     setFromInput("");
     setToInput("");
+    setFromCode("");
+    setToCode("");
     setFromSuggestions([]);
     setToSuggestions([]);
     setFromOpen(false);
@@ -216,6 +235,14 @@ export function TicketDateCalculator() {
 
   // ── Calculated Booking Data ──
   const hasJourneyDate = Boolean(journeyDate && journeyDate.trim().length === 10);
+  const hasValidJourneyDate = Boolean(parseCalendarDate(journeyDate));
+  const hasFromStation = Boolean(fromInput.trim());
+  const hasToStation = Boolean(toInput.trim() && (toCode || extractCode(toInput)) !== (fromCode || extractCode(fromInput)));
+  const canShowSchedule = hasFromStation && hasToStation && hasValidJourneyDate;
+
+  useEffect(() => {
+    scheduleBodyRef.current?.scrollTo({ top: 0 });
+  }, [canShowSchedule, journeyDate]);
 
   const normalBookingDateIso = useMemo(() => {
     if (!hasJourneyDate) return "";
@@ -398,14 +425,14 @@ export function TicketDateCalculator() {
   };
 
   return (
-    <div className={`${styles.calculator} site-tool-container space-y-6`}>
+    <div className={`${styles.calculator} site-tool-container space-y-4`}>
 
       {/* ══════════════════════════════════════════════════════════════════════
           2. RAILWAY JOURNEY DETAILS FORM
          ══════════════════════════════════════════════════════════════════════ */}
       <section aria-labelledby="journey-details-heading">
-        <div className="rounded-2xl bg-white p-5 sm:p-6 shadow-[0_4px_24px_rgba(15,39,71,0.07)]">
-          <div className="flex flex-wrap items-center justify-between gap-2 pb-4 mb-5 border-b border-slate-100">
+        <div className="rounded-2xl bg-white p-3.5 sm:p-4 shadow-[0_4px_24px_rgba(15,39,71,0.07)]">
+          <div className="flex flex-wrap items-center justify-between gap-2 pb-2 mb-3 border-b border-slate-100">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_6px_rgba(249,115,22,0.6)]" />
               <h2
@@ -422,7 +449,7 @@ export function TicketDateCalculator() {
 
           <form
             onSubmit={(e: FormEvent) => e.preventDefault()}
-            className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end"
+            className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end"
           >
             {/* FROM FIELD */}
             <div className="sm:col-span-1 md:col-span-4 relative" ref={fromRef}>
@@ -441,12 +468,13 @@ export function TicketDateCalculator() {
                   }}
                   onChange={(e) => {
                     setFromInput(e.target.value);
+                    setFromCode("");
                     setFromSuggestions([]);
                     setFromStationError(null);
                     setFromOpen(true);
                   }}
                   placeholder="Enter origin station"
-                  className="w-full min-w-0 h-12 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 pr-8 text-base font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none"
+                  className="w-full min-w-0 h-11 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 pr-8 text-base font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none"
                 />
                 <button
                   type="button"
@@ -487,6 +515,7 @@ export function TicketDateCalculator() {
                           onClick={() => {
                             if (isSameAsTo) return;
                             setFromInput(`${stn.name} (${stn.code})`);
+                            setFromCode(stn.code);
                             setFromOpen(false);
                           }}
                           className={`w-full text-left px-2.5 py-1.5 rounded-md text-xs flex items-center justify-between transition-colors ${isSameAsTo
@@ -542,12 +571,13 @@ export function TicketDateCalculator() {
                   }}
                   onChange={(e) => {
                     setToInput(e.target.value);
+                    setToCode("");
                     setToSuggestions([]);
                     setToStationError(null);
                     setToOpen(true);
                   }}
                   placeholder="Enter destination station"
-                  className="w-full min-w-0 h-12 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 pr-8 text-base font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none"
+                  className="w-full min-w-0 h-11 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 pr-8 text-base font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none"
                 />
                 <button
                   type="button"
@@ -588,6 +618,7 @@ export function TicketDateCalculator() {
                           onClick={() => {
                             if (isSameAsFrom) return;
                             setToInput(`${stn.name} (${stn.code})`);
+                            setToCode(stn.code);
                             setToOpen(false);
                           }}
                           className={`w-full text-left px-2.5 py-1.5 rounded-md text-xs flex items-center justify-between transition-colors ${isSameAsFrom
@@ -624,7 +655,7 @@ export function TicketDateCalculator() {
                 type="date"
                 value={journeyDate}
                 onChange={(e) => handleJourneyDateChange(e.target.value)}
-                className="w-full min-w-0 h-12 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 text-base font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none cursor-pointer"
+                className="w-full min-w-0 h-11 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 text-base font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none cursor-pointer"
               />
             </div>
           </form>
@@ -634,14 +665,14 @@ export function TicketDateCalculator() {
       {/* ══════════════════════════════════════════════════════════════════════
           3 & 4. TWO-COLUMN INTERACTIVE ROW: CALENDAR (LEFT) + SCHEDULE (RIGHT)
          ══════════════════════════════════════════════════════════════════════ */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+      <div ref={bookingColumnsRef} className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
         {/* LEFT COLUMN: BOOKING CALENDAR */}
         <div className="lg:col-span-5 flex flex-col">
           {/* ══════════════════════════════════════════════════════════════════════
           4. BOOKING CALENDAR
          ══════════════════════════════════════════════════════════════════════ */}
-          <section aria-labelledby="booking-calendar-heading" className="h-full flex flex-col">
-            <div className="rounded-2xl bg-white p-5 sm:p-6 shadow-[0_4px_24px_rgba(15,39,71,0.07)] flex-1 flex flex-col gap-2.5">
+          <section ref={calendarSectionRef} aria-labelledby="booking-calendar-heading" className="flex flex-col">
+            <div className="rounded-2xl bg-white p-3.5 sm:p-4 shadow-[0_4px_24px_rgba(15,39,71,0.07)] flex-1 flex flex-col gap-2.5">
               <div className="flex items-center justify-between pb-2 border-b border-stone-100">
                 <div className="flex items-center gap-2">
                   <CalendarIcon className="h-4 w-4 text-orange-600" />
@@ -687,10 +718,10 @@ export function TicketDateCalculator() {
               </div>
 
               {/* Calendar Grid Matrix */}
-              <div className="grid grid-cols-7 auto-rows-fr gap-1.5 sm:gap-2 text-center">
+              <div className="grid grid-cols-7 gap-1 sm:gap-1.5 text-center">
                 {calendarDays.map((item, idx) => {
                   if (!item.isCurrentMonth) {
-                    return <div key={`empty-${idx}`} className="min-h-[44px] sm:min-h-[48px]" />;
+                    return <div key={`empty-${idx}`} className="h-11 lg:h-10" />;
                   }
 
                   let colorClasses = "hover:bg-stone-100 text-stone-800";
@@ -709,7 +740,7 @@ export function TicketDateCalculator() {
                   }
 
                   return (
-                    <div key={item.dateIso} className="relative group/day aspect-square">
+                    <div key={item.dateIso} className="relative group/day h-11 lg:h-10">
                       <button
                         type="button"
                         disabled={item.status === "PAST"}
@@ -718,7 +749,7 @@ export function TicketDateCalculator() {
                         }}
                         aria-label={`${item.dayNumber} ${MONTH_NAMES[calendarViewDate.month - 1]} ${calendarViewDate.year}`}
                         aria-pressed={item.isSelected}
-                        className={`w-full h-full min-h-[44px] sm:min-h-[48px] rounded-lg text-xs flex flex-col items-center justify-center transition-all cursor-pointer ${colorClasses}`}
+                        className={`w-full h-full rounded-lg text-xs flex flex-col items-center justify-center transition-all cursor-pointer ${colorClasses}`}
                       >
                         <span>{item.dayNumber}</span>
                       </button>
@@ -746,7 +777,7 @@ export function TicketDateCalculator() {
               </div>
 
               {/* Calendar Legend (Single Appearance) */}
-              <div className="mt-auto pt-3 border-t border-stone-100 flex flex-wrap items-center justify-between gap-2 text-xs text-stone-600">
+              <div className="mt-1 pt-2 border-t border-stone-100 flex flex-wrap items-center justify-between gap-2 text-xs text-stone-600">
                 <span className="flex items-center gap-1">
                   <span className="h-2 w-2 rounded-full bg-emerald-500" />
                   <span>General Open</span>
@@ -773,8 +804,8 @@ export function TicketDateCalculator() {
           {/* ══════════════════════════════════════════════════════════════════════
           3. YOUR BOOKING SCHEDULE (MERGED ALL RESULTS IN ONE PLACE)
          ══════════════════════════════════════════════════════════════════════ */}
-          <section aria-labelledby="booking-schedule-heading" className="h-full flex flex-col">
-            <div className="rounded-2xl bg-white p-5 sm:p-6 shadow-[0_4px_24px_rgba(15,39,71,0.07)] flex-1 flex flex-col gap-3">
+          <section aria-labelledby="booking-schedule-heading" className="flex flex-col">
+            <div className={`${styles.scheduleCard} rounded-2xl bg-white p-3.5 sm:p-4 shadow-[0_4px_24px_rgba(15,39,71,0.07)] flex flex-col gap-3`}>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-stone-100 gap-2">
                 <div className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-orange-500" />
@@ -785,17 +816,18 @@ export function TicketDateCalculator() {
                     Your Booking Schedule
                   </h2>
                 </div>
-                {hasJourneyDate && bookingStatus && (
+                {canShowSchedule && bookingStatus && (
                   <span className={`px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider text-white ${bookingStatus.badgeColor}`}>
                     {bookingStatus.title}
                   </span>
                 )}
               </div>
 
-              {hasJourneyDate && bookingStatus ? (
+              <div ref={scheduleBodyRef} className={styles.scheduleBody} tabIndex={0} role="region" aria-label="Booking schedule details">
+              {canShowSchedule && bookingStatus ? (
                 <div className="flex-1 flex flex-col justify-between gap-2.5">
                   {/* NORMAL BOOKING RESULT CARD */}
-                  <div className="rounded-xl bg-gradient-to-br from-[#0b2240] to-[#163c60] p-5 text-white shadow-sm border border-[#1e3a5f]">
+                  <div className="rounded-xl bg-gradient-to-br from-[#0b2240] to-[#163c60] p-4 text-white shadow-sm border border-[#1e3a5f]">
                     <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
                       <div>
                         <div className="flex flex-wrap items-center gap-2">
@@ -993,12 +1025,26 @@ export function TicketDateCalculator() {
                   </div>
                 </div>
               ) : (
-                <div className="rounded-xl bg-[#0b2240]/5 border border-dashed border-[#0b2240]/20 p-6 text-center flex-1 flex items-center justify-center">
-                  <p className="text-xs sm:text-sm font-bold text-stone-700 max-w-sm mx-auto leading-relaxed">
-                    Please enter a Journey Date above or choose a date from the calendar to see your complete booking schedule.
-                  </p>
+                <div aria-label="How to check your booking date" className="rounded-xl border border-orange-100 bg-gradient-to-br from-orange-50/70 to-white p-4">
+                  <h3 className="text-sm font-bold text-[#0b2240]">Check your booking date in 3 steps</h3>
+                  <p className="mt-1 text-xs leading-5 text-stone-600">Complete all three details above. Your booking schedule will appear here automatically.</p>
+                  <ol className="mt-3 space-y-2">
+                    {[
+                      { title: "Select your From station", detail: "Choose your origin from the suggestions or enter it manually.", done: hasFromStation },
+                      { title: "Select your To station", detail: "Choose or enter a different destination station.", done: hasToStation },
+                      { title: "Choose your journey date", detail: "Enter the date above or pick a date in the calendar.", done: hasValidJourneyDate },
+                    ].map((step, index) => (
+                      <li key={step.title} className={`flex items-start gap-3 rounded-lg border p-2.5 ${step.done ? "border-emerald-100 bg-emerald-50/60" : "border-slate-200 bg-white"}`}>
+                        <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${step.done ? "bg-emerald-100 text-emerald-800" : "bg-orange-100 text-orange-800"}`}>
+                          {step.done ? <Check aria-label="Completed" className="h-3.5 w-3.5" /> : index + 1}
+                        </span>
+                        <div><p className="text-xs font-bold text-[#0b2240]">{step.title}</p><p className="mt-0.5 text-[11px] leading-4 text-stone-600">{step.detail}</p></div>
+                      </li>
+                    ))}
+                  </ol>
                 </div>
               )}
+              </div>
             </div>
           </section>
         </div>
