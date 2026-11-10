@@ -100,7 +100,7 @@ export default function GuidesPage() {
         {/* ══ 1. COMPACT HERO SECTION ══ */}
         <section
           aria-label="Guides introduction"
-          className="relative border-b border-[#f0e1d5] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8"
+          className="relative border-b border-[#f0e1d5] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pt-4 pb-4"
         >
           <div className="site-container max-w-5xl">
             <div className="mx-auto text-center">
@@ -137,7 +137,7 @@ export default function GuidesPage() {
         </section>
 
         {/* ══ 2. MAIN GUIDES CONTAINER ══ */}
-        <section aria-label="Agent guides and tools" className="py-8 sm:py-12 lg:py-14">
+        <section aria-label="Agent guides and tools" className="pt-4 pb-8 sm:pb-12 lg:pb-14">
           <div className="site-container max-w-5xl space-y-12 sm:space-y-14">
             
             {/* Guides Directory with Search, Categories, Featured Guide & Grid */}

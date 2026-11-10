@@ -1,5 +1,8 @@
 "use client";
 
+import { AllToolsLink } from "@/components/tools/AllToolsLink";
+import { pnrJourneyNotice } from "@/lib/pnr-journey";
+import { isWaitingListStatus, waitingListDetails } from "@/lib/pnr-waitlist";
 import { Suspense, useEffect, useRef, useState, type FormEvent } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
@@ -12,6 +15,7 @@ import {
   Info,
   RefreshCw,
   Search,
+  Ticket,
   TicketCheck,
   TrainFront,
   ChevronDown,
@@ -83,7 +87,7 @@ const faqs = [
   },
   {
     q: "Is this page showing live PNR results?",
-    a: "Yes. Each lookup requests the latest available status from RailAgents’ railway provider. A private lookup link is kept in this browser session so refresh can restore your search; if session storage is unavailable, the PNR may appear in the page URL and browser history.",
+    a: "Yes. Each lookup requests the latest available status from RailAgents’ railway provider. The PNR in the page URL restores your search on refresh or when you open the link again. Only share that link with people you intend to give access to your PNR.",
   },
 ];
 
@@ -94,17 +98,6 @@ function readPnrFromSession(lookupId: string): string | null {
   try {
     const value = window.sessionStorage.getItem(`${PNR_SESSION_KEY_PREFIX}${lookupId}`);
     return value && /^\d{10}$/.test(value) ? value : null;
-  } catch {
-    return null;
-  }
-}
-
-function savePnrToSession(pnr: string): string | null {
-  try {
-    const bytes = window.crypto.getRandomValues(new Uint8Array(16));
-    const lookupId = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
-    window.sessionStorage.setItem(`${PNR_SESSION_KEY_PREFIX}${lookupId}`, pnr);
-    return lookupId;
   } catch {
     return null;
   }
@@ -192,7 +185,7 @@ function getPnrStatusTone(status: string) {
   if (isCancelledStatus(status)) return "border-rose-200 bg-rose-50 text-rose-800";
   if (/\bCNF\b|confirmed/i.test(status)) return "border-emerald-200 bg-emerald-50 text-emerald-800";
   if (/\bRAC\b/i.test(status)) return "border-blue-200 bg-blue-50 text-blue-800";
-  if (/\bWL\b|waitlist|waiting/i.test(status)) return "border-amber-200 bg-amber-50 text-amber-900";
+  if (isWaitingListStatus(status)) return "border-amber-200 bg-amber-50 text-amber-900";
   return "border-slate-200 bg-slate-100 text-slate-700";
 }
 
@@ -200,7 +193,7 @@ function getPnrStatusDotTone(status: string) {
   if (isCancelledStatus(status)) return "bg-rose-600";
   if (/\bCNF\b|confirmed/i.test(status)) return "bg-emerald-600";
   if (/\bRAC\b/i.test(status)) return "bg-blue-600";
-  if (/\bWL\b|waitlist|waiting/i.test(status)) return "bg-amber-500";
+  if (isWaitingListStatus(status)) return "bg-amber-500";
   return "bg-slate-400";
 }
 
@@ -208,7 +201,7 @@ function getPnrStatusKind(status: string): "confirmed" | "rac" | "waiting" | "ca
   if (isCancelledStatus(status)) return "cancelled";
   if (/\bCNF\b|confirmed/i.test(status)) return "confirmed";
   if (/\bRAC\b/i.test(status)) return "rac";
-  if (/\bWL\b|waitlist|waiting/i.test(status)) return "waiting";
+  if (isWaitingListStatus(status)) return "waiting";
   return "unavailable";
 }
 
@@ -217,7 +210,7 @@ const pnrStatusLabels = {
   rac: "RAC",
   waiting: "Waiting list",
   cancelled: "Cancelled",
-  unavailable: "Status unavailable",
+  unavailable: "Current status not reported",
 } as const;
 
 function formatStation(value: unknown, record: DataRecord, codeAliases: string[], nameAliases: string[]): string {
@@ -591,7 +584,8 @@ function StationDisplay({ value }: { value: string }) {
 
 function PassengerConfirmation({ status }: { status: string }) {
   const kind = getPnrStatusKind(status);
-  const label = status === "—" ? pnrStatusLabels.unavailable : pnrStatusLabels[kind];
+  const waiting = kind === "waiting" ? waitingListDetails(status) : null;
+  const label = waiting?.position != null ? `Waiting list · #${waiting.position}` : status === "—" ? pnrStatusLabels.unavailable : pnrStatusLabels[kind];
   const tone = getPnrStatusTone(status);
   const dotTone = getPnrStatusDotTone(status);
   return (
@@ -778,7 +772,7 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
       coach,
       seat,
       seatType,
-      coachBerthLabel: coachBerthParts.length > 0 ? coachBerthParts.join(" · ") : "—",
+      coachBerthLabel: getPnrStatusKind(current) === "waiting" ? "Not allotted (waitlisted)" : coachBerthParts.length > 0 ? coachBerthParts.join(" · ") : "—",
     };
   });
 
@@ -806,6 +800,10 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
     (totalPassengers === 0 && providerOverallKind === "cancelled");
   const isPartiallyCancelled =
     totalPassengers > 0 && cancelledCount > 0 && cancelledCount < totalPassengers;
+  const journeyNotice = isAllCancelled ? null : pnrJourneyNotice(
+    boardingDate !== "—" ? boardingDate : trainDate,
+    departureTime,
+  );
 
   const overallStatusText = isAllCancelled
     ? totalPassengers > 1
@@ -830,7 +828,7 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
             ? pnrStatusLabels[providerOverallKind]
             : bookingKinds.length > 0
               ? `Booking: ${bookingKinds.map((kind) => `${passengerBookingCounts[kind]} ${pnrStatusLabels[kind].toLowerCase()}`).join(" · ")}`
-              : "Status unavailable";
+              : "Current status not reported";
 
   const overallKind: keyof typeof pnrStatusLabels = isAllCancelled
     ? "cancelled"
@@ -871,6 +869,8 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
 
   // Primary position or coach/berth summary for Status Panel A
   const primaryPassenger = passengerRows[0];
+  const primaryWaitlist = primaryPassenger && getPnrStatusKind(primaryPassenger.current) === "waiting"
+    ? waitingListDetails(primaryPassenger.current) : null;
   const currentPositionDetail = primaryPassenger
     ? passengerRows.length === 1 && !isAllCancelled
       ? primaryPassenger.coachBerthLabel !== "—"
@@ -985,6 +985,7 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
   const predictionRequestSeq = useRef(0);
 
   async function fetchPredictionData() {
+    if (!eligibleForPrediction) return;
     const seq = ++predictionRequestSeq.current;
     setPredictionLoading(true);
     setPredictionError("");
@@ -1098,11 +1099,20 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
   return (
     <section
       aria-labelledby="pnr-result-title"
-      className="mt-4 overflow-hidden rounded-2xl border-[1.5px] border-slate-300 bg-white shadow-[0_4px_16px_-4px_rgba(15,23,42,0.08),0_2px_6px_-2px_rgba(15,23,42,0.05)]"
+      className="mt-3 overflow-hidden rounded-2xl border-[1.5px] border-slate-300 bg-white shadow-[0_4px_16px_-4px_rgba(15,23,42,0.08),0_2px_6px_-2px_rgba(15,23,42,0.05)]"
     >
       {/* 1. PNR OUTPUT HEADING: PNR BAR + BOARDING STATION → TRAIN / DATE / CLASS / QUOTA → RESERVATION UP TO */}
-      <header className="border-b border-slate-300 bg-white px-4 py-3.5 sm:px-5">
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/80 pb-2.5">
+      {journeyNotice && (
+        <div role="status" className="pnr-journey-notice flex items-start gap-2.5 border-b border-amber-300 bg-amber-50 px-3 py-2 text-amber-950 sm:px-5">
+          <TrainFront aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-700 motion-safe:animate-pulse" />
+          <div>
+            <p className="text-sm font-extrabold">{journeyNotice === "scheduled" ? "Scheduled departure time has passed" : "Journey date has passed"}</p>
+            <p className="mt-0.5 text-xs leading-relaxed">{journeyNotice === "scheduled" ? "Based on your boarding date and scheduled time. Check Live Train Status for actual departure and delays." : "This PNR is for an earlier journey date. Check Live Train Status to verify the train’s actual departure."}</p>
+          </div>
+        </div>
+      )}
+      <header className="border-b border-slate-300 bg-white px-3 py-2.5 sm:px-4">
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/80 pb-2">
           <div className="flex min-w-0 items-center gap-2">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-orange-50 text-orange-600">
               <TicketCheck aria-hidden="true" className="h-4 w-4" />
@@ -1127,7 +1137,7 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
 
         <div
           aria-label="Journey route and timing details"
-          className="grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center md:gap-4"
+          className="grid grid-cols-1 gap-2 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center md:gap-4"
         >
           {/* Boarding / From Station */}
           <div className="min-w-0">
@@ -1197,15 +1207,15 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
       </header>
 
       {/* 2. THREE-COLUMN STATUS SUMMARY ROW */}
-      <div className="grid grid-cols-1 gap-3 border-b border-slate-300 bg-white p-4 lg:grid-cols-3 sm:px-5">
+      <div className="grid grid-cols-1 gap-2 border-b border-slate-300 bg-white p-3 md:grid-cols-3 sm:px-4">
         {/* Panel A: Current Booking Status */}
         <article
           aria-label="Current booking status"
-          className={`flex flex-col justify-between rounded-xl p-3.5 ${bookingPanelSurface}`}
+          className={`flex flex-col justify-between rounded-xl p-3 ${bookingPanelSurface}`}
         >
           <div>
             <div className="flex items-center justify-between gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600">
+              <span className="rounded bg-white/80 px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-[#0b2240]">
                 Current booking status
               </span>
               <span
@@ -1216,33 +1226,41 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
               </span>
             </div>
             <p
-              className={`mt-2 text-base font-extrabold sm:text-lg ${
+              className={`mt-2 text-base font-extrabold ${
                 isAllCancelled || overallKind === "cancelled" ? "text-rose-800" : "text-[#0b2240]"
               }`}
             >
-              {overallStatusText}
+              {passengerRows.length === 1 && primaryWaitlist
+                ? `Waiting list · ${primaryWaitlist.code}${primaryWaitlist.position != null ? ` #${primaryWaitlist.position}` : ""}`
+                : overallStatusText}
             </p>
-            <p className="mt-1 text-xs font-medium text-slate-700">{currentPositionDetail}</p>
+            <p className={`mt-1 inline-block rounded-md border bg-white/80 px-2 py-1 text-xs font-bold text-[#0b2240] ${overallKind === "waiting" ? "border-amber-200" : "border-slate-200"}`}>
+              {passengerRows.length === 1 && primaryWaitlist
+                ? `${primaryWaitlist.name}${primaryWaitlist.position != null ? ` · Position ${primaryWaitlist.position}` : ""}. Seat/berth not allotted yet.`
+                : currentPositionDetail}
+            </p>
           </div>
-          <p className={`mt-2.5 border-t pt-2 text-[11px] text-slate-600 ${bookingPanelDivider}`}>
+          <p className={`mt-2 border-t pt-2 text-[11px] text-slate-600 ${bookingPanelDivider}`}>
             {overallKind === "confirmed"
               ? "Seat/berth reservation is confirmed."
               : overallKind === "rac"
                 ? "RAC allows boarding with a shared berth; may upgrade."
                 : overallKind === "waiting"
                   ? "Waitlisted ticket; check status before chart preparation."
-                  : "Live status reported by the railway provider."}
+                  : overallKind === "unavailable"
+                    ? "The railway provider has not supplied a recognised current status. Refresh your PNR to try again."
+                    : "Live status reported by the railway provider."}
           </p>
         </article>
 
         {/* Panel B: Ticket Confirmation Prediction */}
         <article
           aria-label="Ticket confirmation prediction"
-          className={`flex flex-col justify-between rounded-xl p-3.5 ${predictionPanelSurface}`}
+          className={`flex flex-col justify-between rounded-xl p-3 ${predictionPanelSurface}`}
         >
           <div>
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600">
+              <span className="rounded bg-white/80 px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-[#0b2240]">
                 Confirmation prediction
               </span>
               {isAllCancelled ? null : predictionLoading ? (
@@ -1271,13 +1289,13 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
 
             {isAllCancelled ? (
               <div className="mt-2">
-                <p className="text-base font-extrabold text-[#0b2240] sm:text-lg">Not Applicable</p>
+                <p className="text-base font-extrabold text-[#0b2240]">Not Applicable</p>
                 <p className="mt-1 text-xs text-slate-700">
                   Confirmation prediction is not applicable to cancelled tickets.
                 </p>
               </div>
             ) : predictionLoading ? (
-              <div className="mt-2.5 space-y-2" aria-live="polite">
+              <div className="mt-2 space-y-2" aria-live="polite">
                 <div className="h-5 w-44 animate-pulse rounded bg-slate-200" />
                 <div className="h-3.5 w-full animate-pulse rounded bg-slate-100" />
               </div>
@@ -1288,7 +1306,7 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
             ) : predictionResult ? (
               <div className="mt-2" aria-live="polite">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <p className="text-base font-extrabold text-[#0b2240] sm:text-lg">{classifiedPred.headline}</p>
+                  <p className="text-base font-extrabold text-[#0b2240]">{classifiedPred.headline}</p>
                   {parsedProb && (
                     <span className={` rounded-md border px-2 py-0.5 text-xs font-extrabold ${classifiedPred.badgeClass}`}>
                       Estimated probability: {parsedProb.formatted}
@@ -1314,7 +1332,7 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
               </div>
             ) : overallKind === "confirmed" && !eligibleForPrediction ? (
               <div className="mt-2">
-                <p className="text-base font-extrabold text-[#0b2240] sm:text-lg">Already Confirmed</p>
+                <p className="text-base font-extrabold text-[#0b2240]">Already Confirmed</p>
                 <p className="mt-1 text-xs text-slate-700">
                   Your booking is confirmed. Waitlist confirmation prediction is only needed for RAC or WL tickets.
                 </p>
@@ -1331,11 +1349,11 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
             )}
           </div>
 
-          <div className={`mt-2.5 flex flex-wrap items-center justify-between gap-2 border-t pt-2 ${predictionPanelDivider}`}>
+          <div className={`mt-2 flex flex-wrap items-center justify-between gap-2 border-t pt-2 ${predictionPanelDivider}`}>
             <span className="text-[11px] font-medium text-slate-600">
-              Estimate only · Not a guarantee
+              {eligibleForPrediction ? "Estimate only · Not a guarantee" : overallKind === "confirmed" ? "Confirmed · Prediction not needed" : "Prediction not applicable"}
             </span>
-            {!isAllCancelled && (
+            {eligibleForPrediction && (
               <button
                 type="button"
                 onClick={fetchPredictionData}
@@ -1352,11 +1370,11 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
         {/* Panel C: Chart Preparation */}
         <article
           aria-label="Chart preparation status"
-          className={`flex flex-col justify-between rounded-xl p-3.5 ${chartPanelSurface}`}
+          className={`flex flex-col justify-between rounded-xl p-3 ${chartPanelSurface}`}
         >
           <div>
             <div className="flex items-center justify-between gap-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-600">
+              <span className="rounded bg-white/80 px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-[#0b2240]">
                 Chart preparation
               </span>
               <span
@@ -1366,7 +1384,7 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
                 {chartBadgeLabel}
               </span>
             </div>
-            <p className="mt-2 text-base font-extrabold text-[#0b2240] sm:text-lg">
+            <p className="mt-2 text-base font-extrabold text-[#0b2240]">
               {chartState === "prepared"
                 ? "Reservation Chart Prepared"
                 : chartState === "not_prepared"
@@ -1385,15 +1403,15 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
                   : "Provider did not confirm whether the reservation chart is prepared."}
             </p>
           </div>
-          <p className={`mt-2.5 border-t pt-2 text-[11px] text-slate-600 ${chartPanelDivider}`}>
+          <p className={`mt-2 border-t pt-2 text-[11px] text-slate-600 ${chartPanelDivider}`}>
             First chart is typically prepared ~4 hours before departure.
           </p>
         </article>
       </div>
 
       {/* 3. COMPACT PASSENGER STATUS TABLE & EXPANDABLE PREDICTION DETAILS */}
-      <div className="px-4 py-3.5 sm:px-5">
-        <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
+      <div className="px-3 py-2.5 sm:px-4">
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
           <h3 id="pnr-passenger-title" className="text-sm font-extrabold text-[#0b2240] sm:text-base">
             Passenger status
           </h3>
@@ -1410,19 +1428,19 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
             >
               <thead className="border-b border-slate-300 bg-slate-100/70 text-xs font-bold text-slate-700">
                 <tr>
-                  <th scope="col" className="px-3.5 py-2.5">
+                  <th scope="col" className="px-3 py-2">
                     Passenger
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5">
+                  <th scope="col" className="px-3 py-2">
                     Booking status
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5">
+                  <th scope="col" className="px-3 py-2">
                     Current status
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5">
+                  <th scope="col" className="px-3 py-2">
                     Coach / Berth
                   </th>
-                  <th scope="col" className="px-3.5 py-2.5">
+                  <th scope="col" className="px-3 py-2">
                     Status
                   </th>
                 </tr>
@@ -1430,23 +1448,27 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
               <tbody className="divide-y divide-slate-200 bg-white">
                 {passengerRows.map((passenger) => (
                   <tr key={passenger.id} className="align-middle hover:bg-slate-50/60">
-                    <th scope="row" className="whitespace-nowrap px-3.5 py-2.5 font-bold text-[#0b2240]">
+                    <th scope="row" className="whitespace-nowrap px-3 py-2 font-bold text-[#0b2240]">
                       Passenger {passenger.serial}
                     </th>
-                    <td className="whitespace-nowrap px-3.5 py-2.5 font-mono text-xs font-medium text-slate-700">
+                    <td className="whitespace-nowrap px-3 py-2 font-mono text-xs font-medium text-slate-700">
                       {passenger.booking}
                     </td>
                     <td
-                      className={`whitespace-nowrap px-3.5 py-2.5 font-mono text-xs font-bold ${
+                      className={`whitespace-nowrap px-3 py-2 font-mono text-xs font-bold ${
                         isCancelledStatus(passenger.current) ? "text-rose-800" : "text-slate-900"
                       }`}
                     >
-                      {passenger.current}
+                      <span className={`inline-flex rounded-md border px-2 py-1 ${getPnrStatusTone(passenger.current)}`}>
+                        {passenger.current}
+                      </span>
                     </td>
-                    <td className="whitespace-nowrap px-3.5 py-2.5 text-xs font-medium text-slate-700">
-                      {passenger.coachBerthLabel}
+                    <td className="whitespace-nowrap px-3 py-2 text-xs font-medium text-slate-700">
+                      <span className="inline-flex rounded-md border border-orange-200 bg-orange-50 px-2 py-1 font-bold text-[#0b2240]">
+                        {passenger.coachBerthLabel}
+                      </span>
                     </td>
-                    <td className="whitespace-nowrap px-3.5 py-2.5">
+                    <td className="whitespace-nowrap px-3 py-2">
                       <PassengerConfirmation status={passenger.current} />
                     </td>
                   </tr>
@@ -1543,7 +1565,6 @@ function PnrStatusPageView({
   const [resultPnr, setResultPnr] = useState("");
   const [retryCount, setRetryCount] = useState(0);
   const requestSequence = useRef(0);
-  const legacyLookupId = useRef<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -1553,20 +1574,9 @@ function PnrStatusPageView({
       return () => {
         active = false;
       };
-    if (lookupId && urlPnr !== null) {
-      router.replace(lookupUrl(pathname, searchString, lookupId), { scroll: false });
-      return () => {
-        active = false;
-      };
-    }
-    if (!lookupId && urlPnr !== null) {
-      if (!legacyLookupId.current) legacyLookupId.current = savePnrToSession(urlPnr);
-      if (legacyLookupId.current) {
-        router.replace(lookupUrl(pathname, searchString, legacyLookupId.current), { scroll: false });
-        return () => {
-          active = false;
-        };
-      }
+    if (lookupId && /^\d{10}$/.test(initialPnr)) {
+      router.replace(lookupUrl(pathname, searchString, null, initialPnr), { scroll: false });
+      return () => { active = false; };
     }
 
     if (!/^\d{10}$/.test(initialPnr))
@@ -1607,9 +1617,8 @@ function PnrStatusPageView({
     setResult(null);
     setResultPnr("");
     setLoading(true);
-    const newLookupId = savePnrToSession(pnr);
-    router.push(lookupUrl(pathname, searchString, newLookupId, newLookupId ? undefined : pnr), { scroll: false });
-    if (!newLookupId) setRetryCount((count) => count + 1);
+    router.push(lookupUrl(pathname, searchString, null, pnr), { scroll: false });
+    if (urlPnr === pnr && !lookupId) setRetryCount((count) => count + 1);
   }
 
   function retryLookup() {
@@ -1623,12 +1632,12 @@ function PnrStatusPageView({
   }
 
   const pnrBody = (
-    <div className="pnr-page-container">
+    <div className="pnr-page-container pnr-page-theme">
       {/* 1. COMPACT PNR SEARCH SECTION */}
       <section
         aria-label={embedded ? "PNR Lookup Form" : undefined}
         aria-labelledby={embedded ? undefined : "pnr-search-title"}
-        className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5"
+        className="rounded-2xl border border-orange-200 bg-white p-4 shadow-[0_3px_16px_rgba(15,39,71,0.06)] ring-1 ring-orange-100/60 transition-shadow focus-within:border-orange-300 focus-within:ring-orange-200/70 sm:p-5"
       >
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
           {/* Title & Compact Help Trigger (Standalone page only) */}
@@ -1668,6 +1677,9 @@ function PnrStatusPageView({
               </label>
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                 <div className="relative min-w-0 flex-1">
+                  <div className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-orange-500">
+                    <Ticket aria-hidden="true" className="h-5 w-5" />
+                  </div>
                   <input
                     id="pnr-number"
                     inputMode="numeric"
@@ -1682,11 +1694,17 @@ function PnrStatusPageView({
                     }}
                     placeholder="Enter 10-digit PNR (e.g. 4335734389)"
                     aria-describedby="pnr-hint pnr-message"
-                    className="h-11 w-full rounded-lg border border-slate-200 bg-white pl-3.5 pr-14 text-base font-semibold tracking-[0.1em] text-[#0b2240] outline-none transition placeholder:text-sm placeholder:font-normal placeholder:tracking-normal focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
+                    className="h-12 w-full rounded-xl border-2 border-orange-300/80 bg-[#FFFDF9] pl-11 pr-16 text-base font-bold tracking-[0.08em] text-[#0b2240] shadow-[0_2px_8px_rgba(249,115,22,0.06)] outline-none transition duration-150 placeholder:text-sm placeholder:font-normal placeholder:tracking-normal placeholder:text-slate-400 hover:border-orange-400 hover:bg-white focus:border-orange-500 focus:bg-white focus:ring-4 focus:ring-orange-100"
                   />
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[11px] font-semibold tabular-nums text-slate-400"
+                    className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 rounded-md px-1.5 py-0.5 text-[11px] font-bold tabular-nums transition-colors ${
+                      pnr.length === 10
+                        ? "border border-emerald-300 bg-emerald-100 text-emerald-800"
+                        : pnr.length > 0
+                          ? "border border-orange-200 bg-orange-100 text-orange-800"
+                          : "border border-slate-200 bg-slate-100 text-slate-500"
+                    }`}
                   >
                     {pnr.length}/10
                   </span>
@@ -1694,7 +1712,7 @@ function PnrStatusPageView({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-orange-600 px-5 text-sm font-bold text-white shadow-sm transition hover:bg-orange-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 disabled:cursor-wait disabled:opacity-70"
+                  className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 text-sm font-bold text-white shadow-sm transition hover:bg-orange-700 hover:shadow-md active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 disabled:cursor-wait disabled:opacity-70"
                 >
                   <Search aria-hidden="true" className={`h-4 w-4 ${loading ? "animate-pulse" : ""}`} />
                   {loading ? "Checking…" : "Check PNR"}
@@ -1738,15 +1756,7 @@ function PnrStatusPageView({
                       className="h-3 w-3 transition-transform group-open:rotate-180"
                     />
                   </summary>
-                  <div className="mt-2 rounded-xl border border-orange-100 bg-[#fffaf5] p-3 text-xs leading-relaxed text-slate-600 shadow-md lg:absolute lg:right-0 lg:z-30 lg:mt-1.5 lg:w-80">
-                    <p className="font-bold text-[#0b2240]">Where to find your 10-digit PNR</p>
-                    <p className="mt-1">
-                      Printed at the top-left of a railway counter ticket or shown in your IRCTC e-ticket and booking SMS.
-                    </p>
-                    <p className="mt-2 border-t border-orange-200/60 pt-1.5 text-[11px] text-slate-500">
-                      <strong className="font-semibold text-[#0b2240]">Privacy:</strong> Your PNR is sent to the configured railway status provider for this lookup. Avoid using a shared or public device.
-                    </p>
-                  </div>
+                  <p className="mt-1.5 text-[11px] leading-relaxed text-slate-600">Find your 10-digit PNR on your ticket, booking SMS, email or app booking details.</p>
                 </details>
               </div>
 
@@ -1801,7 +1811,7 @@ function PnrStatusPageView({
 
         <div className="mt-5 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8">
           {statusTypes.map((status) => (
-            <div key={status.code} className="min-w-0">
+            <div key={status.code} className={`pnr-guide-item min-w-0 rounded-xl border p-3 ${getPnrStatusTone(status.code)}`}>
               <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                 <span className="text-[14px] font-semibold text-[#0b2240]">
                   {status.code}
@@ -1872,7 +1882,10 @@ function PnrStatusPageView({
   return (
     <div className="flex min-h-screen flex-col bg-[#F8FAFC] text-slate-900">
       <Header />
-      <main className="flex-1 px-4 py-4 sm:py-5">{pnrBody}</main>
+      <main className="flex-1 px-4 py-4 sm:py-5">
+        <AllToolsLink />
+        {pnrBody}
+      </main>
       <Footer />
     </div>
   );
@@ -1886,14 +1899,13 @@ export function PnrStatusTool({ embedded = false }: { embedded?: boolean } = {})
   const urlPnr = searchParams.get("pnr");
   const lookupId = searchParams.get("lookup");
   const hasUrlLookup = searchParams.has("pnr") || searchParams.has("lookup");
-  const initialPnr =
-    lookupId && typeof window !== "undefined"
-      ? readPnrFromSession(lookupId) ?? ""
-      : urlPnr ?? "";
+  const initialPnr = urlPnr ?? (
+    lookupId && typeof window !== "undefined" ? readPnrFromSession(lookupId) ?? "" : ""
+  );
   const initialError =
-    lookupId && typeof window !== "undefined" && !initialPnr
+    urlPnr === null && lookupId && typeof window !== "undefined" && !initialPnr
       ? "This private lookup is no longer available in this browser session. Enter your PNR to check again."
-      : urlPnr !== null && !/^\d{10}$/.test(urlPnr) && !lookupId
+      : urlPnr !== null && !/^\d{10}$/.test(urlPnr)
         ? "Enter a valid 10-digit PNR number."
         : "";
   const queryIdentity = lookupId ? `lookup:${lookupId}` : urlPnr !== null ? `pnr:${urlPnr}` : "empty";
@@ -1924,6 +1936,7 @@ function PnrStatusPageFallback() {
     <div className="flex min-h-screen flex-col bg-[#F8FAFC] text-slate-900">
       <Header />
       <main className="flex-1 px-4 py-4 sm:py-5">
+        <AllToolsLink />
         <div className="pnr-page-container">
           <div
             aria-hidden="true"

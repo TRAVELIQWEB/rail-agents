@@ -43,7 +43,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="mt-5 bg-[var(--navy)] text-white">
+    <footer className="mt-5 bg-[linear-gradient(135deg,#153350_0%,#102b4e_45%,#0c2038_100%)] text-white">
       <div className="site-container py-6 sm:py-8 wide:py-10">
         <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-[1.35fr_0.8fr_1.1fr_1.2fr] lg:gap-9 wide:gap-14">
           <div className="flex flex-col items-center text-center md:items-start md:text-left">

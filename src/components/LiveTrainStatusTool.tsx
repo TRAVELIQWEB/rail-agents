@@ -1,5 +1,7 @@
 "use client";
 
+import { AllToolsLink } from "@/components/tools/AllToolsLink";
+import { hasReportedLivePosition, isEstimatedTracking, reportedDelayMinutes } from "@/lib/train-timing";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -87,7 +89,7 @@ function formatLiveTime(value: unknown): string {
 
 function getDelayBadge(value: unknown) {
   if ((typeof value !== "string" && typeof value !== "number") || String(value).trim() === "" || !Number.isFinite(Number(value))) {
-    return { label: "On Time", classes: "bg-emerald-50 text-emerald-700 border-emerald-200" };
+    return { label: "Delay unavailable", classes: "bg-slate-50 text-slate-600 border-slate-200" };
   }
   const minutes = Number(value);
   if (minutes > 0) return { label: `Late by ${minutes}m`, classes: "bg-rose-50 text-rose-700 border-rose-200" };
@@ -312,15 +314,19 @@ function MmtRouteTimeline({
   currentStationCode,
   journeyState,
   journeyDate,
+  observedDataAllowed,
+  livePosition,
 }: {
   route: RouteStopWithDay[];
   currentStationCode: string;
   journeyState: JourneyState;
   journeyDate: string;
+  observedDataAllowed: boolean;
+  livePosition: boolean;
 }) {
   if (route.length === 0) return null;
 
-  const canShowObservedEvents = journeyDate <= todayInIndia();
+  const canShowObservedEvents = observedDataAllowed && journeyDate <= todayInIndia();
   const normalizedCurrentCode = currentStationCode.trim().toUpperCase();
 
   const apiPositionIndex =
@@ -376,11 +382,18 @@ function MmtRouteTimeline({
 
           const arrivalDelayValue = pickValue(stop, ["delayArrival", "arrivalDelayMinutes", "arrivalDelay"]);
           const departureDelayValue = pickValue(stop, ["delayDeparture", "departureDelayMinutes", "departureDelay"]);
-          const delayBadge = getDelayBadge(departureDelayValue ?? arrivalDelayValue);
+          const estimatedArrival = !actualArrival && hasPredictedProvenance(stop) && hasValidTimeValue(reportedActualArrival)
+            ? reportedActualArrival : undefined;
+          const estimatedDeparture = !actualDeparture && hasPredictedProvenance(stop) && hasValidTimeValue(reportedActualDeparture)
+            ? reportedActualDeparture : undefined;
+          const arrivalDelay = reportedDelayMinutes(arrivalDelayValue, actualArrival ?? estimatedArrival, scheduledArrival);
+          const departureDelay = reportedDelayMinutes(departureDelayValue, actualDeparture ?? estimatedDeparture, scheduledDeparture);
+          const arrivalBadge = getDelayBadge(arrivalDelay);
+          const departureBadge = getDelayBadge(departureDelay);
 
           const hasStopEvent = canShowObservedEvents && hasConfirmedStationEvent(stop);
-          const isCurrent = journeyState === "RUNNING" && index === currentIndex;
-          const isPassed = journeyState === "COMPLETED" || (currentIndex >= 0 && index < currentIndex) || hasStopEvent;
+          const isCurrent = canShowObservedEvents && livePosition && journeyState === "RUNNING" && index === currentIndex;
+          const isPassed = canShowObservedEvents && (journeyState === "COMPLETED" || (currentIndex >= 0 && index < currentIndex) || hasStopEvent);
 
           // Halt duration and distance
           const halt = displayValue(pickValue(stop, ["haltTime", "halt", "haltMinutes", "haltDuration"]));
@@ -424,11 +437,20 @@ function MmtRouteTimeline({
                   ) : (
                     <>
                       <p className={`text-xs font-bold sm:text-sm ${isPassed ? "text-slate-900" : "text-slate-600"}`}>
-                        {actualArrival ? formatLiveTime(actualArrival) : scheduledArrival ? formatLiveTime(scheduledArrival) : "—"}
+                        {actualArrival ? formatLiveTime(actualArrival) : estimatedArrival ? formatLiveTime(estimatedArrival) : scheduledArrival ? formatLiveTime(scheduledArrival) : "—"}
                       </p>
-                      {actualArrival && scheduledArrival && actualArrival !== scheduledArrival && (
-                        <p className="text-[10px] text-slate-400 line-through">
-                          {formatLiveTime(scheduledArrival)}
+                      <p className="text-[10px] text-slate-500">{actualArrival ? "Actual" : estimatedArrival ? "Estimated" : "Scheduled"}</p>
+                      {actualArrival && typeof actualArrival === "string" && actualArrival.includes("T") && (
+                        <p className="text-[10px] text-slate-500">{formatLiveDate(actualArrival)}</p>
+                      )}
+                      {(actualArrival || estimatedArrival) && !!scheduledArrival && (
+                        <p className="text-[10px] text-slate-500">
+                          Sch. {formatLiveTime(scheduledArrival)}
+                        </p>
+                      )}
+                      {(actualArrival || estimatedArrival) && (
+                        <p className={`text-[10px] font-semibold ${arrivalBadge.classes.split(" ").filter(c => c.startsWith("text-")).join(" ")}`}>
+                          {estimatedArrival ? "Est. " : ""}{arrivalBadge.label}
                         </p>
                       )}
                     </>
@@ -444,16 +466,17 @@ function MmtRouteTimeline({
                         : isFinal
                           ? "top-0 bottom-1/2"
                           : "top-0 bottom-0"
-                      } ${isPassed ? "bg-emerald-500" : "bg-slate-200"}`}
+                      } ${isPassed ? livePosition ? "bg-emerald-500" : "bg-yellow-200" : "bg-slate-200"}`}
                   />
 
                   {/* Node or Train Indicator */}
                   {isCurrent ? (
-                    <div className="relative z-10 flex h-7 w-7 items-center justify-center rounded-full bg-orange-600 text-white shadow-md ring-4 ring-orange-100 animate-pulse">
-                      <TrainFront className="h-4 w-4" />
+                    <div className="relative z-10 flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-white shadow-md ring-4 ring-emerald-100">
+                      <span aria-hidden="true" className="absolute inset-0 rounded-full border-2 border-emerald-400 motion-safe:animate-ping" />
+                      <TrainFront aria-hidden="true" className="live-train-moving-icon relative h-4 w-4" />
                     </div>
                   ) : isPassed ? (
-                    <div className="relative z-10 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-white shadow-xs">
+                    <div className={`relative z-10 flex h-4 w-4 items-center justify-center rounded-full text-white shadow-xs ${livePosition ? "bg-emerald-500" : "bg-yellow-400"}`}>
                       <div className="h-1.5 w-1.5 rounded-full bg-white" />
                     </div>
                   ) : (
@@ -476,9 +499,9 @@ function MmtRouteTimeline({
                       </span>
                     )}
                     {isCurrent && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-orange-600 px-2 py-0.5 text-[10px] font-extrabold text-white">
-                        <span className="h-1.5 w-1.5 rounded-full bg-white animate-ping" />
-                        Current Location
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-600 px-2 py-0.5 text-[10px] font-extrabold text-white">
+                        <TrainFront aria-hidden="true" className="h-3 w-3 motion-safe:animate-pulse" />
+                        Reported Location
                       </span>
                     )}
                   </div>
@@ -498,17 +521,21 @@ function MmtRouteTimeline({
                   ) : (
                     <>
                       <p className={`text-xs font-bold sm:text-sm ${isPassed ? "text-slate-900" : "text-slate-600"}`}>
-                        {actualDeparture ? formatLiveTime(actualDeparture) : scheduledDeparture ? formatLiveTime(scheduledDeparture) : "—"}
+                        {actualDeparture ? formatLiveTime(actualDeparture) : estimatedDeparture ? formatLiveTime(estimatedDeparture) : scheduledDeparture ? formatLiveTime(scheduledDeparture) : "—"}
                       </p>
-                      {actualDeparture && scheduledDeparture && actualDeparture !== scheduledDeparture && (
-                        <p className="text-[10px] text-slate-400 line-through">
-                          {formatLiveTime(scheduledDeparture)}
+                      <p className="text-[10px] text-slate-500">{actualDeparture ? "Actual" : estimatedDeparture ? "Estimated" : "Scheduled"}</p>
+                      {actualDeparture && typeof actualDeparture === "string" && actualDeparture.includes("T") && (
+                        <p className="text-[10px] text-slate-500">{formatLiveDate(actualDeparture)}</p>
+                      )}
+                      {(actualDeparture || estimatedDeparture) && !!scheduledDeparture && (
+                        <p className="text-[10px] text-slate-500">
+                          Sch. {formatLiveTime(scheduledDeparture)}
                         </p>
                       )}
-                      {isPassed && delayBadge.label !== "On Time" && (
-                        <span className={`mt-0.5 inline-block text-[10px] font-bold ${delayBadge.classes.replace(/border[^\s]*/, "")}`}>
-                          {delayBadge.label}
-                        </span>
+                      {(actualDeparture || estimatedDeparture) && (
+                        <p className={`text-[10px] font-semibold ${departureBadge.classes.split(" ").filter(c => c.startsWith("text-")).join(" ")}`}>
+                          {estimatedDeparture ? "Est. " : ""}{departureBadge.label}
+                        </p>
                       )}
                     </>
                   )}
@@ -752,11 +779,9 @@ function MmtTrainSideCard({
 function LiveTrainStatusResult({
   trainNumber,
   journeyDate,
-  onDateChange,
 }: {
   trainNumber: string;
   journeyDate: string;
-  onDateChange: (newDate: string) => void;
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -828,13 +853,26 @@ function LiveTrainStatusResult({
     (currentLocation && pickValue(currentLocation, ["delayMinutes"])) ??
     (record && pickValue(record, ["delayMinutes", "delay"]))
   );
-  const lastUpdated = displayValue(record && pickValue(record, ["lastUpdatedAt", "updatedAt", "generatedAt"]));
+  const providerMeta = outer ? asRecord(outer.meta) : null;
+  const lastUpdated = displayValue((record && pickValue(record, ["lastUpdatedAt", "updatedAt", "generatedAt"]))
+    ?? (providerMeta && pickValue(providerMeta, ["timestamp"])));
   const journeyState = record ? getJourneyState(record, rawRouteStops, journeyDate) : "UNKNOWN";
+  const estimatedTracking = isEstimatedTracking(record);
+  const livePosition = hasReportedLivePosition(record, journeyState === "RUNNING");
+  const completedJourney = journeyState === "COMPLETED" && !isEstimatedTracking({ ...record, isLive: true });
+
+  useEffect(() => {
+    if (!livePosition) return;
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === "visible") void checkStatus(true);
+    }, 60_000);
+    return () => window.clearInterval(timer);
+  }, [livePosition, checkStatus]);
   const trainName = displayValue(
     (trainInfo && pickValue(trainInfo, ["name", "trainName"])) ??
     (record && pickValue(record, ["trainName", "name"]))
   );
-  const delayBadge = getDelayBadge(delayMinutes === "—" ? undefined : delayMinutes);
+  const delayBadge = getDelayBadge(estimatedTracking || journeyState === "NOT_STARTED" || delayMinutes === "—" ? undefined : delayMinutes);
 
   // Side card data metrics
   const firstStop = routeStops[0];
@@ -854,27 +892,36 @@ function LiveTrainStatusResult({
 
   const classesList = ["1A", "2A", "3A", "SL", "GEN"];
 
-  const yesterdayStr = getRelativeDate(-1);
-  const todayStr = todayInIndia();
-  const tomorrowStr = getRelativeDate(1);
 
   return (
-    <div className="mt-6 space-y-5">
+    <div className="live-status-result mt-4 space-y-4" data-loaded={liveResult !== null}>
       {/* ══ MMT-STYLE TOP SUMMARY HEADER CARD (White and Orange Theme) ══ */}
       <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
         {/* Top Header Strip */}
-        <div className="border-b border-orange-100 bg-[#fffaf5] p-4 sm:p-5">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className={`border-b px-3 py-2 sm:px-4 ${livePosition ? "border-emerald-100 bg-emerald-50/60" : completedJourney ? "border-yellow-200 bg-yellow-50" : "border-orange-100 bg-[#fffaf5]"}`}>
+          <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
               <div className="flex items-center gap-2">
-                <span className="rounded-md bg-orange-500 px-2.5 py-0.5 text-xs font-[900] text-white tracking-wider">
+                <span className={`rounded-md px-2.5 py-0.5 text-xs font-[900] tracking-wider ${livePosition ? "bg-emerald-600 text-white" : completedJourney ? "bg-yellow-100 text-yellow-900" : "bg-orange-500 text-white"}`}>
                   {trainNumber}
                 </span>
-                <h3 className="text-base font-[900] tracking-tight sm:text-lg text-[var(--navy)]">
+                <h3 className="text-base font-[900] tracking-tight text-[var(--navy)]">
                   {trainName !== "—" ? trainName : `Train ${trainNumber}`}
                 </h3>
+                {livePosition && (
+                  <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-1 text-[10px] font-bold text-emerald-800">
+                    <TrainFront aria-hidden="true" className="h-3.5 w-3.5 motion-safe:animate-pulse" />
+                    Running
+                  </span>
+                )}
+                {completedJourney && (
+                  <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-yellow-200 bg-yellow-100 px-2 py-0.5 text-[10px] font-bold text-yellow-900">
+                    <TrainFront aria-hidden="true" className="h-3.5 w-3.5" />
+                    Reached destination
+                  </span>
+                )}
               </div>
-              <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-600 font-semibold">
+              <p className="mt-0.5 flex items-center gap-1.5 text-xs text-slate-600 font-semibold">
                 <span>{sourceName !== "—" ? sourceName : "Origin"}</span>
                 <ArrowRight className="h-3 w-3 text-orange-500" />
                 <span>{destinationName !== "—" ? destinationName : "Destination"}</span>
@@ -897,30 +944,13 @@ function LiveTrainStatusResult({
         </div>
 
         {/* Date Selector Tabs (Yesterday / Today / Tomorrow) */}
-        <div className="flex border-b border-slate-100 bg-white px-4 py-2 sm:px-5">
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mr-1">Journey:</span>
-            {[yesterdayStr, todayStr, tomorrowStr].map((dStr) => {
-              const isActive = journeyDate === dStr;
-              return (
-                <button
-                  key={dStr}
-                  type="button"
-                  onClick={() => onDateChange(dStr)}
-                  className={`rounded-lg px-3 py-1 text-xs font-bold transition-all ${isActive
-                      ? "bg-orange-500 text-white shadow-xs"
-                      : "bg-[#fffdfa] text-slate-600 hover:bg-orange-50 border border-slate-200"
-                    }`}
-                >
-                  {formatDateTabLabel(dStr)}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
+        {liveResult !== null && estimatedTracking && (
+          <p role="status" className="border-b border-amber-100 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-900 sm:px-4">
+            The provider is returning estimated or simulated tracking. Actual station times and live delay are unavailable; estimated times below are not confirmed arrivals or departures.
+          </p>
+        )}
         {/* Live Status Highlight Banner */}
-        <div className="p-4 sm:p-5">
+        <div className="px-3 py-2 sm:px-4">
           {loading ? (
             <div className="flex items-center gap-3 py-4 text-slate-600">
               <span className="h-4 w-4 animate-spin rounded-full border-2 border-orange-500 border-t-transparent" />
@@ -931,16 +961,16 @@ function LiveTrainStatusResult({
               {error}
             </div>
           ) : liveResult !== null ? (
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 items-center">
+            <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 items-start [&>div]:min-w-0">
               {/* Metric 1: Operational Status */}
-              <div className="rounded-xl border border-slate-100 bg-[#fffaf5] p-3">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Current Status</span>
-                <div className="mt-1 flex items-center gap-2">
+              <div className="rounded-xl border border-slate-100 bg-[#fffaf5] px-2.5 py-1.5">
+                <span className="block text-[10px] font-bold uppercase leading-4 tracking-wider text-slate-400">Current Status</span>
+                <div className="mt-0.5 flex flex-wrap items-center gap-2">
                   <span className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-extrabold ${delayBadge.classes}`}>
-                    {String(delayBadge.label)}
+                    {journeyState === "NOT_STARTED" ? "Not started" : String(delayBadge.label)}
                   </span>
-                  <span className="text-xs font-bold text-slate-700 capitalize">
-                    {journeyState === "RUNNING"
+                  <span className={`text-xs font-bold capitalize ${livePosition ? "text-emerald-700" : completedJourney ? "text-yellow-800" : "text-slate-700"}`}>
+                    {completedJourney ? "Reached destination" : estimatedTracking ? "Estimated position" : journeyState === "RUNNING"
                       ? "Running on route"
                       : journeyState === "NOT_STARTED"
                         ? "Yet to start"
@@ -952,9 +982,9 @@ function LiveTrainStatusResult({
               </div>
 
               {/* Metric 2: Live Location */}
-              <div className="rounded-xl border border-slate-100 bg-[#fffaf5] p-3">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Last Reported Location</span>
-                <p className="mt-1 truncate text-xs font-extrabold text-[var(--navy)]">
+              <div className="rounded-xl border border-slate-100 bg-[#fffaf5] px-2.5 py-1.5">
+                <span className="block text-[10px] font-bold uppercase leading-4 tracking-wider text-slate-400">{estimatedTracking ? "Estimated Location" : "Last Reported Location"}</span>
+                <p className="mt-0.5 truncate text-xs font-extrabold text-[var(--navy)]">
                   {currentStationName !== "—" ? currentStationName : currentStationCode !== "—" ? currentStationCode : "Station En Route"}
                 </p>
                 {currentSpeed !== "—" && (
@@ -963,17 +993,17 @@ function LiveTrainStatusResult({
               </div>
 
               {/* Metric 3: Journey Date */}
-              <div className="rounded-xl border border-slate-100 bg-[#fffaf5] p-3">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Scheduled Date</span>
-                <p className="mt-1 text-xs font-extrabold text-[var(--navy)]">
+              <div className="rounded-xl border border-slate-100 bg-[#fffaf5] px-2.5 py-1.5">
+                <span className="block text-[10px] font-bold uppercase leading-4 tracking-wider text-slate-400">Scheduled Date</span>
+                <p className="mt-0.5 text-xs font-extrabold text-[var(--navy)]">
                   {formatLiveDate(journeyDate)}
                 </p>
               </div>
 
               {/* Metric 4: Last Updated Time */}
-              <div className="rounded-xl border border-slate-100 bg-[#fffaf5] p-3">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Data Updated</span>
-                <p className="mt-1 text-xs font-semibold text-slate-600">
+              <div className="rounded-xl border border-slate-100 bg-[#fffaf5] px-2.5 py-1.5">
+                <span className="block text-[10px] font-bold uppercase leading-4 tracking-wider text-slate-400">Data Updated</span>
+                <p className="mt-0.5 text-xs font-semibold text-slate-600">
                   {lastUpdated !== "—" ? formatLiveDateTime(lastUpdated) : "Just now"}
                 </p>
               </div>
@@ -1002,6 +1032,8 @@ function LiveTrainStatusResult({
               currentStationCode={currentStationCode}
               journeyState={journeyState}
               journeyDate={journeyDate}
+              observedDataAllowed={!estimatedTracking}
+              livePosition={livePosition}
             />
           </div>
 
@@ -1085,8 +1117,24 @@ function LiveTrainStatusSearch({
   // Autocomplete Suggestions
   const [trainSuggestions, setTrainSuggestions] = useState<Array<{ trainNumber: string; trainName: string }>>([]);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement | null>(null);
+  const resultsRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (embedded || !lookup) return;
+    const frame = requestAnimationFrame(() => {
+      const results = resultsRef.current;
+      if (results && results.getBoundingClientRect().top > window.innerHeight * 0.35) {
+        results.scrollIntoView({
+          block: "start",
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+        });
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [embedded, lookup]);
 
   // Close autocomplete on click outside
   useEffect(() => {
@@ -1104,25 +1152,35 @@ function LiveTrainStatusSearch({
     if (!dropdownOpen) return;
     const cleanQ = trainQuery.trim();
     if (cleanQ.length === 0) return;
+    let active = true;
+    const controller = new AbortController();
 
     const timer = setTimeout(async () => {
       setSearchLoading(true);
       try {
-        const res = await fetch(`/api/trains?q=${encodeURIComponent(cleanQ)}&limit=8`, { cache: "no-store" });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && Array.isArray(data.trains)) {
-            setTrainSuggestions(data.trains);
-          }
+        const res = await fetch(`/api/trains?q=${encodeURIComponent(cleanQ)}&limit=8`, { cache: "no-store", signal: controller.signal });
+        if (!res.ok) throw new Error("Train search is unavailable");
+        const data = await res.json();
+        if (data.success !== true || !Array.isArray(data.trains)) throw new Error("Invalid train search response");
+        if (active) {
+          setTrainSuggestions(data.trains);
+          setSearchError("");
         }
       } catch {
-        // Autocomplete error fallback
+        if (active) {
+          setTrainSuggestions([]);
+          setSearchError("Train search is not available. Enter the train number and try Check Status.");
+        }
       } finally {
-        setSearchLoading(false);
+        if (active) setSearchLoading(false);
       }
     }, 180);
 
-    return () => clearTimeout(timer);
+    return () => {
+      active = false;
+      controller.abort();
+      clearTimeout(timer);
+    };
   }, [trainQuery, dropdownOpen]);
 
   function submitLookup(event?: FormEvent<HTMLFormElement>, overrideTrain?: string, overrideDate?: string) {
@@ -1159,13 +1217,13 @@ function LiveTrainStatusSearch({
       className={
         embedded
           ? "relative rounded-xl border border-slate-200 bg-white p-4 shadow-xs sm:p-5 text-left"
-          : "relative mx-auto mt-5 rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-lg max-w-2xl text-left"
+          : "relative w-full rounded-2xl border border-slate-200/90 bg-white p-3 sm:p-3.5 shadow-sm text-left"
       }
     >
-      <form onSubmit={(e) => submitLookup(e)} className="grid gap-3 sm:grid-cols-[1fr_170px_auto] items-end">
+      <form onSubmit={(e) => submitLookup(e)} className="grid grid-cols-1 gap-2 min-[380px]:grid-cols-2 sm:grid-cols-[minmax(0,1fr)_160px_auto] items-end">
         {/* Train Input with Autocomplete */}
-        <div className="relative">
-          <label htmlFor="live-train-search-input" className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+        <div className="relative min-w-0 min-[380px]:col-span-2 sm:col-span-1">
+          <label htmlFor="live-train-search-input" className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
             Train Name or Number
           </label>
           <div className="relative flex items-center">
@@ -1178,25 +1236,25 @@ function LiveTrainStatusSearch({
               onChange={(e) => {
                 const val = e.target.value;
                 setTrainQuery(val);
-                if (!val.trim()) {
-                  setTrainSuggestions([]);
-                }
+                setTrainSuggestions([]);
+                setSearchError("");
                 setDropdownOpen(true);
               }}
               onFocus={() => setDropdownOpen(true)}
               placeholder="e.g. 19712 or Jaipur Exp"
-              className="h-11 w-full rounded-xl border border-slate-200 bg-[#fffdfa] pl-10 pr-3 text-sm font-semibold text-[var(--navy)] outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100 placeholder:text-slate-400"
+              className="h-10 w-full rounded-xl border border-slate-200 bg-[#fffdfa] pl-10 pr-3 text-sm font-semibold text-[var(--navy)] outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100 placeholder:text-slate-400"
             />
           </div>
 
           {/* Autocomplete Dropdown */}
-          {dropdownOpen && (trainSuggestions.length > 0 || searchLoading) && (
+          {dropdownOpen && (trainSuggestions.length > 0 || searchLoading || searchError) && (
             <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-60 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-xl">
               {searchLoading && (
                 <div className="p-3 text-center text-xs text-slate-500">
                   Searching trains...
                 </div>
               )}
+              {searchError && <p role="status" className="p-3 text-xs leading-relaxed text-rose-800">{searchError}</p>}
               {trainSuggestions.map((item) => (
                 <button
                   key={item.trainNumber}
@@ -1224,7 +1282,7 @@ function LiveTrainStatusSearch({
 
         {/* Journey Date */}
         <div>
-          <label htmlFor="live-train-journey-date" className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+          <label htmlFor="live-train-journey-date" className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
             Journey Date
           </label>
           <div className="relative flex items-center">
@@ -1234,7 +1292,7 @@ function LiveTrainStatusSearch({
               type="date"
               value={journeyDate}
               onChange={(e) => setJourneyDate(e.target.value)}
-              className="h-11 w-full rounded-xl border border-slate-200 bg-[#fffdfa] pl-10 pr-2 text-xs font-semibold text-[var(--navy)] outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
+              className="h-10 w-full rounded-xl border border-slate-200 bg-[#fffdfa] pl-10 pr-2 text-xs font-semibold text-[var(--navy)] outline-none transition focus:border-orange-500 focus:ring-4 focus:ring-orange-100"
             />
           </div>
         </div>
@@ -1242,11 +1300,32 @@ function LiveTrainStatusSearch({
         {/* Search Button */}
         <button
           type="submit"
-          className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 text-sm font-bold text-white shadow-xs transition hover:bg-[#ea580c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] cursor-pointer"
+          className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-4 text-sm font-bold text-white shadow-xs transition hover:bg-[#ea580c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] cursor-pointer"
         >
           <Search className="h-4 w-4" />
           <span>Check Status</span>
         </button>
+        {lookup && <div aria-label="Quick journey dates" className="flex flex-wrap items-center gap-1.5 min-[380px]:col-span-2 sm:col-span-3">
+          {[-1, 0, 1].map((offset) => {
+            const date = getRelativeDate(offset);
+            const active = (journeyDate || todayInIndia()) === date;
+            return (
+              <button
+                key={date}
+                type="button"
+                aria-pressed={active}
+                onClick={() => {
+                  setJourneyDate(date);
+                  setDropdownOpen(false);
+                  if (trainQuery.trim()) submitLookup(undefined, undefined, date);
+                }}
+                className={`rounded-md border px-2.5 py-1 text-[11px] font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 ${active ? "border-orange-200 bg-orange-50 text-orange-800" : "border-slate-200 bg-white text-slate-600 hover:bg-orange-50"}`}
+              >
+                {formatDateTabLabel(date)}
+              </button>
+            );
+          })}
+        </div>}
       </form>
 
       {validationError && (
@@ -1268,10 +1347,6 @@ function LiveTrainStatusSearch({
               key={`${lookup.trainNumber}-${lookup.journeyDate}`}
               trainNumber={lookup.trainNumber}
               journeyDate={lookup.journeyDate}
-              onDateChange={(newDate) => {
-                setJourneyDate(newDate);
-                submitLookup(undefined, lookup.trainNumber, newDate);
-              }}
             />
           </div>
         ) : (
@@ -1312,25 +1387,28 @@ function LiveTrainStatusSearch({
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#fffdfa]">
+    <div className="live-status-page flex min-h-screen flex-col bg-[#fffdfa]">
       <Header />
 
       <main className="flex-1 pb-16">
+        <AllToolsLink />
         {/* ══ MMT-STYLE TOP SEARCH HERO SECTION (WHITE & ORANGE THEME, MAX-W 1240PX) ══ */}
-        <section className="relative border-b border-[#f4e4d4] bg-gradient-to-b from-[#fffcf8] via-[#faf6f0] to-[#f6efe6] pt-6 pb-8 sm:pt-8 sm:pb-10">
-          <div className="site-tool-container text-center">
+        <section className="relative border-b border-[#f4e4d4] bg-gradient-to-b from-[#fffcf8] via-[#faf6f0] to-[#f6efe6] py-3">
+          <div className="site-tool-container grid items-center gap-3 lg:grid-cols-[minmax(0,0.65fr)_minmax(0,1.35fr)] lg:gap-5">
+            <div className="min-w-0">
             {/* Header Badge */}
-            <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3.5 py-1 text-xs font-[800] uppercase tracking-wider text-[#ea580c] shadow-2xs">
+            <div className="mb-1.5 inline-flex items-center gap-1.5 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-2.5 py-0.5 text-[10px] font-[800] uppercase tracking-wide text-[#ea580c] shadow-2xs">
               <span className="h-2 w-2 rounded-full bg-[#f97316] animate-pulse" />
-              Live Train Enquiry • Real-Time GPS &amp; NTES
+              Live Train Enquiry • Station-wise Status
             </div>
 
-            <h1 className="page-hero-title">
+            <h1 className="text-xl font-extrabold leading-tight tracking-tight text-[var(--navy)] sm:text-2xl">
               Live Train <span className="hero-accent">Running Status</span>
             </h1>
-            <p className="page-hero-description mx-auto mt-1.5 max-w-xl text-slate-600">
-              Check real-time train location, delay status, platform numbers, and station timetables.
+            <p className="mt-1 max-w-xl text-xs leading-5 text-slate-600">
+              Check reported train location, delays, arrival and departure times.
             </p>
+            </div>
 
             {/* MMT-Style Unified Search Card */}
             {searchFormCard}
@@ -1338,16 +1416,12 @@ function LiveTrainStatusSearch({
         </section>
 
         {/* ══ RESULTS CONTAINER (MAX-W 1240PX FOR 2560PX SCREEN ALIGNMENT) ══ */}
-        <div className="site-tool-container">
+        <div ref={resultsRef} className="site-tool-container scroll-mt-24">
           {lookup && (
             <LiveTrainStatusResult
               key={`${lookup.trainNumber}-${lookup.journeyDate}`}
               trainNumber={lookup.trainNumber}
               journeyDate={lookup.journeyDate}
-              onDateChange={(newDate) => {
-                setJourneyDate(newDate);
-                submitLookup(undefined, lookup.trainNumber, newDate);
-              }}
             />
           )}
         </div>

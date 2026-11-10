@@ -300,7 +300,7 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Subtitle / Lead Excerpt in Hero */}
             {post.excerpt && (
-              <p className="mt-1.5 max-w-4xl text-xs sm:text-[13px] font-normal leading-relaxed text-slate-600 line-clamp-2">
+              <p className="mt-1.5 max-w-4xl text-xs sm:text-[13px] font-normal leading-relaxed text-slate-600">
                 {post.excerpt}
               </p>
             )}

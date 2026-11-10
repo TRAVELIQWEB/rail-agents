@@ -12,6 +12,19 @@
 
 # testing
 /coverage
+/tests
+*.test.mjs
+*.test.js
+
+# temporary screenshots & local captures
+.hero-grounding-*.png
+*-grounding-*.png
+
+# local backups, audit evidence & one-off inspection scripts
+/backups/
+/data/posts.backup.json
+/docs/responsive-audit-*.md
+/get-yt.mjs
 
 # next.js
 /.next/

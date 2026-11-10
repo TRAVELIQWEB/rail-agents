@@ -215,47 +215,76 @@ function isSummary(value: unknown): value is CalculatorSummary {
 }
 
 let activeCalculatorRoot: HTMLElement | null = null;
-const initializedRoots = new WeakSet<HTMLElement>();
 
 function getElement(id: string): CalculatorElement {
   const element =
     activeCalculatorRoot?.querySelector<CalculatorElement>(`#${id}`);
-  if (!element) throw new Error(`Refund calculator element not found: #${id}`);
+  if (!element) {
+    const fallback = document.createElement("div") as unknown as CalculatorElement;
+    fallback.value = "";
+    fallback.disabled = false;
+    return fallback;
+  }
   return element;
 }
 
-export function initializeIRCTCCalculator(root: HTMLElement): void {
-  if (initializedRoots.has(root)) return;
-  initializedRoots.add(root);
+export function initializeIRCTCCalculator(root: HTMLElement): () => void {
   activeCalculatorRoot = root;
-  void initializeCalculator();
+  let active = true;
+
+  void (async () => {
+    try {
+      const response = await fetch("/api/irctc-cancellation-refund", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ operation: "metadata" }),
+      });
+      if (!active) return;
+      if (!response.ok) {
+        showError("The refund service is unavailable. Please refresh and try again.");
+        return;
+      }
+      const metadata: unknown = await response.json().catch(() => null);
+      if (!active) return;
+      if (!isRecord(metadata) || !isRecord(metadata.initialState) || !isSummary(metadata.initialSummary)) {
+        showError("The refund service returned an unexpected setup response.");
+        return;
+      }
+
+      activeCalculatorRoot = root;
+      const state = createEmptyState(metadata.initialState as unknown as CalculatorFormState);
+      const summary = metadata.initialSummary;
+      applyState(state, summary);
+      applyMetadata(metadata);
+      bindEvents(state, summary);
+    } catch {
+      if (active) {
+        showError("Could not reach the calculator service. Please refresh.");
+      }
+    }
+  })();
+
+  return () => {
+    active = false;
+  };
 }
 
-async function initializeCalculator(): Promise<void> {
-  const response = await fetch("/api/irctc-cancellation-refund", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ operation: "metadata" }),
-  }).catch(() => null);
-  if (!response?.ok) {
-    showError("The refund service is unavailable. Please refresh and try again.");
-    return;
+function createEmptyState(defaults: CalculatorFormState): CalculatorFormState {
+  const state = { ...defaults };
+  for (const key of Object.keys(state) as Array<keyof CalculatorFormState>) {
+    if (key.endsWith("Raw")) {
+      (state as unknown as Record<string, unknown>)[key] = "";
+    }
   }
-  const metadata: unknown = await response.json().catch(() => null);
-  if (!isRecord(metadata) || !isRecord(metadata.initialState)) {
-    showError("The refund service returned an unexpected setup response.");
-    return;
-  }
+  return state;
+}
 
-  const state = metadata.initialState as unknown as CalculatorFormState;
-  if (!isSummary(metadata.initialSummary)) {
-    showError("The refund service returned an unexpected setup response.");
-    return;
+function clearSelectionHighlights(): void {
+  for (const element of activeCalculatorRoot?.querySelectorAll(
+    ".active-card, .active-pill, .active-green-pill, .regime-choice.active",
+  ) ?? []) {
+    element.classList.remove("active-card", "active-pill", "active-green-pill", "active");
   }
-  const summary = metadata.initialSummary;
-  applyState(state, summary);
-  applyMetadata(metadata);
-  bindEvents(state, summary);
 }
 
 function showError(message: string): void {
@@ -497,13 +526,34 @@ function refreshUIHighlights(
   }
 }
 
-function markResultsPending(): number {
+function canCalculate(s: CalculatorFormState): boolean {
+  if (!s.bookingSource || !s.travelClass || !s.ticketStatus) return false;
+  const totalPax = parseInt(s.totalPassengersRaw, 10);
+  const cancelPax = parseInt(s.cancelPassengersRaw, 10);
+  if (isNaN(totalPax) || totalPax < 1 || isNaN(cancelPax) || cancelPax < 1) return false;
+  if (cancelPax > totalPax) return false;
+  if (s.fareInputMode === "GRAND_TOTAL") {
+    const amt = parseFloat(s.enteredTotalAmountRaw);
+    if (isNaN(amt) || amt <= 0) return false;
+  } else {
+    const pureAmt = parseFloat(s.pureTotalFareEnteredRaw);
+    if (isNaN(pureAmt) || pureAmt <= 0) return false;
+  }
+  if (!s.cancellationDateTimeLocal && !s.departureDateTimeLocal && !s.quickTimeBandId) {
+    return false;
+  }
+  return true;
+}
+
+function markResultsPending(hideResults = true): number {
   const root = activeCalculatorRoot;
   if (!root) return 0;
-  root.querySelector("#refundResults")?.classList.add("hidden");
-  root.querySelector("#refundInfo")?.classList.remove("hidden");
-  getElement("copyRefundSummaryBtn").disabled = true;
-  getElement("printRefundReportBtn").disabled = true;
+  if (hideResults) {
+    root.querySelector("#refundResults")?.classList.add("hidden");
+    root.querySelector("#refundInfo")?.classList.remove("hidden");
+    getElement("copyRefundSummaryBtn").disabled = true;
+    getElement("printRefundReportBtn").disabled = true;
+  }
   getElement("calculatorValidationMessage").classList.add("hidden");
   return ++stateRevision;
 }
@@ -571,7 +621,10 @@ function bindEvents(
         summary = payload.summary;
         applyState(state, summary);
         if (changedField === "toggleRuleRegime" || changedField === "ruleRegime") {
-          void setTimingPreview();
+          await setTimingPreview();
+        }
+        if (canCalculate(state)) {
+          void calculate(false);
         }
       } catch {
         if (requestId === normalizeRequestId && revision === stateRevision) {
@@ -634,7 +687,8 @@ function bindEvents(
 
   const setTimeBand = async (quickTimeBandId: string) => {
     const requestId = ++timingRequestId;
-    const revision = markResultsPending();
+    const isAlreadyShown = !getElement("refundResults").classList.contains("hidden");
+    const revision = markResultsPending(!isAlreadyShown);
     state = updateStateFromControls();
     try {
       const response = await fetch("/api/irctc-cancellation-refund", {
@@ -663,6 +717,9 @@ function bindEvents(
       };
       summary = { ...summary, activeQuickTimeBandId: payload.timing.activeQuickTimeBandId };
       refreshUIHighlights(state, summary);
+      if (canCalculate(state)) {
+        void calculate(false);
+      }
     } catch {
       if (requestId === timingRequestId) showError("Could not reach the timing service. Try again.");
     }
@@ -677,10 +734,11 @@ function bindEvents(
     setText("calculatedGapLabel", timing.calculatedGapLabel);
   };
 
-  const calculate = async () => {
+  const calculate = async (scroll = false) => {
     if (calculationPending) return;
     calculationPending = true;
-    const revision = markResultsPending();
+    const isAlreadyShown = !getElement("refundResults").classList.contains("hidden");
+    const revision = markResultsPending(!isAlreadyShown);
     const requestId = ++calculationRequestId;
     const button = getElement("calculateRefundBtn");
     const buttonText = getElement("calculateRefundButtonText");
@@ -708,7 +766,9 @@ function bindEvents(
         getElement("refundResults").classList.remove("hidden");
         getElement("copyRefundSummaryBtn").disabled = false;
         getElement("printRefundReportBtn").disabled = false;
-        getElement("refundResults").scrollIntoView({ behavior: "smooth", block: "start" });
+        if (scroll) {
+          getElement("refundResults").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       }
     } catch {
       if (requestId === calculationRequestId) {
@@ -726,7 +786,8 @@ function bindEvents(
 
   const applyScenario = async (scenarioId: string) => {
     const requestId = ++scenarioRequestId;
-    const revision = markResultsPending();
+    const isAlreadyShown = !getElement("refundResults").classList.contains("hidden");
+    const revision = markResultsPending(!isAlreadyShown);
     try {
       const response = await fetch("/api/irctc-cancellation-refund", {
         method: "POST",
@@ -759,6 +820,9 @@ function bindEvents(
       applyTiming(timing);
       if (typeof payload.scenarioLabel === "string") {
         setText("activeTestBadge", payload.scenarioLabel);
+      }
+      if (canCalculate(state)) {
+        void calculate(false);
       }
     } catch {
       if (requestId === scenarioRequestId && revision === stateRevision) {
@@ -927,15 +991,76 @@ function bindEvents(
     state.insuranceRefundable = getElement("insRefundableCheckbox").checked === true;
     void normalize("insuranceRefundable");
   });
-  getElement("calculateRefundBtn").addEventListener("click", () => void calculate());
+  getElement("calculateRefundBtn").addEventListener("click", () => void calculate(true));
   for (const button of activeCalculatorRoot?.querySelectorAll<CalculatorElement>(".testcase-btn") ?? []) {
     button.addEventListener("click", () =>
       void applyScenario(button.dataset.testcase ?? ""),
     );
   }
 
+  const copySummary = async () => {
+    const root = activeCalculatorRoot;
+    if (!root) return;
+    const value = (id: string) => root.querySelector(`#${id}`)?.textContent?.trim() ?? "";
+    const breakdown = [...root.querySelectorAll("#refundResults .refund-line")]
+      .map((line) => line.textContent?.replace(/\s+/g, " ").trim())
+      .filter(Boolean)
+      .join("\n");
+    const summaryText = [
+      "IRCTC Cancellation & Refund Estimate",
+      `Estimated refund: ${value("finalNetRefundDisplay")}`,
+      `Ticket amount paid: ${value("receiptGrandTotalPaid")}`,
+      `Cancellation charges: ${value("finalRailwayCutDisplay")}`,
+      "",
+      "Refund breakdown:",
+      breakdown,
+      "",
+      value("ruleExplanationText"),
+    ]
+      .filter((line) => line !== "")
+      .join("\n");
+
+    try {
+      await navigator.clipboard.writeText(summaryText);
+      const btn = root.querySelector("#copyRefundSummaryBtn");
+      if (btn) {
+        const orig = btn.textContent;
+        btn.textContent = "Copied!";
+        setTimeout(() => { if (btn) btn.textContent = orig; }, 2000);
+      }
+    } catch (e) {
+      console.error("Clipboard copy failed", e);
+    }
+  };
+
+  const copyBtn = activeCalculatorRoot?.querySelector("#copyRefundSummaryBtn");
+  if (copyBtn) copyBtn.addEventListener("click", () => void copySummary());
+  const printBtn = activeCalculatorRoot?.querySelector("#printRefundReportBtn");
+  if (printBtn) printBtn.addEventListener("click", () => window.print());
+  const resetBtn = activeCalculatorRoot?.querySelector("#resetCalculatorBtn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      window.clearTimeout(debounceTimer);
+      normalizeRequestId += 1;
+      scenarioRequestId += 1;
+      timingRequestId += 1;
+      markResultsPending();
+      state = { ...initialState };
+      summary = initialSummary;
+      applyState(state, summary);
+      clearSelectionHighlights();
+      setText("activeTestBadge", "No scenario selected");
+      setText("calculatedGapLabel", "Choose a time band or enter both train times.");
+      for (const id of refundDisplayFields) {
+        if (id !== "calculatedGapLabel") setText(id, "—");
+      }
+    });
+  }
+
   setText("calculatorValidationMessage", "");
   getElement("calculatorValidationMessage").classList.add("hidden");
+
+  clearSelectionHighlights();
 }
 
 function renderRefundResult(result: RefundApiResult): void {
