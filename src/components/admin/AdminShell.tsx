@@ -72,7 +72,7 @@ export function AdminShell({ children, email }: AdminShellProps) {
             onClick={() => setSidebarOpen(false)}
             aria-current={active ? "page" : undefined}
             className={`group flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-bold transition-colors ${active
-                ? "bg-[#ea580c] text-white"
+                ? "bg-[#F36B21] text-white"
                 : "text-zinc-400 hover:bg-[#1f242d] hover:text-zinc-100"
               }`}
           >
@@ -242,7 +242,7 @@ export function AdminShell({ children, email }: AdminShellProps) {
         </header>
 
         {/* Page Content Container */}
-        <main className="flex-1 overflow-y-auto bg-[#0f1115]">
+        <main id="main-content" tabIndex={-1} className="flex-1 overflow-y-auto bg-[#0f1115]">
           <div className="mx-auto w-full max-w-[1600px]">
             {children}
           </div>

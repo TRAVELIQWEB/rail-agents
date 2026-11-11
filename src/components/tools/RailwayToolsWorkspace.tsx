@@ -1,25 +1,19 @@
 "use client";
 
 import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
 import {
   ArrowLeft,
-  ArrowRight,
   ArrowUpRight,
   Calculator,
   Calendar,
   ChevronDown,
   ChevronRight,
   LayoutGrid,
-  MonitorSmartphone,
-  ShieldCheck,
-  Smartphone,
   Ticket,
   TrainFront,
-  Users,
-  Zap,
 } from "lucide-react";
 import {
   findRailTool,
@@ -28,13 +22,20 @@ import {
   type RailTool,
   type RailToolId,
 } from "@/config/tools";
-import { LiveTrainStatusTool } from "@/components/LiveTrainStatusTool";
-import { PnrStatusTool } from "@/app/pnr-status/page";
-import { FareCalculator } from "@/components/calculator/FareCalculator";
-import { IRCTCCancellationRefundCalculator } from "@/components/calculator/IRCTCCancellationRefundCalculator";
-import { TicketDateCalculator } from "@/components/calculator/TicketDateCalculator";
-import { TrainChartPreparationTime } from "@/components/calculator/TrainChartPreparationTime";
 import { InternalLink } from "@/components/ui/InternalLink";
+import { ToolsDirectory } from "./ToolsDirectory";
+
+function ToolLoadingState() {
+  return <p role="status" className="py-8 text-center text-sm text-slate-600">Loading railway tool…</p>;
+}
+
+// Keep calculator and API-tool bundles out of the directory's initial client bundle.
+const LiveTrainStatusTool = dynamic(() => import("@/components/LiveTrainStatusTool").then((module) => module.LiveTrainStatusTool), { loading: ToolLoadingState });
+const PnrStatusTool = dynamic(() => import("@/app/pnr-status/page").then((module) => module.PnrStatusTool), { loading: ToolLoadingState });
+const FareCalculator = dynamic(() => import("@/components/calculator/FareCalculator").then((module) => module.FareCalculator), { loading: ToolLoadingState });
+const IRCTCCancellationRefundCalculator = dynamic(() => import("@/components/calculator/IRCTCCancellationRefundCalculator").then((module) => module.IRCTCCancellationRefundCalculator), { loading: ToolLoadingState });
+const TicketDateCalculator = dynamic(() => import("@/components/calculator/TicketDateCalculator").then((module) => module.TicketDateCalculator), { loading: ToolLoadingState });
+const TrainChartPreparationTime = dynamic(() => import("@/components/calculator/TrainChartPreparationTime").then((module) => module.TrainChartPreparationTime), { loading: ToolLoadingState });
 
 /**
  * Custom Tool Icons matching the reference design (including ₹ inside circular arrow for Refund
@@ -109,192 +110,6 @@ function ToolIcon({
             d="M17.5 14.6v2l1.3 1"
             stroke="currentColor"
             strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      );
-  }
-}
-
-/**
- * Custom bottom-right watermark vectors matching each card in the reference image.
- */
-function ToolWatermark({
-  toolId,
-  className = "h-16 w-16",
-}: {
-  toolId: RailToolId;
-  className?: string;
-}) {
-  switch (toolId) {
-    case "live-train":
-      return (
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 96 64"
-          fill="none"
-          className="h-14 w-24"
-        >
-          <path
-            d="M8 50h82M16 55h68"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M14 44c6-16 18-26 36-26h40v26H14Z"
-            fill="currentColor"
-            fillOpacity="0.45"
-            stroke="currentColor"
-            strokeWidth="2.2"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M32 25h14v8H26l6-8ZM54 25h12v8H54v-8ZM72 25h12v8H72v-8Z"
-            fill="white"
-          />
-        </svg>
-      );
-    case "pnr":
-      return (
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 64 64"
-          fill="none"
-          className={className}
-        >
-          <g transform="rotate(-32 32 32)">
-            <path
-              d="M10 20a4 4 0 0 1 4-4h36a4 4 0 0 1 4 4v6a5 5 0 0 0 0 10v6a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4v-6a5 5 0 0 0 0-10v-6Z"
-              fill="currentColor"
-              fillOpacity="0.3"
-              stroke="currentColor"
-              strokeWidth="3"
-            />
-            <path
-              d="M26 22v20"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeDasharray="3 3"
-              strokeLinecap="round"
-            />
-          </g>
-        </svg>
-      );
-    case "fare":
-      return (
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 64 64"
-          fill="none"
-          className={className}
-        >
-          <rect
-            x="14"
-            y="8"
-            width="36"
-            height="48"
-            rx="6"
-            fill="currentColor"
-            fillOpacity="0.28"
-            stroke="currentColor"
-            strokeWidth="3"
-          />
-          <rect x="20" y="14" width="24" height="10" rx="2" fill="white" />
-          <rect x="20" y="30" width="6" height="6" rx="1.5" fill="white" />
-          <rect x="29" y="30" width="6" height="6" rx="1.5" fill="white" />
-          <rect x="38" y="30" width="6" height="6" rx="1.5" fill="white" />
-          <rect x="20" y="40" width="6" height="6" rx="1.5" fill="white" />
-          <rect x="29" y="40" width="6" height="6" rx="1.5" fill="white" />
-          <rect x="38" y="40" width="6" height="10" rx="1.5" fill="white" />
-        </svg>
-      );
-    case "refund":
-      return (
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 64 64"
-          fill="none"
-          className={className}
-        >
-          <path
-            d="M14 28a20 20 0 1 1 4 15"
-            stroke="currentColor"
-            strokeWidth="4"
-            strokeLinecap="round"
-          />
-          <path
-            d="M12 17v12h12"
-            stroke="currentColor"
-            strokeWidth="4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M25 23h14M25 29h14M31 23c3.2 0 5.5 2 5.5 4.8 0 3-2.4 5.2-5.8 5.2H26l9.5 9.5"
-            stroke="currentColor"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      );
-    case "ticket-date":
-      return (
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 64 64"
-          fill="none"
-          className={className}
-        >
-          <rect
-            x="10"
-            y="14"
-            width="44"
-            height="40"
-            rx="6"
-            fill="currentColor"
-            fillOpacity="0.28"
-            stroke="currentColor"
-            strokeWidth="3"
-          />
-          <path d="M10 25h44" stroke="currentColor" strokeWidth="3" />
-          <path
-            d="M22 9v9M42 9v9"
-            stroke="currentColor"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-          />
-          <rect x="18" y="31" width="6" height="5" rx="1" fill="white" />
-          <rect x="29" y="31" width="6" height="5" rx="1" fill="white" />
-          <rect x="40" y="31" width="6" height="5" rx="1" fill="white" />
-          <rect x="18" y="41" width="6" height="5" rx="1" fill="white" />
-          <rect x="29" y="41" width="6" height="5" rx="1" fill="white" />
-          <rect x="40" y="41" width="6" height="5" rx="1" fill="white" />
-        </svg>
-      );
-    case "chart":
-      return (
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 64 64"
-          fill="none"
-          className={className}
-        >
-          <circle
-            cx="32"
-            cy="32"
-            r="21"
-            fill="currentColor"
-            fillOpacity="0.25"
-            stroke="currentColor"
-            strokeWidth="4"
-          />
-          <path
-            d="M32 20v13l9 5"
-            stroke="currentColor"
-            strokeWidth="4"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -390,16 +205,16 @@ const toolColorThemes: Record<RailToolId, ToolColorTheme> = {
   },
   "ticket-date": {
     iconColor: "text-[#A1410A]",
-    sidebarIconBg: "bg-[#FCEBDD] text-[#C2410C]",
+    sidebarIconBg: "bg-[#FCEBDD] text-[#F36B21]",
     badgeBg: "bg-[#FDF0E4] border-[#F7D0AE]",
     pillText: "text-[#9A3412]",
-    pillDot: "bg-[#C2410C]",
+    pillDot: "bg-[#F36B21]",
     pillLabel: "BOOKING DATES",
     cardDescription:
       "Find 60-day reservation and Tatkal booking opening dates.",
     activeItem:
       "border-[#FDBA74] bg-[#FCEBDD] shadow-[0_2px_7px_rgba(154,52,18,0.10)]",
-    focusRing: "focus-visible:outline-[#C2410C]",
+    focusRing: "focus-visible:outline-[#F36B21]",
     cardTopBorder: "border-t-[#FED7AA]",
     cardHoverBorder: "hover:border-[#FDBA74]",
     solidButtonBg: "border border-[#F7D0AE] bg-[#FFF2E8] text-[#9A3412] group-hover:bg-[#FFEDD5]",
@@ -488,23 +303,6 @@ export function RailwayToolsWorkspace() {
     router.push(basePath, { scroll: false });
   }
 
-  function handleCardClick(
-    event: ReactMouseEvent<HTMLAnchorElement>,
-    toolId: RailToolId,
-  ) {
-    if (
-      event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey ||
-      event.button !== 0
-    ) {
-      return;
-    }
-    event.preventDefault();
-    handleSelectTool(toolId);
-  }
-
   function handleBackToOverviewClick(event: ReactMouseEvent<HTMLAnchorElement>) {
     if (
       event.metaKey ||
@@ -541,14 +339,14 @@ export function RailwayToolsWorkspace() {
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             className={`flex min-h-11 w-full items-center justify-between gap-3 rounded-lg border px-3.5 py-2.5 text-left transition duration-150 hover:-translate-y-px hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${selectedTool
               ? `${toolColorThemes[selectedTool.id].badgeBg} ${toolColorThemes[selectedTool.id].focusRing}`
-              : "border-[#F6C8A0] bg-[#FDE8D7] focus-visible:outline-[#C2410C]"
+              : "border-[#F6C8A0] bg-[#FDE8D7] focus-visible:outline-[#F36B21]"
               } motion-reduce:transform-none motion-reduce:transition-none`}
           >
             <span className="flex min-w-0 items-center gap-2.5">
               <span
                 className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border bg-white shadow-2xs ${selectedTool
                   ? `${toolColorThemes[selectedTool.id].badgeBg} ${toolColorThemes[selectedTool.id].iconColor}`
-                  : "border-[#F6C8A0] bg-[#FFF4EB] text-[#C2410C]"
+                  : "border-[#F6C8A0] bg-[#FFF4EB] text-[#F36B21]"
                   }`}
               >
                 {selectedTool ? (
@@ -568,7 +366,7 @@ export function RailwayToolsWorkspace() {
             </span>
             <ChevronDown
               aria-hidden="true"
-              className={`h-4 w-4 shrink-0 transition-transform duration-150 ${selectedTool ? toolColorThemes[selectedTool.id].iconColor : "text-[#C2410C]"
+              className={`h-4 w-4 shrink-0 transition-transform duration-150 ${selectedTool ? toolColorThemes[selectedTool.id].iconColor : "text-[#F36B21]"
                 } ${mobileMenuOpen ? "rotate-180" : ""}`}
             />
           </button>
@@ -586,20 +384,20 @@ export function RailwayToolsWorkspace() {
               role="option"
               aria-selected={!selectedTool}
               onClick={handleShowAllTools}
-              className={`group flex w-full items-center justify-between gap-2.5 rounded-lg border px-3 py-2.5 text-left text-sm transition-all duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#C2410C] ${!selectedTool
+              className={`group flex w-full items-center justify-between gap-2.5 rounded-lg border px-3 py-2.5 text-left text-sm transition-all duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#F36B21] ${!selectedTool
                 ? "border-[#F5C299] bg-[#FDE6D2] font-bold text-[#9A3412]"
                 : "border-slate-200/80 bg-[#F8FAFC] font-medium text-[#0b2240]"
                 }`}
             >
               <span className="flex min-w-0 items-center gap-2.5">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#FFF4EB] text-[#C2410C]">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#FFF4EB] text-[#F36B21]">
                   <LayoutGrid aria-hidden="true" className="h-4 w-4" />
                 </span>
                 <span className="truncate">All Tools</span>
               </span>
               <ChevronRight
                 aria-hidden="true"
-                className={`h-4 w-4 shrink-0 ${!selectedTool ? "text-[#C2410C]" : "text-slate-400"}`}
+                className={`h-4 w-4 shrink-0 ${!selectedTool ? "text-[#F36B21]" : "text-slate-400"}`}
               />
             </button>
 
@@ -656,18 +454,18 @@ export function RailwayToolsWorkspace() {
             >
               <path
                 d="M16 4L28 10.5L16 17L4 10.5L16 4Z"
-                fill="#F97316"
+                fill="#F36B21"
               />
               <path
                 d="M4 15.5L16 22L28 15.5"
-                stroke="#EA580C"
+                stroke="#F36B21"
                 strokeWidth="2.8"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               <path
                 d="M4 20.5L16 27L28 20.5"
-                stroke="#C2410C"
+                stroke="#F36B21"
                 strokeWidth="2.8"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -689,7 +487,7 @@ export function RailwayToolsWorkspace() {
               type="button"
               aria-current={!selectedTool ? "page" : undefined}
               onClick={handleShowAllTools}
-              className={`group flex w-full cursor-pointer items-center justify-between gap-2 rounded-xl border min-h-11 px-2.5 py-2 text-left text-[13px] leading-snug transition-all duration-175 hover:-translate-y-0.5 hover:shadow-xs motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C2410C] ${!selectedTool
+              className={`group flex w-full cursor-pointer items-center justify-between gap-2 rounded-xl border min-h-11 px-2.5 py-2 text-left text-[13px] leading-snug transition-all duration-175 hover:-translate-y-0.5 hover:shadow-xs motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F36B21] ${!selectedTool
                 ? "border-[#FED7AA] bg-[#FFF2E8] font-bold text-[#9A3412] shadow-[0_2px_6px_rgba(194,65,12,0.08)]"
                 : "border-[#EAEFF5] bg-[#F8FAFC] font-bold text-[#0F2747] hover:border-[#F5C299] hover:bg-[#FFF4EB]"
                 }`}
@@ -697,8 +495,8 @@ export function RailwayToolsWorkspace() {
               <span className="flex min-w-0 items-center gap-2">
                 <span
                   className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md transition-transform duration-175 group-hover:scale-105 ${!selectedTool
-                    ? "bg-[#FAD5B5] text-[#C2410C]"
-                    : "bg-[#FFF3E8] text-[#EA580C]"
+                    ? "bg-[#FAD5B5] text-[#F36B21]"
+                    : "bg-[#FFF3E8] text-[#F36B21]"
                     }`}
                 >
                   <LayoutGrid aria-hidden="true" className="h-3.5 w-3.5" />
@@ -707,7 +505,7 @@ export function RailwayToolsWorkspace() {
               </span>
               <ChevronRight
                 aria-hidden="true"
-                className={`h-3.5 w-3.5 shrink-0 transition-transform duration-150 group-hover:translate-x-0.5 ${!selectedTool ? "text-[#C2410C]" : "text-slate-400"
+                className={`h-3.5 w-3.5 shrink-0 transition-transform duration-150 group-hover:translate-x-0.5 ${!selectedTool ? "text-[#F36B21]" : "text-slate-400"
                   }`}
               />
             </button>
@@ -750,7 +548,7 @@ export function RailwayToolsWorkspace() {
         <div className="tools-sidebar-bottom pt-4">
           <div className="relative overflow-hidden rounded-xl border border-[#FED7AA]/70 bg-[#FFF7ED] p-3 shadow-2xs">
             <div className="flex items-center gap-2">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#FFEDD5] text-[#C2410C] shadow-2xs">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#FFEDD5] text-[#F36B21] shadow-2xs">
                 <TrainFront aria-hidden="true" className="h-3.5 w-3.5" />
               </span>
               <h3 className="text-xs font-extrabold tracking-tight text-[#0F2747]">
@@ -798,7 +596,7 @@ export function RailwayToolsWorkspace() {
                   />
                   <path
                     d="M4 28L134 21"
-                    stroke="#EA580C"
+                    stroke="#F36B21"
                     strokeWidth="2.2"
                   />
                 </g>
@@ -813,7 +611,8 @@ export function RailwayToolsWorkspace() {
          ══════════════════════════════════════════════════════════════════════ */}
       <section
         ref={workspacePanelRef}
-        aria-labelledby="active-workspace-tool-title"
+        tabIndex={0}
+        aria-labelledby={selectedTool ? "active-workspace-tool-title" : "railway-tools-title"}
         className="min-w-0 flex-1"
       >
         {selectedTool ? (
@@ -886,242 +685,7 @@ export function RailwayToolsWorkspace() {
             </div>
           </div>
         ) : (
-          /* ════════════════════════════════════════════════════════════════════
-             DEFAULT /tools OVERVIEW STATE — MATCHES REFERENCE DESIGN EXACTLY
-             ════════════════════════════════════════════════════════════════════ */
-          <div className="tools-workspace flex flex-col gap-4">
-            {/* 1. TOP BANNER CARD WITH LEFT ORANGE BAR, 3 BADGES & SUNSET WAP-7 TRAIN */}
-            <div className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
-              <div className="grid grid-cols-1 lg:grid-cols-12">
-                {/* Left Content Column */}
-                <div className="relative z-10 flex flex-col justify-between p-4 sm:px-6 sm:py-4.5 lg:col-span-7">
-                  <div className="flex items-stretch gap-3">
-                    <span
-                      aria-hidden="true"
-                      className="w-1 shrink-0 rounded-full bg-[#EA580C]"
-                    />
-                    <div>
-                      <h1
-                        id="active-workspace-tool-title"
-                        className="text-2xl font-black tracking-tight text-[#0F2747] leading-tight"
-                      >
-                        All Railway <span className="text-[#EA580C]">Tools</span>
-                      </h1>
-                      <p className="mt-1 max-w-xl text-xs leading-relaxed text-slate-600 sm:text-[13px]">
-                        Explore our essential railway tools to check train status, PNR, ticket
-                        fares, refunds, booking dates and chart preparation.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* 3 Feature Pills Row */}
-                  <div className="mt-3.5 flex flex-wrap items-center gap-y-1.5 border-t border-slate-100 pt-2.5 text-xs font-bold text-[#0F2747]">
-                    <div className="flex items-center gap-1.5 pr-4 sm:pr-6">
-                      <ShieldCheck aria-hidden="true" className="h-4 w-4 shrink-0 text-[#EA580C]" />
-                      <span>Free to Use</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 border-l border-slate-200 px-4 sm:px-6">
-                      {/* Circular Refresh-Check Badge Icon */}
-                      <svg
-                        aria-hidden="true"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        className="h-4 w-4 shrink-0 text-[#EA580C]"
-                      >
-                        <path
-                          d="M3.5 10a6.5 6.5 0 0 1 11.2-4.5M16.5 10a6.5 6.5 0 0 1-11.2 4.5"
-                          stroke="currentColor"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M12.5 5.5h2.6V2.9M7.5 14.5H4.9v2.6"
-                          stroke="currentColor"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M7.6 10.2l1.6 1.6 3.3-3.4"
-                          stroke="currentColor"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                      <span>Reliable &amp; Updated</span>
-                    </div>
-                    <div className="flex items-center gap-1.5 border-l border-slate-200 pl-4 sm:pr-6">
-                      <Smartphone aria-hidden="true" className="h-4 w-4 shrink-0 text-[#EA580C]" />
-                      <span>Mobile Friendly</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Curved Sunset WAP-7 Locomotive Banner */}
-                <div className="relative hidden min-h-[140px] overflow-hidden lg:col-span-5 lg:block">
-                  <Image
-                    src="/images/tools-hero-train-sunset.jpg"
-                    alt="Indian Railways WAP-7 Electric Locomotive at Sunset"
-                    fill
-                    sizes="(max-width: 1024px) 0vw, 420px"
-                    className="-scale-x-100 object-cover object-center"
-                    priority
-                  />
-                  {/* Diagonal Sweeping White + Peach + Orange Wave Overlay matching reference */}
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 160 200"
-                    preserveAspectRatio="none"
-                    className="pointer-events-none absolute inset-y-0 left-0 h-full w-32"
-                  >
-                    {/* Soft Peach Outer Wave */}
-                    <path
-                      d="M0 0H132C82 52 46 125 22 200H0V0Z"
-                      fill="#FDE5CE"
-                    />
-                    {/* Vibrant Orange Ribbon Wave */}
-                    <path
-                      d="M116 0H146C96 50 64 122 50 200H26C48 124 76 54 116 0Z"
-                      fill="#EA580C"
-                    />
-                    {/* Solid White Inner Fill blending seamlessly with left text panel */}
-                    <path
-                      d="M0 0H116C72 54 38 124 12 200H0V0Z"
-                      fill="#FFFFFF"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            {/* 2. SIX TOOL CARDS GRID (3x2 on Desktop, 2x3 on Tablet, 1x6 on Mobile) */}
-            <div className="tools-overview-cards grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 auto-rows-fr">
-              {railTools.map((tool) => {
-                const theme = toolColorThemes[tool.id];
-                return (
-                  <a
-                    key={tool.id}
-                    href={tool.href}
-                    onClick={(event) => handleCardClick(event, tool.id)}
-                    className={`group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-[#E8EEF5] border-t-2 bg-white p-4 sm:p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${theme.cardTopBorder} ${theme.cardHoverBorder} ${theme.focusRing}`}
-                  >
-                    <div className="relative z-10 flex flex-1 flex-col">
-                      {/* Top Row: Pastel Icon Box + Pill Status Badge */}
-                      <div className="flex items-center justify-between gap-2">
-                        <span
-                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-transform duration-200 group-hover:scale-105 ${theme.badgeBg} ${theme.iconColor}`}
-                        >
-                          <ToolIcon toolId={tool.id} className="h-4.5 w-4.5" />
-                        </span>
-
-                        <span
-                          className={`inline-flex items-center gap-1.5 rounded-full border bg-white px-2.5 py-0.5 text-[9.5px] font-extrabold uppercase tracking-wider shadow-2xs ${theme.badgeBg} ${theme.pillText}`}
-                        >
-                          <span
-                            aria-hidden="true"
-                            className={`h-1.5 w-1.5 rounded-full ${theme.pillDot}`}
-                          />
-                          <span>{theme.pillLabel}</span>
-                        </span>
-                      </div>
-
-                      {/* Tool Title & Description */}
-                      <h2 className="mt-3 text-base font-extrabold tracking-tight text-[#0F2747]">
-                        {tool.shortTitle}
-                      </h2>
-
-                      <p className="mt-1 pr-6 text-xs leading-relaxed text-slate-600 min-h-[34px]">
-                        {theme.cardDescription}
-                      </p>
-                    </div>
-
-                    {/* Bottom Row: Solid Colored Pill CTA Button */}
-                    <div className="relative z-10 mt-3 pt-1">
-                      <span
-                        className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold shadow-2xs transition-all duration-150 ${theme.solidButtonBg}`}
-                      >
-                        <span>Open Tool</span>
-                        <ArrowRight
-                          aria-hidden="true"
-                          className="h-3.5 w-3.5 transition-transform duration-150 group-hover:translate-x-0.5"
-                        />
-                      </span>
-                    </div>
-
-                    {/* Subtle Bottom-Right Watermark Illustration */}
-                    <div
-                      aria-hidden="true"
-                      className={`pointer-events-none absolute right-3 bottom-2 transition-transform duration-200 group-hover:scale-105 ${theme.watermarkColor}`}
-                    >
-                      <ToolWatermark toolId={tool.id} className="h-12 w-12" />
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
-
-            {/* 3. BOTTOM 4-COLUMN TRUST & FEATURE BAR */}
-            <div className="rounded-2xl border border-slate-200/90 bg-white px-4 py-3 sm:py-3.5 shadow-xs">
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
-                <div className="flex items-center gap-2.5 lg:pr-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-50 text-[#0F2747]">
-                    <ShieldCheck aria-hidden="true" className="h-4.5 w-4.5" />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-xs font-extrabold text-[#0F2747]">
-                      Accurate Information
-                    </p>
-                    <p className="text-[10.5px] text-slate-500">
-                      Based on official railway data
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5 lg:border-l lg:border-slate-200/90 lg:px-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#FFF4EB] text-[#EA580C]">
-                    <Zap aria-hidden="true" className="h-4.5 w-4.5" />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-xs font-extrabold text-[#0F2747]">
-                      Fast &amp; Easy
-                    </p>
-                    <p className="text-[10.5px] text-slate-500">
-                      Get results in seconds
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5 lg:border-l lg:border-slate-200/90 lg:px-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-50 text-[#0F2747]">
-                    <MonitorSmartphone aria-hidden="true" className="h-4.5 w-4.5" />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-xs font-extrabold text-[#0F2747]">
-                      Works on All Devices
-                    </p>
-                    <p className="text-[10.5px] text-slate-500">
-                      Desktop, tablet and mobile
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5 lg:border-l lg:border-slate-200/90 lg:pl-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-50 text-[#0F2747]">
-                    <Users aria-hidden="true" className="h-4.5 w-4.5" />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-xs font-extrabold text-[#0F2747]">
-                      Trusted by Travellers
-                    </p>
-                    <p className="text-[10.5px] text-slate-500">
-                      Used by thousands of railway passengers
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ToolsDirectory embedded />
         )}
       </section>
     </div>

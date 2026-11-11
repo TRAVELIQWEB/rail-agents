@@ -154,7 +154,7 @@ export default function IrctcAgentPage() {
         }}
       />
       <Header />
-      <main className="relative flex-1 overflow-hidden">
+      <main id="main-content" tabIndex={-1} className="relative flex-1 overflow-hidden">
 
         {/* ══ 1. HERO SECTION ══ */}
         <section className="relative isolate flex flex-col justify-between overflow-hidden border-b border-[#f0e1d5] bg-[#fffaf5] pt-8 pb-6 sm:pt-10 sm:pb-7 lg:min-h-[calc(100vh-74px)] lg:pt-11 lg:pb-7">
@@ -174,7 +174,7 @@ export default function IrctcAgentPage() {
             <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
               {/* Left Column (7 Cols): Main Headline & CTAs */}
               <div className="flex flex-col items-center text-center md:items-start md:text-left lg:col-span-7">
-                <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/90 px-3.5 py-1 text-xs font-[800] uppercase tracking-[0.12em] text-[#e96713] shadow-[0_2px_8px_rgba(15,39,71,0.06)]">
+                <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/90 px-3.5 py-1 text-xs font-[800] uppercase tracking-[0.12em] text-[var(--primary-text)] shadow-[0_2px_8px_rgba(15,39,71,0.06)]">
                   <ShieldCheck aria-hidden="true" className="h-3.5 w-3.5" />
                   Railway Agent Compliance &amp; Operations
                 </span>
@@ -222,7 +222,7 @@ export default function IrctcAgentPage() {
                   </div>
 
                   <div className="mt-2.5 flex flex-wrap items-center gap-2">
-                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#ea580c] mr-1">
+                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#F36B21] mr-1">
                       Jump to:
                     </span>
                     {[
@@ -235,7 +235,7 @@ export default function IrctcAgentPage() {
                       <a
                         key={pill.label}
                         href={pill.href}
-                        className="inline-flex items-center gap-1 rounded-lg border border-[#eedcc9] bg-[#fffaf5] px-2.5 py-1 text-[11px] font-bold text-[var(--navy)] transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-[#ea580c]"
+                        className="inline-flex items-center gap-1 rounded-lg border border-[#eedcc9] bg-[#fffaf5] px-2.5 py-1 text-[11px] font-bold text-[var(--navy)] transition-colors hover:border-orange-300 hover:bg-orange-50 hover:text-[#F36B21]"
                       >
                         {pill.label}
                       </a>
@@ -249,11 +249,11 @@ export default function IrctcAgentPage() {
                 <div className="rounded-3xl border border-[#f2d6bf] bg-white/95 p-5 sm:p-6 shadow-[0_16px_40px_rgba(15,39,71,0.06)]">
                   <div className="flex items-center justify-between border-b border-slate-100 pb-3.5">
                     <div className="flex items-center gap-2.5">
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#F36B21]">
                         <Scale className="h-4.5 w-4.5" />
                       </span>
                       <div>
-                        <p className="text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">Core RSP Standards</p>
+                        <p className="text-xs font-extrabold uppercase tracking-wider text-[#F36B21]">Core RSP Standards</p>
                         <p className="text-sm font-[900] text-[var(--navy)]">At-a-Glance Agent Rules</p>
                       </div>
                     </div>
@@ -270,7 +270,7 @@ export default function IrctcAgentPage() {
                       { label: "Refund Verification", value: "Customer mobile OTP mandatory for credit" },
                     ].map((row) => (
                       <div key={row.label} className="flex items-start gap-2.5 rounded-xl border border-slate-100 bg-[#fffcf9] px-3.5 py-2.5">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#ea580c]" />
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#F36B21]" />
                         <div className="min-w-0">
                           <p className="text-xs font-extrabold text-[var(--navy)]">{row.label}</p>
                           <p className="text-[11px] text-slate-600">{row.value}</p>
@@ -285,7 +285,7 @@ export default function IrctcAgentPage() {
             {/* Bottom Docked Value Strip (Fills viewport cleanly with zero empty space) */}
             <div aria-label="Key compliance areas" className="my-auto pt-4 border-t border-[#f0e1d5]">
               <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                <span className="inline-flex items-center gap-1.5 text-[#c2410c]">
+                <span className="inline-flex items-center gap-1.5 text-[#F36B21]">
                   <ShieldCheck className="h-3.5 w-3.5 text-[var(--primary)]" />
                   Key Compliance Pillars Covered in This Manual
                 </span>
@@ -337,7 +337,7 @@ export default function IrctcAgentPage() {
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#fff1e7] text-[var(--primary)]">
                       <Icon aria-hidden="true" className="h-5 w-5" />
                     </span>
-                    <span className="text-xs font-[800] tracking-widest text-orange-300">{number}</span>
+                    <span className="text-xs font-[800] tracking-widest text-orange-700">{number}</span>
                   </div>
                   <h3 className="mt-4 text-base font-[800] text-[var(--navy)]">{title}</h3>
                   <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-slate-600">{body}</p>
@@ -354,7 +354,7 @@ export default function IrctcAgentPage() {
             {/* ── 01. DO'S & DON'TS ── */}
             <section id="dos-and-donts" className="group rounded-3xl border border-orange-200/90 bg-white p-6 sm:p-8 shadow-[0_4px_24px_rgba(249,115,22,0.06)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(249,115,22,0.12)] hover:border-orange-300 scroll-mt-24">
               <div className="flex items-center gap-3 mb-3">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#c2410c] to-[#9a3412] font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#F36B21] to-[#9a3412] font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                   01
                 </span>
                 <div>
@@ -523,9 +523,9 @@ export default function IrctcAgentPage() {
               </p>
 
               <div className="rounded-2xl border border-blue-100 bg-white p-5 shadow-2xs mb-4">
-                <h4 className="font-bold text-xs uppercase tracking-wider text-blue-900 mb-2.5">
+                <h3 className="font-bold text-xs uppercase tracking-wider text-blue-900 mb-2.5">
                   Key Terminology: PSP vs. RSP
-                </h4>
+                </h3>
                 <ul className="space-y-2.5 text-xs sm:text-sm text-slate-600">
                   <li>
                     <strong className="text-slate-900">Principal Service Provider (PSP):</strong> Corporate entities authorized
@@ -539,14 +539,14 @@ export default function IrctcAgentPage() {
               </div>
 
               <div className="rounded-2xl border border-blue-200 bg-blue-50/70 p-4 text-xs text-blue-950">
-                <h4 className="font-bold text-blue-900 mb-1 flex items-center gap-1.5">
+                <h3 className="font-bold text-blue-900 mb-1 flex items-center gap-1.5">
                   <Info className="h-4 w-4 text-blue-700" />
                   Official Source Verification:
-                </h4>
+                </h3>
                 <p className="text-blue-900/90 leading-relaxed">
                   Always confirm your Principal Service Provider on the official IRCTC portal (
                   <a
-                    href="https://contents.irctc.co.in/en/Agent_Policy.html"
+                    href="https://contents.irctc.co.in/en/Agent_Policy.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline font-semibold hover:text-blue-950"
@@ -579,10 +579,10 @@ export default function IrctcAgentPage() {
 
               <div className="grid gap-3 sm:grid-cols-2 mb-4">
                 <div className="rounded-2xl border border-teal-100 bg-white p-4 shadow-2xs">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-teal-900 mb-1.5 flex items-center gap-1.5">
+                  <h3 className="font-bold text-xs uppercase tracking-wider text-teal-900 mb-1.5 flex items-center gap-1.5">
                     <UserCheck className="h-4 w-4 text-teal-600" />
                     Passenger Mobile Number
-                  </h4>
+                  </h3>
                   <p className="text-xs text-slate-600 leading-relaxed">
                     You must enter the traveller&apos;s active mobile number. Entering agency phone numbers deprives passengers
                     of departure updates and cancellation OTPs.
@@ -590,10 +590,10 @@ export default function IrctcAgentPage() {
                 </div>
 
                 <div className="rounded-2xl border border-teal-100 bg-white p-4 shadow-2xs">
-                  <h4 className="font-bold text-xs uppercase tracking-wider text-teal-900 mb-1.5 flex items-center gap-1.5">
+                  <h3 className="font-bold text-xs uppercase tracking-wider text-teal-900 mb-1.5 flex items-center gap-1.5">
                     <Receipt className="h-4 w-4 text-teal-600" />
                     Full ERS Delivery
-                  </h4>
+                  </h3>
                   <p className="text-xs text-slate-600 leading-relaxed">
                     Deliver the complete official Electronic Reservation Slip (ERS). The printed slip automatically displays
                     agency credentials and railway fare breakdown.
@@ -611,7 +611,7 @@ export default function IrctcAgentPage() {
             {/* ── 04. TATKAL REGULATIONS ── */}
             <section id="tatkal-regulations" className="group rounded-3xl border border-amber-200/90 bg-gradient-to-br from-white to-amber-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(245,158,11,0.05)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(245,158,11,0.1)] hover:border-amber-300 scroll-mt-24">
               <div className="flex items-center gap-3 mb-3">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#9a3412] to-[#c2410c] font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#9a3412] to-[#F36B21] font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                   04
                 </span>
                 <div>
@@ -877,7 +877,7 @@ export default function IrctcAgentPage() {
             {/* ── 11. DAILY COMPLIANCE CHECKLIST ── */}
             <section id="daily-checklist" className="group rounded-3xl border border-orange-300/90 bg-gradient-to-br from-white to-orange-50/30 p-6 sm:p-8 shadow-[0_4px_24px_rgba(249,115,22,0.06)] transition-all duration-300 hover:shadow-[0_8px_32px_rgba(249,115,22,0.12)] hover:border-orange-400 scroll-mt-24">
               <div className="flex items-center gap-3 mb-3">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#c2410c] to-[#9a3412] font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#F36B21] to-[#9a3412] font-[800] text-sm text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
                   11
                 </span>
                 <div>
@@ -993,7 +993,7 @@ export default function IrctcAgentPage() {
         <section className="bg-white pb-12 pt-6 sm:pb-16 sm:pt-8">
           <div className="site-container">
             <div className="relative isolate overflow-hidden rounded-[26px] border border-[#f1dfce] bg-gradient-to-br from-[#fffaf5] via-[#fff2e6] to-[#ffead7] px-6 py-8 shadow-xs sm:px-10 sm:py-10 lg:flex lg:items-center lg:justify-between lg:gap-8">
-              <div aria-hidden="true" className="pointer-events-none absolute right-[32%] top-1/2 -z-10 hidden -translate-y-1/2 text-orange-300/20 lg:block">
+              <div aria-hidden="true" className="pointer-events-none absolute right-[32%] top-1/2 -z-10 hidden -translate-y-1/2 text-orange-700/20 lg:block">
                 <Train className="h-32 w-32" strokeWidth={1} />
               </div>
               <div className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">

@@ -130,7 +130,7 @@ export function IRCTCCancellationRefundCalculator() {
         .refund-calculator .active-card,
         .refund-calculator .active-pill,
         .refund-calculator .active-green-pill {
-          border-color: #ea580c !important;
+          border-color: #F36B21 !important;
           background: #fff7ed !important;
           color: #9a3412 !important;
           font-weight: 700 !important;
@@ -191,7 +191,7 @@ export function IRCTCCancellationRefundCalculator() {
         .refund-calculator #togglePgBtn:hover,
         .refund-calculator #toggleRoundingBtn:hover,
         .refund-calculator #toggleRuleRegimeBtn:hover {
-          border-color: #ea580c;
+          border-color: #F36B21;
           background: #fff7ed;
           color: #9a3412;
         }
@@ -226,7 +226,7 @@ export function IRCTCCancellationRefundCalculator() {
         .refund-calculator input[type="checkbox"] {
           width: 1.125rem;
           height: 1.125rem;
-          accent-color: #ea580c;
+          accent-color: #F36B21;
           cursor: pointer;
         }
         .refund-calculator #refundResults > section {

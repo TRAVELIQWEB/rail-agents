@@ -26,8 +26,6 @@ const supportLinks = [
   { label: "Rules & Regulations", href: "/irctc-agent-rules-regulations" },
   { label: "Ask Nihal Singh", href: "/ask-nihal" },
   { label: "Blog & Railway Insights", href: "/blog" },
-  { label: "About Us", href: "/about" },
-  { label: "Contact Us", href: "/contact" },
   { label: "Terms & Conditions", href: "/terms" },
 ];
 
@@ -44,15 +42,18 @@ export function Footer() {
 
   return (
     <footer className="mt-5 bg-[linear-gradient(135deg,#153350_0%,#102b4e_45%,#0c2038_100%)] text-white">
-      <div className="site-container py-6 sm:py-8 wide:py-10">
-        <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-[1.35fr_0.8fr_1.1fr_1.2fr] lg:gap-9 wide:gap-14">
-          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+      <div className="site-container py-8 sm:py-10">
+        <div className="grid grid-cols-1 items-start gap-x-8 gap-y-8 min-[380px]:grid-cols-2 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,1.1fr)_minmax(0,1fr)] lg:gap-x-10 xl:gap-x-12">
+          <div className="flex min-w-0 flex-col items-start text-left min-[380px]:col-span-2 lg:col-span-1">
+            <div className="flex min-h-11 items-center">
             <Logo variant="light" />
-            <p className="mx-auto mt-3 max-w-[300px] text-sm leading-[1.6] text-white/75 md:mx-0 wide:max-w-[380px] wide:text-base">
+            </div>
+            <p className="mt-3 max-w-[300px] text-sm leading-6 text-white/75">
               Clear railway agent information, practical guides, and help with
               travel-related questions.
             </p>
-            <ul className="social-icon-list mt-4 justify-center md:justify-start">
+            <div className="mt-4">
+            <ul className="social-icon-list justify-start">
               {socialLinks.map(({ label, href, icon: Icon }) =>
                 href ? (
                   <li key={label} className="social-icon-item">
@@ -72,14 +73,15 @@ export function Footer() {
                 ) : null,
               )}
             </ul>
+            </div>
           </div>
 
           <FooterLinkColumn title="Railway Tools" items={quickLinks} />
           <FooterLinkColumn title="Guidance & Support" items={supportLinks} />
 
-          <div className="text-center md:text-left">
-            <h2 className="text-base font-[800] text-white">Stay Updated</h2>
-            <p className="mt-2 text-sm leading-[1.55] text-white/75">
+          <div className="min-w-0 text-left min-[380px]:col-span-2 lg:col-span-1">
+            <h2 className="flex min-h-11 items-center text-sm font-extrabold text-white">Stay Updated</h2>
+            <p className="mt-3 max-w-[280px] text-sm leading-6 text-white/75">
               Follow us for the latest railway agent guides and updates.
             </p>
             {siteConfig.social.youtube ? (
@@ -95,9 +97,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col items-center gap-2 border-t border-white/15 pt-4 text-center text-[0.8125rem] text-white/65 sm:flex-row sm:justify-between sm:text-left">
+        <div className="mt-8 flex flex-col items-start gap-2 border-t border-white/15 pt-5 text-left text-xs leading-6 text-white/65 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
           <p>&copy; {currentYear} RailAgents. All rights reserved.</p>
-          <p>
+          <p className="lg:text-right">
             Designed and developed by{" "}
             <a
               href="https://coderlala.com"
@@ -122,15 +124,15 @@ function FooterLinkColumn({
   items: Array<{ label: string; href: string }>;
 }) {
   return (
-    <div className="text-center md:text-left">
-      <h2 className="text-base font-[800] text-white">{title}</h2>
-      <ul className="mt-2.5 flex flex-col items-center space-y-2 text-sm text-white/75 md:items-start">
-        {items.map(({ label, href }) => (
+    <div className="min-w-0 text-left">
+      <h2 className="flex min-h-11 items-center text-sm font-extrabold text-white">{title}</h2>
+      <ul className="mt-3 flex flex-col items-start gap-2 text-sm leading-6 text-white/75">
+        {[...items].sort((a, b) => a.label.length - b.label.length).map(({ label, href }) => (
           <li key={href}>
             <InternalLink
               href={href}
               prefetch={false}
-              className="transition-colors hover:text-[var(--primary-light)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+              className="inline-block break-words transition-colors hover:text-[var(--primary-light)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
             >
               {label}
             </InternalLink>

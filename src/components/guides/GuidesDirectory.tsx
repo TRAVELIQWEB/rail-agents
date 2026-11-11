@@ -39,7 +39,7 @@ const categoryBadgeStyles: Record<string, string> = {
   "Getting Started": "bg-[#ECFDF5] text-[#15803D] border border-emerald-200/70",
   "IRCTC Agent": "bg-[#EFF6FF] text-[#2563EB] border border-blue-200/70",
   "Booking": "bg-[#F0FDFA] text-[#0D9488] border border-teal-200/70",
-  "Tatkal": "bg-[#FFF7ED] text-[#C2410C] border border-orange-200/70",
+  "Tatkal": "bg-[#FFF7ED] text-[#F36B21] border border-orange-200/70",
   "Cancellation & Refund": "bg-[#FFF1F2] text-[#BE123C] border border-rose-200/70",
   "Troubleshooting": "bg-[#FFFBEB] text-[#B45309] border border-amber-200/70",
   "Business Tips": "bg-[#F5F3FF] text-[#7C3AED] border border-violet-200/70",

@@ -90,7 +90,7 @@ export default async function VideoGuidesPage() {
         }}
       />
       <Header />
-      <main className="relative flex-1 overflow-hidden bg-[#fff9f5] pt-4 pb-4">
+      <main id="main-content" tabIndex={-1} className="relative flex-1 overflow-hidden bg-[#fff9f5] pt-4 pb-4">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -left-24 top-20 h-72 w-72 rounded-full bg-orange-100/50 blur-[90px]"
@@ -102,7 +102,7 @@ export default async function VideoGuidesPage() {
 
         <div className="site-container relative">
           <div className="mb-6 sm:mb-8">
-            <div className="mx-auto mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/70 px-3.5 py-1 text-xs font-[800] uppercase tracking-[0.12em] text-[#e96713] shadow-sm backdrop-blur-md min-[520px]:mx-0">
+            <div className="mx-auto mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/70 px-3.5 py-1 text-xs font-[800] uppercase tracking-[0.12em] text-[var(--primary-text)] shadow-sm backdrop-blur-md min-[520px]:mx-0">
               <PlayCircle aria-hidden="true" className="h-3.5 w-3.5" />
               Video Learning
             </div>
@@ -135,11 +135,11 @@ export default async function VideoGuidesPage() {
             </p>
           </div>
 
-          {videos.length > 0 ? <VideoGuidesList videos={videos} /> : (
+          {videos.length > 0 ? <section aria-labelledby="latest-video-guides"><h2 id="latest-video-guides" className="sr-only">Latest railway video guides</h2><VideoGuidesList videos={videos} /></section> : (
             <div className="rounded-3xl border border-[#f1e4d9] bg-white/80 px-6 py-12 text-center shadow-[0_10px_30px_rgba(15,39,71,0.05)] backdrop-blur-md">
               <PlayCircle
                 aria-hidden="true"
-                className="mx-auto h-10 w-10 text-[#f97316]"
+                className="mx-auto h-10 w-10 text-[#F36B21]"
               />
               <h2 className="mt-4 text-xl font-[800] text-[var(--navy)]">
                 Video guides are coming soon

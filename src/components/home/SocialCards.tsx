@@ -22,7 +22,7 @@ export function SocialCards() {
             Daily Updates
             {/* Top right spark accents */}
             <svg
-              className="absolute -top-3 -right-6 hidden h-6 w-6 text-[#f97316] lg:block"
+              className="absolute -top-3 -right-6 hidden h-6 w-6 text-[#F36B21] lg:block"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -85,7 +85,7 @@ export function SocialCards() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Subscribe on YouTube"
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#c2410c] to-[#9a3412] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)] transition-all duration-200 hover:scale-105 hover:shadow-[0_8px_25px_rgba(249,115,22,0.4)]"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F36B21] to-[#9a3412] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)] transition-all duration-200 hover:scale-105 hover:shadow-[0_8px_25px_rgba(249,115,22,0.4)]"
               >
                 Subscribe <ArrowRight className="h-4 w-4" />
               </a>
@@ -170,7 +170,7 @@ export function SocialCards() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Follow on Instagram"
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#c2410c] to-[#9a3412] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)] transition-all duration-200 hover:scale-105 hover:shadow-[0_8px_25px_rgba(249,115,22,0.4)]"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F36B21] to-[#9a3412] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)] transition-all duration-200 hover:scale-105 hover:shadow-[0_8px_25px_rgba(249,115,22,0.4)]"
               >
                 Follow <ArrowRight className="h-4 w-4" />
               </a>
@@ -265,7 +265,7 @@ export function SocialCards() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Join on Facebook"
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#c2410c] to-[#9a3412] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)] transition-all duration-200 hover:scale-105 hover:shadow-[0_8px_25px_rgba(249,115,22,0.4)]"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F36B21] to-[#9a3412] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)] transition-all duration-200 hover:scale-105 hover:shadow-[0_8px_25px_rgba(249,115,22,0.4)]"
               >
                 Follow <ArrowRight className="h-4 w-4" />
               </a>

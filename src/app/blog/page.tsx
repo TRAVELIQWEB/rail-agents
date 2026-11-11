@@ -90,7 +90,7 @@ export default async function BlogPage() {
       />
       <Header />
 
-      <main className="relative flex-1 overflow-hidden">
+      <main id="main-content" tabIndex={-1} className="relative flex-1 overflow-hidden">
         {/* Subtle Ambient Background */}
         <div
           aria-hidden="true"

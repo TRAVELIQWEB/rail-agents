@@ -900,7 +900,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
 
       <Header />
 
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-[#0B192C] pt-10 pb-28 md:pt-14 md:pb-32">
           <div className="absolute inset-0 z-0">
@@ -942,7 +942,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 {/* H1 Heading */}
                 <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold tracking-tight text-white leading-[1.14] mb-5">
                   List Of IRCTC{" "}
-                  <span className="text-[#F97316]">Principal Service Providers</span>
+                  <span className="text-[#F36B21]">Principal Service Providers</span>
                 </h1>
 
                 <p className="text-base sm:text-lg text-slate-200/90 leading-relaxed mb-8 max-w-2xl">
@@ -970,7 +970,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 <div className="flex flex-wrap items-center gap-3.5">
                   <Link
                     href="/irctc-agent-registration"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#EA580C] hover:bg-[#C2410C] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-950/30 transition-all"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#F36B21] hover:bg-[#F36B21] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-950/30 transition-all"
                   >
                     Become an IRCTC Agent
                     <ArrowRight className="h-4 w-4" />
@@ -1043,7 +1043,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     rel="noopener noreferrer"
                     className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-white text-[#0F2747] hover:bg-orange-50 px-4 py-2.5 text-xs sm:text-sm font-extrabold transition-colors"
                   >
-                    <FileText className="h-4 w-4 text-[#EA580C]" />
+                    <FileText className="h-4 w-4 text-[#F36B21]" />
                     Open Official IRCTC PDF
                     <ExternalLink className="h-3.5 w-3.5 text-slate-500" />
                   </a>
@@ -1064,7 +1064,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                   className="group bg-white rounded-2xl p-5 md:p-6 shadow-md hover:shadow-lg border border-slate-200/90 hover:border-orange-300 transition-all flex flex-col justify-between"
                 >
                   <div>
-                    <div className="text-3xl md:text-4xl font-extrabold text-[#0F2747] group-hover:text-[#EA580C] transition-colors mb-1">
+                    <div className="text-3xl md:text-4xl font-extrabold text-[#0F2747] group-hover:text-[#F36B21] transition-colors mb-1">
                       {stat.count}
                     </div>
                     <div className="text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wider">
@@ -1073,7 +1073,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                   </div>
                   <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                     <span>{stat.sublabel}</span>
-                    <span className="font-semibold text-[#EA580C] group-hover:translate-x-0.5 transition-transform">
+                    <span className="font-semibold text-[#F36B21] group-hover:translate-x-0.5 transition-transform">
                       Jump →
                     </span>
                   </div>
@@ -1096,7 +1096,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                   href={item.href}
                   className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
                     item.href === "#official-pdf"
-                      ? "bg-orange-50 text-[#EA580C] border border-orange-200 hover:bg-orange-100"
+                      ? "bg-orange-50 text-[#F36B21] border border-orange-200 hover:bg-orange-100"
                       : "bg-slate-50 text-slate-700 border border-slate-200/70 hover:bg-slate-100 hover:text-slate-900"
                   }`}
                 >
@@ -1115,7 +1115,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Left Column: Directory Explanation */}
                 <div className="lg:col-span-7">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#D9540E]">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#F36B21]">
                     <Building2 className="h-3.5 w-3.5" />
                     Directory Overview
                   </span>
@@ -1156,7 +1156,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                   id="official-pdf"
                   className="lg:col-span-5 scroll-mt-28 rounded-2xl border-2 border-orange-200 bg-gradient-to-br from-orange-50/70 via-white to-amber-50/40 p-6 shadow-xs"
                 >
-                  <div className="inline-flex items-center gap-2 rounded-lg bg-orange-100/80 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[#D9540E]">
+                  <div className="inline-flex items-center gap-2 rounded-lg bg-orange-100/80 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[#F36B21]">
                     <FileText className="h-3.5 w-3.5" />
                     Reference Document
                   </div>
@@ -1173,7 +1173,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                       href={OFFICIAL_PDF_HREF}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#D9540E] hover:bg-[#B84307] px-4 py-3 text-sm font-bold text-white shadow-xs transition-colors"
+                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#F36B21] hover:bg-[#B84307] px-4 py-3 text-sm font-bold text-white shadow-xs transition-colors"
                     >
                       View Source PDF
                       <ExternalLink className="h-4 w-4" />
@@ -1197,7 +1197,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
               {/* 4 Key Guidance Cards */}
               <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="rounded-2xl border border-slate-200/90 bg-[#FBF9F6] p-5">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#D9540E]">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#F36B21]">
                     What a PSP does
                   </div>
                   <h3 className="mt-1.5 text-base font-bold text-slate-900">
@@ -1211,7 +1211,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 </div>
 
                 <div className="rounded-2xl border border-slate-200/90 bg-[#FBF9F6] p-5">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#D9540E]">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#F36B21]">
                     Why selection matters
                   </div>
                   <h3 className="mt-1.5 text-base font-bold text-slate-900">
@@ -1225,7 +1225,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 </div>
 
                 <div className="rounded-2xl border border-slate-200/90 bg-[#FBF9F6] p-5">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#D9540E]">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#F36B21]">
                     How to verify
                   </div>
                   <h3 className="mt-1.5 text-base font-bold text-slate-900">
@@ -1239,7 +1239,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 </div>
 
                 <div className="rounded-2xl border border-slate-200/90 bg-[#FBF9F6] p-5">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#D9540E]">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#F36B21]">
                     RailAgents’ role
                   </div>
                   <h3 className="mt-1.5 text-base font-bold text-slate-900">
@@ -1249,21 +1249,21 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     Explore our{" "}
                     <Link
                       href="/irctc-agent-registration"
-                      className="font-semibold text-[#D9540E] hover:underline"
+                      className="font-semibold text-[#F36B21] hover:underline"
                     >
                       IRCTC Agent Registration & Compliance Guide
                     </Link>
                     ,{" "}
                     <Link
                       href="/guides/become-irctc-agent"
-                      className="font-semibold text-[#D9540E] hover:underline"
+                      className="font-semibold text-[#F36B21] hover:underline"
                     >
                       Step-by-Step Onboarding Guide
                     </Link>
                     , or{" "}
                     <Link
                       href="/ask-nihal"
-                      className="font-semibold text-[#D9540E] hover:underline"
+                      className="font-semibold text-[#F36B21] hover:underline"
                     >
                       Ask Nihal Singh
                     </Link>{" "}
@@ -1282,7 +1282,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
             <div id="b2b-scheme" className="scroll-mt-28">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200">
                 <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#D9540E] shrink-0">
+                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#F36B21] shrink-0">
                     <Building2 className="h-5 w-5" />
                   </div>
                   <div>
@@ -1296,9 +1296,9 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 </div>
                 <a
                   href="#official-pdf"
-                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#D9540E] transition-colors"
+                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
                 >
-                  <FileText className="h-3.5 w-3.5 text-[#D9540E]" />
+                  <FileText className="h-3.5 w-3.5 text-[#F36B21]" />
                   Jump to Official PDF
                 </a>
               </div>
@@ -1350,7 +1350,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
             <div id="ics-scheme" className="scroll-mt-28">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200">
                 <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#D9540E] shrink-0">
+                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#F36B21] shrink-0">
                     <Users className="h-5 w-5" />
                   </div>
                   <div>
@@ -1364,9 +1364,9 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 </div>
                 <a
                   href="#official-pdf"
-                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#D9540E] transition-colors"
+                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
                 >
-                  <FileText className="h-3.5 w-3.5 text-[#D9540E]" />
+                  <FileText className="h-3.5 w-3.5 text-[#F36B21]" />
                   Jump to Official PDF
                 </a>
               </div>
@@ -1418,7 +1418,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
             <div id="b2c-scheme" className="scroll-mt-28">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200">
                 <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#D9540E] shrink-0">
+                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#F36B21] shrink-0">
                     <Sparkles className="h-5 w-5" />
                   </div>
                   <div>
@@ -1432,9 +1432,9 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 </div>
                 <a
                   href="#official-pdf"
-                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#D9540E] transition-colors"
+                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
                 >
-                  <FileText className="h-3.5 w-3.5 text-[#D9540E]" />
+                  <FileText className="h-3.5 w-3.5 text-[#F36B21]" />
                   Jump to Official PDF
                 </a>
               </div>
@@ -1445,7 +1445,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     key={provider}
                     className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center gap-3 hover:border-orange-300 transition-colors"
                   >
-                    <div className="w-8 h-8 rounded-full bg-orange-50 border border-orange-200/70 flex items-center justify-center text-[#D9540E] font-bold text-xs shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-orange-50 border border-orange-200/70 flex items-center justify-center text-[#F36B21] font-bold text-xs shrink-0">
                       {idx + 1}
                     </div>
                     <span className="text-slate-800 font-medium text-sm">{provider}</span>
@@ -1459,7 +1459,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
               {/* 4. G2G Scheme */}
               <div id="g2g-scheme" className="scroll-mt-28">
                 <div className="flex items-center gap-3.5 mb-6 pb-4 border-b border-slate-200">
-                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#D9540E] shrink-0">
+                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#F36B21] shrink-0">
                     <Landmark className="h-5 w-5" />
                   </div>
                   <div>
@@ -1489,7 +1489,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
               {/* 5. TIES Scheme */}
               <div id="ties-scheme" className="scroll-mt-28">
                 <div className="flex items-center gap-3.5 mb-6 pb-4 border-b border-slate-200">
-                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#D9540E] shrink-0">
+                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#F36B21] shrink-0">
                     <Radio className="h-5 w-5" />
                   </div>
                   <div>
@@ -1507,7 +1507,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                       key={entity}
                       className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/60"
                     >
-                      <span className="w-6 h-6 rounded-full bg-[#D9540E] text-white text-xs flex items-center justify-center font-bold shrink-0">
+                      <span className="w-6 h-6 rounded-full bg-[#F36B21] text-white text-xs flex items-center justify-center font-bold shrink-0">
                         {idx + 1}
                       </span>
                       <span className="text-slate-800 font-medium text-sm">{entity}</span>
@@ -1521,7 +1521,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
             <div id="gsa-scheme" className="scroll-mt-28">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200">
                 <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#D9540E] shrink-0">
+                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#F36B21] shrink-0">
                     <Globe className="h-5 w-5" />
                   </div>
                   <div>
@@ -1535,9 +1535,9 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 </div>
                 <a
                   href="#official-pdf"
-                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#D9540E] transition-colors"
+                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
                 >
-                  <FileText className="h-3.5 w-3.5 text-[#D9540E]" />
+                  <FileText className="h-3.5 w-3.5 text-[#F36B21]" />
                   Jump to Official PDF
                 </a>
               </div>
@@ -1548,7 +1548,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     key={`${gsa.name}-${idx}`}
                     className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-start gap-3 hover:border-orange-300 transition-colors"
                   >
-                    <Globe className="h-5 w-5 text-[#D9540E] shrink-0 mt-0.5" />
+                    <Globe className="h-5 w-5 text-[#F36B21] shrink-0 mt-0.5" />
                     <div>
                       <div className="text-slate-900 font-bold text-sm">{gsa.name}</div>
                       <div className="text-slate-500 text-xs mt-0.5">{gsa.location}</div>
@@ -1562,7 +1562,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
             <div id="egov-scheme" className="scroll-mt-28">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200">
                 <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#D9540E] shrink-0">
+                  <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-200/80 flex items-center justify-center text-[#F36B21] shrink-0">
                     <ShieldCheck className="h-5 w-5" />
                   </div>
                   <div>
@@ -1576,9 +1576,9 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 </div>
                 <a
                   href="#official-pdf"
-                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#D9540E] transition-colors"
+                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
                 >
-                  <FileText className="h-3.5 w-3.5 text-[#D9540E]" />
+                  <FileText className="h-3.5 w-3.5 text-[#F36B21]" />
                   Jump to Official PDF
                 </a>
               </div>
@@ -1589,7 +1589,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     key={provider.sno}
                     className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs"
                   >
-                    <div className="inline-flex items-center gap-1.5 rounded-md bg-orange-50 px-2.5 py-1 text-xs font-bold text-[#D9540E] mb-3">
+                    <div className="inline-flex items-center gap-1.5 rounded-md bg-orange-50 px-2.5 py-1 text-xs font-bold text-[#F36B21] mb-3">
                       E-Governance Partner #{provider.sno}
                     </div>
                     <h3 className="text-lg font-bold text-slate-900 mb-3">{provider.company}</h3>
@@ -1630,7 +1630,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 <div className="flex flex-wrap items-center gap-3.5">
                   <Link
                     href="/irctc-agent-registration"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#D9540E] hover:bg-[#B84307] px-6 py-3.5 text-sm font-bold text-white transition-colors"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#F36B21] hover:bg-[#B84307] px-6 py-3.5 text-sm font-bold text-white transition-colors"
                   >
                     IRCTC Agent Registration Guide
                     <ArrowRight className="h-4 w-4" />

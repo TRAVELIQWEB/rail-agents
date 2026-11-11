@@ -86,7 +86,7 @@ export default function GuidesPage() {
       />
       <Header />
 
-      <main className="relative flex-1 overflow-hidden bg-[#fff9f5]">
+      <main id="main-content" tabIndex={-1} className="relative flex-1 overflow-hidden bg-[#fff9f5]">
         {/* Ambient subtle glow backgrounds */}
         <div
           aria-hidden="true"

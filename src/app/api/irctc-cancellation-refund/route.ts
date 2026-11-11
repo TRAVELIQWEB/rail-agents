@@ -400,6 +400,16 @@ function getTimingOperationResponse(body: Record<string, unknown>) {
   }
 
   if (body.operation === "timing-preview") {
+    if (
+      !body.quickTimeBandId &&
+      (!body.cancellationDateTimeLocal || !body.departureDateTimeLocal)
+    ) {
+      return jsonResponse({
+        timing: null,
+        message: "Enter both valid times to calculate the time before departure.",
+      });
+    }
+
     const timing = resolveIRCTCTiming({
       ruleRegime: body.ruleRegime as IRCTCRuleRegime,
       cancellationDateTimeLocal:
@@ -414,7 +424,11 @@ function getTimingOperationResponse(body: Record<string, unknown>) {
       quickTimeBandId: body.quickTimeBandId as IRCTCQuickTimeBandId | null,
     });
     if (!timing.ok) {
-      return jsonResponse({ error: "Invalid timing input.", fieldErrors: timing.errors }, 400);
+      return jsonResponse({
+        timing: null,
+        error: "Invalid timing input.",
+        fieldErrors: timing.errors,
+      });
     }
     return jsonResponse({ timing: timing.timing });
   }

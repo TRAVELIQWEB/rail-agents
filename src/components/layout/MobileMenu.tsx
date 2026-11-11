@@ -2,18 +2,22 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Calculator, CalendarDays, Menu, MessageCircle, Radio, TicketCheck, TrainFront, X } from "lucide-react";
+import { Calculator, CalendarDays, Menu, Radio, TicketCheck, TrainFront, X } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 import { InternalLink } from "@/components/ui/InternalLink";
 import { railTools } from "@/config/tools";
+import { siteConfig } from "@/config/site";
+
+const message = encodeURIComponent(siteConfig.whatsapp.message);
+const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${message}`;
 
 const navItems = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Live Train", href: "/live-train-status" },
-  { label: "PNR Status", href: "/pnr-status" },
   { label: "Guides", href: "/guides" },
   { label: "Tools", href: "/tools" },
   { label: "Blog", href: "/blog" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 export function MobileMenu() {
@@ -42,32 +46,8 @@ export function MobileMenu() {
     };
   }, [isOpen]);
 
-  const isCalcPage =
-    pathname === "/train-ticket-agent-fare-calculator" ||
-    pathname === "/fare-calculator" ||
-    pathname === "/irctc-cancellation-refund-calculator";
-
   return (
-    <div className="relative flex shrink-0 items-center gap-1 sm:gap-2 min-[1080px]:hidden" ref={menuRef}>
-      <InternalLink
-        href="/train-ticket-agent-fare-calculator"
-        prefetch={false}
-        aria-label="IRCTC Ticket Fare Calculator"
-        title="Fare Calculator"
-        className={`flex h-11 w-11 items-center justify-center rounded-lg border border-[var(--primary-border)] bg-orange-50/70 text-[var(--primary-dark)] hover:bg-orange-100/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${isCalcPage ? "hidden min-[380px]:flex" : "flex"
-          }`}
-      >
-        <Calculator aria-hidden="true" className="h-4 w-4 sm:h-5 sm:w-5" />
-      </InternalLink>
-      <InternalLink
-        href="/contact"
-        prefetch={false}
-        aria-label="Contact RailAgents"
-        title="Contact Us"
-        className="flex h-11 w-11 items-center justify-center rounded-lg border border-[var(--primary-border)] text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
-      >
-        <MessageCircle aria-hidden="true" className="h-4 w-4 sm:h-5 sm:w-5" />
-      </InternalLink>
+    <div className="relative flex shrink-0 items-center min-[1080px]:hidden" ref={menuRef}>
       <button
         type="button"
         aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
@@ -148,14 +128,18 @@ export function MobileMenu() {
             </div>
           </nav>
 
-          <InternalLink
-            href="/contact"
-            prefetch={false}
-            onClick={() => setIsOpen(false)}
-            className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-full bg-[var(--primary)] px-4 py-2.5 text-[0.9375rem] font-semibold text-white shadow-[0_10px_22px_rgba(249,115,22,0.22)] transition-all duration-200 hover:-translate-y-px hover:bg-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
-          >
-            Contact Us
-          </InternalLink>
+          <div className="mt-3">
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsOpen(false)}
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 py-2.5 text-[0.9375rem] font-bold text-white shadow-[0_4px_14px_rgba(37,211,102,0.3)] transition-all duration-200 hover:bg-[#20ba5a]"
+            >
+              <FaWhatsapp className="h-5 w-5 shrink-0" aria-hidden="true" />
+              <span>WhatsApp Us</span>
+            </a>
+          </div>
         </div>
       ) : null}
     </div>

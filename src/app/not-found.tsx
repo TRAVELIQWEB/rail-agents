@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-      <div className="relative flex min-h-[calc(100vh-140px)] flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#fffdfa] via-[#fff9f2] to-[#fff4e8] px-4 py-16 text-center sm:px-6">
+      <main id="main-content" tabIndex={-1} className="relative flex min-h-[calc(100vh-140px)] flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#fffdfa] via-[#fff9f2] to-[#fff4e8] px-4 py-16 text-center sm:px-6">
       {/* Subtle background ambient circles */}
       <div
         aria-hidden="true"
@@ -29,7 +29,7 @@ export default function NotFound() {
             particleSize={3}
             density={3.5}
             color="#0f2747"
-            highlightColor="#f97316"
+            highlightColor="#F36B21"
             highlightMode="motion"
             shape="circle"
             intro="gather"
@@ -91,6 +91,6 @@ export default function NotFound() {
           </Link>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

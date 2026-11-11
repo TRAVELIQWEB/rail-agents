@@ -225,7 +225,7 @@ export default function IrctcAgentRulesPage() {
         </div>
       </div>
 
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
         {/* =========================================================
             HERO INTRODUCTORY SECTION
         ========================================================== */}
@@ -297,10 +297,10 @@ export default function IrctcAgentRulesPage() {
             {/* STICKY DESKTOP TABLE OF CONTENTS (25%) */}
             <aside className="lg:col-span-3 sticky top-24 self-start order-2 lg:order-1 print:hidden">
               <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-xs">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center justify-between border-b border-slate-100 pb-2">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center justify-between border-b border-slate-100 pb-2">
                   <span>Table of Contents</span>
                   <span className="text-[11px] font-normal text-slate-400">14 Chapters</span>
-                </h3>
+                </h2>
                 <nav aria-label="Quick jump navigation">
                   <ol className="space-y-1 text-xs">
                     {TOC_SECTIONS.map((sec) => (
@@ -456,10 +456,10 @@ export default function IrctcAgentRulesPage() {
                 </div>
 
                 <div className="rounded-xl border border-red-200 bg-red-50/50 p-4 text-xs sm:text-sm text-red-950">
-                  <h4 className="font-bold flex items-center gap-1.5 text-red-900 mb-2">
+                  <h3 className="font-bold flex items-center gap-1.5 text-red-900 mb-2">
                     <ShieldAlert size={16} className="text-red-700" />
                     Practical Warnings for Aspiring Agents:
-                  </h4>
+                  </h3>
                   <ul className="list-disc pl-5 space-y-1 text-xs text-red-900/90 leading-relaxed">
                     <li><strong>Never purchase another person&apos;s ID:</strong> Agent IDs are strictly non-transferable. Operating under someone else&apos;s name is fraudulent.</li>
                     <li><strong>Never share credentials or OTPs:</strong> Never provide your master login, token password, or verification SMS to telecallers, software vendors, or colleagues.</li>
@@ -487,10 +487,10 @@ export default function IrctcAgentRulesPage() {
 
                 <div className="grid gap-3 sm:grid-cols-2 mb-5">
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h4 className="font-bold text-xs uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
+                    <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
                       <UserCheck size={14} className="text-orange-600" />
                       Customer Intake &amp; Consent
-                    </h4>
+                    </h3>
                     <p className="text-xs text-slate-600 leading-relaxed">
                       Always collect a written or digital booking requisition containing exact passenger names (as per government ID),
                       ages, gender, and preferred berth options. Keep customer consent on file.
@@ -498,10 +498,10 @@ export default function IrctcAgentRulesPage() {
                   </div>
 
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h4 className="font-bold text-xs uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
+                    <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
                       <Receipt size={14} className="text-orange-600" />
                       Passenger Mobile Entry
-                    </h4>
+                    </h3>
                     <p className="text-xs text-slate-600 leading-relaxed">
                       Under IRCTC compliance rules, you <strong>must enter the customer&apos;s own active mobile number</strong> during
                       booking. Never input your agency&apos;s phone number. Direct PNR alerts and cancellation OTPs must reach the traveller.
@@ -509,10 +509,10 @@ export default function IrctcAgentRulesPage() {
                   </div>
 
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h4 className="font-bold text-xs uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
+                    <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
                       <Train size={14} className="text-orange-600" />
                       ERS Printout Delivery
-                    </h4>
+                    </h3>
                     <p className="text-xs text-slate-600 leading-relaxed">
                       Deliver the complete official Electronic Reservation Slip (ERS). The printed slip automatically displays
                       your agency name, address, phone number, and official fare breakdown.
@@ -520,10 +520,10 @@ export default function IrctcAgentRulesPage() {
                   </div>
 
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h4 className="font-bold text-xs uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
+                    <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
                       <Clock size={14} className="text-orange-600" />
                       Booking Windows &amp; Limits
-                    </h4>
+                    </h3>
                     <p className="text-xs text-slate-600 leading-relaxed">
                       Observe general reservation Advance Reservation Period (ARP) timings and the mandatory initial 15-minute
                       agent lock during general morning counter opening (08:00 to 08:15 AM).
@@ -532,10 +532,10 @@ export default function IrctcAgentRulesPage() {
                 </div>
 
                 <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-4 text-xs sm:text-sm text-blue-950">
-                  <h4 className="font-bold text-blue-900 mb-1 flex items-center gap-1.5">
+                  <h3 className="font-bold text-blue-900 mb-1 flex items-center gap-1.5">
                     <Info size={15} className="text-blue-700" />
                     Explaining Ticket Status Realistically:
-                  </h4>
+                  </h3>
                   <p className="text-xs text-blue-900/90 leading-relaxed">
                     Always inform the passenger of their precise ticket status upon issuance: <strong>Confirmed (CNF)</strong>,
                     <strong>Reservation Against Cancellation (RAC)</strong>, or <strong>Waitlisted (WL)</strong>. Explain that
@@ -569,9 +569,9 @@ export default function IrctcAgentRulesPage() {
                   {/* Item 1 */}
                   <div className="rounded-xl border border-red-200 bg-white p-4 shadow-2xs">
                     <div className="flex items-start justify-between gap-2">
-                      <h4 className="font-bold text-sm text-red-900">
+                      <h3 className="font-bold text-sm text-red-900">
                         1. Commercial Ticket Booking on Personal Consumer IDs
-                      </h4>
+                      </h3>
                       <span className="rounded bg-red-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-red-800 shrink-0">
                         Criminal Offence
                       </span>
@@ -595,9 +595,9 @@ export default function IrctcAgentRulesPage() {
                   {/* Item 2 */}
                   <div className="rounded-xl border border-red-200 bg-white p-4 shadow-2xs">
                     <div className="flex items-start justify-between gap-2">
-                      <h4 className="font-bold text-sm text-red-900">
+                      <h3 className="font-bold text-sm text-red-900">
                         2. Overcharging Above Prescribed Service Fees
-                      </h4>
+                      </h3>
                       <span className="rounded bg-orange-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-orange-900 shrink-0">
                         License Violation
                       </span>
@@ -619,9 +619,9 @@ export default function IrctcAgentRulesPage() {
                   {/* Item 3 */}
                   <div className="rounded-xl border border-red-200 bg-white p-4 shadow-2xs">
                     <div className="flex items-start justify-between gap-2">
-                      <h4 className="font-bold text-sm text-red-900">
+                      <h3 className="font-bold text-sm text-red-900">
                         3. Entering Agency Mobile Numbers Instead of Passenger Numbers
-                      </h4>
+                      </h3>
                       <span className="rounded bg-amber-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-amber-900 shrink-0">
                         Audit Finding
                       </span>
@@ -643,9 +643,9 @@ export default function IrctcAgentRulesPage() {
                   {/* Item 4 */}
                   <div className="rounded-xl border border-red-200 bg-white p-4 shadow-2xs">
                     <div className="flex items-start justify-between gap-2">
-                      <h4 className="font-bold text-sm text-red-900">
+                      <h3 className="font-bold text-sm text-red-900">
                         4. Deploying Unauthorized Automation or Autofill Software
-                      </h4>
+                      </h3>
                       <span className="rounded bg-red-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-red-800 shrink-0">
                         Severe Cyber Offence
                       </span>
@@ -667,9 +667,9 @@ export default function IrctcAgentRulesPage() {
                   {/* Item 5 */}
                   <div className="rounded-xl border border-red-200 bg-white p-4 shadow-2xs">
                     <div className="flex items-start justify-between gap-2">
-                      <h4 className="font-bold text-sm text-red-900">
+                      <h3 className="font-bold text-sm text-red-900">
                         5. Unauthorized Cancellations &amp; Withholding Refunds
-                      </h4>
+                      </h3>
                       <span className="rounded bg-red-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-red-800 shrink-0">
                         Breach of Trust
                       </span>
@@ -779,10 +779,10 @@ export default function IrctcAgentRulesPage() {
 
                 <div className="grid gap-4 sm:grid-cols-2 text-xs sm:text-sm mb-4">
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h4 className="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+                    <h3 className="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
                       <Building size={14} className="text-orange-600" />
                       Display Authorization Certificate
-                    </h4>
+                    </h3>
                     <p className="text-slate-600 text-xs leading-relaxed">
                       Frame and prominently display your official IRCTC / PSP Retail Service Provider certificate in public view
                       near your counter. Ensure the agent name, RSP ID, and validity period are easily readable by walk-in customers.
@@ -790,10 +790,10 @@ export default function IrctcAgentRulesPage() {
                   </div>
 
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h4 className="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+                    <h3 className="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
                       <FileText size={14} className="text-orange-600" />
                       Noticeboard of Permissible Charges
-                    </h4>
+                    </h3>
                     <p className="text-slate-600 text-xs leading-relaxed">
                       Display a clear bilingual (Hindi/English or regional language) signboard stating the official permissible
                       service charges: <strong>₹20 + GST for Non-AC</strong> and <strong>₹40 + GST for AC</strong> classes.
@@ -802,7 +802,7 @@ export default function IrctcAgentRulesPage() {
                 </div>
 
                 <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4 text-xs text-slate-700">
-                  <h4 className="font-bold text-slate-900 mb-1">Cooperation with Authorized Compliance Inspections:</h4>
+                  <h3 className="font-bold text-slate-900 mb-1">Cooperation with Authorized Compliance Inspections:</h3>
                   <p className="leading-relaxed">
                     When an authorized railway official or PSP auditor visits your counter and presents official identification,
                     you must cooperate fully. They may inspect your customer booking requisition registers, recent cancellation slips,
@@ -929,10 +929,10 @@ export default function IrctcAgentRulesPage() {
                 </div>
 
                 <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-4 text-xs sm:text-sm text-amber-950 space-y-2">
-                  <h4 className="font-bold text-amber-900 flex items-center gap-1.5">
+                  <h3 className="font-bold text-amber-900 flex items-center gap-1.5">
                     <AlertTriangle size={15} className="text-amber-700" />
                     Important TDR Realities to Explain to Customers:
-                  </h4>
+                  </h3>
                   <ul className="list-disc pl-5 space-y-1 text-xs text-amber-900/90 leading-relaxed">
                     <li><strong>Filing a TDR does not guarantee money back:</strong> Claims are audited by the relevant Zonal Railway Commercial Department against computerized charting logs and guard memos.</li>
                     <li><strong>Never choose an inaccurate TDR reason:</strong> Selecting a false reason (such as claiming the train was cancelled when it operated normally) leads to instant claim repudiation and potential vigilance inquiry.</li>
@@ -959,10 +959,10 @@ export default function IrctcAgentRulesPage() {
 
                 <div className="grid gap-4 sm:grid-cols-2 mb-5">
                   <div className="rounded-xl border border-emerald-200 bg-emerald-50/40 p-4 shadow-2xs">
-                    <h4 className="font-bold text-xs uppercase tracking-wider text-emerald-900 mb-2 flex items-center gap-1.5">
+                    <h3 className="font-bold text-xs uppercase tracking-wider text-emerald-900 mb-2 flex items-center gap-1.5">
                       <CheckCircle2 size={15} className="text-emerald-600" />
                       Tatkal Booking Dos:
-                    </h4>
+                    </h3>
                     <ul className="space-y-2 text-xs text-emerald-950">
                       <li>• Observe Tatkal opening windows: AC Tatkal opens for agents at <strong>10:30 AM</strong> (30-min lock); Non-AC Tatkal opens for agents at <strong>11:30 AM</strong>.</li>
                       <li>• Verify government photo ID details for each passenger before attempting Tatkal bookings.</li>
@@ -972,10 +972,10 @@ export default function IrctcAgentRulesPage() {
                   </div>
 
                   <div className="rounded-xl border border-red-200 bg-red-50/40 p-4 shadow-2xs">
-                    <h4 className="font-bold text-xs uppercase tracking-wider text-red-900 mb-2 flex items-center gap-1.5">
+                    <h3 className="font-bold text-xs uppercase tracking-wider text-red-900 mb-2 flex items-center gap-1.5">
                       <XCircle size={15} className="text-red-600" />
                       Tatkal Booking Don&apos;ts:
-                    </h4>
+                    </h3>
                     <ul className="space-y-2 text-xs text-red-950">
                       <li>• <strong>Never use unauthorized Tatkal software:</strong> Tools claiming instant checkout or captcha bypass are criminal hacking offences.</li>
                       <li>• <strong>Never guarantee Tatkal confirmation:</strong> Seat quotas exhaust in seconds; guaranteeing confirmation is deceptive trade practice.</li>
@@ -1004,9 +1004,9 @@ export default function IrctcAgentRulesPage() {
 
                 <div className="space-y-3 text-xs sm:text-sm text-slate-700">
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-1">
+                    <h3 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-1">
                       Data Minimization &amp; Privacy Protection
-                    </h4>
+                    </h3>
                     <p className="text-xs text-slate-600 leading-relaxed">
                       Collect only the passenger details strictly required to process the railway reservation. Never distribute,
                       sell, or share customer contact databases with third-party marketing companies, insurance telemarketers, or loan agents.
@@ -1014,9 +1014,9 @@ export default function IrctcAgentRulesPage() {
                   </div>
 
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h4 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-1">
+                    <h3 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-1">
                       Requisition Slip Retention
-                    </h4>
+                    </h3>
                     <p className="text-xs text-slate-600 leading-relaxed">
                       Maintain a sequential physical file or scanned digital archive of signed customer booking requisitions,
                       cancellation request slips, and printed transaction ledgers. When railway vigilance conducts investigations

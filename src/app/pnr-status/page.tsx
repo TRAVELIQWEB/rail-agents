@@ -1882,7 +1882,7 @@ function PnrStatusPageView({
   return (
     <div className="flex min-h-screen flex-col bg-[#F8FAFC] text-slate-900">
       <Header />
-      <main className="flex-1 px-4 py-4 sm:py-5">
+      <main id="main-content" tabIndex={-1} className="flex-1 px-4 py-4 sm:py-5">
         <AllToolsLink />
         {pnrBody}
       </main>
@@ -1935,9 +1935,10 @@ function PnrStatusPageFallback() {
   return (
     <div className="flex min-h-screen flex-col bg-[#F8FAFC] text-slate-900">
       <Header />
-      <main className="flex-1 px-4 py-4 sm:py-5">
+      <main id="main-content" tabIndex={-1} className="flex-1 px-4 py-4 sm:py-5">
         <AllToolsLink />
         <div className="pnr-page-container">
+          <h1 className="mb-4 text-xl font-extrabold text-[#142B45] sm:text-2xl">PNR Status Check</h1>
           <div
             aria-hidden="true"
             className="animate-pulse rounded-2xl border border-slate-200 bg-white p-4 sm:p-5"

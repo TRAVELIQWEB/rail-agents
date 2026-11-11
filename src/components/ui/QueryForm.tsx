@@ -58,7 +58,7 @@ export function QueryForm() {
 
       {/* Form Card Header - Consistently left-aligned */}
       <div className="mb-4 flex items-start gap-3.5 text-left">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#ea580c] to-[#f97316] text-white shadow-xs">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#F36B21] to-[#F36B21] text-white shadow-xs">
           <MessageCircle aria-hidden="true" className="h-5 w-5 fill-white/20 text-white" />
         </div>
         <div>

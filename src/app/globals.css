@@ -3,12 +3,12 @@
 :root {
   --background: #fffdfb;
   --foreground: #102b4e;
-  --primary: #f97316;
-  --primary-hover: #ea580c;
-  --primary-dark: #c2410c;
-  --primary-action: #c2410c;
-  --primary-action-hover: #9a3412;
-  --primary-text: #c2410c;
+  --primary: #F36B21;
+  --primary-hover: #b54712;
+  --primary-dark: #b54712;
+  --primary-action: #F36B21;
+  --primary-action-hover: #b54712;
+  --primary-text: #b54712;
   --primary-soft: #fff7ed;
   --primary-light: #ffedd5;
   --primary-border: #fed7aa;
@@ -19,7 +19,7 @@
 
   /* Design System Tokens — Primary Brand & Neutrals */
   --brand-navy: #102b4e;
-  --brand-orange: #c2410c;
+  --brand-orange: #F36B21;
   --surface-white: #ffffff;
   --page-bg: #f8fafc;
   --text-primary: #102b4e;
@@ -49,9 +49,10 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
   --font-mono: var(--font-inter);
-  --color-orange-500: #f97316;
-  --color-orange-600: #ea580c;
-  --color-orange-700: #c2410c;
+  --color-orange-400: #F36B21;
+  --color-orange-500: #F36B21;
+  --color-orange-600: #F36B21;
+  --color-orange-700: #F36B21;
 }
 
 * {
@@ -60,11 +61,13 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: clip;
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
@@ -470,6 +473,8 @@ textarea {
 
 /* ── Blog post content styles ──────────────────────────────── */
 .blog-content {
+  min-width: 0;
+  overflow-wrap: anywhere;
   color: #334155;
   font-size: 1.025rem;
   line-height: 1.82;
@@ -592,7 +597,7 @@ textarea {
 .blog-content .blog-btn-secondary:hover {
   background-color: #f8fafc !important;
   color: var(--primary-action-hover) !important;
-  border-color: #f97316 !important;
+  border-color: #F36B21 !important;
   text-decoration: none !important;
   transform: translateY(-1px);
 }
@@ -658,7 +663,7 @@ textarea {
 
 .blog-content code {
   background: #fff1e6;
-  color: #c2410c;
+  color: #F36B21;
   padding: 0.15em 0.42em;
   border-radius: 0.35em;
   font-size: 0.86em;
@@ -1546,7 +1551,7 @@ textarea {
 .admin-dark-theme select:focus,
 .admin-dark-theme .border-slate-200.focus-within\:border-orange-500:focus-within,
 .admin-dark-theme .focus-within\:border-orange-500:focus-within {
-  border-color: #ea580c !important;
+  border-color: #F36B21 !important;
   outline: none !important;
   box-shadow: none !important;
 }
@@ -1558,7 +1563,7 @@ textarea {
 /* InteractiveButton inside Matte Dark Admin Theme */
 .admin-dark-theme .uiverse-btn.uiverse-cta-orange {
   background: var(--primary-action) !important;
-  border-color: #f97316 !important;
+  border-color: #F36B21 !important;
   box-shadow: none !important;
 }
 
@@ -1594,7 +1599,7 @@ textarea {
 
 .admin-dark-theme .tiptap blockquote {
   background-color: rgba(234, 88, 12, 0.1) !important;
-  border-left-color: #ea580c !important;
+  border-left-color: #F36B21 !important;
   color: #fed7aa !important;
 }
 
@@ -1983,7 +1988,7 @@ textarea {
   font-size: 15px;
   font-weight: 750;
   background: #25D366;
-  color: white;
+  color: #ffffff;
   padding: 0.65em 1.4em;
   padding-left: 1.1em;
   display: inline-flex;
@@ -2071,11 +2076,11 @@ textarea {
   [class*="bg-orange-400/"],
   [class*="bg-orange-500/"],
   [class*="bg-orange-600/"],
-  [class*="bg-[#f97316]/"],
-  [class*="bg-[#ea580c]/"],
+  [class*="bg-[#F36B21]/"],
+  [class*="bg-[#F36B21]/"],
   [class*="bg-[var(--primary)]/"],
-  [class~="bg-[#f97316]"],
-  [class~="bg-[#ea580c]"],
+  [class~="bg-[#F36B21]"],
+  [class~="bg-[#F36B21]"],
   [class~="bg-[var(--primary)]"])[class~="text-white"] {
   background-color: var(--primary-action) !important;
 }
@@ -2086,18 +2091,18 @@ textarea {
   [class*="bg-orange-400/"],
   [class*="bg-orange-500/"],
   [class*="bg-orange-600/"],
-  [class*="bg-[#f97316]/"],
-  [class*="bg-[#ea580c]/"],
+  [class*="bg-[#F36B21]/"],
+  [class*="bg-[#F36B21]/"],
   [class*="bg-[var(--primary)]/"],
-  [class~="bg-[#f97316]"],
-  [class~="bg-[#ea580c]"],
+  [class~="bg-[#F36B21]"],
+  [class~="bg-[#F36B21]"],
   [class~="bg-[var(--primary)]"])[class~="text-white"]:is(:hover, :active) {
   background-color: var(--primary-action-hover) !important;
 }
 
 .group:hover :where([class*="group-hover:bg-[var(--primary)]"],
-  [class*="group-hover:bg-[#f97316]"],
-  [class*="group-hover:bg-[#ea580c]"],
+  [class*="group-hover:bg-[#F36B21]"],
+  [class*="group-hover:bg-[#F36B21]"],
   [class*="group-hover:bg-orange-500"],
   [class*="group-hover:bg-orange-600"])[class*="group-hover:text-white"] {
   background-color: var(--primary-action) !important;
@@ -2118,18 +2123,18 @@ textarea {
 :where([class~="bg-orange-400"],
   [class~="bg-orange-500"],
   [class~="bg-orange-600"],
-  [class~="bg-[#f97316]"],
-  [class~="bg-[#ea580c]"],
+  [class~="bg-[#F36B21]"],
+  [class~="bg-[#F36B21]"],
   [class~="bg-[var(--primary)]"])[class~="text-white"]:focus-visible {
   outline-color: var(--primary-action-hover) !important;
   outline-offset: 2px !important;
 }
 
 :where([class~="text-[var(--primary)]"],
-  [class~="text-[#f97316]"],
-  [class~="text-[#ea580c]"],
-  [class*="text-[#f97316]/"],
-  [class*="text-[#ea580c]/"],
+  [class~="text-[#F36B21]"],
+  [class~="text-[#F36B21]"],
+  [class*="text-[#F36B21]/"],
+  [class*="text-[#F36B21]/"],
   [class*="text-orange-400/"],
   [class*="text-orange-500/"],
   [class*="text-orange-600/"],
@@ -2140,10 +2145,10 @@ textarea {
 }
 
 :where([class~="text-[var(--primary)]"],
-  [class~="text-[#f97316]"],
-  [class~="text-[#ea580c]"],
-  [class*="text-[#f97316]/"],
-  [class*="text-[#ea580c]/"],
+  [class~="text-[#F36B21]"],
+  [class~="text-[#F36B21]"],
+  [class*="text-[#F36B21]/"],
+  [class*="text-[#F36B21]/"],
   [class*="text-orange-400/"],
   [class*="text-orange-500/"],
   [class*="text-orange-600/"],
@@ -2155,8 +2160,8 @@ textarea {
 
 :where([class*="hover:text-[var(--primary)]"],
   [class*="hover:text-[var(--primary-hover)]"],
-  [class*="hover:text-[#f97316]"],
-  [class*="hover:text-[#ea580c]"],
+  [class*="hover:text-[#F36B21]"],
+  [class*="hover:text-[#F36B21]"],
   [class*="hover:text-orange-500"],
   [class*="hover:text-orange-600"],
   [class*="hover:text-orange-700"]):hover:not(.admin-dark-theme *):not([class~="bg-[#0f1115]"] *) {
@@ -2164,7 +2169,7 @@ textarea {
 }
 
 .group:hover :where([class*="group-hover:text-[var(--primary)]"],
-  [class*="group-hover:text-[#ea580c]"],
+  [class*="group-hover:text-[#F36B21]"],
   [class*="group-hover:text-orange-500"],
   [class*="group-hover:text-orange-600"],
   [class*="group-hover:text-orange-700"]):not(.admin-dark-theme *):not([class~="bg-[#0f1115]"] *) {
@@ -2173,11 +2178,74 @@ textarea {
 
 :where([class*="focus-visible:outline-[var(--primary)]"],
   [class*="focus-visible:outline-orange-500"],
-  [class*="focus-visible:outline-[#f97316]"]):focus-visible:not(.admin-dark-theme *):not([class~="bg-[#0f1115]"] *) {
+  [class*="focus-visible:outline-[#F36B21]"]):focus-visible:not(.admin-dark-theme *):not([class~="bg-[#0f1115]"] *) {
   outline-color: var(--primary-action-hover) !important;
 }
 
 :where([class*="focus:border-[var(--primary)]"],
   [class*="focus-within:border-[var(--primary)]"]):is(:focus, :focus-within):not(.admin-dark-theme *):not([class~="bg-[#0f1115]"] *) {
   border-color: var(--primary-action-hover) !important;
+}
+
+/* Audit fixes: keyboard bypass, readable controls and safe narrow-screen content. */
+.skip-link { position: fixed; z-index: 100; top: 8px; left: 8px; transform: translateY(-160%); padding: 12px 18px; border: 2px solid #142b45; border-radius: 8px; background: #fff; color: #142b45; font-weight: 700; }
+.skip-link:focus { transform: translateY(0); outline: 3px solid #f36b21; outline-offset: 2px; }
+#main-content { scroll-margin-top: 88px; }
+:where(button, a, input, select, textarea, summary):focus-visible { outline: 2px solid #142b45; outline-offset: 3px; }
+:where([class*="bg-[#F36B21]"], [class*="bg-[#f36b21]"], [class*="bg-orange-400"], [class*="bg-orange-500"], [class*="bg-orange-600"], [class*="bg-orange-700"], [class*="bg-[var(--primary)]"])[class*="text-white"],
+:where([class*="bg-[#F36B21]"], [class*="bg-[#f36b21]"], [class*="bg-orange-400"], [class*="bg-orange-500"], [class*="bg-orange-600"], [class*="bg-orange-700"], [class*="bg-[var(--primary)]"])[class*="text-white"] :where(span, svg, p, div, strong, b, em, i) {
+  color: #ffffff !important;
+}
+:where([class*="bg-[#F36B21]"], [class*="bg-[#f36b21]"], [class*="bg-orange-400"], [class*="bg-orange-500"], [class*="bg-orange-600"], [class*="bg-orange-700"], [class*="bg-[var(--primary)]"])[class*="text-white"] svg {
+  color: #ffffff !important;
+  stroke: currentColor !important;
+}
+:where([class~="text-orange-700"], [class~="text-[#f36b21]"]):not(svg) { color: var(--primary-text) !important; }
+h1 :where([class~="text-[#F36B21]"], [class~="text-[#f36b21]"], [class~="text-[var(--primary)]"], [class~="text-orange-500"], [class~="text-orange-600"]) { color: var(--primary) !important; }
+.blog-content img, .blog-content video { max-width: 100%; height: auto; }
+.blog-content pre { max-width: 100%; overflow-x: auto; }
+@media (pointer: coarse) {
+  header a, footer a { min-height: 24px; }
+  button:not([role="switch"]):not([class*="calendar"]) { min-height: 32px; }
+}
+
+/* Muted labels must remain legible on the site's light pastel surfaces. */
+:where([class~="text-slate-400"], [class~="text-stone-400"]):not(svg):not(.admin-dark-theme *) { color: #667085; }
+:where([class~="text-slate-500"]):not(svg):not(.admin-dark-theme *) { color: #526174; }
+:where([class~="text-stone-500"]):not(svg):not(.admin-dark-theme *) { color: #57534e; }
+:where([class~="text-[#16A36A]"]):not(svg) { color: #087646 !important; }
+:where([class~="text-[#D9480F]"]):not(svg) { color: var(--primary-text) !important; }
+:where([class~="text-[#0D9488]"]):not(svg) { color: #0f766e !important; }
+
+.blog-content code { color: var(--primary-text); }
+:where([class*="bg-[#25D366]"])[class*="text-white"],
+:where([class*="bg-[#25D366]"])[class*="text-white"] :where(span, svg, p, div) {
+  color: #ffffff !important;
+  stroke: currentColor !important;
+}
+
+:where([class~="bg-[#F36B21]"], [class~="bg-[#f36b21]"], [class~="bg-orange-400"], [class~="bg-orange-500"], [class~="bg-orange-600"], [class~="bg-[var(--primary)]"])[class~="text-white"]:is(:hover, :active) { background-color: #ff884d !important; }
+
+/* Keep labels and icons white on solid brand-orange controls. */
+:where(button, a, [role="button"])[class~="bg-[#F36B21]"],
+:where(button, a, [role="button"])[class~="bg-[#f36b21]"],
+:where(button, a, [role="button"])[class~="bg-[var(--primary)]"],
+:where(button, a, [role="button"])[class~="bg-orange-400"],
+:where(button, a, [role="button"])[class~="bg-orange-500"],
+:where(button, a, [role="button"])[class~="bg-orange-600"],
+:where(button, a, [role="button"])[class~="bg-orange-700"] {
+  color: #fff !important;
+}
+:where(button, a, [role="button"]):is([class~="bg-[#F36B21]"], [class~="bg-[#f36b21]"], [class~="bg-[var(--primary)]"], [class~="bg-orange-400"], [class~="bg-orange-500"], [class~="bg-orange-600"], [class~="bg-orange-700"]) :where(span, svg) {
+  color: #fff !important;
+}
+:where(button, a, [role="button"]):is([class*="hover:bg-[var(--primary)]"], [class*="hover:bg-[var(--primary-hover)]"], [class*="hover:bg-[#F36B21]"], [class*="hover:bg-[#e85d04]"], [class*="hover:bg-[#B84307]"], [class*="hover:bg-orange-400"], [class*="hover:bg-orange-500"], [class*="hover:bg-orange-600"], [class*="hover:bg-orange-700"]):hover,
+:where(button, a, [role="button"]):is([class*="group-hover:bg-[var(--primary)]"], [class*="group-hover:bg-[#F36B21]"], [class*="group-hover:bg-orange-400"], [class*="group-hover:bg-orange-500"], [class*="group-hover:bg-orange-600"], [class*="group-hover:bg-orange-700"]):hover {
+  color: #fff !important;
+}
+:where(button, a, [role="button"]):is([class*="hover:bg-[var(--primary)]"], [class*="hover:bg-[var(--primary-hover)]"], [class*="hover:bg-[#F36B21]"], [class*="hover:bg-[#e85d04]"], [class*="hover:bg-[#B84307]"], [class*="hover:bg-orange-400"], [class*="hover:bg-orange-500"], [class*="hover:bg-orange-600"], [class*="hover:bg-orange-700"]):hover :where(span, svg),
+:where(button, a, [role="button"]):is([class*="group-hover:bg-[var(--primary)]"], [class*="group-hover:bg-[#F36B21]"], [class*="group-hover:bg-orange-400"], [class*="group-hover:bg-orange-500"], [class*="group-hover:bg-orange-600"], [class*="group-hover:bg-orange-700"]):hover :where(span, svg),
+:where(button, a, [role="button"]):hover :where([class*="group-hover:bg-[var(--primary)]"], [class*="group-hover:bg-[#F36B21]"], [class*="group-hover:bg-orange-400"], [class*="group-hover:bg-orange-500"], [class*="group-hover:bg-orange-600"], [class*="group-hover:bg-orange-700"], [class*="group-hover:text-white"]),
+:where(button, a, [role="button"]):hover :where([class*="group-hover:bg-[var(--primary)]"], [class*="group-hover:bg-[#F36B21]"], [class*="group-hover:bg-orange-400"], [class*="group-hover:bg-orange-500"], [class*="group-hover:bg-orange-600"], [class*="group-hover:bg-orange-700"], [class*="group-hover:text-white"]) :where(span, svg) {
+  color: #fff !important;
 }

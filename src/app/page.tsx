@@ -1,13 +1,14 @@
-
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
-import { FeaturedServices } from "@/components/home/FeaturedServices";
-import { ExploreTopics } from "@/components/home/ExploreTopics";
-import { LatestVideos } from "@/components/home/LatestVideos";
-import { WhyAndHow } from "@/components/home/WhyAndHow";
-import { Testimonials } from "@/components/home/Testimonials";
-import { FinalAskCta } from "@/components/home/FinalAskCta";
+import { PopularToolsSection } from "@/components/home/PopularToolsSection";
+import { ExploreTopicsSection } from "@/components/home/ExploreTopicsSection";
+import { FeaturedGuidesSection } from "@/components/home/FeaturedGuidesSection";
+import { WhyRailAgentsSection } from "@/components/home/WhyRailAgentsSection";
+import { HowItWorksSection } from "@/components/home/HowItWorksSection";
+import { VideoGuidesSection } from "@/components/home/VideoGuidesSection";
+import { AskNihalSection } from "@/components/home/AskNihalSection";
+import { LatestUpdatesSection } from "@/components/home/LatestUpdatesSection";
 import { siteConfig } from "@/config/site";
 
 export const revalidate = 3600;
@@ -74,7 +75,7 @@ const homePageSchema = {
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col bg-[var(--background)]">
+    <div className="flex min-h-screen flex-col bg-white overflow-x-hidden">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -84,14 +85,33 @@ export default function Home() {
 
       <Header />
 
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
+        {/* 1. Hero Section */}
         <Hero />
-        <FeaturedServices />
-        <ExploreTopics />
-        <WhyAndHow />
-        <LatestVideos />
-        <Testimonials />
-        <FinalAskCta />
+
+        {/* 2. Most-Used Railway Tools */}
+        <PopularToolsSection />
+
+        {/* 3. Explore Railway Topics */}
+        <ExploreTopicsSection />
+
+        {/* 4. Featured Railway Guides */}
+        <FeaturedGuidesSection />
+
+        {/* 5. Why RailAgents Value Pillars */}
+        <WhyRailAgentsSection />
+
+        {/* 6. How It Works (3-step workflow) */}
+        <HowItWorksSection />
+
+        {/* 7. YouTube Video Guides */}
+        <VideoGuidesSection />
+
+        {/* 8. Ask a Question / Digital Persona Desk */}
+        <AskNihalSection />
+
+        {/* 9. Latest Railway Updates & Circulars */}
+        <LatestUpdatesSection />
       </main>
 
       <Footer />

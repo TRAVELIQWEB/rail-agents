@@ -15,8 +15,10 @@ export function reportedDelayMinutes(value: unknown, actual?: unknown, scheduled
 
 export function isEstimatedTracking(record: Record<string, unknown> | null): boolean {
   if (!record) return false;
-  return record.isLive === false || /simulated|predicted|estimated|synthetic|forecast/i.test(
-    String(record.trackingMode ?? record.provenance ?? ""),
+  // A historical/offline feed can still contain observed events.
+  // Only explicit prediction provenance makes a feed estimated.
+  return /simulated|predicted|estimated|synthetic|forecast/i.test(
+    [record.trackingMode, record.provenance, record.timingProvenance, record.dataProvenance].filter((value) => typeof value === "string").join(" "),
   );
 }
 

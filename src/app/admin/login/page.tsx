@@ -59,7 +59,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <main className="relative flex min-h-screen w-full flex-col justify-between overflow-x-hidden bg-[#0f1115] font-sans text-zinc-100 select-none">
+    <main id="main-content" tabIndex={-1} className="relative flex min-h-screen w-full flex-col justify-between overflow-x-hidden bg-[#0f1115] font-sans text-zinc-100 select-none">
       {/* ─── SUBTLE MATTE CARBON BACKGROUND ─── */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#12151b] via-[#0f1115] to-[#0c0e12]" />
@@ -73,7 +73,7 @@ export default function AdminLoginPage() {
           }}
         />
         {/* Soft matte warm ambient accent in corner */}
-        <div className="absolute -top-32 right-0 h-[420px] w-[420px] rounded-full bg-[#ea580c]/[0.07] blur-[120px]" />
+        <div className="absolute -top-32 right-0 h-[420px] w-[420px] rounded-full bg-[#F36B21]/[0.07] blur-[120px]" />
       </div>
 
       {/* ─── TOP BAR: RailAgents Logo & Status Pill ─── */}
@@ -90,12 +90,12 @@ export default function AdminLoginPage() {
             />
           </div>
           <span className="text-xl font-[900] tracking-tight text-zinc-100">
-            Rail<span className="text-[#f97316]">Agents</span>
+            Rail<span className="text-[#F36B21]">Agents</span>
           </span>
         </Link>
 
         <div className="flex items-center gap-2 rounded-full border border-[#262b35] bg-[#1a1e25] px-3.5 py-1.5 text-xs font-semibold text-zinc-300">
-          <ShieldCheck size={14} className="text-[#f97316]" />
+          <ShieldCheck size={14} className="text-[#F36B21]" />
           <span className="text-[11px] font-semibold tracking-wide">Admin CMS</span>
         </div>
       </header>
@@ -113,7 +113,7 @@ export default function AdminLoginPage() {
           <h1 className="text-3xl font-[900] leading-[1.15] tracking-tight text-zinc-100 sm:text-5xl lg:text-[3.1rem]">
             Every railway query, <br />
             rule &amp; update in <br />
-            <span className="text-[#f97316]">one place.</span>
+            <span className="text-[#F36B21]">one place.</span>
           </h1>
 
           <p className="mt-4 max-w-xl text-sm sm:text-base font-normal leading-relaxed text-zinc-400">
@@ -149,15 +149,15 @@ export default function AdminLoginPage() {
 
           <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-semibold text-zinc-400">
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-[#f97316]" />
+              <CheckCircle2 size={14} className="text-[#F36B21]" />
               Official Indian Railways Circulars
             </span>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-[#f97316]" />
+              <CheckCircle2 size={14} className="text-[#F36B21]" />
               Clear Step-by-Step Solutions
             </span>
             <span className="flex items-center gap-1.5">
-              <Train size={14} className="text-[#f97316]" />
+              <Train size={14} className="text-[#F36B21]" />
               Real Passenger Concerns Answered
             </span>
           </div>
@@ -202,7 +202,7 @@ export default function AdminLoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@railagents.in"
                   autoComplete="email"
-                  className="h-11 w-full rounded-xl border border-[#2a303c] bg-[#111318] px-3.5 text-xs font-semibold text-zinc-100 outline-none transition placeholder:font-normal placeholder:text-zinc-500 focus:border-[#ea580c]"
+                  className="h-11 w-full rounded-xl border border-[#2a303c] bg-[#111318] px-3.5 text-xs font-semibold text-zinc-100 outline-none transition placeholder:font-normal placeholder:text-zinc-500 focus:border-[#F36B21]"
                 />
               </div>
 
@@ -219,12 +219,12 @@ export default function AdminLoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                     autoComplete="current-password"
-                    className="h-11 w-full rounded-xl border border-[#2a303c] bg-[#111318] px-3.5 pr-12 text-xs font-semibold text-zinc-100 outline-none transition placeholder:font-normal placeholder:text-zinc-500 focus:border-[#ea580c]"
+                    className="h-11 w-full rounded-xl border border-[#2a303c] bg-[#111318] px-3.5 pr-12 text-xs font-semibold text-zinc-100 outline-none transition placeholder:font-normal placeholder:text-zinc-500 focus:border-[#F36B21]"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
-                    className="absolute right-1 flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#f97316]"
+                    className="absolute right-1 flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#F36B21]"
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -243,7 +243,7 @@ export default function AdminLoginPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="flex h-11 w-full items-center justify-center rounded-xl bg-[#ea580c] px-6 text-xs sm:text-sm font-bold text-white transition hover:bg-[#f97316] disabled:opacity-60 cursor-pointer"
+                  className="flex h-11 w-full items-center justify-center rounded-xl bg-[#F36B21] px-6 text-xs sm:text-sm font-bold text-white transition hover:bg-[#F36B21] disabled:opacity-60 cursor-pointer"
                 >
                   {isLoading ? "Signing in..." : "Sign In to Dashboard →"}
                 </button>

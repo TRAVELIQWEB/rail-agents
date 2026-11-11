@@ -140,7 +140,7 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
       />
       <Header />
 
-      <main className="relative flex-1 overflow-x-clip pb-16 sm:pb-24">
+      <main id="main-content" tabIndex={-1} className="relative flex-1 overflow-x-clip pb-16 sm:pb-24">
         {/* Ambient Top Background Glows */}
         <div
           aria-hidden="true"
@@ -214,7 +214,7 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
 
               {/* Author byline */}
               <div className="mt-5 flex items-center gap-3 pt-4 border-t border-[#f0e3d5]">
-                <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-[#c2410c] to-[#9a3412] flex items-center justify-center text-white font-bold text-xs shadow-xs">
+                <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-[#F36B21] to-[#9a3412] flex items-center justify-center text-white font-bold text-xs shadow-xs">
                   NS
                 </div>
                 <div className="text-xs">

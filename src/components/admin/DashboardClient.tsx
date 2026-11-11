@@ -106,7 +106,7 @@ export function DashboardClient({ stats, recentPosts }: Props) {
             </Link>
             <Link
               href="/admin/posts/new"
-              className="inline-flex h-10 items-center justify-center gap-1.5 rounded-xl bg-[#ea580c] px-4 text-xs font-bold text-white transition hover:bg-[#f97316]"
+              className="inline-flex h-10 items-center justify-center gap-1.5 rounded-xl bg-[#F36B21] px-4 text-xs font-bold text-white transition hover:bg-[#F36B21]"
             >
               <PenSquare size={14} aria-hidden="true" />
               <span>Create Article</span>
@@ -227,7 +227,7 @@ export function DashboardClient({ stats, recentPosts }: Props) {
             <p className="mt-1 text-xs text-zinc-400">Create your first article to start building the RailAgents blog.</p>
             <Link
               href="/admin/posts/new"
-              className="mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-[#ea580c] px-4 text-xs font-bold text-white transition hover:bg-[#f97316]"
+              className="mt-5 inline-flex h-10 items-center gap-2 rounded-xl bg-[#F36B21] px-4 text-xs font-bold text-white transition hover:bg-[#F36B21]"
             >
               <PenSquare size={14} aria-hidden="true" />
               Create article

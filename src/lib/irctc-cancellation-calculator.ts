@@ -539,10 +539,32 @@ function canCalculate(s: CalculatorFormState): boolean {
     const pureAmt = parseFloat(s.pureTotalFareEnteredRaw);
     if (isNaN(pureAmt) || pureAmt <= 0) return false;
   }
-  if (!s.cancellationDateTimeLocal && !s.departureDateTimeLocal && !s.quickTimeBandId) {
+  if (!s.quickTimeBandId && (!s.cancellationDateTimeLocal || !s.departureDateTimeLocal)) {
     return false;
   }
   return true;
+}
+
+function getValidationErrorMessage(s: CalculatorFormState): string {
+  if (!s.bookingSource) return "Please select a booking source (Personal IRCTC, Agent, or PRS Counter).";
+  if (!s.travelClass) return "Please select your travel class (1AC, 2AC, 3AC, Sleeper, or 2S).";
+  if (!s.ticketStatus) return "Please select your ticket status (Confirmed, RAC, Waitlist, etc.).";
+  const totalPax = parseInt(s.totalPassengersRaw, 10);
+  const cancelPax = parseInt(s.cancelPassengersRaw, 10);
+  if (isNaN(totalPax) || totalPax < 1) return "Please select at least 1 booked passenger.";
+  if (isNaN(cancelPax) || cancelPax < 1) return "Please select at least 1 passenger to cancel.";
+  if (cancelPax > totalPax) return "Cancelling passengers cannot exceed total booked passengers.";
+  if (s.fareInputMode === "GRAND_TOTAL") {
+    const amt = parseFloat(s.enteredTotalAmountRaw);
+    if (isNaN(amt) || amt <= 0) return "Please enter the ticket fare amount.";
+  } else {
+    const pureAmt = parseFloat(s.pureTotalFareEnteredRaw);
+    if (isNaN(pureAmt) || pureAmt <= 0) return "Please enter the pure base fare amount.";
+  }
+  if (!s.quickTimeBandId && (!s.cancellationDateTimeLocal || !s.departureDateTimeLocal)) {
+    return "Please select a cancellation time band or enter both train cancellation and departure dates.";
+  }
+  return "Please check your inputs and try again.";
 }
 
 function markResultsPending(hideResults = true): number {
@@ -648,6 +670,14 @@ function bindEvents(
       current.quickTimeBandId = null;
       state.quickTimeBandId = null;
     }
+    if (!current.quickTimeBandId && (!current.cancellationDateTimeLocal || !current.departureDateTimeLocal)) {
+      if (!current.cancellationDateTimeLocal && !current.departureDateTimeLocal) {
+        setText("calculatedGapLabel", "Choose a time band or enter both train times.");
+      } else {
+        setText("calculatedGapLabel", "Enter both valid times to calculate the time before departure.");
+      }
+      return;
+    }
     try {
       const response = await fetch("/api/irctc-cancellation-refund", {
         method: "POST",
@@ -736,6 +766,13 @@ function bindEvents(
 
   const calculate = async (scroll = false) => {
     if (calculationPending) return;
+    state = updateStateFromControls();
+    if (!canCalculate(state)) {
+      if (scroll) {
+        showError(getValidationErrorMessage(state));
+      }
+      return;
+    }
     calculationPending = true;
     const isAlreadyShown = !getElement("refundResults").classList.contains("hidden");
     const revision = markResultsPending(!isAlreadyShown);
@@ -745,7 +782,6 @@ function bindEvents(
     button.disabled = true;
     button.setAttribute("aria-busy", "true");
     buttonText.textContent = "Calculating...";
-    state = updateStateFromControls();
     const requestBody = { operation: "calculate", ...state };
     try {
       const response = await fetch("/api/irctc-cancellation-refund", {

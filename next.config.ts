@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   async headers() {
     return [
+      ...["/admin/:path*", "/api/admin/:path*", "/api/trains/:path*", "/api/pnr/:path*", "/api/charting", "/api/stations", "/api/posts/:path*", "/api/upload", "/api/irctc-cancellation-refund"].map((source) => ({
+        source,
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+      })),
       {
         source: "/pnr-status",
         headers: [{ key: "Referrer-Policy", value: "no-referrer" }],
@@ -38,6 +42,11 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/irctc-ticket-date-calculator",
+        destination: "/ticket-date-calculator",
+        permanent: true,
+      },
+      {
+        source: "/ticket-booking-date-calculator",
         destination: "/ticket-date-calculator",
         permanent: true,
       },

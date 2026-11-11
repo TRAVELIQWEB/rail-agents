@@ -6,8 +6,10 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
+        allow: ["/", "/api/images/"],
         disallow: [
+          "/api/",
+          "/pnr-status?",
           "/admin/",
           "/admin",
           "/api/admin/",
@@ -20,8 +22,10 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: "Googlebot",
-        allow: "/",
+        allow: ["/", "/api/images/"],
         disallow: [
+          "/api/",
+          "/pnr-status?",
           "/admin/",
           "/admin",
           "/api/admin/",

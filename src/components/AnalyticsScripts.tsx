@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 export function AnalyticsScripts() {
   const pathname = usePathname();
-  if (pathname === "/pnr-status" || pathname.startsWith("/pnr-status/")) return null;
+  if (pathname === "/admin" || pathname.startsWith("/admin/") || pathname === "/pnr-status" || pathname.startsWith("/pnr-status/")) return null;
 
   return <>
     <Script

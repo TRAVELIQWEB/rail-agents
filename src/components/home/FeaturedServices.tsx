@@ -64,8 +64,8 @@ const keyServices = [
     href: "/ticket-date-calculator",
     badge: "60-Day ARP",
     icon: CalendarDays,
-    color: "bg-[#FFF7ED] text-[#C2410C] ring-[#FED7AA]",
-    actionColor: "text-[#C2410C]",
+    color: "bg-[#FFF7ED] text-[#F36B21] ring-[#FED7AA]",
+    actionColor: "text-[#F36B21]",
   },
   {
     title: "Train Chart Preparation Time",
@@ -111,8 +111,8 @@ export function FeaturedServices() {
       <div className="site-container">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3.5 py-1 text-xs font-[800] uppercase tracking-wider text-[#ea580c] shadow-2xs">
-            <span className="h-2 w-2 rounded-full bg-[#f97316]" />
+          <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3.5 py-1 text-xs font-[800] uppercase tracking-wider text-[#F36B21] shadow-2xs">
+            <span className="h-2 w-2 rounded-full bg-[#F36B21]" />
             Core Railway Services &amp; Tools
           </div>
           <h2

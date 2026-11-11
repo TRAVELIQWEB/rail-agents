@@ -27,6 +27,7 @@ import {
 import { addCalendarDays } from "@/lib/railway-calculator-logic";
 import type { TrainChartingResponse, TrainChartStation } from "@/lib/trains";
 import { describeChartingStation } from "@/lib/charting-station";
+import { createTrainSlug, parseTrainSlug, todayInIndia } from "@/lib/train-slug";
 
 interface TrainSuggestion {
   trainNumber: string;
@@ -125,7 +126,7 @@ function ChartScheduleStatus({
   }
 
   if (status.state === "pending") {
-    return <span className="mt-1.5 text-[11.5px] font-extrabold text-[#EA580C]">Scheduled</span>;
+    return <span className="mt-1.5 text-[11.5px] font-extrabold text-[#F36B21]">Scheduled</span>;
   }
 
   return (
@@ -135,7 +136,17 @@ function ChartScheduleStatus({
   );
 }
 
-export function TrainChartPreparationTime() {
+export function TrainChartPreparationTime({
+  initialTrain,
+  initialDate,
+  initialBoardingCode,
+  basePath = "/chart-times",
+}: {
+  initialTrain?: string;
+  initialDate?: string;
+  initialBoardingCode?: string;
+  basePath?: string;
+} = {}) {
   // Hydration-safe mount flag
   const mounted = useSyncExternalStore(
     () => () => {},
@@ -143,12 +154,27 @@ export function TrainChartPreparationTime() {
     () => false
   );
 
+  const initialParsed = useMemo(() => parseTrainSlug(initialTrain), [initialTrain]);
+
   // Search form states
-  const [trainQuery, setTrainQuery] = useState<string>("");
-  const [selectedTrainNumber, setSelectedTrainNumber] = useState<string>("");
-  const [journeyDate, setJourneyDate] = useState<string>("");
+  const [trainQuery, setTrainQuery] = useState<string>(() => {
+    if (initialParsed.trainNumber) {
+      return initialParsed.trainName
+        ? `${initialParsed.trainNumber} - ${initialParsed.trainName}`
+        : initialParsed.trainNumber;
+    }
+    return "";
+  });
+  const [selectedTrainNumber, setSelectedTrainNumber] = useState<string>(
+    initialParsed.trainNumber || ""
+  );
+  const [journeyDate, setJourneyDate] = useState<string>(
+    initialDate || todayInIndia()
+  );
   const [dateInputFocused, setDateInputFocused] = useState(false);
-  const [selectedBoardingCode, setSelectedBoardingCode] = useState<string>("");
+  const [selectedBoardingCode, setSelectedBoardingCode] = useState<string>(
+    initialBoardingCode || ""
+  );
 
   // Train autocomplete dropdown states
   const [trainSuggestions, setTrainSuggestions] = useState<TrainSuggestion[]>([]);
@@ -244,6 +270,18 @@ export function TrainChartPreparationTime() {
 
   const chartRequestId = useRef(0);
 
+  const updateUrl = useCallback(
+    (trainNo: string, trainName: string, date: string) => {
+      if (typeof window === "undefined") return;
+      const slug = createTrainSlug(trainNo, trainName, "chart-times");
+      const targetUrl = `${basePath}/${slug}?date=${encodeURIComponent(date)}`;
+      if (window.location.pathname + window.location.search !== targetUrl) {
+        window.history.replaceState(null, "", targetUrl);
+      }
+    },
+    [basePath]
+  );
+
   // Fetch Charting Data for a given trainNumber and date
   const fetchChartingSchedule = useCallback(
     async (trainNo: string, dateIso: string, preferredStationCode?: string) => {
@@ -276,6 +314,7 @@ export function TrainChartPreparationTime() {
         setChartingData(data);
         setSelectedTrainNumber(data.trainNumber);
         setTrainQuery(`${data.trainNumber} - ${data.trainName}`);
+        updateUrl(data.trainNumber, data.trainName, dateIso);
 
         // Keep boarding selection explicit; never silently choose the origin.
         const availableBoardingStations = data.stations.slice(0, -1);
@@ -302,8 +341,17 @@ export function TrainChartPreparationTime() {
         if (requestId === chartRequestId.current) setChartingLoading(false);
       }
     },
-    [selectedBoardingCode]
+    [selectedBoardingCode, updateUrl]
   );
+
+  const initialFetchRef = useRef(false);
+  useEffect(() => {
+    if (initialParsed.trainNumber && !initialFetchRef.current) {
+      initialFetchRef.current = true;
+      const d = initialDate || todayInIndia();
+      void fetchChartingSchedule(initialParsed.trainNumber, d, initialBoardingCode);
+    }
+  }, [initialParsed.trainNumber, initialDate, initialBoardingCode, fetchChartingSchedule]);
 
   // The final route stop is a destination, not a boarding station.
   const boardingStations = useMemo(
@@ -384,6 +432,9 @@ export function TrainChartPreparationTime() {
       }
       const originDate = typeof selectedDay === "number" ? addCalendarDays(newDate, 1 - selectedDay) : newDate;
       void fetchChartingSchedule(selectedTrainNumber, originDate, selectedBoardingCode);
+      if (chartingData) {
+        updateUrl(chartingData.trainNumber, chartingData.trainName, newDate);
+      }
     }
   };
 
@@ -461,7 +512,7 @@ export function TrainChartPreparationTime() {
               </h2>
             </div>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-1 text-xs font-semibold text-[#0F172A]">
-              <Radio className={`h-3 w-3 text-[#F97316] ${chartingLoading ? "animate-pulse" : ""}`} />
+              <Radio className={`h-3 w-3 text-[#F36B21] ${chartingLoading ? "animate-pulse" : ""}`} />
               <span>{chartingLoading ? "Updating schedule…" : "Scheduled timings"}</span>
             </span>
           </div>
@@ -499,7 +550,7 @@ export function TrainChartPreparationTime() {
                     setTrainDropdownOpen(true);
                   }}
                   placeholder="Enter train number or name"
-                  className="h-11 w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-9 pr-14 text-[13px] font-medium text-[#0F172A] transition-colors placeholder:text-[#64748B] hover:border-[#F97316] focus:border-[#F97316] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F97316]/20"
+                  className="h-11 w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-9 pr-14 text-[13px] font-medium text-[#0F172A] transition-colors placeholder:text-[#64748B] hover:border-[#F36B21] focus:border-[#F36B21] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F36B21]/20"
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                   {trainQuery && (
@@ -517,7 +568,7 @@ export function TrainChartPreparationTime() {
                         setChartingError(null);
                         setTrainDropdownOpen(true);
                       }}
-                      className="p-1 text-[#64748B] hover:text-[#26374A] rounded-md cursor-pointer"
+                      className="flex h-7 w-7 items-center justify-center text-[#64748B] hover:text-[#26374A] rounded-md cursor-pointer"
                       aria-label="Clear train search"
                     >
                       <X className="h-3.5 w-3.5" />
@@ -526,7 +577,7 @@ export function TrainChartPreparationTime() {
                   <button
                     type="button"
                     onClick={() => setTrainDropdownOpen((prev) => !prev)}
-                    className="p-1 text-[#64748B] hover:text-[#26374A] rounded-md cursor-pointer"
+                    className="flex h-7 w-7 items-center justify-center text-[#64748B] hover:text-[#26374A] rounded-md cursor-pointer"
                     aria-label="Toggle train suggestions"
                   >
                     <ChevronDown
@@ -614,7 +665,7 @@ export function TrainChartPreparationTime() {
                 type="button"
                 disabled={boardingStations.length === 0}
                 onClick={() => setBoardingDropdownOpen((prev) => !prev)}
-                className="flex min-h-11 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 py-2 text-left text-[13px] font-medium text-[#0F172A] transition-colors hover:border-[#F97316] focus:border-[#F97316] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 disabled:cursor-not-allowed disabled:opacity-60"
+                className="flex min-h-11 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 py-2 text-left text-[13px] font-medium text-[#0F172A] transition-colors hover:border-[#F36B21] focus:border-[#F36B21] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F36B21]/20 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <div className="flex items-center gap-2 min-w-0">
                   <MapPin className="h-4 w-4 shrink-0 text-[#A34C22]" />
@@ -726,7 +777,7 @@ export function TrainChartPreparationTime() {
                   onFocus={() => setDateInputFocused(true)}
                   onBlur={() => setDateInputFocused(false)}
                   onChange={(e) => handleDateChange(e.target.value)}
-                  className={`h-11 w-full cursor-pointer rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 text-[13px] font-medium transition-colors hover:border-[#F97316] focus:border-[#F97316] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F97316]/20 ${journeyDate || dateInputFocused ? "text-[#0F172A]" : "text-transparent"}`}
+                  className={`h-11 w-full cursor-pointer rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 text-[13px] font-medium transition-colors hover:border-[#F36B21] focus:border-[#F36B21] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F36B21]/20 ${journeyDate || dateInputFocused ? "text-[#0F172A]" : "text-transparent"}`}
                 />
                 {!journeyDate && !dateInputFocused && <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-2.5 flex items-center text-[13px] text-[#64748B]">Select journey date</span>}
               </div>
@@ -803,7 +854,7 @@ export function TrainChartPreparationTime() {
           >
             <header className="flex min-w-0 items-center justify-between gap-3 border-b border-[#FED7AA] bg-[#FFFFFF] px-3 py-2.5 sm:px-4">
               <div className="flex min-w-0 items-center gap-2">
-                <TrainFront aria-hidden="true" strokeWidth={2.25} className="h-4 w-4 shrink-0 text-[#EA580C]" />
+                <TrainFront aria-hidden="true" strokeWidth={2.25} className="h-4 w-4 shrink-0 text-[#F36B21]" />
                 <h2
                   id="boarding-station-spotlight-heading"
                   className="min-w-0 break-words text-lg font-extrabold leading-tight text-[#171717] sm:text-[19px]"
@@ -812,7 +863,7 @@ export function TrainChartPreparationTime() {
                 </h2>
               </div>
               <span className="hidden shrink-0 items-center gap-1.5 rounded-sm border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-2.5 py-1 text-[11.5px] font-bold text-[#171717] sm:inline-flex">
-                <CalendarDays aria-hidden="true" strokeWidth={2.25} className="h-3.5 w-3.5 text-[#EA580C]" />
+                <CalendarDays aria-hidden="true" strokeWidth={2.25} className="h-3.5 w-3.5 text-[#F36B21]" />
                 Chart timing at boarding station
               </span>
             </header>
@@ -822,7 +873,7 @@ export function TrainChartPreparationTime() {
 
               <div className="grid min-w-0 gap-3 rounded-lg border border-orange-100 bg-orange-50/30 p-3">
                 <div className="min-w-0 w-full">
-                  <p className="text-xs font-black uppercase tracking-[0.08em] text-[#EA580C]">
+                  <p className="text-xs font-black uppercase tracking-[0.08em] text-[#F36B21]">
                     YOUR BOARDING STATION
                   </p>
                   <h3 className="mt-1 w-full break-words text-lg font-extrabold leading-snug text-[#171717] sm:text-xl">
@@ -836,7 +887,7 @@ export function TrainChartPreparationTime() {
                       <CalendarDays
                         aria-hidden="true"
                         strokeWidth={2.25}
-                        className="h-3.5 w-3.5 shrink-0 text-[#EA580C]"
+                        className="h-3.5 w-3.5 shrink-0 text-[#F36B21]"
                       />
                       <span>
                         {boardingDate ? compactDate(boardingDate) : "Not available"}
@@ -849,7 +900,7 @@ export function TrainChartPreparationTime() {
                       <Clock
                         aria-hidden="true"
                         strokeWidth={2.25}
-                        className="h-3.5 w-3.5 shrink-0 text-[#EA580C]"
+                        className="h-3.5 w-3.5 shrink-0 text-[#F36B21]"
                       />
                       <span>
                         Arrival:{" "}
@@ -882,7 +933,7 @@ export function TrainChartPreparationTime() {
                       <Fragment key={heading}>
                         <div className="flex min-w-0 flex-col justify-between rounded-md border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-3 py-3 sm:px-3.5">
                           <div>
-                            <h4 className="text-xs font-black uppercase tracking-[0.06em] text-[#EA580C] sm:text-[13px]">
+                            <h4 className="text-xs font-black uppercase tracking-[0.06em] text-[#F36B21] sm:text-[13px]">
                               {heading}
                             </h4>
                             <p
@@ -918,7 +969,7 @@ export function TrainChartPreparationTime() {
                             aria-hidden="true"
                             className="hidden items-center justify-center py-0.5 sm:flex sm:px-0.5 sm:py-0"
                           >
-                            <ArrowRight strokeWidth={2.5} className="h-5 w-5 shrink-0 rotate-90 text-[#EA580C] sm:rotate-0" />
+                            <ArrowRight strokeWidth={2.5} className="h-5 w-5 shrink-0 rotate-90 text-[#F36B21] sm:rotate-0" />
                           </div>
                         )}
                       </Fragment>
@@ -938,21 +989,21 @@ export function TrainChartPreparationTime() {
                 <button
                   type="button"
                   onClick={handleCopySchedule}
-                  className="inline-flex min-h-8 cursor-pointer items-center gap-1.5 rounded-sm border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-2.5 text-xs font-bold text-[#171717] transition-colors hover:border-[#EA580C] hover:text-[#EA580C]"
+                  className="inline-flex min-h-8 cursor-pointer items-center gap-1.5 rounded-sm border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-2.5 text-xs font-bold text-[#171717] transition-colors hover:border-[#F36B21] hover:text-[#F36B21]"
                 >
                   {copied ? (
-                    <Check strokeWidth={2.25} className="h-3.5 w-3.5 text-[#EA580C]" />
+                    <Check strokeWidth={2.25} className="h-3.5 w-3.5 text-[#F36B21]" />
                   ) : (
-                    <Copy strokeWidth={2.25} className="h-3.5 w-3.5 text-[#EA580C]" />
+                    <Copy strokeWidth={2.25} className="h-3.5 w-3.5 text-[#F36B21]" />
                   )}
                   {copied ? "Copied" : "Copy"}
                 </button>
                 <button
                   type="button"
                   onClick={handleWhatsAppShare}
-                  className="inline-flex min-h-8 cursor-pointer items-center gap-1.5 rounded-sm border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-2.5 text-xs font-bold text-[#171717] transition-colors hover:border-[#EA580C] hover:text-[#EA580C]"
+                  className="inline-flex min-h-8 cursor-pointer items-center gap-1.5 rounded-sm border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-2.5 text-xs font-bold text-[#171717] transition-colors hover:border-[#F36B21] hover:text-[#F36B21]"
                 >
-                  <Share2 strokeWidth={2.25} className="h-3.5 w-3.5 text-[#EA580C]" />
+                  <Share2 strokeWidth={2.25} className="h-3.5 w-3.5 text-[#F36B21]" />
                   Share
                 </button>
               </div>
