@@ -36,7 +36,7 @@ function getBlogCategoryBadgeClass(category: string): string {
     return "bg-[#EFF6FF] text-[#2563EB] border border-blue-200/80";
   }
   if (normalized.includes("tatkal") || normalized.includes("booking")) {
-    return "bg-[#FFF7ED] text-[#C2410C] border border-orange-200/80";
+    return "bg-[#FFF7ED] text-[#F36B21] border border-orange-200/80";
   }
   return "bg-[#F0FDFA] text-[#0D9488] border border-teal-200/80";
 }

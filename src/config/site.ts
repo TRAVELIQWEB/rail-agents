@@ -8,7 +8,7 @@ export const siteConfig = {
   whatsapp: {
     number: "919599550009",
     message:
-      "Hi RailAgents, I need help regarding railway agent services. Please guide me with the process.",
+      "Hi RailAgents, I have a query related to Indian Railways. Could you please help me with some information?",
   },
   social: {
     youtube: "https://www.youtube.com/@railagents",

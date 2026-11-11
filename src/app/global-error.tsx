@@ -34,7 +34,7 @@ export default function GlobalError({
                 particleSize={3}
                 density={3.5}
                 color="#0f2747"
-                highlightColor="#f97316"
+                highlightColor="#F36B21"
                 highlightMode="motion"
                 shape="circle"
                 intro="gather"
@@ -53,7 +53,7 @@ export default function GlobalError({
 
             {/* Badge */}
             <div className="inline-flex items-center gap-2 rounded-full border border-orange-200/80 bg-orange-50/80 px-3.5 py-1 text-xs font-extrabold uppercase tracking-widest text-[#9a3412] shadow-sm">
-              <span className="h-2 w-2 rounded-full bg-[#f97316] animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-[#F36B21] animate-pulse" />
               <span>Page Not Found · Lost in Transit</span>
             </div>
 
@@ -72,7 +72,7 @@ export default function GlobalError({
               <button
                 type="button"
                 onClick={() => reset()}
-                className="inline-flex h-12 items-center gap-2 rounded-xl bg-[#f97316] px-6 text-sm font-bold text-white shadow-lg shadow-orange-500/25 transition hover:-translate-y-0.5 hover:bg-[#ea580c] cursor-pointer"
+                className="inline-flex h-12 items-center gap-2 rounded-xl bg-[#F36B21] px-6 text-sm font-bold text-white shadow-lg shadow-orange-500/25 transition hover:-translate-y-0.5 hover:bg-[#F36B21] cursor-pointer"
               >
                 <RotateCcw className="h-4 w-4" />
                 <span>Try Again</span>

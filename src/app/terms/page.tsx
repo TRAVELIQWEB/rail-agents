@@ -77,7 +77,7 @@ export default function TermsPage() {
       />
       <Header />
 
-      <main className="relative flex-1">
+      <main id="main-content" tabIndex={-1} className="relative flex-1">
         {/* Hero Banner */}
         <section className="relative overflow-hidden border-b border-[#f4e4d4] bg-gradient-to-b from-[#fffaf4] via-[#fffdfa] to-white py-10 sm:py-14">
           <div
@@ -85,8 +85,8 @@ export default function TermsPage() {
             className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-orange-100/60 blur-3xl"
           />
           <div className="site-container relative z-10 max-w-4xl">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#c2410c]">
-              <Scale className="h-3.5 w-3.5 text-[#ea580c]" />
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#F36B21]">
+              <Scale className="h-3.5 w-3.5 text-[#F36B21]" />
               Legal &amp; Platform Terms
             </div>
             <h1 className="page-hero-title">
@@ -105,7 +105,7 @@ export default function TermsPage() {
             {/* 1. Independent Educational Platform */}
             <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 shadow-2xs">
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#F36B21]">
                   <ShieldAlert className="h-5 w-5" />
                 </span>
                 <h2 className="text-lg font-[850] text-[var(--navy)] sm:text-xl">
@@ -114,7 +114,7 @@ export default function TermsPage() {
               </div>
               <div className="mt-4 space-y-3 text-sm leading-relaxed text-slate-600 sm:text-[15px] sm:leading-7">
                 <p>
-                  RailAgents (<Link href="/" className="font-semibold text-[#ea580c] hover:underline">railagents.in</Link>) is an independent educational and informational website created to help railway ticketing agents and passengers understand general railway booking procedures, compliance standards, and public travel rules.
+                  RailAgents (<Link href="/" className="font-semibold text-[#F36B21] hover:underline">railagents.in</Link>) is an independent educational and informational website created to help railway ticketing agents and passengers understand general railway booking procedures, compliance standards, and public travel rules.
                 </p>
                 <p>
                   RailAgents is not affiliated with, endorsed by, sponsored by, or connected to Indian Railways, the Indian Railway Catering and Tourism Corporation (IRCTC), the Centre for Railway Information Systems (CRIS), the Ministry of Railways, or any government entity. We do not issue official agent credentials, sell railway tickets directly, or act as a government regulatory authority.
@@ -125,7 +125,7 @@ export default function TermsPage() {
             {/* 2. Fictional Character and Brand Identity */}
             <div className="rounded-2xl border border-[#fed7aa] bg-[#fffdfa] p-6 sm:p-8 shadow-2xs">
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#F36B21]">
                   <UserCheck className="h-5 w-5" />
                 </span>
                 <h3 className="text-lg font-[850] text-[var(--navy)] sm:text-xl">
@@ -142,7 +142,7 @@ export default function TermsPage() {
             {/* 3. Informational Use & Verification */}
             <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 shadow-2xs">
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#F36B21]">
                   <FileText className="h-5 w-5" />
                 </span>
                 <h2 className="text-lg font-[850] text-[var(--navy)] sm:text-xl">
@@ -162,7 +162,7 @@ export default function TermsPage() {
             {/* 4. No Guarantees & Limitation of Liability */}
             <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 shadow-2xs">
               <div className="flex items-center gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#F36B21]">
                   <ShieldCheck className="h-5 w-5" />
                 </span>
                 <h2 className="text-lg font-[850] text-[var(--navy)] sm:text-xl">
@@ -186,12 +186,12 @@ export default function TermsPage() {
                   Questions regarding our platform terms or disclosures?
                 </p>
                 <p className="mt-1 text-xs text-slate-600">
-                  Learn more on our <Link href="/about" className="font-semibold text-[#ea580c] underline">About page</Link> or contact us directly.
+                  Learn more on our <Link href="/about" className="font-semibold text-[#F36B21] underline">About page</Link> or contact us directly.
                 </p>
               </div>
               <Link
                 href="/contact"
-                className="mt-3 inline-flex min-h-10 items-center justify-center rounded-xl bg-[var(--primary)] px-5 py-2 text-xs font-bold text-white shadow-xs transition-colors hover:bg-[#ea580c] sm:mt-0"
+                className="mt-3 inline-flex min-h-10 items-center justify-center rounded-xl bg-[var(--primary)] px-5 py-2 text-xs font-bold text-white shadow-xs transition-colors hover:bg-[#F36B21] sm:mt-0"
               >
                 Contact Us
               </Link>

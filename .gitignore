@@ -24,7 +24,13 @@
 /backups/
 /data/posts.backup.json
 /docs/responsive-audit-*.md
+/docs/website-audit-*.md
+/scripts/
 /get-yt.mjs
+check-*.mjs
+debug-*.mjs
+verify-*.mjs
+public/images/hero-bg image.png
 
 # next.js
 /.next/

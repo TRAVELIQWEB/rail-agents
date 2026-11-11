@@ -1,3 +1,4 @@
+import { ToolPageSchema } from "@/components/seo/ToolPageSchema";
 import { AllToolsLink } from "@/components/tools/AllToolsLink";
 import type { Metadata } from "next";
 import { BadgeCheck, Clock3 } from "lucide-react";
@@ -49,9 +50,10 @@ export const metadata: Metadata = {
 export default function IRCTCCancellationRefundCalculatorPage() {
   return (
     <div className="flex min-h-screen flex-col bg-[#fffdfa] text-slate-800">
+      <ToolPageSchema title="IRCTC Cancellation and Refund Calculator" description="Review estimated cancellation charges and the refund breakdown for a train ticket." pathname="/irctc-cancellation-refund-calculator" />
       <Header />
 
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
         <AllToolsLink />
         <section className="compact-tool-heading relative border-b border-slate-200/80 bg-[#f8fafc] py-4 sm:py-5">
           <div className="site-container relative">

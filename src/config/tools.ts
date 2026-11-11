@@ -89,6 +89,7 @@ const toolAliases: Record<string, RailToolId> = {
   "ticket-date-calculator": "ticket-date",
   "date": "ticket-date",
   "chart": "chart",
+  "chart-times": "chart",
   "chart-preparation": "chart",
   "train-chart-preparation-time": "chart",
 };

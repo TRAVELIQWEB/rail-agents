@@ -133,7 +133,7 @@ export function PostsTableClient({ posts }: { posts: BlogPost[] }) {
         </div>
         <Link
           href="/admin/posts/new"
-          className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#ea580c] px-4 text-xs sm:text-sm font-bold text-white transition hover:bg-[#f97316]"
+          className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#F36B21] px-4 text-xs sm:text-sm font-bold text-white transition hover:bg-[#F36B21]"
         >
           <PenSquare size={15} />
           <span>Create New Post</span>
@@ -150,7 +150,7 @@ export function PostsTableClient({ posts }: { posts: BlogPost[] }) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by title, author, category or slug..."
-            className="h-10 w-full rounded-xl border border-[#262b35] bg-[#14171c] pl-9 pr-9 text-xs text-zinc-100 outline-none transition placeholder:text-zinc-500 hover:border-[#343b48] focus:border-[#ea580c]"
+            className="h-10 w-full rounded-xl border border-[#262b35] bg-[#14171c] pl-9 pr-9 text-xs text-zinc-100 outline-none transition placeholder:text-zinc-500 hover:border-[#343b48] focus:border-[#F36B21]"
           />
           {search && (
             <button
@@ -179,7 +179,7 @@ export function PostsTableClient({ posts }: { posts: BlogPost[] }) {
               onClick={() => setTab(value)}
               className={`rounded-lg px-3 py-1.5 text-xs font-bold transition cursor-pointer ${
                 tab === value
-                  ? "bg-[#ea580c] text-white"
+                  ? "bg-[#F36B21] text-white"
                   : "text-zinc-400 hover:bg-[#1f242d] hover:text-zinc-100"
               }`}
             >
@@ -491,7 +491,7 @@ export function PostsTableClient({ posts }: { posts: BlogPost[] }) {
                   type="datetime-local"
                   value={newPublishDate}
                   onChange={(e) => setNewPublishDate(e.target.value)}
-                  className="h-10 w-full rounded-xl border border-[#282d37] bg-[#111318] px-3.5 text-xs font-semibold text-zinc-100 outline-none focus:border-[#ea580c]"
+                  className="h-10 w-full rounded-xl border border-[#282d37] bg-[#111318] px-3.5 text-xs font-semibold text-zinc-100 outline-none focus:border-[#F36B21]"
                 />
               </div>
 
@@ -524,7 +524,7 @@ export function PostsTableClient({ posts }: { posts: BlogPost[] }) {
                 type="button"
                 onClick={handleUpdatePublishDate}
                 disabled={updatingDate}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-[#ea580c] px-5 py-2 text-xs font-bold text-white hover:bg-[#f97316] transition disabled:opacity-60 cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-[#F36B21] px-5 py-2 text-xs font-bold text-white hover:bg-[#F36B21] transition disabled:opacity-60 cursor-pointer"
               >
                 {updatingDate ? "Updating..." : "Update Date"}
               </button>

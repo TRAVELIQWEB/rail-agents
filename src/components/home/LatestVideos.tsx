@@ -55,7 +55,7 @@ export async function LatestVideos() {
           </div>
         ) : (
           <div className="rounded-3xl border border-[#f1e4d9] bg-white/70 px-6 py-10 text-center shadow-[0_10px_30px_rgba(15,39,71,0.05)] backdrop-blur-md">
-            <PlayCircle className="mx-auto h-10 w-10 text-[#f97316]" />
+            <PlayCircle className="mx-auto h-10 w-10 text-[#F36B21]" />
 
             <h3 className="mt-4 text-lg font-[800] text-[var(--navy)]">
               Video guides are coming soon

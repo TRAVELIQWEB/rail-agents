@@ -479,7 +479,7 @@ export function TicketDateCalculator() {
                 <button
                   type="button"
                   onClick={() => setFromOpen((prev) => !prev)}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 p-0.5"
+                  className="absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded text-stone-600 hover:text-stone-800"
                   aria-label="Toggle from station list"
                 >
                   <ChevronDown className={`h-3.5 w-3.5 transition-transform ${fromOpen ? "rotate-180" : ""}`} />
@@ -582,7 +582,7 @@ export function TicketDateCalculator() {
                 <button
                   type="button"
                   onClick={() => setToOpen((prev) => !prev)}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 p-0.5"
+                  className="absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded text-stone-600 hover:text-stone-800"
                   aria-label="Toggle to station list"
                 >
                   <ChevronDown className={`h-3.5 w-3.5 transition-transform ${toOpen ? "rotate-180" : ""}`} />

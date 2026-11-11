@@ -1,3 +1,4 @@
+import { ToolPageSchema } from "@/components/seo/ToolPageSchema";
 import { AllToolsLink } from "@/components/tools/AllToolsLink";
 import type { Metadata } from "next";
 import { Header } from "@/components/layout/Header";
@@ -17,6 +18,12 @@ export const metadata: Metadata = {
     "Check API-reported first and final reservation chart timings and chart preparation stations for your selected train and boarding stop.",
   alternates: {
     canonical: PAGE_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "IRCTC Train Chart Preparation Time | RailAgents",
+    description: "Check API-reported first and final reservation chart timings and chart preparation stations for your selected train and boarding stop.",
+    images: [siteConfig.socialImage],
   },
   openGraph: {
     title:
@@ -43,9 +50,10 @@ export const dynamic = "force-dynamic";
 export default function TrainChartPreparationTimePage() {
   return (
     <div className="flex min-h-screen flex-col bg-[#F5F7FA] text-[#26374A]">
+      <ToolPageSchema title="Train Chart Preparation Time" description="Check API-reported first and final reservation chart timings for your selected train and boarding stop." pathname="/train-chart-preparation-time" />
       <Header />
 
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
         <AllToolsLink />
         <section className="compact-tool-heading border-b border-[#E5EAF0] bg-white py-3 sm:py-4">
           <div className="site-container">

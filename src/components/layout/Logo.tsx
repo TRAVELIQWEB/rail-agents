@@ -22,7 +22,6 @@ export function Logo({ variant = "default", size = "default" }: LogoProps) {
         width={44}
         height={44}
         quality={100}
-        priority
         className={`${
           isSmall ? "h-7 w-7" : "h-7 w-7 xs:h-8 xs:w-8 sm:h-11 sm:w-11 min-[1180px]:h-9 min-[1180px]:w-9 2xl:h-12 2xl:w-12"
         } shrink-0 object-contain drop-shadow-sm transition-transform duration-200 group-hover:-translate-y-px`}

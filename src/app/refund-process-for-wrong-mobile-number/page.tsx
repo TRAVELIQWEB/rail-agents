@@ -136,14 +136,14 @@ export default function RefundProcessWrongMobileNumberPage() {
       />
       <Header />
 
-      <main className="flex-1 pb-16">
+      <main id="main-content" tabIndex={-1} className="flex-1 pb-16">
         {/* Hero Header */}
         <section className="border-b border-slate-200 bg-gradient-to-b from-[#FFF7ED] via-white to-[#F8FAFC] pt-8 pb-10 sm:pt-10 sm:pb-12">
           <div className="site-container max-w-5xl">
             <nav aria-label="Breadcrumb" className="mb-5">
               <ol className="flex flex-wrap items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-500">
                 <li>
-                  <Link href="/" className="hover:text-[#C2410C] transition-colors">
+                  <Link href="/" className="hover:text-[#F36B21] transition-colors">
                     Home
                   </Link>
                 </li>
@@ -151,7 +151,7 @@ export default function RefundProcessWrongMobileNumberPage() {
                   <ChevronRight className="h-3.5 w-3.5 text-slate-400" />
                 </li>
                 <li>
-                  <Link href="/guides" className="hover:text-[#C2410C] transition-colors">
+                  <Link href="/guides" className="hover:text-[#F36B21] transition-colors">
                     Guides
                   </Link>
                 </li>
@@ -171,7 +171,7 @@ export default function RefundProcessWrongMobileNumberPage() {
 
             <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#102B4E] leading-tight">
               IRCTC Refund Process for{" "}
-              <span className="text-[#C2410C]">Wrong Mobile Number</span> on Ticket
+              <span className="text-[#F36B21]">Wrong Mobile Number</span> on Ticket
             </h1>
 
             <p className="mt-3.5 text-base sm:text-lg leading-relaxed text-slate-600 max-w-3xl">
@@ -341,7 +341,7 @@ export default function RefundProcessWrongMobileNumberPage() {
                 </Link>
                 <Link
                   href="/ask-nihal"
-                  className="flex items-center justify-between rounded-xl border border-[#FED7AA] bg-[#FFF7ED] px-3.5 py-2.5 text-xs font-bold text-[#C2410C] hover:bg-orange-100/70 transition-colors"
+                  className="flex items-center justify-between rounded-xl border border-[#FED7AA] bg-[#FFF7ED] px-3.5 py-2.5 text-xs font-bold text-[#F36B21] hover:bg-orange-100/70 transition-colors"
                 >
                   <span className="inline-flex items-center gap-1.5">
                     <HelpCircle className="h-3.5 w-3.5" aria-hidden="true" />

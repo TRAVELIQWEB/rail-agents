@@ -1,352 +1,198 @@
 import Image from "next/image";
 import {
+  ArrowRight,
   BookOpen,
   Calculator,
-  CalendarDays,
-  ChevronRight,
-  CirclePlay,
+  CheckCircle2,
   MessageCircle,
-  Radio,
-  ShieldCheck,
-  TicketCheck,
-  Train,
-  TrainFront,
-  Users,
+  Sparkles,
+  TrainTrack,
 } from "lucide-react";
 import { InternalLink } from "@/components/ui/InternalLink";
-import { railTools, type RailTool, type RailToolId } from "@/config/tools";
-
-const toolIcons: Record<RailTool["icon"], typeof TrainFront> = {
-  calculator: Calculator,
-  calendar: CalendarDays,
-  radio: Radio,
-  ticket: TicketCheck,
-  train: TrainFront,
-};
-
-const heroToolCardColors: Record<
-  RailToolId,
-  {
-    card: string;
-    iconBox: string;
-    chevron: string;
-    focus: string;
-  }
-> = {
-  "live-train": {
-    card: "border-[#BFDBFE]/90 bg-[#EFF6FF]/45 hover:border-[#2563EB] hover:bg-[#EFF6FF]",
-    iconBox: "bg-[#EFF6FF] text-[#2563EB] group-hover:bg-[#2563EB] group-hover:text-white",
-    chevron: "text-[#2563EB]",
-    focus: "focus-visible:outline-[#2563EB]",
-  },
-  pnr: {
-    card: "border-[#BBF7D0]/90 bg-[#ECFDF5]/45 hover:border-[#15803D] hover:bg-[#ECFDF5]",
-    iconBox: "bg-[#ECFDF5] text-[#15803D] group-hover:bg-[#15803D] group-hover:text-white",
-    chevron: "text-[#15803D]",
-    focus: "focus-visible:outline-[#15803D]",
-  },
-  fare: {
-    card: "border-[#DDD6FE]/90 bg-[#F5F3FF]/45 hover:border-[#7C3AED] hover:bg-[#F5F3FF]",
-    iconBox: "bg-[#F5F3FF] text-[#7C3AED] group-hover:bg-[#7C3AED] group-hover:text-white",
-    chevron: "text-[#7C3AED]",
-    focus: "focus-visible:outline-[#7C3AED]",
-  },
-  refund: {
-    card: "border-[#FECDD3]/90 bg-[#FFF1F2]/45 hover:border-[#BE123C] hover:bg-[#FFF1F2]",
-    iconBox: "bg-[#FFF1F2] text-[#BE123C] group-hover:bg-[#BE123C] group-hover:text-white",
-    chevron: "text-[#BE123C]",
-    focus: "focus-visible:outline-[#BE123C]",
-  },
-  "ticket-date": {
-    card: "border-[#FED7AA]/90 bg-[#FFF7ED]/55 hover:border-[#C2410C] hover:bg-[#FFF7ED]",
-    iconBox: "bg-[#FFF7ED] text-[#C2410C] group-hover:bg-[#C2410C] group-hover:text-white",
-    chevron: "text-[#C2410C]",
-    focus: "focus-visible:outline-[#C2410C]",
-  },
-  chart: {
-    card: "border-[#99F6E4]/90 bg-[#F0FDFA]/50 hover:border-[#0D9488] hover:bg-[#F0FDFA]",
-    iconBox: "bg-[#F0FDFA] text-[#0D9488] group-hover:bg-[#0D9488] group-hover:text-white",
-    chevron: "text-[#0D9488]",
-    focus: "focus-visible:outline-[#0D9488]",
-  },
-};
-
-const trustItems = [
-  {
-    icon: BookOpen,
-    label: "Simple Explanations",
-    iconClass: "bg-[#EFF6FF] text-[#2563EB]",
-  },
-  {
-    icon: ShieldCheck,
-    label: "Practical Information",
-    iconClass: "bg-[#ECFDF5] text-[#15803D]",
-  },
-  {
-    icon: Users,
-    label: "For Railway Agents & Regular Users",
-    iconClass: "bg-[#F0FDFA] text-[#0D9488]",
-  },
-];
+import { HeroPhoneShowcase } from "./HeroPhoneShowcase";
 
 export function Hero() {
   return (
     <section
       aria-labelledby="home-hero-heading"
-      className="relative overflow-hidden border-b border-[#ebd9c7]/60 bg-gradient-to-b from-[#fff9f2] via-[#fffcf9] to-[#fffdfb]"
+      className="relative overflow-hidden border-b border-[#E5EAF0] bg-[#FFF8F2]"
     >
-      {/* Shared Unified Ambient Warm Glow Across Entire Hero + Tools + Feature Cards */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(120% 65% at 50% 58%, rgba(255,244,230,0.65) 0%, rgba(255,252,249,0.3) 55%, rgba(255,253,251,0) 100%)",
-        }}
-      />
-
-      {/* ══════════════════════════════════════════════════════════════════════
-          UPPER VISUAL AREA: TWO-COLUMN HERO (54% LEFT CONTENT / 46% RIGHT IMAGE)
-         ══════════════════════════════════════════════════════════════════════ */}
-      <div className="relative overflow-hidden">
-        {/* Full-Width Unified Railway Station & Train Background (confined to upper hero) */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-          <Image
-            src="/images/hero-station-bg.jpg"
-            alt=""
-            fill
-            priority
-            unoptimized
-            sizes="100vw"
-            className="object-cover object-[62%_42%] sm:object-[58%_42%] lg:object-[center_42%]"
-          />
-        </div>
-
-        {/* Seamless Left Readability Mist (keeps center heritage station & right train vivid) */}
-        <div
-          aria-hidden="true"
-          className="hero-copy-readability pointer-events-none absolute inset-0"
-        />
-
-        {/* Smooth Bottom Fade Overlay into Unified Shared Background (eliminates horizontal cutoff) */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-24 sm:h-28 lg:h-32"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(255,252,249,0) 0%, rgba(255,251,246,0.48) 45%, rgba(255,251,247,0.88) 78%, #fffcf9 100%)",
-          }}
-        />
-
-        {/* Bottom-Center to Right Curved Orange & Deep Navy Ribbon Accent */}
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 1440 150"
-          fill="none"
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-12 w-full sm:h-16 lg:h-24 xl:h-28"
-          preserveAspectRatio="none"
-        >
-          {/* Left-of-portrait subtle orange crest */}
-          <path
-            d="M 680 150 C 745 122, 835 120, 935 142 L 935 150 Z"
-            fill="url(#heroOrangeSwoopLeft)"
-          />
-          {/* Right sweeping warm highlight edge */}
-          <path
-            d="M 980 150 C 1135 136, 1295 82, 1440 8 L 1440 150 Z"
-            fill="#fffcf9"
-            opacity="0.95"
-          />
-          {/* Right sweeping orange ribbon */}
-          <path
-            d="M 992 150 C 1145 138, 1300 86, 1440 16 L 1440 82 C 1310 122, 1175 143, 1055 150 Z"
-            fill="url(#heroOrangeSwoopRight)"
-          />
-          {/* Bottom-right deep railway navy wedge */}
-          <path
-            d="M 1050 150 C 1180 143, 1312 120, 1440 78 L 1440 150 Z"
-            fill="#062345"
-          />
-          <defs>
-            <linearGradient
-              id="heroOrangeSwoopLeft"
-              x1="680"
-              y1="135"
-              x2="935"
-              y2="145"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop offset="0%" stopColor="#fb923c" stopOpacity="0.85" />
-              <stop offset="50%" stopColor="#ea580c" />
-              <stop offset="100%" stopColor="#c2410c" />
-            </linearGradient>
-            <linearGradient
-              id="heroOrangeSwoopRight"
-              x1="992"
-              y1="150"
-              x2="1440"
-              y2="16"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop offset="0%" stopColor="#c2410c" />
-              <stop offset="45%" stopColor="#ea580c" />
-              <stop offset="100%" stopColor="#f97316" />
-            </linearGradient>
-          </defs>
-        </svg>
-
-        <div className="site-container relative z-20">
-          <div className="grid grid-cols-1 items-center gap-5 pt-5 sm:pt-6 lg:min-h-[412px] lg:grid-cols-[minmax(0,54%)_minmax(0,46%)] lg:gap-6 lg:pt-0 xl:min-h-[432px] xl:gap-8 2xl:min-h-[448px]">
-            {/* Left Column (50–55% width): Badge, Heading, Description, CTA Buttons */}
-            <div className="flex min-w-0 flex-col items-center self-center text-center lg:items-start lg:py-4 lg:text-left">
-              <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3.5 py-1.5 text-xs font-bold text-[var(--navy)] shadow-[0_2px_8px_rgba(249,115,22,0.08)] sm:text-[13px]">
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-[var(--primary)] text-white">
-                  <Train aria-hidden="true" className="h-3 w-3" />
-                </span>
-                <span>Travel Information &amp; Guidance</span>
-              </div>
-
-              <h1 id="home-hero-heading" className="page-hero-title">
-                Everything a <span className="hero-accent">Travel</span>
-                <br className="hidden sm:inline" />{" "}
-                <span className="hero-accent">Agent</span> Needs to Know.
-              </h1>
-
-              <p className="page-hero-description mt-3 max-w-xl">
-                Get clear answers, step-by-step guides and video tutorials for IRCTC
-                agent registration, ticket booking, Tatkal, cancellation, refunds,
-                TDR and more.
-              </p>
-
-              <div className="mt-5 flex flex-wrap items-center justify-center gap-3 sm:gap-3.5 lg:justify-start">
-                <InternalLink
-                  href="/ask-nihal"
-                  prefetch={false}
-                  className="inline-flex min-h-[46px] items-center gap-2 rounded-full bg-[var(--primary)] px-5 py-2.5 text-sm font-bold text-white shadow-[0_4px_14px_rgba(249,115,22,0.28)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--primary-hover)] hover:shadow-[0_6px_20px_rgba(249,115,22,0.36)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:px-6"
-                >
-                  <MessageCircle aria-hidden="true" className="h-4 w-4" />
-                  <span>Ask Nihal Singh</span>
-                </InternalLink>
-
-                <InternalLink
-                  href="/videos"
-                  prefetch={false}
-                  className="inline-flex min-h-[46px] items-center gap-2 rounded-full border-2 border-[#102B4E]/85 bg-white px-5 py-2.5 text-sm font-bold text-[#102B4E] shadow-[0_3px_12px_rgba(16,43,78,0.08)] transition-all duration-200 hover:-translate-y-0.5 hover:border-[#2563EB] hover:bg-[#EFF6FF] hover:text-[#2563EB] hover:shadow-[0_6px_16px_rgba(37,99,235,0.14)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB] active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:px-6"
-                >
-                  <CirclePlay
-                    aria-hidden="true"
-                    className="h-4 w-4 text-[#2563EB]"
-                  />
-                  <span>Watch Video Guides</span>
-                </InternalLink>
-              </div>
-            </div>
-
-            {/* Right Column (45–50% width): Existing Nihal Singh Hero Image */}
-            <div className="relative flex min-h-[275px] min-w-0 items-end justify-center self-end overflow-hidden pt-2 sm:min-h-[330px] md:min-h-[355px] lg:min-h-[412px] lg:justify-start lg:pl-2 lg:pt-3 xl:min-h-[432px] xl:pl-6 2xl:min-h-[448px]">
-              {/* Nihal Singh Cutout — Shifted ~25–30px downward for ~30–35px top breathing room */}
-              <div className="relative z-20 h-[275px] w-full max-w-[265px] translate-x-[clamp(-48px,-8vw,-26px)] translate-y-[18px] sm:h-[330px] sm:max-w-[320px] sm:translate-y-[22px] md:h-[355px] md:max-w-[345px] lg:h-[400px] lg:max-w-[390px] lg:translate-x-0 lg:translate-y-[28px] xl:h-[420px] xl:max-w-[410px] 2xl:h-[435px] 2xl:max-w-[425px]">
-                <Image
-                  src="/images/nihal-singh.png"
-                  alt="Nihal Singh - Digital Face of RailAgents"
-                  fill
-                  priority
-                  unoptimized
-                  sizes="(min-width: 1536px) 425px, (min-width: 1280px) 410px, (min-width: 1024px) 390px, (min-width: 768px) 345px, (min-width: 640px) 320px, 265px"
-                  className="object-contain object-bottom drop-shadow-[0_10px_24px_rgba(15,39,71,0.18)]"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Art direction selects one responsive background without preloading hidden images. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <picture>
+          <source media="(max-width: 639px)" srcSet="/images/hero-bg-orange-train-mobile.webp" type="image/webp" />
+          <Image src="/images/hero-bg-orange-train.webp" alt="" fill loading="eager" fetchPriority="high" sizes="100vw" className="object-cover object-right lg:object-[95%_center] max-sm:object-center max-sm:opacity-45" />
+        </picture>
+        <div className="absolute inset-0 hidden bg-gradient-to-r from-white/95 via-white/65 to-white/15 sm:block lg:from-white/92 lg:via-white/55 lg:to-white/10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/60 to-white/90 sm:hidden" />
       </div>
 
-      {/* ══════════════════════════════════════════════════════════════════════
-          UNIFIED LOWER HERO AREA: POPULAR RAILWAY TOOLS + THREE FEATURE CARDS
-         ══════════════════════════════════════════════════════════════════════ */}
-      <div className="site-container relative z-20 pt-5 pb-5 sm:pt-6 sm:pb-6">
-        <div className="space-y-3.5 sm:space-y-4">
-          {/* 1. Full-Width Popular Railway Tools Section (~104–112px height on desktop) */}
-          <div
-            aria-label="Popular Railway Tools"
-            className="flex items-center rounded-2xl border border-[#f0e4d8] bg-white px-3 py-4 shadow-[0_4px_18px_rgba(15,39,71,0.05)] sm:px-4 sm:py-[18px] xl:min-h-[108px]"
-          >
-            <div className="flex w-full flex-col gap-3.5 xl:flex-row xl:items-center xl:gap-4">
-              {/* Section Label */}
-              <div className="flex shrink-0 items-center justify-between gap-2.5 border-b border-[#f0e4d8] pb-3 xl:self-stretch xl:border-r xl:border-b-0 xl:pr-4 xl:pb-0">
-                <div className="flex items-center gap-2.5">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#fff3e8] text-[var(--primary)]">
-                    <TrainFront aria-hidden="true" className="h-4.5 w-4.5" />
+      <div className="site-container relative z-10 pt-10 pb-12 sm:pt-14 sm:pb-16 lg:pt-16 lg:pb-20 xl:pt-20 xl:pb-24 overflow-hidden lg:overflow-visible">
+        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8 xl:gap-14">
+          {/* Left Column (Editorial Typography & Action) */}
+          <div className="flex flex-col items-center text-center lg:col-span-7 lg:items-start lg:text-left min-w-0 max-w-full">
+            {/* Authority Tag Pill with subtle ambient glow */}
+            <div className="mb-4 inline-flex max-w-full items-center gap-1.5 rounded-full border border-[#F36B21]/30 bg-white/95 px-3 py-1 text-xs font-bold text-[#142B45] shadow-[0_2px_12px_rgba(243,107,33,0.12)] backdrop-blur-xs">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#F36B21] text-white shadow-xs">
+                <CheckCircle2 aria-hidden="true" className="h-3 w-3" />
+              </span>
+              <span className="truncate">
+                <span className="hidden sm:inline">Authoritative Indian Railways Information &amp; Agent Desk</span>
+                <span className="sm:hidden">Railway Information &amp; Agent Desk</span>
+              </span>
+            </div>
+
+            {/* Primary H1 with Intentional Line Breaks */}
+            <h1
+              id="home-hero-heading"
+              className="text-[clamp(1.75rem,7.5vw,2.25rem)] sm:text-4xl md:text-5xl lg:text-[44px] xl:text-[50px] font-black tracking-tight text-[#142B45] leading-[1.15] max-w-2xl"
+            >
+              Reliable Railway Rules<br />
+              <span className="text-[#F36B21]">IRCTC Tools</span> &amp; Agent<br />
+              Guidance
+            </h1>
+
+            {/* Supporting description */}
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-[#475467] sm:text-lg font-medium">
+              Reliable commercial guidance, source-referenced circulars, and instant calculation tools for
+              IRCTC agents, travel desks, and everyday train passengers across India.
+            </p>
+
+            {/* Action CTA Buttons */}
+            <div className="mt-7 flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3.5 sm:gap-4 w-full sm:w-auto">
+              <InternalLink
+                href="/tools"
+                prefetch={false}
+                className="group inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-xl bg-[#F36B21] px-6 py-3 text-sm font-bold text-white shadow-[0_8px_24px_-4px_rgba(243,107,33,0.45),0_0_20px_rgba(243,107,33,0.2)] transition-all duration-150 hover:bg-[#F36B21] hover:shadow-[0_12px_32px_-4px_rgba(243,107,33,0.6),0_0_28px_rgba(243,107,33,0.35)] hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F36B21]"
+              >
+                <Calculator aria-hidden="true" className="h-4 w-4" />
+                <span>Explore Railway Tools</span>
+                <ArrowRight
+                  aria-hidden="true"
+                  className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-1"
+                />
+              </InternalLink>
+
+              <InternalLink
+                href="/ask-nihal"
+                prefetch={false}
+                className="group inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-xl border-2 border-[#142B45] bg-white/95 px-6 py-3 text-sm font-bold text-[#142B45] shadow-xs backdrop-blur-xs transition-all duration-150 hover:bg-[#F4F5F7] hover:border-[#142B45] hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#142B45]"
+              >
+                <MessageCircle aria-hidden="true" className="h-4 w-4 text-[#F36B21]" />
+                <span>Ask Nihal Singh</span>
+              </InternalLink>
+            </div>
+
+            {/* Railway Detail Pill Ticker */}
+            <div className="mt-7 flex flex-wrap items-center justify-center lg:justify-start gap-1.5 sm:gap-2 text-xs font-semibold text-[#667085]">
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-[#E5EAF0] bg-white/95 px-2.5 py-1 text-[#142B45] shadow-2xs">
+                <TrainTrack className="h-3.5 w-3.5 text-[#F36B21]" aria-hidden="true" />
+                Popular Utilities:
+              </span>
+              <span className="rounded-md bg-[#EAF7F0] px-2 py-0.5 text-[11px] font-bold text-[#16A36A]">
+                Live Train GPS
+              </span>
+              <span className="rounded-md bg-[#EAF3FA] px-2 py-0.5 text-[11px] font-bold text-[#142B45]">
+                10-Digit PNR
+              </span>
+              <span className="rounded-md bg-[#FFF1E7] px-2 py-0.5 text-[11px] font-bold text-[#F36B21]">
+                Agent Fare Calc
+              </span>
+              <span className="rounded-md bg-[#FFF7D9] px-2 py-0.5 text-[11px] font-bold text-[#B45309]">
+                Refund Slabs
+              </span>
+            </div>
+
+            {/* Accurate Trust Indicator Stats */}
+            <div className="mt-8 border-t border-[#E5EAF0] pt-6 w-full lg:max-w-xl">
+              {/* Mobile (< sm): Clean horizontal stack */}
+              <div className="flex flex-col gap-2.5 sm:hidden">
+                <div className="flex items-center gap-3 rounded-xl border border-[#E5EAF0] bg-white/95 px-3.5 py-2.5 shadow-2xs">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#EAF3FA] text-[#142B45]">
+                    <BookOpen aria-hidden="true" className="h-4 w-4" />
                   </span>
-                  <h2 className="text-sm font-extrabold tracking-tight text-[var(--navy)] sm:text-[15px]">
-                    Popular Railway Tools
-                  </h2>
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-[#142B45] leading-tight">
+                      Source-Referenced Guidance
+                    </p>
+                    <p className="text-[11px] font-medium text-[#667085]">
+                      Commercial circulars &amp; rules
+                    </p>
+                  </div>
                 </div>
-                <InternalLink
-                  href="/tools"
-                  prefetch={false}
-                  className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-xs font-bold text-[var(--primary)] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] xl:hidden"
-                >
-                  <span>All tools</span>
-                  <ChevronRight aria-hidden="true" className="h-3.5 w-3.5" />
-                </InternalLink>
+
+                <div className="flex items-center gap-3 rounded-xl border border-[#E5EAF0] bg-white/95 px-3.5 py-2.5 shadow-2xs">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#FFF1E7] text-[#F36B21]">
+                    <Calculator aria-hidden="true" className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-[#F36B21] leading-tight">
+                      6 Railway Tools
+                    </p>
+                    <p className="text-[11px] font-medium text-[#667085]">
+                      GPS, PNR, fare &amp; refund utilities
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 rounded-xl border border-[#E5EAF0] bg-white/95 px-3.5 py-2.5 shadow-2xs">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#EAF7F0] text-[#16A36A]">
+                    <Sparkles aria-hidden="true" className="h-4 w-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-xs font-bold text-[#142B45] leading-tight">
+                      Free Access
+                    </p>
+                    <p className="text-[11px] font-medium text-[#667085]">
+                      Open for agents &amp; everyday passengers
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              {/* 6 Railway Tool Shortcut Cards (~68–72px height) */}
-              <div className="grid flex-1 grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-6 sm:gap-2.5">
-                {railTools.map((tool) => {
-                  const Icon = toolIcons[tool.icon];
-                  const colorStyle = heroToolCardColors[tool.id];
-                  return (
-                    <InternalLink
-                      key={tool.href}
-                      href={tool.href}
-                      prefetch={false}
-                      aria-label={`${tool.title} – ${tool.description}`}
-                      className={`group flex min-h-[68px] sm:min-h-[70px] min-w-0 items-center justify-between gap-2 rounded-xl border px-2.5 py-2.5 transition-all duration-150 hover:-translate-y-0.5 hover:shadow-xs focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:px-3 ${colorStyle.card} ${colorStyle.focus}`}
-                    >
-                      <div className="flex min-w-0 items-center gap-2">
-                        <span
-                          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors ${colorStyle.iconBox}`}
-                        >
-                          <Icon aria-hidden="true" className="h-4 w-4" />
-                        </span>
-                        <span className="min-w-0 text-xs font-bold leading-tight text-[var(--navy)] sm:text-[12.5px]">
-                          {tool.shortTitle}
-                        </span>
-                      </div>
-                      <ChevronRight
-                        aria-hidden="true"
-                        className={`h-3.5 w-3.5 shrink-0 transition-transform duration-150 group-hover:translate-x-0.5 motion-reduce:transition-none ${colorStyle.chevron}`}
-                      />
-                    </InternalLink>
-                  );
-                })}
+              {/* Desktop / Tablet (sm+): Balanced 3-column cards */}
+              <div className="hidden sm:grid sm:grid-cols-3 gap-3 w-full [&>*]:min-w-0">
+                <div className="flex flex-col items-center justify-center rounded-xl border border-[#E5EAF0] bg-white/95 p-3 text-center shadow-2xs backdrop-blur-xs">
+                  <span className="mb-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#EAF3FA] text-[#142B45]">
+                    <BookOpen aria-hidden="true" className="h-4 w-4" />
+                  </span>
+                  <p className="text-sm font-bold text-[#142B45] leading-tight whitespace-nowrap">
+                    Source-Referenced
+                  </p>
+                  <p className="mt-1 text-xs font-semibold text-[#667085]">
+                    Guidance
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center justify-center rounded-xl border border-[#E5EAF0] bg-white/95 p-3 text-center shadow-2xs backdrop-blur-xs">
+                  <span className="mb-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#FFF1E7] text-[#F36B21]">
+                    <Calculator aria-hidden="true" className="h-4 w-4" />
+                  </span>
+                  <p className="text-sm font-bold text-[#F36B21] leading-tight whitespace-nowrap">
+                    6 Railway Tools
+                  </p>
+                  <p className="mt-1 text-xs font-semibold text-[#667085]">
+                    Online Utilities
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center justify-center rounded-xl border border-[#E5EAF0] bg-white/95 p-3 text-center shadow-2xs backdrop-blur-xs">
+                  <span className="mb-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#EAF7F0] text-[#16A36A]">
+                    <Sparkles aria-hidden="true" className="h-4 w-4" />
+                  </span>
+                  <p className="text-sm font-bold text-[#142B45] leading-tight whitespace-nowrap">
+                    Free Access
+                  </p>
+                  <p className="mt-1 text-xs font-semibold text-[#667085]">
+                    Open to All
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* 2. Compact Full-Width Horizontal Benefits Strip (~72–80px height) */}
-          <div
-            aria-label="Key platform benefits"
-            className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3"
-          >
-            {trustItems.map(({ icon: Icon, label, iconClass }) => (
-              <div
-                key={label}
-                className="flex min-h-[72px] sm:min-h-[76px] min-w-0 items-center justify-center gap-3 rounded-xl border border-[#f0e4d8] bg-white px-3.5 py-3 shadow-[0_2px_8px_rgba(15,39,71,0.03)]"
-              >
-                <span
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${iconClass}`}
-                >
-                  <Icon aria-hidden="true" className="h-4.5 w-4.5" />
-                </span>
-                <span className="text-xs font-extrabold leading-snug text-[var(--navy)] sm:text-[13.5px]">
-                  {label}
-                </span>
-              </div>
-            ))}
-          </div>
+          {/* Right Column: 3D Smartphone Showcase with Live Badges */}
+          <HeroPhoneShowcase />
         </div>
       </div>
     </section>

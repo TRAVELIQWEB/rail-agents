@@ -2,9 +2,10 @@
 
 import { AllToolsLink } from "@/components/tools/AllToolsLink";
 import { hasReportedLivePosition, isEstimatedTracking, reportedDelayMinutes } from "@/lib/train-timing";
+import { createTrainSlug, parseTrainSlug } from "@/lib/train-slug";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   RefreshCw,
@@ -20,6 +21,7 @@ import {
 } from "lucide-react";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import styles from "./LiveTrainStatusTool.module.css";
 
 type DataRecord = Record<string, unknown>;
 
@@ -42,10 +44,10 @@ function pickValue(record: DataRecord, keys: string[]): unknown {
 }
 
 function journeyTime(value: string) {
-  const match = /^(\d{1,2}):(\d{2})(?::\d{2})?$/.exec(value);
+  const match = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec(value);
   if (!match) return value;
   const h = Number(match[1]);
-  return h > 23 || Number(match[2]) > 59 ? value : String(h % 12 || 12).padStart(2, "0") + ":" + match[2] + (h >= 12 ? " PM" : " AM");
+  return h > 23 || Number(match[2]) > 59 ? value : String(h % 12 || 12).padStart(2, "0") + ":" + match[2] + (match[3] && match[3] !== "00" ? `:${match[3]}` : "") + (h >= 12 ? " PM" : " AM");
 }
 
 function formatLiveDateTime(value: unknown): string {
@@ -58,6 +60,7 @@ function formatLiveDateTime(value: unknown): string {
     month: "short",
     hour: "2-digit",
     minute: "2-digit",
+    second: date.getUTCSeconds() !== 0 ? "2-digit" : undefined,
     hour12: true,
   }).format(date);
 }
@@ -83,6 +86,7 @@ function formatLiveTime(value: unknown): string {
     timeZone: "Asia/Kolkata",
     hour: "2-digit",
     minute: "2-digit",
+    second: date.getUTCSeconds() !== 0 ? "2-digit" : undefined,
     hour12: true,
   }).format(date);
 }
@@ -144,41 +148,13 @@ function statusText(value: unknown): string {
   return displayValue(raw).toLowerCase().replace(/[_-]/g, " ").trim();
 }
 
-function getJourneyState(record: DataRecord, route: DataRecord[], selectedDate: string): JourneyState {
-  const explicitStatus = statusText(pickValue(record, ["journeyStatus", "runningStatus", "trainStatus", "operationalStatus", "journey_state", "status"]));
-  const cancelled = ["isCancelled", "journeyCancelled", "isJourneyCancelled", "cancelled", "canceled"].some((key) => pickValue(record, [key]) === true)
-    || /\b(cancelled|canceled)\b/.test(explicitStatus);
-  if (cancelled) return "CANCELLED";
-
-  const notStarted = ["isNotStarted", "notStarted", "journeyNotStarted"].some((key) => pickValue(record, [key]) === true)
-    || /\b(not started|yet to start|not departed|before departure|scheduled|departure delayed|delayed departure)\b/.test(explicitStatus);
-  if (selectedDate > todayInIndia()) return notStarted ? "NOT_STARTED" : "UNKNOWN";
-
-  const finalStop = route[route.length - 1];
-  const finalArrival = finalStop && !hasPredictedProvenance(finalStop) && (
-    ["actualArrival", "arrivalTimeActual", "actual_arrival"].some((key) => hasVerifiedActualTime(finalStop, pickValue(finalStop, [key])))
-    || ["isArrived", "hasArrived", "arrivalConfirmed"].some((key) => pickValue(finalStop, [key]) === true)
-    || /\b(arrived|reached|completed|terminated)\b/.test(statusText(pickValue(finalStop, ["stationStatus", "arrivalStatus", "eventStatus", "status"])))
-  );
-  if (finalArrival) return "COMPLETED";
-
-  const providerReportsCompleted = ["isCompleted", "journeyCompleted", "isJourneyCompleted", "completed"].some((key) => pickValue(record, [key]) === true)
-    || /\b(complete|completed|finished|reached destination|arrived at destination|terminated at destination)\b/.test(explicitStatus);
-  if (providerReportsCompleted) return "COMPLETED";
-
-  const originStop = route[0];
-  const originDeparted = originStop && !hasPredictedProvenance(originStop) && (
-    ["hasDeparted", "isDeparted", "departureConfirmed"].some((key) => pickValue(originStop, [key]) === true)
-    || ["actualDeparture", "departureTimeActual", "actual_departure"].some((key) => hasVerifiedActualTime(originStop, pickValue(originStop, [key])))
-    || /\b(departed|passed)\b/.test(statusText(pickValue(originStop, ["departureStatus", "eventStatus", "stationStatus", "status"])))
-  );
-  if (originDeparted || route.slice(1).some(hasConfirmedStationEvent)) return "RUNNING";
-  if (notStarted) return "NOT_STARTED";
-
-  const providerReportsRunning = ["isRunning", "isInProgress", "isStarted", "hasDeparted", "journeyStarted"].some((key) => pickValue(record, [key]) === true)
-    || /\b(running|in progress|on route|en route|departed)\b/.test(explicitStatus);
-  if (providerReportsRunning) return "RUNNING";
-
+/** Display only the journey state explicitly reported by the provider. */
+function getJourneyState(record: DataRecord): JourneyState {
+  const status = statusText(pickValue(record, ["journeyStatus", "runningStatus", "trainStatus", "operationalStatus", "journey_state", "status"]));
+  if (/\b(cancelled|canceled)\b/.test(status) || pickValue(record, ["isCancelled", "journeyCancelled", "isJourneyCancelled"]) === true) return "CANCELLED";
+  if (/\b(not started|yet to start|not departed|before departure|scheduled|departure delayed|delayed departure)\b/.test(status) || pickValue(record, ["isNotStarted", "notStarted", "journeyNotStarted"]) === true) return "NOT_STARTED";
+  if (/\b(complete|completed|finished|reached destination|arrived at destination|terminated at destination)\b/.test(status) || pickValue(record, ["isCompleted", "journeyCompleted", "isJourneyCompleted"]) === true) return "COMPLETED";
+  if (/\b(running|in progress|on route|en route|departed)\b/.test(status) || pickValue(record, ["isRunning", "isInProgress", "isStarted", "journeyStarted"]) === true) return "RUNNING";
   return "UNKNOWN";
 }
 
@@ -214,100 +190,51 @@ function formatDateTabLabel(dateStr: string): string {
    ========================================================================= */
 
 type RouteStopWithDay = DataRecord & {
-  computedDay: number;
+  computedDay: number | null;
   dayFormattedString: string;
 };
 
 function computeStationDays(route: DataRecord[], originDate: string): RouteStopWithDay[] {
-  let currentDay = 1;
-  let prevMinutes = -1;
-
-  const parseMinutes = (timeVal: unknown): number => {
-    if (typeof timeVal !== "string") return -1;
-    const match = /(\d{1,2}):(\d{2})/.exec(timeVal);
-    if (!match) return -1;
-    return Number(match[1]) * 60 + Number(match[2]);
-  };
-
-  const getDayFormatted = (baseDateStr: string, dayNum: number) => {
-    const base = new Date(`${baseDateStr}T00:00:00.000Z`);
-    if (!Number.isFinite(base.getTime())) return `Day ${dayNum}`;
-    base.setUTCDate(base.getUTCDate() + (dayNum - 1));
-    return new Intl.DateTimeFormat("en-IN", {
-      timeZone: "Asia/Kolkata",
-      day: "2-digit",
-      month: "short",
-      weekday: "short",
-    }).format(base);
-  };
-
-  return route.map((stop, index) => {
-    // 1. Explicit day reported by provider
-    const rawDay = pickValue(stop, ["day", "dayCount", "journeyDay", "dayNumber", "day_number"]);
-    if (typeof rawDay === "number" && Number.isFinite(rawDay) && rawDay >= 1) {
-      currentDay = Math.floor(rawDay);
-    } else if (typeof rawDay === "string" && /^\d+$/.test(rawDay.trim())) {
-      const parsed = parseInt(rawDay.trim(), 10);
-      if (parsed >= 1) currentDay = parsed;
-    } else {
-      // 2. ISO timestamp difference
-      const timestamp = pickValue(stop, [
-        "scheduledArrival", "scheduledArrivalTime", "arrivalTimeScheduled",
-        "scheduledDeparture", "scheduledDepartureTime", "departureTimeScheduled",
-        "actualArrival", "arrivalTimeActual"
-      ]);
-      if (typeof timestamp === "string" && /^\d{4}-\d{2}-\d{2}/.test(timestamp)) {
-        const stopDateStr = timestamp.slice(0, 10);
-        const originEpoch = new Date(`${originDate}T00:00:00.000Z`).getTime();
-        const stopEpoch = new Date(`${stopDateStr}T00:00:00.000Z`).getTime();
-        if (Number.isFinite(originEpoch) && Number.isFinite(stopEpoch)) {
-          const diffDays = Math.round((stopEpoch - originEpoch) / (24 * 3600 * 1000));
-          if (diffDays >= 0) currentDay = diffDays + 1;
-        }
-      } else if (index > 0) {
-        // 3. Midnight rollover detection: e.g. 23:45 -> 00:30
-        const currArr = parseMinutes(pickValue(stop, ["scheduledArrival", "arrivalTimeScheduled", "actualArrival"]));
-        const currDep = parseMinutes(pickValue(stop, ["scheduledDeparture", "departureTimeScheduled", "actualDeparture"]));
-        const currMinutes = currArr >= 0 ? currArr : currDep;
-
-        if (prevMinutes >= 0 && currMinutes >= 0) {
-          if (currMinutes < prevMinutes && prevMinutes - currMinutes > 180) {
-            currentDay += 1;
-          }
-        }
-        if (currDep >= 0) prevMinutes = currDep;
-        else if (currArr >= 0) prevMinutes = currArr;
-      }
+  return route.map((stop) => {
+    const rawDay = pickValue(stop, ["arrivalDay", "departureDay", "day", "dayCount", "journeyDay", "dayNumber", "day_number"]);
+    const parsedDay = typeof rawDay === "number" || typeof rawDay === "string" ? Number(rawDay) : NaN;
+    const computedDay = Number.isInteger(parsedDay) && parsedDay >= 1 ? parsedDay : null;
+    const date = new Date(originDate + "T00:00:00.000Z");
+    let dayFormattedString = "Date unavailable";
+    if (computedDay !== null && Number.isFinite(date.getTime())) {
+      date.setUTCDate(date.getUTCDate() + computedDay - 1);
+      dayFormattedString = new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", day: "2-digit", month: "short", weekday: "short" }).format(date);
     }
-
-    return {
-      ...stop,
-      computedDay: currentDay,
-      dayFormattedString: getDayFormatted(originDate, currentDay),
-    };
+    return { ...stop, computedDay, dayFormattedString };
   });
-}
-
-function computeTotalDuration(firstStop: DataRecord, lastStop: DataRecord): string {
-  const depTime = pickValue(firstStop, ["scheduledDeparture", "departureTimeScheduled", "scheduledDepartureTime"]);
-  const arrTime = pickValue(lastStop, ["scheduledArrival", "arrivalTimeScheduled", "scheduledArrivalTime"]);
-  if (typeof depTime === "string" && typeof arrTime === "string") {
-    if (/\d{4}-\d{2}-\d{2}T/.test(depTime) && /\d{4}-\d{2}-\d{2}T/.test(arrTime)) {
-      const ms = Date.parse(arrTime) - Date.parse(depTime);
-      if (ms > 0) {
-        const totalMin = Math.floor(ms / 60000);
-        const h = Math.floor(totalMin / 60);
-        const m = totalMin % 60;
-        return `${h}h ${m}m`;
-      }
-    }
-  }
-  return "—";
 }
 
 /* =========================================================================
    MMT-STYLE CLEAN ROUTE TIMELINE (With Day Separators)
    ========================================================================= */
+
+function StationTiming({ scheduled, actual, estimated, delay, estimatedDelay, notStarted = false }: {
+  scheduled: unknown;
+  actual: unknown;
+  estimated: unknown;
+  delay: number | null;
+  estimatedDelay: boolean;
+  notStarted?: boolean;
+}) {
+  const badge = getDelayBadge(delay);
+  return (
+    <div data-live-timing>
+      <p className="text-[11px] leading-5 text-slate-600"><span data-timing-label>Scheduled</span> <time dateTime={typeof scheduled === "string" ? scheduled : undefined}>{hasValidTimeValue(scheduled) ? formatLiveTime(scheduled) : "Not available"}</time></p>
+      <p className="text-xs font-bold leading-5 text-[#142B45]"><span data-timing-label>Actual</span> {notStarted ? <span>Not yet started</span> : actual ? <time dateTime={String(actual)} title={String(actual)}>{formatLiveTime(actual)}</time> : <span data-timing-missing>Not reported</span>}</p>
+      {!notStarted && !!estimated && <p className="text-[11px] leading-5 text-slate-600"><span data-timing-label>Estimated</span> <span>{formatLiveTime(estimated)}</span></p>}
+      {!notStarted && (delay !== null ? (
+        <strong data-live-event-delay data-late={delay > 0 ? "true" : "false"} className={"inline-block text-[11px] font-bold leading-5 " + badge.classes.split(" ").filter(c => c.startsWith("text-")).join(" ")}>
+          {estimatedDelay ? "Estimated: " : ""}{badge.label.replace(/m$/, " min")}
+        </strong>
+      ) : <span className="text-[10px] leading-4 text-slate-500" title="The provider has not supplied a delay for this station event.">Delay not reported</span>)}
+    </div>
+  );
+}
 
 function MmtRouteTimeline({
   route,
@@ -327,6 +254,7 @@ function MmtRouteTimeline({
   if (route.length === 0) return null;
 
   const canShowObservedEvents = observedDataAllowed && journeyDate <= todayInIndia();
+  const notStarted = journeyState === "NOT_STARTED" || journeyDate > todayInIndia();
   const normalizedCurrentCode = currentStationCode.trim().toUpperCase();
 
   const apiPositionIndex =
@@ -348,9 +276,9 @@ function MmtRouteTimeline({
   const currentIndex = apiPositionIndex >= 0 ? apiPositionIndex : statusPositionIndex;
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
+    <div data-live-timeline className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
       {/* Table-like Header Strip */}
-      <div className="grid grid-cols-[85px_1fr_85px] items-center border-b border-slate-100 bg-[#fffcf9] px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider text-slate-500 sm:grid-cols-[105px_36px_1fr_105px] sm:px-6">
+      <div data-live-columns className="grid grid-cols-[85px_1fr_85px] items-center border-b border-slate-100 bg-[#fffcf9] px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider text-slate-500 sm:grid-cols-[105px_36px_1fr_105px] sm:px-6">
         <div>Arrival</div>
         <div className="hidden sm:block" />
         <div className="text-center sm:text-left">Station &amp; Platform</div>
@@ -386,10 +314,8 @@ function MmtRouteTimeline({
             ? reportedActualArrival : undefined;
           const estimatedDeparture = !actualDeparture && hasPredictedProvenance(stop) && hasValidTimeValue(reportedActualDeparture)
             ? reportedActualDeparture : undefined;
-          const arrivalDelay = reportedDelayMinutes(arrivalDelayValue, actualArrival ?? estimatedArrival, scheduledArrival);
-          const departureDelay = reportedDelayMinutes(departureDelayValue, actualDeparture ?? estimatedDeparture, scheduledDeparture);
-          const arrivalBadge = getDelayBadge(arrivalDelay);
-          const departureBadge = getDelayBadge(departureDelay);
+          const arrivalDelay = reportedDelayMinutes(arrivalDelayValue);
+          const departureDelay = reportedDelayMinutes(departureDelayValue);
 
           const hasStopEvent = canShowObservedEvents && hasConfirmedStationEvent(stop);
           const isCurrent = canShowObservedEvents && livePosition && journeyState === "RUNNING" && index === currentIndex;
@@ -406,7 +332,7 @@ function MmtRouteTimeline({
           return (
             <div key={`${stationCode}-${index}`} className="flex flex-col">
               {/* ── DAY SEPARATOR (MakeMyTrip Style) ── */}
-              {isNewDay && (
+              {isNewDay && stop.computedDay !== null && (
                 <div className="flex items-center gap-2.5 border-y border-orange-200/90 bg-[#fff8f2] px-4 py-2 sm:px-6">
                   <span className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-black text-white shadow-2xs">
                     {stop.computedDay}
@@ -423,6 +349,7 @@ function MmtRouteTimeline({
 
               {/* STATION ROW */}
               <div
+                data-live-station
                 className={`relative grid grid-cols-[85px_1fr_85px] items-center gap-2 px-4 py-3.5 transition-colors sm:grid-cols-[105px_36px_1fr_105px] sm:gap-4 sm:px-6 ${isCurrent
                     ? "bg-orange-50/70 ring-1 ring-inset ring-orange-200"
                     : isPassed
@@ -435,25 +362,14 @@ function MmtRouteTimeline({
                   {isOrigin ? (
                     <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Starts</span>
                   ) : (
-                    <>
-                      <p className={`text-xs font-bold sm:text-sm ${isPassed ? "text-slate-900" : "text-slate-600"}`}>
-                        {actualArrival ? formatLiveTime(actualArrival) : estimatedArrival ? formatLiveTime(estimatedArrival) : scheduledArrival ? formatLiveTime(scheduledArrival) : "—"}
-                      </p>
-                      <p className="text-[10px] text-slate-500">{actualArrival ? "Actual" : estimatedArrival ? "Estimated" : "Scheduled"}</p>
-                      {actualArrival && typeof actualArrival === "string" && actualArrival.includes("T") && (
-                        <p className="text-[10px] text-slate-500">{formatLiveDate(actualArrival)}</p>
-                      )}
-                      {(actualArrival || estimatedArrival) && !!scheduledArrival && (
-                        <p className="text-[10px] text-slate-500">
-                          Sch. {formatLiveTime(scheduledArrival)}
-                        </p>
-                      )}
-                      {(actualArrival || estimatedArrival) && (
-                        <p className={`text-[10px] font-semibold ${arrivalBadge.classes.split(" ").filter(c => c.startsWith("text-")).join(" ")}`}>
-                          {estimatedArrival ? "Est. " : ""}{arrivalBadge.label}
-                        </p>
-                      )}
-                    </>
+                    <StationTiming
+                      scheduled={scheduledArrival}
+                      actual={actualArrival}
+                      estimated={estimatedArrival}
+                      delay={arrivalDelay}
+                      estimatedDelay={hasPredictedProvenance(stop) || !observedDataAllowed}
+                      notStarted={notStarted}
+                    />
                   )}
                 </div>
 
@@ -485,7 +401,7 @@ function MmtRouteTimeline({
                 </div>
 
                 {/* STATION NAME & DETAILS */}
-                <div className="min-w-0">
+                <div data-live-station-name className="min-w-0">
                   <div className="flex flex-wrap items-center gap-1.5">
                     <span className={`text-xs font-bold sm:text-[14px] ${isCurrent ? "text-orange-950 font-extrabold" : "text-[var(--navy)]"}`}>
                       {stationName}
@@ -519,25 +435,14 @@ function MmtRouteTimeline({
                   {isFinal ? (
                     <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Ends</span>
                   ) : (
-                    <>
-                      <p className={`text-xs font-bold sm:text-sm ${isPassed ? "text-slate-900" : "text-slate-600"}`}>
-                        {actualDeparture ? formatLiveTime(actualDeparture) : estimatedDeparture ? formatLiveTime(estimatedDeparture) : scheduledDeparture ? formatLiveTime(scheduledDeparture) : "—"}
-                      </p>
-                      <p className="text-[10px] text-slate-500">{actualDeparture ? "Actual" : estimatedDeparture ? "Estimated" : "Scheduled"}</p>
-                      {actualDeparture && typeof actualDeparture === "string" && actualDeparture.includes("T") && (
-                        <p className="text-[10px] text-slate-500">{formatLiveDate(actualDeparture)}</p>
-                      )}
-                      {(actualDeparture || estimatedDeparture) && !!scheduledDeparture && (
-                        <p className="text-[10px] text-slate-500">
-                          Sch. {formatLiveTime(scheduledDeparture)}
-                        </p>
-                      )}
-                      {(actualDeparture || estimatedDeparture) && (
-                        <p className={`text-[10px] font-semibold ${departureBadge.classes.split(" ").filter(c => c.startsWith("text-")).join(" ")}`}>
-                          {estimatedDeparture ? "Est. " : ""}{departureBadge.label}
-                        </p>
-                      )}
-                    </>
+                    <StationTiming
+                      scheduled={scheduledDeparture}
+                      actual={actualDeparture}
+                      estimated={estimatedDeparture}
+                      delay={departureDelay}
+                      estimatedDelay={hasPredictedProvenance(stop) || !observedDataAllowed}
+                      notStarted={notStarted}
+                    />
                   )}
                 </div>
               </div>
@@ -577,7 +482,7 @@ function MmtTrainSideCard({
   destinationCode: string;
   totalDistance: string;
   totalDuration: string;
-  totalHalts: number;
+  totalHalts: string;
   trainType: string;
   runsOnText: string;
   classesList: string[];
@@ -594,13 +499,11 @@ function MmtTrainSideCard({
     }
   };
 
-  const dayLetters = ["M", "T", "W", "T", "F", "S", "S"];
-  const isDaily = !runsOnText || runsOnText.toLowerCase().includes("daily") || runsOnText === "—";
 
   return (
     <aside aria-label="Train journey overview" className="space-y-4">
       {/* MAIN OVERVIEW CARD */}
-      <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
+      <div data-live-summary className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
         {/* Card Header */}
         <div className="border-b border-orange-100 bg-[#fff9f4] p-4">
           <div className="flex items-center justify-between">
@@ -608,7 +511,7 @@ function MmtTrainSideCard({
               {trainNumber}
             </span>
             <span className="rounded border border-orange-200 bg-white px-2 py-0.5 text-[10px] font-bold text-orange-800 uppercase">
-              {trainType !== "—" ? trainType : "Express"}
+              {trainType !== "—" ? trainType : "Type unavailable"}
             </span>
           </div>
           <h3 className="mt-2 text-base font-[900] tracking-tight text-[var(--navy)]">
@@ -675,7 +578,7 @@ function MmtTrainSideCard({
           <div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Halts</span>
             <p className="mt-0.5 font-black text-slate-900">
-              {totalHalts > 0 ? `${totalHalts} Stations` : "—"}
+              {totalHalts !== "—" ? `${totalHalts} Stations` : "Unavailable"}
             </p>
           </div>
         </div>
@@ -686,19 +589,8 @@ function MmtTrainSideCard({
             Runs On Days
           </span>
           <div className="flex items-center gap-1.5">
-            {dayLetters.map((d, i) => (
-              <span
-                key={i}
-                className={`flex h-6 w-6 items-center justify-center rounded-md text-[11px] font-extrabold ${isDaily
-                    ? "bg-orange-100 text-orange-800"
-                    : "bg-slate-100 text-slate-400"
-                  }`}
-              >
-                {d}
-              </span>
-            ))}
-            <span className="ml-auto text-[11px] font-bold text-slate-500">
-              {isDaily ? "Daily" : runsOnText}
+            <span className="text-xs font-semibold capitalize text-slate-600">
+              {runsOnText !== "—" ? runsOnText : "Unavailable"}
             </span>
           </div>
         </div>
@@ -709,6 +601,7 @@ function MmtTrainSideCard({
             Available Classes
           </span>
           <div className="flex flex-wrap gap-1.5">
+            {classesList.length === 0 && <span className="text-xs text-slate-500">Unavailable</span>}
             {classesList.map((cls) => (
               <span
                 key={cls}
@@ -804,9 +697,12 @@ function LiveTrainStatusResult({
         if (!response.ok || body.success !== true || !body.data) {
           throw new Error(typeof body.error === "string" ? body.error : "Could not retrieve live train status.");
         }
-        if (!controller.signal.aborted) setLiveResult(body.data);
+        if (!controller.signal.aborted) {
+          setLiveResult(body.data);
+        }
       } catch (lookupError) {
         if (!controller.signal.aborted) {
+          setLiveResult(null);
           setError(lookupError instanceof Error ? lookupError.message : "Live train status lookup failed. Please try again.");
         }
       } finally {
@@ -832,7 +728,8 @@ function LiveTrainStatusResult({
   const rawRouteStops: DataRecord[] = Array.isArray(routeValue) ? routeValue.map((item) => asRecord(item) ?? {}) : [];
 
   // Compute Day-wise segmentations
-  const routeStops = computeStationDays(rawRouteStops, journeyDate);
+  const reportedJourneyDate = record ? displayValue(pickValue(record, ["startDate", "journeyDate", "date"])) : "—";
+  const routeStops = computeStationDays(rawRouteStops, reportedJourneyDate);
 
   const currentLocation = record ? asRecord(pickValue(record, ["currentLocation", "currentPosition"])) : null;
   const trainInfo = record ? asRecord(pickValue(record, ["train"])) : null;
@@ -853,13 +750,12 @@ function LiveTrainStatusResult({
     (currentLocation && pickValue(currentLocation, ["delayMinutes"])) ??
     (record && pickValue(record, ["delayMinutes", "delay"]))
   );
-  const providerMeta = outer ? asRecord(outer.meta) : null;
-  const lastUpdated = displayValue((record && pickValue(record, ["lastUpdatedAt", "updatedAt", "generatedAt"]))
-    ?? (providerMeta && pickValue(providerMeta, ["timestamp"])));
-  const journeyState = record ? getJourneyState(record, rawRouteStops, journeyDate) : "UNKNOWN";
+  const lastUpdated = displayValue(record && pickValue(record, ["lastUpdatedAt", "updatedAt", "generatedAt"]));
+  const journeyState = record ? getJourneyState(record) : "UNKNOWN";
+  const notStarted = journeyState === "NOT_STARTED" || journeyDate > todayInIndia();
   const estimatedTracking = isEstimatedTracking(record);
-  const livePosition = hasReportedLivePosition(record, journeyState === "RUNNING");
-  const completedJourney = journeyState === "COMPLETED" && !isEstimatedTracking({ ...record, isLive: true });
+  const livePosition = !notStarted && hasReportedLivePosition(record, journeyState === "RUNNING");
+  const completedJourney = !notStarted && journeyState === "COMPLETED";
 
   useEffect(() => {
     if (!livePosition) return;
@@ -872,42 +768,61 @@ function LiveTrainStatusResult({
     (trainInfo && pickValue(trainInfo, ["name", "trainName"])) ??
     (record && pickValue(record, ["trainName", "name"]))
   );
-  const delayBadge = getDelayBadge(estimatedTracking || journeyState === "NOT_STARTED" || delayMinutes === "—" ? undefined : delayMinutes);
 
   // Side card data metrics
   const firstStop = routeStops[0];
   const lastStop = routeStops.length > 0 ? routeStops[routeStops.length - 1] : undefined;
-  const totalDistance = lastStop ? displayValue(pickValue(lastStop, ["distanceFromOriginKm", "distanceKm", "distance"])) : "—";
-  const totalDuration = firstStop && lastStop ? computeTotalDuration(firstStop, lastStop) : "—";
-  const totalHalts = routeStops.length > 2 ? routeStops.length - 2 : routeStops.length;
+  const lastStopIsDestination = lastStop && destinationCode !== "—"
+    && displayValue(pickValue(lastStop, ["stationCode", "code"])).toUpperCase() === destinationCode.toUpperCase();
+  const destinationStop = destinationCode !== "—" ? rawRouteStops.find((stop) => displayValue(pickValue(stop, ["stationCode", "code"])).toUpperCase() === destinationCode.toUpperCase()) : undefined;
+  const destinationScheduledArrival = destinationStop && pickValue(destinationStop, ["scheduledArrival", "scheduledArrivalTime", "arrivalTimeScheduled"]);
+  const reportedDestinationActual = destinationStop && pickValue(destinationStop, ["actualArrival", "arrivalTimeActual", "actual_arrival"]);
+  const destinationActualArrival = destinationStop && !estimatedTracking && hasVerifiedActualTime(destinationStop, reportedDestinationActual) ? reportedDestinationActual : undefined;
+  const destinationDelay = destinationStop && !estimatedTracking && !hasPredictedProvenance(destinationStop)
+    ? reportedDelayMinutes(pickValue(destinationStop, ["delayArrival", "arrivalDelayMinutes", "arrivalDelay"])) : null;
+  const lastLocationDelay = estimatedTracking || (record?.isLive === true && statusText(record.trackingMode) !== "none")
+    ? reportedDelayMinutes(delayMinutes) : null;
+  const delayBadge = notStarted
+    ? { label: "Not yet started", classes: "bg-slate-50 text-slate-600 border-slate-200" }
+    : getDelayBadge(completedJourney ? destinationDelay : lastLocationDelay);
+  const totalDistance = displayValue((trainInfo && pickValue(trainInfo, ["distance", "distanceKm", "totalDistance"]))
+    ?? (lastStop && pickValue(lastStop, ["distanceFromOriginKm", "distanceKm", "distance"])));
+  const durationValue = trainInfo && pickValue(trainInfo, ["duration", "durationMinutes", "totalDuration"]);
+  const totalDuration = typeof durationValue === "number" && Number.isFinite(durationValue) && durationValue >= 0
+    ? `${Math.floor(durationValue / 60)}h ${durationValue % 60}m` : displayValue(durationValue);
+  const totalHalts = displayValue(trainInfo && pickValue(trainInfo, ["totalHalts", "halts"]));
   const trainType = displayValue(trainInfo && pickValue(trainInfo, ["type", "trainType", "category"]));
-  const runsOnText = displayValue(trainInfo && pickValue(trainInfo, ["daysOfRun", "runsOn", "runningDays"]));
+  const runDays = trainInfo && pickValue(trainInfo, ["runDays", "daysOfRun", "runsOn", "runningDays"]);
+  const runsOnText = Array.isArray(runDays) ? runDays.filter((day) => typeof day === "string").join(", ") || "—" : displayValue(runDays);
 
   const departureTime = firstStop
     ? formatLiveTime(pickValue(firstStop, ["scheduledDeparture", "departureTimeScheduled", "scheduledDepartureTime"]))
     : "—";
-  const arrivalTime = lastStop
+  const arrivalTime = lastStopIsDestination
     ? formatLiveTime(pickValue(lastStop, ["scheduledArrival", "arrivalTimeScheduled", "scheduledArrivalTime"]))
     : "—";
 
-  const classesList = ["1A", "2A", "3A", "SL", "GEN"];
+  const reportedClasses = trainInfo && pickValue(trainInfo, ["classes", "availableClasses", "travelClasses"]);
+  const classesList = Array.isArray(reportedClasses)
+    ? reportedClasses.filter((value): value is string => typeof value === "string" && value.trim() !== "")
+    : typeof reportedClasses === "string" ? reportedClasses.split(/[,|]/).map((value) => value.trim()).filter(Boolean) : [];
 
 
   return (
     <div className="live-status-result mt-4 space-y-4" data-loaded={liveResult !== null}>
       {/* ══ MMT-STYLE TOP SUMMARY HEADER CARD (White and Orange Theme) ══ */}
-      <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
+      <div data-live-summary className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
         {/* Top Header Strip */}
         <div className={`border-b px-3 py-2 sm:px-4 ${livePosition ? "border-emerald-100 bg-emerald-50/60" : completedJourney ? "border-yellow-200 bg-yellow-50" : "border-orange-100 bg-[#fffaf5]"}`}>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
-              <div className="flex items-center gap-2">
+              <div data-live-train-title className="flex items-center gap-2">
                 <span className={`rounded-md px-2.5 py-0.5 text-xs font-[900] tracking-wider ${livePosition ? "bg-emerald-600 text-white" : completedJourney ? "bg-yellow-100 text-yellow-900" : "bg-orange-500 text-white"}`}>
                   {trainNumber}
                 </span>
-                <h3 className="text-base font-[900] tracking-tight text-[var(--navy)]">
+                <h2 className="text-base font-[900] tracking-tight text-[var(--navy)]">
                   {trainName !== "—" ? trainName : `Train ${trainNumber}`}
-                </h3>
+                </h2>
                 {livePosition && (
                   <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-1 text-[10px] font-bold text-emerald-800">
                     <TrainFront aria-hidden="true" className="h-3.5 w-3.5 motion-safe:animate-pulse" />
@@ -949,6 +864,9 @@ function LiveTrainStatusResult({
             The provider is returning estimated or simulated tracking. Actual station times and live delay are unavailable; estimated times below are not confirmed arrivals or departures.
           </p>
         )}
+        {liveResult !== null && !estimatedTracking && !notStarted && record?.isLive === false && (
+          <p role="status" className="border-b border-slate-100 bg-slate-50 px-3 py-2 text-xs leading-relaxed text-slate-600 sm:px-4">Live tracking is unavailable for this journey. Only timetable times and actual events explicitly reported by the provider are shown; missing arrival times and delays are not assumed.</p>
+        )}
         {/* Live Status Highlight Banner */}
         <div className="px-3 py-2 sm:px-4">
           {loading ? (
@@ -961,23 +879,23 @@ function LiveTrainStatusResult({
               {error}
             </div>
           ) : liveResult !== null ? (
-            <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 items-start [&>div]:min-w-0">
+            <div data-live-metrics className="grid grid-cols-2 gap-2 lg:grid-cols-4 items-start [&>div]:min-w-0">
               {/* Metric 1: Operational Status */}
               <div className="rounded-xl border border-slate-100 bg-[#fffaf5] px-2.5 py-1.5">
-                <span className="block text-[10px] font-bold uppercase leading-4 tracking-wider text-slate-400">Current Status</span>
+                <span className="block text-[10px] font-bold uppercase leading-4 tracking-wider text-slate-400">{notStarted ? "Journey Status" : completedJourney ? `Arrival at ${destinationName !== "—" ? destinationName : "destination"}` : "Last Reported Delay"}</span>
+                {completedJourney && <div className="mt-1 text-xs leading-5 text-slate-600">
+                  <p>Scheduled: {hasValidTimeValue(destinationScheduledArrival) ? formatLiveTime(destinationScheduledArrival) : "Not reported"}</p>
+                  <p className="font-bold text-[#142B45]">Actual arrival: {destinationActualArrival ? formatLiveTime(destinationActualArrival) : "Not reported"}</p>
+                </div>}
                 <div className="mt-0.5 flex flex-wrap items-center gap-2">
                   <span className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-extrabold ${delayBadge.classes}`}>
-                    {journeyState === "NOT_STARTED" ? "Not started" : String(delayBadge.label)}
+                    {!notStarted && !completedJourney && estimatedTracking && reportedDelayMinutes(delayMinutes) !== null ? "Estimated: " : ""}{delayBadge.label.replace(/m$/, " min")}
                   </span>
-                  <span className={`text-xs font-bold capitalize ${livePosition ? "text-emerald-700" : completedJourney ? "text-yellow-800" : "text-slate-700"}`}>
+                  {!notStarted && <span className={`text-xs font-bold capitalize ${livePosition ? "text-emerald-700" : completedJourney ? "text-yellow-800" : "text-slate-700"}`}>
                     {completedJourney ? "Reached destination" : estimatedTracking ? "Estimated position" : journeyState === "RUNNING"
                       ? "Running on route"
-                      : journeyState === "NOT_STARTED"
-                        ? "Yet to start"
-                        : journeyState === "COMPLETED"
-                          ? "Reached destination"
-                          : String(journeyState)}
-                  </span>
+                      : journeyState === "UNKNOWN" ? "Status not reported" : String(journeyState)}
+                  </span>}
                 </div>
               </div>
 
@@ -985,9 +903,10 @@ function LiveTrainStatusResult({
               <div className="rounded-xl border border-slate-100 bg-[#fffaf5] px-2.5 py-1.5">
                 <span className="block text-[10px] font-bold uppercase leading-4 tracking-wider text-slate-400">{estimatedTracking ? "Estimated Location" : "Last Reported Location"}</span>
                 <p className="mt-0.5 truncate text-xs font-extrabold text-[var(--navy)]">
-                  {currentStationName !== "—" ? currentStationName : currentStationCode !== "—" ? currentStationCode : "Station En Route"}
+                  {currentStationName !== "—" ? currentStationName : currentStationCode !== "—" ? currentStationCode : "Unavailable"}
                 </p>
-                {currentSpeed !== "—" && (
+                {completedJourney && lastLocationDelay !== null && <p className="mt-1 text-[11px] text-slate-600">Last location delay: {estimatedTracking ? "Est. " : ""}{getDelayBadge(lastLocationDelay).label.replace(/m$/, " min")}</p>}
+                {!notStarted && currentSpeed !== "—" && (
                   <p className="text-[11px] font-semibold text-orange-700">Speed: {currentSpeed} km/h</p>
                 )}
               </div>
@@ -996,15 +915,15 @@ function LiveTrainStatusResult({
               <div className="rounded-xl border border-slate-100 bg-[#fffaf5] px-2.5 py-1.5">
                 <span className="block text-[10px] font-bold uppercase leading-4 tracking-wider text-slate-400">Scheduled Date</span>
                 <p className="mt-0.5 text-xs font-extrabold text-[var(--navy)]">
-                  {formatLiveDate(journeyDate)}
+                  {reportedJourneyDate !== "—" ? formatLiveDate(reportedJourneyDate) : "Unavailable"}
                 </p>
               </div>
 
               {/* Metric 4: Last Updated Time */}
               <div className="rounded-xl border border-slate-100 bg-[#fffaf5] px-2.5 py-1.5">
-                <span className="block text-[10px] font-bold uppercase leading-4 tracking-wider text-slate-400">Data Updated</span>
+                <span className="block text-[10px] font-bold uppercase leading-4 tracking-wider text-slate-400">Last Provider Update · IST</span>
                 <p className="mt-0.5 text-xs font-semibold text-slate-600">
-                  {lastUpdated !== "—" ? formatLiveDateTime(lastUpdated) : "Just now"}
+                  {lastUpdated !== "—" ? formatLiveDateTime(lastUpdated) : "Unavailable"}
                 </p>
               </div>
             </div>
@@ -1014,18 +933,20 @@ function LiveTrainStatusResult({
 
       {/* ══ MMT-STYLE 2-COLUMN LAYOUT: TIMELINE (LEFT) & STICKY SIDE CARD (RIGHT) ══ */}
       {liveResult !== null && routeStops.length > 0 ? (
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_380px] gap-6 items-start">
+        <div data-live-results-grid className="grid grid-cols-1 lg:grid-cols-[1fr_360px] xl:grid-cols-[1fr_380px] gap-6 items-start">
           {/* LEFT COLUMN: Day-wise Route Timeline */}
           <div className="min-w-0 space-y-3">
-            <div className="flex items-center justify-between px-1">
-              <h4 className="text-sm font-extrabold text-[var(--navy)] flex items-center gap-2">
+            <div data-live-timetable-heading className="flex items-center justify-between px-1">
+              <h2 className="text-sm font-extrabold text-[var(--navy)] flex items-center gap-2">
                 <Navigation className="h-4 w-4 text-orange-500" />
                 <span>Station Timetable &amp; Running Status</span>
-              </h4>
+              </h2>
               <span className="text-xs text-slate-500 font-medium">
-                {routeStops.length} Total Stations
+                {routeStops.length} Reported Stations
               </span>
             </div>
+
+            <p className="px-1 text-[11px] leading-5 text-slate-500">All times in IST. <span className="font-semibold text-slate-600">Scheduled</span> = timetable · <span className="font-semibold text-[#142B45]">Actual</span> = reported time · <span className="font-semibold text-rose-700">Red</span> = late. Missing data is marked “Not reported”.</p>
 
             <MmtRouteTimeline
               route={routeStops}
@@ -1076,14 +997,27 @@ function validateLookup(trainNumber: string, date: string): string {
   return "";
 }
 
-export function LiveTrainStatusTool({ embedded = false }: { embedded?: boolean } = {}) {
+export function LiveTrainStatusTool({
+  initialTrain,
+  initialDate,
+  embedded = false,
+}: {
+  initialTrain?: string;
+  initialDate?: string;
+  embedded?: boolean;
+} = {}) {
   const searchParams = useSearchParams();
-  const queryTrain = searchParams.get("train") ?? "";
-  const queryDate = searchParams.get("date") ?? "";
+  const rawTrain = initialTrain ?? (searchParams.get("train") ?? "");
+  const parsed = parseTrainSlug(rawTrain);
+  const queryTrain = parsed.trainNumber || rawTrain;
+  const queryTrainName = parsed.trainName;
+  const queryDate = initialDate ?? (searchParams.get("date") ?? "");
+
   return (
     <LiveTrainStatusSearch
       key={`${queryTrain}:${queryDate}`}
       queryTrain={queryTrain}
+      queryTrainName={queryTrainName}
       queryDate={queryDate}
       embedded={embedded}
     />
@@ -1092,18 +1026,23 @@ export function LiveTrainStatusTool({ embedded = false }: { embedded?: boolean }
 
 function LiveTrainStatusSearch({
   queryTrain,
+  queryTrainName = "",
   queryDate,
   embedded = false,
 }: {
   queryTrain: string;
+  queryTrainName?: string;
   queryDate: string;
   embedded?: boolean;
 }) {
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
 
-  const [trainQuery, setTrainQuery] = useState(queryTrain);
+  const [trainQuery, setTrainQuery] = useState(() => {
+    if (queryTrain && queryTrainName) {
+      return `${queryTrain} - ${queryTrainName}`;
+    }
+    return queryTrain;
+  });
   const [journeyDate, setJourneyDate] = useState(queryDate);
   const [lookup, setLookup] = useState<LiveLookup | null>(() =>
     queryTrain && queryDate && !validateLookup(queryTrain, queryDate)
@@ -1185,7 +1124,9 @@ function LiveTrainStatusSearch({
 
   function submitLookup(event?: FormEvent<HTMLFormElement>, overrideTrain?: string, overrideDate?: string) {
     if (event) event.preventDefault();
-    const tNum = (overrideTrain ?? trainQuery).replace(/\D/g, "").slice(0, 6);
+    const rawVal = overrideTrain ?? trainQuery;
+    const parsed = parseTrainSlug(rawVal);
+    const tNum = parsed.trainNumber || rawVal.replace(/\D/g, "").slice(0, 6);
     const dVal = overrideDate ?? (journeyDate || todayInIndia());
 
     if (!tNum) {
@@ -1205,15 +1146,16 @@ function LiveTrainStatusSearch({
     setJourneyDate(dVal);
     setLookup({ trainNumber: tNum, journeyDate: dVal });
 
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("train", tNum);
-    params.set("date", dVal);
-    router.replace(`${pathname || "/live-train-status"}?${params.toString()}`, { scroll: false });
+    const matchedSuggestion = trainSuggestions.find((s) => s.trainNumber === tNum);
+    const tName = matchedSuggestion?.trainName || queryTrainName || parsed.trainName;
+    const slug = createTrainSlug(tNum, tName);
+    router.replace(`/live-train-status/${slug}?date=${encodeURIComponent(dVal)}`, { scroll: false });
   }
 
   const searchFormCard = (
     <div
       ref={searchContainerRef}
+      data-live-search
       className={
         embedded
           ? "relative rounded-xl border border-slate-200 bg-white p-4 shadow-xs sm:p-5 text-left"
@@ -1300,7 +1242,7 @@ function LiveTrainStatusSearch({
         {/* Search Button */}
         <button
           type="submit"
-          className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-4 text-sm font-bold text-white shadow-xs transition hover:bg-[#ea580c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] cursor-pointer"
+          className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-4 text-sm font-bold text-white shadow-xs transition hover:bg-[#F36B21] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] cursor-pointer"
         >
           <Search className="h-4 w-4" />
           <span>Check Status</span>
@@ -1387,30 +1329,27 @@ function LiveTrainStatusSearch({
   }
 
   return (
-    <div className="live-status-page flex min-h-screen flex-col bg-[#fffdfa]">
+    <div className={`${styles.page} live-status-page flex min-h-screen flex-col bg-[#fffdfa]`}>
       <Header />
 
-      <main className="flex-1 pb-16">
+      <main id="main-content" tabIndex={-1} className="flex-1 pb-16">
         <AllToolsLink />
-        {/* ══ MMT-STYLE TOP SEARCH HERO SECTION (WHITE & ORANGE THEME, MAX-W 1240PX) ══ */}
-        <section className="relative border-b border-[#f4e4d4] bg-gradient-to-b from-[#fffcf8] via-[#faf6f0] to-[#f6efe6] py-3">
-          <div className="site-tool-container grid items-center gap-3 lg:grid-cols-[minmax(0,0.65fr)_minmax(0,1.35fr)] lg:gap-5">
+        <section className={styles.hero}>
+          <div className="site-tool-container">
             <div className="min-w-0">
-            {/* Header Badge */}
-            <div className="mb-1.5 inline-flex items-center gap-1.5 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-2.5 py-0.5 text-[10px] font-[800] uppercase tracking-wide text-[#ea580c] shadow-2xs">
-              <span className="h-2 w-2 rounded-full bg-[#f97316] animate-pulse" />
+            <div className={styles.eyebrow}>
+              <TrainFront aria-hidden="true" className="h-4 w-4" />
               Live Train Enquiry • Station-wise Status
             </div>
 
-            <h1 className="text-xl font-extrabold leading-tight tracking-tight text-[var(--navy)] sm:text-2xl">
-              Live Train <span className="hero-accent">Running Status</span>
+            <h1 className={styles.title}>
+              Live Train <span>Running Status</span>
             </h1>
-            <p className="mt-1 max-w-xl text-xs leading-5 text-slate-600">
+            <p className={styles.description}>
               Check reported train location, delays, arrival and departure times.
             </p>
             </div>
 
-            {/* MMT-Style Unified Search Card */}
             {searchFormCard}
           </div>
         </section>
@@ -1456,6 +1395,7 @@ function LiveTrainStatusGuide({ embedded = false }: { embedded?: boolean }) {
   return (
     <section
       aria-labelledby="live-status-guide-heading"
+      data-live-guide
       className={`site-tool-container ${embedded ? "mt-6" : "mt-10"} space-y-4`}
     >
       <div className="max-w-3xl">

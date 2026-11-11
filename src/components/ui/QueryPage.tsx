@@ -44,7 +44,7 @@ export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
   return (
     <div className="flex min-h-screen flex-col bg-[#fffdf9]">
       <Header />
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
         {/* =========================================================
             MAIN SECTION: 1180px CONTAINER, 42%/58% GRID, NATURAL HEIGHT
         ========================================================== */}
@@ -66,8 +66,8 @@ export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
               {/* ══ LEFT COLUMN (42%): Heading & Information Cards ══ */}
               <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
                 {/* Badge: 14px (12-16px) margin below */}
-                <div className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-[#f5d0be] bg-white/90 px-3.5 py-1 text-xs font-extrabold uppercase tracking-wider text-[#ea580c] shadow-2xs backdrop-blur-sm">
-                  <span className="h-2 w-2 rounded-full bg-[#f97316] animate-pulse" />
+                <div className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-[#f5d0be] bg-white/90 px-3.5 py-1 text-xs font-extrabold uppercase tracking-wider text-[#F36B21] shadow-2xs backdrop-blur-sm">
+                  <span className="h-2 w-2 rounded-full bg-[#F36B21] animate-pulse" />
                   <span>{isContact ? "CONTACT RAILAGENTS • SUPPORT DESK" : "ASK NIHAL SINGH • RAILWAY GUIDANCE"}</span>
                 </div>
 
@@ -76,12 +76,12 @@ export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
                   {isContact ? (
                     <>
                       Contact RailAgents —{" "}
-                      <span className="text-[#ea580c]">Support &amp; Travel Guidance Desk.</span>
+                      <span className="text-[#F36B21]">Support &amp; Travel Guidance Desk.</span>
                     </>
                   ) : (
                     <>
                       Ask Nihal Singh —{" "}
-                      <span className="text-[#ea580c]">Your Railway Question Deserves a Clear Answer.</span>
+                      <span className="text-[#F36B21]">Your Railway Question Deserves a Clear Answer.</span>
                     </>
                   )}
                 </h1>
@@ -100,13 +100,13 @@ export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
                       key={title}
                       className="flex min-h-[58px] sm:min-h-[60px] items-center gap-3.5 rounded-2xl border border-orange-100/90 bg-white/85 p-3 sm:px-3.5 sm:py-3 shadow-2xs backdrop-blur-xs transition-transform duration-150 hover:-translate-y-0.5 text-left"
                     >
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-[#ffe8d6] to-[#fff3e8] text-[#ea580c] shadow-2xs">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-tr from-[#ffe8d6] to-[#fff3e8] text-[#F36B21] shadow-2xs">
                         <Icon className="h-5 w-5" />
                       </div>
                       <div className="min-w-0">
-                        <h3 className="text-xs sm:text-sm font-extrabold text-[#0f2747]">
+                        <h2 className="text-xs sm:text-sm font-extrabold text-[#0f2747]">
                           {title}
-                        </h3>
+                        </h2>
                         <p className="text-[11px] sm:text-xs text-slate-500 leading-tight">
                           {subtitle}
                         </p>
@@ -127,11 +127,11 @@ export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
             <div className="mt-7 sm:mt-8 w-full">
               <div className="flex flex-col gap-4 rounded-2xl border border-[#fee4d0] bg-white/95 p-3.5 sm:px-5 sm:py-3.5 shadow-xs backdrop-blur-md sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3.5 text-left">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#fff3e8] to-[#ffedd5] text-[#ea580c] shadow-2xs">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-tr from-[#fff3e8] to-[#ffedd5] text-[#F36B21] shadow-2xs">
                     <Lightbulb className="h-5 w-5" />
                   </span>
                   <div>
-                    <p className="text-xs font-black uppercase tracking-wider text-[#ea580c]">
+                    <p className="text-xs font-black uppercase tracking-wider text-[#F36B21]">
                       ASK WITH CONFIDENCE
                     </p>
                     <p className="mt-0.5 text-xs text-slate-600 sm:text-[13px] leading-relaxed">

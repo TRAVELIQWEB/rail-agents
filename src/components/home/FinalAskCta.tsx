@@ -20,7 +20,7 @@ export function FinalAskCta() {
         </div>
 
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.14em] text-[#c2410c]">Ask Nihal Singh</p>
+          <p className="text-sm font-bold uppercase tracking-[0.14em] text-[#F36B21]">Ask Nihal Singh</p>
           <h2 className="mt-1 text-[clamp(1.25rem,2.2vw,1.65rem)] font-[800] leading-tight tracking-[-0.03em] text-[var(--navy)] lg:whitespace-nowrap">
             Still have questions about your train, flight, or bus journey?
           </h2>

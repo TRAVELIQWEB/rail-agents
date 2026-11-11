@@ -113,9 +113,9 @@ export function FareCalculator() {
               <div className="flex items-center justify-between pb-1.5 mb-2 sm:pb-3 sm:mb-4 border-b border-[#f0e3d5]">
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <span className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]" />
-                  <h3 className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-stone-900">
+                  <h2 className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-stone-900">
                     Passenger & Fare Details
-                  </h3>
+                  </h2>
                 </div>
               </div>
 
@@ -320,7 +320,7 @@ export function FareCalculator() {
                   aria-pressed={form.category === "AC"}
                   onClick={() => handleCategoryChange("AC")}
                   className={`py-1.5 sm:py-2.5 px-2.5 sm:px-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ease-out cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500 ${form.category === "AC"
-                      ? "bg-gradient-to-r from-[#c2410c] to-[#9a3412] text-white shadow-[0_4px_12px_rgba(249,115,22,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)] -translate-y-0.5"
+                      ? "bg-gradient-to-r from-[#F36B21] to-[#9a3412] text-white shadow-[0_4px_12px_rgba(249,115,22,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)] -translate-y-0.5"
                       : "text-stone-600 hover:text-stone-900 hover:bg-white/80 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0"
                     }`}
                 >
@@ -333,7 +333,7 @@ export function FareCalculator() {
                   aria-pressed={form.category === "NON_AC"}
                   onClick={() => handleCategoryChange("NON_AC")}
                   className={`py-1.5 sm:py-2.5 px-2.5 sm:px-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ease-out cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500 ${form.category === "NON_AC"
-                      ? "bg-gradient-to-r from-[#c2410c] to-[#9a3412] text-white shadow-[0_4px_12px_rgba(249,115,22,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)] -translate-y-0.5"
+                      ? "bg-gradient-to-r from-[#F36B21] to-[#9a3412] text-white shadow-[0_4px_12px_rgba(249,115,22,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)] -translate-y-0.5"
                       : "text-stone-600 hover:text-stone-900 hover:bg-white/80 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0"
                     }`}
                 >
@@ -455,7 +455,7 @@ export function FareCalculator() {
             </div>
 
             {/* Distinct, Separated Total Payable Amount Card */}
-            <div className="mt-3.5 sm:mt-4 rounded-2xl bg-gradient-to-r from-[#c2410c] via-[#a43b12] to-[#9a3412] p-4 sm:p-5 text-white shadow-[0_4px_16px_rgba(249,115,22,0.25),inset_0_1px_1px_rgba(255,255,255,0.35)] border border-orange-400/40">
+            <div className="mt-3.5 sm:mt-4 rounded-2xl bg-gradient-to-r from-[#F36B21] via-[#a43b12] to-[#9a3412] p-4 sm:p-5 text-white shadow-[0_4px_16px_rgba(249,115,22,0.25),inset_0_1px_1px_rgba(255,255,255,0.35)] border border-orange-400/40">
               <div className="flex items-baseline justify-between gap-3">
                 <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-orange-100">
                   Total Payable Amount

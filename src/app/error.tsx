@@ -36,7 +36,7 @@ export default function ErrorBoundary({
             particleSize={3}
             density={3.5}
             color="#0f2747"
-            highlightColor="#f97316"
+            highlightColor="#F36B21"
             highlightMode="motion"
             shape="circle"
             intro="gather"

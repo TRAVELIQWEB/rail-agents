@@ -275,7 +275,7 @@ export function Testimonials() {
                 justify-center
                 rounded-xl
                 border
-                border-[#f97316]/40
+                border-[#F36B21]/40
                 bg-white/95
                 px-4
                 sm:px-5
@@ -286,7 +286,7 @@ export function Testimonials() {
                 backdrop-blur-sm
                 transition
                 hover:bg-white
-                hover:border-[#f97316]/70
+                hover:border-[#F36B21]/70
                 whitespace-nowrap
               "
             >

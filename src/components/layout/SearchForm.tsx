@@ -44,7 +44,7 @@ export function SearchForm({ mobile = false }: SearchFormProps) {
         type="submit"
         aria-label="Submit search"
         title="Search blog & guides"
-        className={`flex shrink-0 cursor-pointer items-center justify-center rounded-full text-[#f97316] transition hover:bg-[var(--primary)] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${
+        className={`flex shrink-0 cursor-pointer items-center justify-center rounded-full text-[#F36B21] transition hover:bg-[var(--primary)] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${
           mobile ? "h-11 w-11" : "h-6 w-6"
         }`}
       >

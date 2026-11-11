@@ -5,6 +5,7 @@ import { LiveTrainStatusTool } from "@/components/LiveTrainStatusTool";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { siteConfig } from "@/config/site";
+import styles from "@/components/LiveTrainStatusTool.module.css";
 
 export const metadata: Metadata = {
   title: "Live Train Running Status - Live Train Location & Delay Tracker",
@@ -103,14 +104,14 @@ export default function LiveTrainStatusPage() {
 
 function LiveTrainStatusFallback() {
   return (
-    <div className="flex min-h-screen flex-col bg-[#fffdfa] text-[var(--navy)]">
+    <div className={`${styles.page} flex min-h-screen flex-col text-[var(--navy)]`}>
       <Header />
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
         <AllToolsLink />
-        <section className="border-b border-[#f4e4d4] bg-gradient-to-b from-[#fffcf8] to-[#f6efe6] py-3">
+        <section className={styles.hero}>
           <div className="site-tool-container">
-            <h1 className="text-xl font-extrabold leading-tight tracking-tight text-[var(--navy)] sm:text-2xl">Live Train <span className="hero-accent">Running Status</span></h1>
-            <p className="mt-1 max-w-xl text-xs leading-5 text-slate-600">Check real-time train location, delay status, platform numbers, and station timetables.</p>
+            <h1 className={styles.title}>Live Train <span>Running Status</span></h1>
+            <p className={styles.description}>Check real-time train location, delay status, platform numbers, and station timetables.</p>
           </div>
         </section>
         <div aria-busy="true" aria-label="Loading live train status tool" className="site-tool-container space-y-4 py-6">

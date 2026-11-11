@@ -229,7 +229,7 @@ export default async function BlogPostPage({ params }: Props) {
       />
       <Header />
 
-      <main className="relative flex-1 pb-20 overflow-hidden">
+      <main id="main-content" tabIndex={-1} className="relative flex-1 pb-20 overflow-hidden">
         {/* Ambient Decorative Glows */}
         <div
           aria-hidden="true"

@@ -1,3 +1,4 @@
+import { ToolPageSchema } from "@/components/seo/ToolPageSchema";
 import { AllToolsLink } from "@/components/tools/AllToolsLink";
 import type { Metadata } from "next";
 import { Header } from "@/components/layout/Header";
@@ -18,6 +19,12 @@ export const metadata: Metadata = {
     "Calculate Indian Railways ticket booking opening dates with the official 60-day ARP rule and Tatkal timings (AC at 10 AM, Non-AC at 11 AM).",
   alternates: {
     canonical: PAGE_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Railway Ticket Booking Date Calculator | RailAgents",
+    description: "Calculate Indian Railways ticket booking opening dates with the official 60-day ARP rule and Tatkal timings (AC at 10 AM, Non-AC at 11 AM).",
+    images: [siteConfig.socialImage],
   },
   openGraph: {
     title:
@@ -44,9 +51,10 @@ export const dynamic = "force-dynamic";
 export default function TicketDateCalculatorPage() {
   return (
     <div className="booking-date-page flex min-h-screen flex-col bg-[#fdfbf7] text-stone-900">
+      <ToolPageSchema title="Railway Ticket Booking Date Calculator" description="Find advance reservation and Tatkal booking opening dates for your journey." pathname="/ticket-date-calculator" />
       <Header />
 
-      <main className="flex-1">
+      <main id="main-content" tabIndex={-1} className="flex-1">
         <AllToolsLink />
         {/* Compact & Clean Hero Header */}
         <section className="compact-tool-heading relative overflow-hidden border-b border-[#f2e6d9] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pt-8 pb-6 sm:pt-10 sm:pb-8 lg:pt-11 lg:pb-8">

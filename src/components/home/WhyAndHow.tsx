@@ -17,7 +17,7 @@ const steps = [
     title: "Ask Your Question",
     description: "Type your query or choose from common questions.",
     icon: Search,
-    color: "bg-[#f97316]",
+    color: "bg-[#F36B21]",
   },
   {
     title: "Get Step-by-Step Guide",
@@ -52,7 +52,7 @@ export function WhyAndHow() {
         <div className="site-container relative z-10 grid grid-cols-1 items-center gap-10 lg:gap-12 xl:grid-cols-12 xl:gap-12 wide:gap-14">
           <div className="flex flex-col items-center text-center md:items-start md:text-left xl:col-span-5">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/80 px-3.5 py-1.5 text-[11px] font-[800] uppercase tracking-[0.14em] text-[var(--primary-dark)] shadow-sm">
-              <span className="h-2 w-2 rounded-full bg-[#f97316]" />
+              <span className="h-2 w-2 rounded-full bg-[#F36B21]" />
               Why RailAgents
             </div>
 
@@ -61,7 +61,7 @@ export function WhyAndHow() {
               <span className="relative inline-block text-[var(--primary-dark)]">
                 railway agent information
                 <svg
-                  className="absolute -bottom-2 left-0 h-3 w-full text-[#f97316]/30 wide:h-4"
+                  className="absolute -bottom-2 left-0 h-3 w-full text-[#F36B21]/30 wide:h-4"
                   viewBox="0 0 200 12"
                   fill="none"
                 >
@@ -104,7 +104,7 @@ export function WhyAndHow() {
               />
             </svg>
 
-            <div className="pointer-events-none absolute -top-5 right-12 text-[#f97316] wide:-top-8 wide:right-16">
+            <div className="pointer-events-none absolute -top-5 right-12 text-[#F36B21] wide:-top-8 wide:right-16">
               <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M12 2v4M18.36 5.64l-2.83 2.83M22 12h-4" />
               </svg>
@@ -119,7 +119,7 @@ export function WhyAndHow() {
                 <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#fff2e6] blur-xl wide:h-40 wide:w-40" />
 
                 <div className="relative z-10 flex max-w-full flex-col items-center text-center sm:max-w-[58%] sm:items-start sm:text-left">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ffebd6] text-[#f97316] shadow-sm">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ffebd6] text-[#F36B21] shadow-sm">
                     <BookOpen className="h-[18px] w-[18px]" />
                   </div>
 
@@ -130,7 +130,7 @@ export function WhyAndHow() {
                     Complex railway processes explained in simple language.
                   </p>
 
-                  <span className="mt-4 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#ffebd6] text-[#f97316] transition-all duration-200 group-hover:translate-x-1 group-hover:bg-[var(--primary)] group-hover:text-white wide:h-8 wide:w-8">
+                  <span className="mt-4 inline-flex h-7 w-7 items-center justify-center rounded-full bg-[#ffebd6] text-[#F36B21] transition-all duration-200 group-hover:translate-x-1 group-hover:bg-[var(--primary)] group-hover:text-white wide:h-8 wide:w-8">
                     <ArrowRight className="h-3.5 w-3.5 wide:h-4 wide:w-4" />
                   </span>
                 </div>
@@ -216,7 +216,7 @@ export function WhyAndHow() {
                       <div className="h-1.5 w-3/4 rounded-full bg-slate-100 wide:h-2" />
                     </div>
 
-                    <div className="absolute -right-3 -top-2 flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-[#9a3412] to-[#c2410c] text-white shadow-lg shadow-orange-300/50 wide:h-10 wide:w-10">
+                    <div className="absolute -right-3 -top-2 flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-[#9a3412] to-[#F36B21] text-white shadow-lg shadow-orange-300/50 wide:h-10 wide:w-10">
                       <Bell className="h-4 w-4 fill-white wide:h-5 wide:w-5" />
                     </div>
                   </div>
@@ -250,7 +250,7 @@ export function WhyAndHow() {
                       <UsersRound className="h-8 w-8 text-[#0d9488] wide:h-10 wide:w-10" />
                     </div>
 
-                    <div className="absolute -bottom-1 -right-2 flex h-8 w-8 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c2410c] to-[#9a3412] text-white shadow-md wide:h-9 wide:w-9">
+                    <div className="absolute -bottom-1 -right-2 flex h-8 w-8 items-center justify-center rounded-2xl bg-gradient-to-br from-[#F36B21] to-[#9a3412] text-white shadow-md wide:h-9 wide:w-9">
                       <ShieldCheck className="h-4 w-4 fill-white wide:h-5 wide:w-5" />
                     </div>
                   </div>
@@ -277,7 +277,7 @@ export function WhyAndHow() {
         </div>
         <div className="site-container">
           <div className="mx-auto max-w-[720px] text-center md:mx-0 md:text-left wide:max-w-[850px]">
-            <p className="mb-3 inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.12em] text-[#c2410c] sm:text-sm">
+            <p className="mb-3 inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.12em] text-[#F36B21] sm:text-sm">
               <ShieldCheck className="h-4 w-4" />
               How It Works
             </p>
@@ -299,7 +299,7 @@ export function WhyAndHow() {
                   <Icon className="h-5 w-5" />
                 </div>
                 <div className="min-w-0 pt-1 xl:pt-5 wide:pt-6">
-                  <p className="text-sm font-bold uppercase tracking-[0.1em] text-[#c2410c] wide:text-base">
+                  <p className="text-sm font-bold uppercase tracking-[0.1em] text-[#F36B21] wide:text-base">
                     Step 0{index + 1}
                   </p>
                   <h3 className="mt-1 text-base font-bold leading-snug text-[var(--navy)] sm:text-lg">

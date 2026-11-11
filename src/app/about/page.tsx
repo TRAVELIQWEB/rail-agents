@@ -261,7 +261,7 @@ export default function AboutPage() {
       />
       <Header />
 
-      <main className="relative flex-1">
+      <main id="main-content" tabIndex={-1} className="relative flex-1">
         {/* =========================================================
             SECTION 1: STRONG PERSONAL HERO
         ========================================================== */}
@@ -282,8 +282,8 @@ export default function AboutPage() {
               {/* Left Column: Text & CTAs */}
               <div className="text-center md:text-left lg:col-span-7">
                 {/* Eyebrow */}
-                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#c2410c] shadow-xs">
-                  <span className="h-2 w-2 rounded-full bg-[#f97316]" />
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#F36B21] shadow-xs">
+                  <span className="h-2 w-2 rounded-full bg-[#F36B21]" />
                   RAILWAY AGENT GUIDANCE • PRACTICAL KNOWLEDGE
                 </div>
 
@@ -305,15 +305,15 @@ export default function AboutPage() {
                 {/* Experience Highlights Pill Bar */}
                 <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-slate-700 md:justify-start">
                   <span className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200/90 bg-white px-3 py-1.5 shadow-2xs">
-                    <CheckCircle2 className="h-4 w-4 text-[#ea580c]" />
+                    <CheckCircle2 className="h-4 w-4 text-[#F36B21]" />
                     Practical Field Knowledge
                   </span>
                   <span className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200/90 bg-white px-3 py-1.5 shadow-2xs">
-                    <CheckCircle2 className="h-4 w-4 text-[#ea580c]" />
+                    <CheckCircle2 className="h-4 w-4 text-[#F36B21]" />
                     Rule Awareness &amp; Due Diligence
                   </span>
                   <span className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200/90 bg-white px-3 py-1.5 shadow-2xs">
-                    <CheckCircle2 className="h-4 w-4 text-[#ea580c]" />
+                    <CheckCircle2 className="h-4 w-4 text-[#F36B21]" />
                     Responsible Working Habits
                   </span>
                 </div>
@@ -322,7 +322,7 @@ export default function AboutPage() {
                 <div className="mt-7 flex flex-col items-center gap-3.5 sm:flex-row sm:justify-start">
                   <Link
                     href="/ask-nihal"
-                    className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-3.5 text-sm font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.32)] transition-all hover:bg-[#ea580c] hover:shadow-[0_8px_24px_rgba(249,115,22,0.4)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:w-auto"
+                    className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-3.5 text-sm font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.32)] transition-all hover:bg-[#F36B21] hover:shadow-[0_8px_24px_rgba(249,115,22,0.4)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:w-auto"
                   >
                     <MessageCircle className="h-4 w-4" />
                     Ask Nihal a Question
@@ -330,16 +330,16 @@ export default function AboutPage() {
                   </Link>
                   <Link
                     href="/guides"
-                    className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-bold text-[var(--navy)] shadow-xs transition-colors hover:border-[#ea580c] hover:bg-[#fff9f4] hover:text-[#ea580c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:w-auto"
+                    className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-bold text-[var(--navy)] shadow-xs transition-colors hover:border-[#F36B21] hover:bg-[#fff9f4] hover:text-[#F36B21] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:w-auto"
                   >
-                    <BookOpen className="h-4 w-4 text-[#ea580c]" />
+                    <BookOpen className="h-4 w-4 text-[#F36B21]" />
                     Explore Railway Agent Guides
                   </Link>
                 </div>
 
                 {/* Nihal's Core Guidance Quote Strip (Balances left & right column height) */}
                 <div className="mt-6 hidden lg:flex items-center gap-3.5 rounded-2xl border border-[#f3dfcc] bg-white/90 px-4 py-3 text-left shadow-2xs">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#F36B21]">
                     <ShieldCheck className="h-4.5 w-4.5" />
                   </span>
                   <p className="text-xs leading-relaxed text-slate-600">
@@ -358,7 +358,7 @@ export default function AboutPage() {
                     {/* Visual Frame */}
                     <div className="relative mx-auto aspect-[16/11] w-full overflow-hidden rounded-2xl border border-white/80 bg-white/60 shadow-xs sm:aspect-[4/3]">
                       <Image
-                        src="/images/contactpage.png"
+                        src="/images/railagents-guidance-desk.webp"
                         alt="RailAgents guidance desk with Nihal Singh - Railway Agent Guide"
                         fill
                         priority
@@ -372,9 +372,9 @@ export default function AboutPage() {
                       <div className="flex items-center justify-between border-b border-[#f4dbcb] pb-2.5">
                         <div>
                           <p className="text-base font-[900] text-[var(--navy)]">Nihal Singh</p>
-                          <p className="text-xs font-semibold text-[#ea580c]">Practical Railway Agent Guide</p>
+                          <p className="text-xs font-semibold text-[#F36B21]">Practical Railway Agent Guide</p>
                         </div>
-                        <span className="rounded-md border border-[#fed7aa] bg-white px-2.5 py-1 text-[11px] font-bold text-[#c2410c]">
+                        <span className="rounded-md border border-[#fed7aa] bg-white px-2.5 py-1 text-[11px] font-bold text-[#F36B21]">
                           20 Years Exp.
                         </span>
                       </div>
@@ -392,8 +392,8 @@ export default function AboutPage() {
             {/* Bottom Docked Experience & Guidance Strip (Fills viewport cleanly with zero empty space) */}
             <div className="my-auto pt-4 border-t border-[#f0e1d2]">
               <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                <span className="inline-flex items-center gap-1.5 text-[#c2410c]">
-                  <ShieldCheck className="h-3.5 w-3.5 text-[#ea580c]" />
+                <span className="inline-flex items-center gap-1.5 text-[#F36B21]">
+                  <ShieldCheck className="h-3.5 w-3.5 text-[#F36B21]" />
                   Core Pillars of RailAgents Guidance
                 </span>
                 <span className="hidden sm:inline text-slate-400">
@@ -427,7 +427,7 @@ export default function AboutPage() {
                     key={title}
                     className="flex items-center gap-3 rounded-2xl border border-[#eedcc9] bg-white/95 px-4 py-3.5 shadow-[0_6px_18px_rgba(15,39,71,0.04)]"
                   >
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#fff3e8] text-[#ea580c] ring-1 ring-orange-200/60">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#fff3e8] text-[#F36B21] ring-1 ring-orange-200/60">
                       <Icon className="h-5 w-5" />
                     </span>
                     <div className="min-w-0">
@@ -458,7 +458,7 @@ export default function AboutPage() {
 
               {/* Mobile Heading First (< lg) */}
               <div className="block lg:hidden text-center sm:text-left">
-                <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">
+                <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-[#F36B21]">
                   <HelpCircle className="h-3.5 w-3.5" />
                   <span>Digital Brand Identity</span>
                 </div>
@@ -486,7 +486,7 @@ export default function AboutPage() {
               <div className="lg:col-span-7 xl:col-span-7">
                 {/* Desktop Heading (Hidden on Mobile) */}
                 <div className="hidden lg:block">
-                  <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">
+                  <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-[#F36B21]">
                     <HelpCircle className="h-3.5 w-3.5" />
                     <span>Digital Brand Identity</span>
                   </div>
@@ -521,7 +521,7 @@ export default function AboutPage() {
                 <div className="mt-7 flex flex-wrap items-center gap-3">
                   <Link
                     href="/ask-nihal"
-                    className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-bold text-white shadow-xs transition-colors hover:bg-[#ea580c]"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-bold text-white shadow-xs transition-colors hover:bg-[#F36B21]"
                   >
                     <MessageCircle className="h-4 w-4" />
                     <span>Send a Question to Nihal</span>
@@ -546,7 +546,7 @@ export default function AboutPage() {
             <div className="mt-12 sm:mt-14 grid grid-cols-1 md:grid-cols-3 gap-5">
               <div className="rounded-2xl border border-slate-200/90 bg-[#fffdfa] p-5 shadow-2xs transition-all hover:border-orange-200 hover:shadow-xs">
                 <div className="flex items-start gap-3.5">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#F36B21]">
                     <CheckCircle2 className="h-5 w-5" />
                   </span>
                   <div>
@@ -558,7 +558,7 @@ export default function AboutPage() {
 
               <div className="rounded-2xl border border-slate-200/90 bg-[#fffdfa] p-5 shadow-2xs transition-all hover:border-orange-200 hover:shadow-xs">
                 <div className="flex items-start gap-3.5">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#F36B21]">
                     <CheckCircle2 className="h-5 w-5" />
                   </span>
                   <div>
@@ -570,7 +570,7 @@ export default function AboutPage() {
 
               <div className="rounded-2xl border border-slate-200/90 bg-[#fffdfa] p-5 shadow-2xs transition-all hover:border-orange-200 hover:shadow-xs">
                 <div className="flex items-start gap-3.5">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#ea580c]">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#F36B21]">
                     <CheckCircle2 className="h-5 w-5" />
                   </span>
                   <div>
@@ -593,7 +593,7 @@ export default function AboutPage() {
             <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
               {/* Left Column (7 cols): Heading & Description */}
               <div className="text-left lg:col-span-7">
-                <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">
+                <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#F36B21]">
                   <Info className="h-3.5 w-3.5" />
                   The Core Mission
                 </span>
@@ -612,8 +612,8 @@ export default function AboutPage() {
               <div className="lg:col-span-5">
                 <div className="rounded-2xl border border-orange-200/90 bg-gradient-to-br from-orange-50/90 via-white to-orange-100/50 p-6 sm:p-7 shadow-xs">
                   <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-[#f97316]" />
-                    <p className="text-xs font-bold uppercase tracking-widest text-[#ea580c]">Our Central Philosophy</p>
+                    <span className="h-2 w-2 rounded-full bg-[#F36B21]" />
+                    <p className="text-xs font-bold uppercase tracking-widest text-[#F36B21]">Our Central Philosophy</p>
                   </div>
                   <p className="mt-3 text-lg font-[900] leading-snug text-[var(--navy)] sm:text-xl lg:text-2xl">
                     &ldquo;Learn from experience. Understand the rules. Work responsibly.&rdquo;
@@ -633,7 +633,7 @@ export default function AboutPage() {
                   className="flex flex-col rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs transition-shadow hover:border-orange-200 hover:shadow-sm"
                 >
                   <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-100/70 text-[#ea580c]">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-100/70 text-[#F36B21]">
                       <Icon className="h-5 w-5" />
                     </span>
                     <span className="text-xs font-[900] tracking-wider text-orange-400">
@@ -644,7 +644,7 @@ export default function AboutPage() {
                   <h3 className="mt-4 text-lg font-[850] text-[var(--navy)]">
                     {title}
                   </h3>
-                  <p className="mt-1 text-xs font-semibold text-[#ea580c]">
+                  <p className="mt-1 text-xs font-semibold text-[#F36B21]">
                     {summary}
                   </p>
 
@@ -666,7 +666,7 @@ export default function AboutPage() {
             {/* Header: Left-aligned with View All Guides button on right */}
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 border-b border-slate-100 pb-6 text-left">
               <div className="max-w-3xl">
-                <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">
+                <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#F36B21]">
                   <BookOpen className="h-3.5 w-3.5" />
                   Comprehensive Knowledge Areas
                 </span>
@@ -682,9 +682,9 @@ export default function AboutPage() {
               <div className="shrink-0">
                 <Link
                   href="/guides"
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-[var(--navy)] shadow-2xs transition-colors hover:border-orange-300 hover:text-[#ea580c]"
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-[var(--navy)] shadow-2xs transition-colors hover:border-orange-300 hover:text-[#F36B21]"
                 >
-                  <BookOpen className="h-4 w-4 text-[#ea580c]" />
+                  <BookOpen className="h-4 w-4 text-[#F36B21]" />
                   Explore All Guides
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -700,7 +700,7 @@ export default function AboutPage() {
                 >
                   <div>
                     <div className="flex items-center justify-between gap-2">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100/70 text-[#ea580c] transition-colors group-hover:bg-[#ea580c] group-hover:text-white">
+                      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100/70 text-[#F36B21] transition-colors group-hover:bg-[#F36B21] group-hover:text-white">
                         <Icon className="h-5 w-5" />
                       </span>
                       <span className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-bold text-slate-600">
@@ -708,7 +708,7 @@ export default function AboutPage() {
                       </span>
                     </div>
 
-                    <h3 className="mt-4 text-base font-extrabold text-[var(--navy)] group-hover:text-[#ea580c] transition-colors">
+                    <h3 className="mt-4 text-base font-extrabold text-[var(--navy)] group-hover:text-[#F36B21] transition-colors">
                       {title}
                     </h3>
 
@@ -720,7 +720,7 @@ export default function AboutPage() {
                   <div className="mt-5 border-t border-slate-100 pt-3">
                     <Link
                       href={href}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#ea580c] hover:underline"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#F36B21] hover:underline"
                     >
                       Read full guidance
                       <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
@@ -733,10 +733,10 @@ export default function AboutPage() {
               <article className="group flex flex-col justify-between rounded-2xl border border-orange-200 bg-gradient-to-br from-[#fff7ed] to-white p-6 shadow-2xs transition-all hover:-translate-y-0.5 hover:shadow-sm sm:col-span-2 lg:col-span-2">
                 <div>
                   <div className="flex items-center justify-between gap-2">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ea580c] text-white">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F36B21] text-white">
                       <Train className="h-5 w-5" />
                     </span>
-                    <span className="rounded-md border border-orange-300 bg-white px-2 py-0.5 text-[10px] font-bold text-[#ea580c]">
+                    <span className="rounded-md border border-orange-300 bg-white px-2 py-0.5 text-[10px] font-bold text-[#F36B21]">
                       Interactive Tool
                     </span>
                   </div>
@@ -753,7 +753,7 @@ export default function AboutPage() {
                 <div className="mt-5 border-t border-orange-100 pt-3">
                   <Link
                     href="/train-ticket-agent-fare-calculator"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#ea580c] hover:underline"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#F36B21] hover:underline"
                   >
                     Open Fare Calculator
                     <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
@@ -777,7 +777,7 @@ export default function AboutPage() {
           <div className="site-container">
             {/* Header: Left-aligned */}
             <div className="max-w-3xl text-left border-b border-orange-100/80 pb-6">
-              <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">
+              <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#F36B21]">
                 <Scale className="h-3.5 w-3.5" />
                 Ethical Principles &amp; Values
               </span>
@@ -796,7 +796,7 @@ export default function AboutPage() {
                   key={title}
                   className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-2xs"
                 >
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-100 text-[#ea580c]">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-100 text-[#F36B21]">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
                   <h3 className="mt-3 text-sm font-extrabold text-[var(--navy)]">
@@ -823,11 +823,11 @@ export default function AboutPage() {
                 {/* Left Column (5 cols): Overview & Independent Disclaimer Callout */}
                 <div className="lg:col-span-5">
                   <div className="flex items-center gap-3">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-orange-100 text-[#ea580c]">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-orange-100 text-[#F36B21]">
                       <ShieldCheck className="h-6 w-6" />
                     </span>
                     <div>
-                      <span className="text-xs font-bold uppercase tracking-wider text-[#ea580c]">Important Disclosures</span>
+                      <span className="text-xs font-bold uppercase tracking-wider text-[#F36B21]">Important Disclosures</span>
                       <h2 className="text-xl font-[900] text-[var(--navy)] sm:text-2xl">
                         Clear Information. Honest Guidance.
                       </h2>
@@ -905,7 +905,7 @@ export default function AboutPage() {
 
               {/* Left Column (5 cols): Sticky Sidebar */}
               <div className="lg:col-span-5 lg:sticky lg:top-24">
-                <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#ea580c]">
+                <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#F36B21]">
                   <HelpCircle className="h-3.5 w-3.5" />
                   Frequently Asked Questions
                 </div>
@@ -919,7 +919,7 @@ export default function AboutPage() {
                 {/*Helpful Contact Box */}
                 <div className="mt-6 rounded-2xl border border-orange-200/90 bg-[#fff8f2] p-5 shadow-2xs">
                   <div className="flex items-center gap-2.5">
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-[#ea580c]">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-[#F36B21]">
                       <MessageCircle className="h-4 w-4" />
                     </span>
                     <p className="text-sm font-bold text-[var(--navy)]">Have a different question?</p>
@@ -930,7 +930,7 @@ export default function AboutPage() {
                   <div className="mt-4 flex flex-wrap items-center gap-2.5">
                     <Link
                       href="/ask-nihal"
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--primary)] px-3.5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#ea580c]"
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--primary)] px-3.5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#F36B21]"
                     >
                       Ask Nihal
                       <ArrowRight className="h-3 w-3" />
@@ -950,9 +950,9 @@ export default function AboutPage() {
               {/* Right Column (7 cols): FAQ Accordions */}
               <div className="space-y-4 lg:col-span-7">
                 <details className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs transition-colors open:border-orange-300 open:shadow-xs">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#ea580c]">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#F36B21]">
                     <span>Who is Nihal Singh and what is his background?</span>
-                    <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#ea580c] transition-transform group-open:rotate-180">
+                    <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#F36B21] transition-transform group-open:rotate-180">
                       <ArrowRight className="h-4 w-4 rotate-90" />
                     </span>
                   </summary>
@@ -962,9 +962,9 @@ export default function AboutPage() {
                 </details>
 
                 <details className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs transition-colors open:border-orange-300 open:shadow-xs">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#ea580c]">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#F36B21]">
                     <span>Is RailAgents an official Indian Railways or IRCTC website?</span>
-                    <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#ea580c] transition-transform group-open:rotate-180">
+                    <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#F36B21] transition-transform group-open:rotate-180">
                       <ArrowRight className="h-4 w-4 rotate-90" />
                     </span>
                   </summary>
@@ -974,9 +974,9 @@ export default function AboutPage() {
                 </details>
 
                 <details className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs transition-colors open:border-orange-300 open:shadow-xs">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#ea580c]">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#F36B21]">
                     <span>What kind of help can I find on this website?</span>
-                    <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#ea580c] transition-transform group-open:rotate-180">
+                    <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#F36B21] transition-transform group-open:rotate-180">
                       <ArrowRight className="h-4 w-4 rotate-90" />
                     </span>
                   </summary>
@@ -986,38 +986,38 @@ export default function AboutPage() {
                 </details>
 
                 <details className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs transition-colors open:border-orange-300 open:shadow-xs">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#ea580c]">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#F36B21]">
                     <span>Can I ask Nihal Singh questions regarding railway agent work?</span>
-                    <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#ea580c] transition-transform group-open:rotate-180">
+                    <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#F36B21] transition-transform group-open:rotate-180">
                       <ArrowRight className="h-4 w-4 rotate-90" />
                     </span>
                   </summary>
                   <p className="mt-3.5 border-t border-slate-100 pt-3.5 text-sm leading-relaxed text-slate-600">
-                    Yes! Readers and operating agents can submit questions directly through the <Link href="/ask-nihal" className="font-semibold text-[#ea580c] underline">Ask Nihal page</Link> or connect with us on WhatsApp for realistic, experience-based answers.
+                    Yes! Readers and operating agents can submit questions directly through the <Link href="/ask-nihal" className="font-semibold text-[#F36B21] underline">Ask Nihal page</Link> or connect with us on WhatsApp for realistic, experience-based answers.
                   </p>
                 </details>
 
                 <details className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs transition-colors open:border-orange-300 open:shadow-xs">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#ea580c]">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#F36B21]">
                     <span>Are the guides and tools on RailAgents free to use?</span>
-                    <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#ea580c] transition-transform group-open:rotate-180">
+                    <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#F36B21] transition-transform group-open:rotate-180">
                       <ArrowRight className="h-4 w-4 rotate-90" />
                     </span>
                   </summary>
                   <p className="mt-3.5 border-t border-slate-100 pt-3.5 text-sm leading-relaxed text-slate-600">
-                    Yes, all educational articles, video tutorials, and interactive tools such as the <Link href="/train-ticket-agent-fare-calculator" className="font-semibold text-[#ea580c] underline">Agent Fare Calculator</Link> are 100% free to read and access.
+                    Yes, all educational articles, video tutorials, and interactive tools such as the <Link href="/train-ticket-agent-fare-calculator" className="font-semibold text-[#F36B21] underline">Agent Fare Calculator</Link> are 100% free to read and access.
                   </p>
                 </details>
 
                 <details className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs transition-colors open:border-orange-300 open:shadow-xs">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#ea580c]">
+                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#F36B21]">
                     <span>How can I reach out to Nihal Singh for guidance?</span>
-                    <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#ea580c] transition-transform group-open:rotate-180">
+                    <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#F36B21] transition-transform group-open:rotate-180">
                       <ArrowRight className="h-4 w-4 rotate-90" />
                     </span>
                   </summary>
                   <p className="mt-3.5 border-t border-slate-100 pt-3.5 text-sm leading-relaxed text-slate-600">
-                    You can submit your questions directly via our <Link href="/ask-nihal" className="font-semibold text-[#ea580c] underline">Ask Nihal form</Link> or connect through our verified WhatsApp channel for assistance.
+                    You can submit your questions directly via our <Link href="/ask-nihal" className="font-semibold text-[#F36B21] underline">Ask Nihal form</Link> or connect through our verified WhatsApp channel for assistance.
                   </p>
                 </details>
               </div>
@@ -1042,7 +1042,7 @@ export default function AboutPage() {
                 className="pointer-events-none absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-amber-100/50 blur-3xl"
               />
 
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-100 text-[#ea580c] shadow-xs">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-100 text-[#F36B21] shadow-xs">
                 <HelpCircle className="h-7 w-7" />
               </div>
 
@@ -1067,9 +1067,9 @@ export default function AboutPage() {
 
                 <Link
                   href="/guides"
-                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-7 py-3.5 text-sm font-bold text-[var(--navy)] shadow-xs transition-colors hover:border-[#ea580c] hover:bg-[#fff9f4] hover:text-[#ea580c] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:w-auto"
+                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-7 py-3.5 text-sm font-bold text-[var(--navy)] shadow-xs transition-colors hover:border-[#F36B21] hover:bg-[#fff9f4] hover:text-[#F36B21] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:w-auto"
                 >
-                  <BookOpen className="h-4 w-4 text-[#ea580c]" />
+                  <BookOpen className="h-4 w-4 text-[#F36B21]" />
                   Browse All Guides
                 </Link>
 
@@ -1086,15 +1086,15 @@ export default function AboutPage() {
               {/* Bottom Feature Badges */}
               <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-orange-100/80 pt-6 text-xs font-semibold text-slate-500">
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-4 w-4 text-[#ea580c]" />
+                  <CheckCircle2 className="h-4 w-4 text-[#F36B21]" />
                   20 Years Practical Field Experience
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-4 w-4 text-[#ea580c]" />
+                  <CheckCircle2 className="h-4 w-4 text-[#F36B21]" />
                   Independent Educational Guidance
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-4 w-4 text-[#ea580c]" />
+                  <CheckCircle2 className="h-4 w-4 text-[#F36B21]" />
                   Ethical &amp; Responsible Work Practices
                 </span>
               </div>
@@ -1106,7 +1106,7 @@ export default function AboutPage() {
         <section aria-labelledby="fictional-character-disclaimer" className="bg-white py-8 sm:py-10">
           <div className="site-container max-w-5xl">
             <div className="flex items-start gap-3 rounded-2xl border border-orange-100 bg-[#fffaf5] p-5 sm:gap-4 sm:p-6">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-[#ea580c]">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-[#F36B21]">
                 <Info aria-hidden="true" className="h-4 w-4" />
               </span>
               <div>

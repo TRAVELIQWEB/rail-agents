@@ -5,6 +5,7 @@ import { legacyToolDestination } from "@/lib/tool-navigation";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { RailwayToolsWorkspace } from "@/components/tools/RailwayToolsWorkspace";
+import styles from "@/components/tools/ToolsDirectory.module.css";
 import { railTools } from "@/config/tools";
 import { siteConfig } from "@/config/site";
 
@@ -112,20 +113,12 @@ function ToolsWorkspaceFallback() {
   return (
     <div
       aria-hidden="true"
-      className="tools-layout"
+      className="mx-auto w-full max-w-[1240px] px-4 py-8"
     >
-      <div className="hidden rounded-2xl border border-slate-200 bg-white p-3 md:block">
-        <div className="h-4 w-28 rounded bg-slate-200" />
-        <div className="mt-3 space-y-2">
-          {[0, 1, 2, 3, 4, 5].map((item) => (
-            <div key={item} className="h-9 rounded-lg bg-slate-100" />
-          ))}
-        </div>
-      </div>
-      <div className="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-white p-5">
+      <div className="min-w-0">
         <div className="h-6 w-52 rounded bg-slate-200" />
         <div className="mt-2 h-4 w-full max-w-80 rounded bg-slate-100" />
-        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[0, 1, 2, 3, 4, 5].map((item) => (
             <div key={item} className="h-40 rounded-xl bg-slate-50" />
           ))}
@@ -149,12 +142,11 @@ export default async function ToolsPage({ searchParams }: ToolsPageProps) {
         }}
       />
       <Header />
-      <main className="pb-5 sm:pb-6">
-        {/* Two-Column Railway Tools Workspace */}
-        <div className="tools-workspace-container pt-3 sm:pt-4">
-          <Suspense fallback={<ToolsWorkspaceFallback />}>
-            <RailwayToolsWorkspace />
-          </Suspense>
+      <main id="main-content" tabIndex={-1} className={styles.workspace}>
+        <div className="tools-workspace-container mt-2 sm:mt-3.5 lg:mt-4 py-6">
+        <Suspense fallback={<ToolsWorkspaceFallback />}>
+          <RailwayToolsWorkspace />
+        </Suspense>
         </div>
       </main>
       <Footer />
