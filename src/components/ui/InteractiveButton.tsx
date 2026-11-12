@@ -112,7 +112,7 @@ export function InteractiveButton(props: InteractiveButtonProps) {
 
   const buttonProps = rest as ComponentPropsWithoutRef<"button">;
   return (
-    <button type={buttonProps.type || "button"} className={combinedClass} {...buttonProps}>
+    <button type={buttonProps.type || "button"} className={`type-button ${combinedClass}`} {...buttonProps}>
       {innerContent}
     </button>
   );

@@ -26,7 +26,7 @@ import { InternalLink } from "@/components/ui/InternalLink";
 import { ToolsDirectory } from "./ToolsDirectory";
 
 function ToolLoadingState() {
-  return <p role="status" className="py-8 text-center text-sm text-slate-600">Loading railway tool…</p>;
+  return <p role="status" className="type-note py-8 text-center text-slate-600">Loading railway tool…</p>;
 }
 
 // Keep calculator and API-tool bundles out of the directory's initial client bundle.
@@ -322,11 +322,11 @@ export function RailwayToolsWorkspace() {
       {/* ══════════════════════════════════════════════════════════════════════
           MOBILE TOOL SELECTOR (<768px)
          ══════════════════════════════════════════════════════════════════════ */}
-      <div ref={mobileDropdownRef} className="relative md:hidden">
+      <div ref={mobileDropdownRef} className="relative w-full min-w-0 md:hidden">
         <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-xs">
           <p
             id="mobile-tool-select-label"
-            className="mb-1.5 text-[11px] font-extrabold uppercase tracking-[0.12em] text-slate-500"
+            className="type-body-small mb-1.5 font-extrabold uppercase tracking-[0.12em] text-slate-500"
           >
             Select Railway Tool
           </p>
@@ -337,7 +337,7 @@ export function RailwayToolsWorkspace() {
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-tool-select-menu"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
-            className={`flex min-h-11 w-full items-center justify-between gap-3 rounded-lg border px-3.5 py-2.5 text-left transition duration-150 hover:-translate-y-px hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${selectedTool
+            className={`type-button flex min-h-11 w-full items-center justify-between gap-3 rounded-lg border px-3.5 py-2.5 text-left transition duration-150 hover:-translate-y-px hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${selectedTool
               ? `${toolColorThemes[selectedTool.id].badgeBg} ${toolColorThemes[selectedTool.id].focusRing}`
               : "border-[#F6C8A0] bg-[#FDE8D7] focus-visible:outline-[#F36B21]"
               } motion-reduce:transform-none motion-reduce:transition-none`}
@@ -356,10 +356,10 @@ export function RailwayToolsWorkspace() {
                 )}
               </span>
               <span className="min-w-0">
-                <span className="block truncate text-sm font-bold text-[#0b2240]">
+                <span className="type-body-small block truncate font-bold text-[#0b2240]">
                   {selectedTool ? selectedTool.shortTitle : "All Tools"}
                 </span>
-                <span className="block truncate text-[11px] text-slate-500">
+                <span className="type-caption block truncate text-slate-500">
                   {selectedTool ? selectedTool.badge : "Quick access to all railway tools"}
                 </span>
               </span>
@@ -384,7 +384,7 @@ export function RailwayToolsWorkspace() {
               role="option"
               aria-selected={!selectedTool}
               onClick={handleShowAllTools}
-              className={`group flex w-full items-center justify-between gap-2.5 rounded-lg border px-3 py-2.5 text-left text-sm transition-all duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#F36B21] ${!selectedTool
+              className={`type-button group flex w-full items-center justify-between gap-2.5 rounded-lg border px-3 py-2.5 text-left transition-all duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#F36B21] ${!selectedTool
                 ? "border-[#F5C299] bg-[#FDE6D2] font-bold text-[#9A3412]"
                 : "border-slate-200/80 bg-[#F8FAFC] font-medium text-[#0b2240]"
                 }`}
@@ -411,7 +411,7 @@ export function RailwayToolsWorkspace() {
                   role="option"
                   aria-selected={isSelected}
                   onClick={() => handleSelectTool(tool.id)}
-                  className={`group flex w-full items-center justify-between gap-2.5 rounded-lg border px-3 py-2.5 text-left text-sm transition-all duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 ${theme.focusRing} ${isSelected
+                  className={`type-button group flex w-full items-center justify-between gap-2.5 rounded-lg border px-3 py-2.5 text-left transition-all duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 ${theme.focusRing} ${isSelected
                     ? `${theme.activeItem} font-semibold text-[#0b2240]`
                     : "border-slate-200/80 bg-[#F8FAFC] font-medium text-[#0b2240]"
                     }`}
@@ -440,7 +440,7 @@ export function RailwayToolsWorkspace() {
          ══════════════════════════════════════════════════════════════════════ */}
       <aside
         aria-label="Railway Tools Sidebar"
-        className="tools-sidebar tools-sidebar-column hidden md:flex md:flex-col rounded-2xl border border-slate-200/90 bg-white p-3.5 shadow-xs"
+        className="tools-sidebar tools-sidebar-column hidden md:flex md:flex-col md:sticky md:top-[84px] md:self-start rounded-2xl border border-slate-200/90 bg-white p-3.5 shadow-xs"
       >
         {/* 1. Sidebar Top: Header + Tool Navigation List */}
         <div>
@@ -472,10 +472,10 @@ export function RailwayToolsWorkspace() {
               />
             </svg>
             <div className="min-w-0">
-              <h2 className="text-[13.5px] font-extrabold leading-tight tracking-tight text-[#0F2747]">
+              <h2 className="type-h2  tracking-tight text-[#0F2747]">
                 Railway Tools
               </h2>
-              <p className="mt-0.5 text-[10px] font-medium text-slate-500">
+              <p className="type-body-small mt-0.5 font-medium text-slate-500">
                 Quick access to all railway tools
               </p>
             </div>
@@ -487,7 +487,7 @@ export function RailwayToolsWorkspace() {
               type="button"
               aria-current={!selectedTool ? "page" : undefined}
               onClick={handleShowAllTools}
-              className={`group flex w-full cursor-pointer items-center justify-between gap-2 rounded-xl border min-h-11 px-2.5 py-2 text-left text-[13px] leading-snug transition-all duration-175 hover:-translate-y-0.5 hover:shadow-xs motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F36B21] ${!selectedTool
+              className={`type-button group flex w-full cursor-pointer items-center justify-between gap-2 rounded-xl border min-h-11 px-2.5 py-2 text-left leading-snug transition-all duration-175 hover:-translate-y-0.5 hover:shadow-xs motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F36B21] ${!selectedTool
                 ? "border-[#FED7AA] bg-[#FFF2E8] font-bold text-[#9A3412] shadow-[0_2px_6px_rgba(194,65,12,0.08)]"
                 : "border-[#EAEFF5] bg-[#F8FAFC] font-bold text-[#0F2747] hover:border-[#F5C299] hover:bg-[#FFF4EB]"
                 }`}
@@ -520,7 +520,7 @@ export function RailwayToolsWorkspace() {
                   type="button"
                   aria-current={isSelected ? "page" : undefined}
                   onClick={() => handleSelectTool(tool.id)}
-                  className={`group flex w-full cursor-pointer items-center justify-between gap-2 rounded-xl border min-h-11 px-2.5 py-2 text-left text-[13px] leading-snug transition-all duration-175 hover:-translate-y-0.5 hover:shadow-xs motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${theme.focusRing} ${isSelected
+                  className={`type-button group flex w-full cursor-pointer items-center justify-between gap-2 rounded-xl border min-h-11 px-2.5 py-2 text-left leading-snug transition-all duration-175 hover:-translate-y-0.5 hover:shadow-xs motion-reduce:transform-none motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${theme.focusRing} ${isSelected
                     ? `${theme.activeItem} font-bold text-[#0F2747]`
                     : "border-[#EAEFF5] bg-[#F8FAFC] font-bold text-[#0F2747] hover:border-[#DCE6F2] hover:bg-[#F1F5F9]"
                     }`}
@@ -546,62 +546,23 @@ export function RailwayToolsWorkspace() {
 
         {/* 2. Sidebar Bottom Card: Railway Tools Hub Panel */}
         <div className="tools-sidebar-bottom pt-4">
-          <div className="relative overflow-hidden rounded-xl border border-[#FED7AA]/70 bg-[#FFF7ED] p-3 shadow-2xs">
-            <div className="flex items-center gap-2">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#FFEDD5] text-[#F36B21] shadow-2xs">
-                <TrainFront aria-hidden="true" className="h-3.5 w-3.5" />
-              </span>
-              <h3 className="text-xs font-extrabold tracking-tight text-[#0F2747]">
-                Railway Tools Hub
-              </h3>
+          <div className="relative overflow-hidden rounded-2xl border border-[#FED7AA]/80 bg-gradient-to-b from-[#FFF9F3] via-[#FFF3E8] to-[#FFE8D6] p-3.5 shadow-2xs text-center">
+            {/* 3D Aerodynamic Yellow Train Graphic on Top */}
+            <div className="mx-auto mb-2 flex h-16 w-full items-center justify-center overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/railway-tools-hub-train.jpg"
+                alt="Railway Tools Hub Train"
+                className="h-full w-auto max-w-full object-contain"
+                loading="lazy"
+              />
             </div>
-            <p className="mt-1.5 text-[11px] leading-relaxed text-slate-700">
+            <h3 className="type-card-title font-extrabold tracking-tight text-[#EA580C]">
+              Railway Tools Hub
+            </h3>
+            <p className="type-body-small mt-1 text-xs leading-relaxed text-stone-600">
               Check train status, PNR, fares, refunds and booking dates — all in one place.
             </p>
-
-            {/* Decorative Express Train Illustration Footer */}
-            <div aria-hidden="true" className="mt-2">
-              <svg
-                viewBox="0 0 220 44"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-10 w-full"
-              >
-                <path
-                  d="M0 38C65 38 125 26 220 13V44H0V38Z"
-                  fill="#F4C295"
-                  fillOpacity="0.6"
-                />
-                <path
-                  d="M8 40C75 35 140 22 216 7"
-                  stroke="#E86C1F"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                {/* Streamlined White Express Bullet Train */}
-                <g transform="translate(72, 4)">
-                  <path
-                    d="M4 26L86 11C106 8 124 13 136 22L4 31V26Z"
-                    fill="#FFFFFF"
-                    stroke="#1E293B"
-                    strokeWidth="1.2"
-                  />
-                  <path
-                    d="M94 12C108 10 121 14 131 21L96 22L94 12Z"
-                    fill="#0F172A"
-                  />
-                  <path
-                    d="M22 21L38 18V23L22 26V21ZM44 17.5L60 14.5V19.5L44 22.5V17.5ZM66 14L82 11.5V16.5L66 19V14Z"
-                    fill="#1E293B"
-                  />
-                  <path
-                    d="M4 28L134 21"
-                    stroke="#F36B21"
-                    strokeWidth="2.2"
-                  />
-                </g>
-              </svg>
-            </div>
           </div>
         </div>
       </aside>
@@ -619,11 +580,11 @@ export function RailwayToolsWorkspace() {
           <div className="tools-workspace-panel rounded-2xl border border-slate-200/90 bg-white p-4 shadow-[0_2px_12px_rgba(15,39,71,0.04)] sm:p-5 lg:p-6">
             {/* Top Return / Breadcrumb Link to All Tools */}
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <nav aria-label="Workspace breadcrumb" className="flex items-center gap-1.5 text-xs">
+              <nav aria-label="Workspace breadcrumb" className="type-caption flex items-center gap-1.5 ">
                 <Link
                   href="/tools"
                   onClick={handleBackToOverviewClick}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200/90 bg-slate-50/80 px-2.5 py-1 font-semibold text-[#102B4E] transition-colors hover:border-blue-200 hover:bg-[#EFF6FF] hover:text-[#2563EB] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
+                  className="type-button inline-flex items-center gap-1.5 rounded-lg border border-slate-200/90 bg-slate-50/80 px-2.5 py-1 font-semibold text-[#102B4E] transition-colors hover:border-blue-200 hover:bg-[#EFF6FF] hover:text-[#2563EB] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
                 >
                   <ArrowLeft aria-hidden="true" className="h-3.5 w-3.5" />
                   <span>Back to All Tools</span>
@@ -649,17 +610,17 @@ export function RailwayToolsWorkspace() {
                   <div className="flex flex-wrap items-center gap-2">
                     <h1
                       id="active-workspace-tool-title"
-                      className="text-lg font-extrabold tracking-tight text-[#102B4E] sm:text-xl"
+                      className="type-page-title  tracking-tight text-[#102B4E] "
                     >
                       {selectedTool.title}
                     </h1>
                     <span
-                      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${toolColorThemes[selectedTool.id].badgeBg} ${toolColorThemes[selectedTool.id].iconColor}`}
+                      className={`type-caption inline-flex items-center rounded-full border px-2.5 py-0.5 font-bold uppercase tracking-wider ${toolColorThemes[selectedTool.id].badgeBg} ${toolColorThemes[selectedTool.id].iconColor}`}
                     >
                       {selectedTool.badge}
                     </span>
                   </div>
-                  <p className="mt-0.5 text-xs leading-relaxed text-slate-600 sm:text-[13px]">
+                  <p className="type-body-small mt-0.5 leading-relaxed text-slate-600 ">
                     {selectedTool.description}
                   </p>
                 </div>
@@ -667,7 +628,7 @@ export function RailwayToolsWorkspace() {
 
               <InternalLink
                 href={selectedTool.href}
-                className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-slate-200 bg-slate-50/80 px-2.5 py-1.5 text-xs font-semibold text-[#102B4E] transition hover:border-blue-200 hover:bg-[#EFF6FF] hover:text-[#2563EB] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
+                className="type-button inline-flex shrink-0 items-center gap-1 rounded-lg border border-slate-200 bg-slate-50/80 px-2.5 py-1.5 font-semibold text-[#102B4E] transition hover:border-blue-200 hover:bg-[#EFF6FF] hover:text-[#2563EB] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
               >
                 <span>Open standalone page</span>
                 <ArrowUpRight aria-hidden="true" className="h-3.5 w-3.5" />

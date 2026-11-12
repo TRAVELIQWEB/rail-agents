@@ -28,14 +28,14 @@ export function TicketDateFaqAccordion({ items }: TicketDateFaqAccordionProps) {
 
         return (
           <div key={item.question} className="transition-colors duration-200">
-            <h3>
+            <h3 className="type-h3">
               <button
                 id={buttonId}
                 type="button"
                 aria-expanded={isOpen}
                 aria-controls={panelId}
                 onClick={() => toggleItem(idx)}
-                className={`flex w-full items-center justify-between gap-3 px-4 py-3.5 sm:px-5 sm:py-4 text-left text-xs sm:text-sm font-bold transition-all duration-200 ease-out cursor-pointer hover:bg-[#faf5ee] focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500 ${
+                className={`type-button flex w-full items-center justify-between gap-3 px-4 py-3.5 sm:px-5 sm:py-4 text-left font-bold transition-all duration-200 ease-out cursor-pointer hover:bg-[#faf5ee] focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500 ${
                   isOpen ? "text-orange-950 bg-[#faf5ee]" : "text-stone-800"
                 }`}
               >
@@ -57,7 +57,7 @@ export function TicketDateFaqAccordion({ items }: TicketDateFaqAccordionProps) {
                 id={panelId}
                 role="region"
                 aria-labelledby={buttonId}
-                className="px-4 pb-4 pt-1 sm:px-5 sm:pb-5 text-xs sm:text-[13px] text-stone-600 leading-relaxed bg-[#faf5ee]/60 border-t border-[#f4e9dd]/60 animate-in fade-in duration-200 motion-reduce:animate-none"
+                className="type-caption px-4 pb-4 pt-1 sm:px-5 sm:pb-5 text-stone-600 leading-relaxed bg-[#faf5ee]/60 border-t border-[#f4e9dd]/60 animate-in fade-in duration-200 motion-reduce:animate-none"
               >
                 {item.answer}
               </div>

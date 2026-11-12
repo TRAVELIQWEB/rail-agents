@@ -51,12 +51,12 @@ export function WhyAndHow() {
 
         <div className="site-container relative z-10 grid grid-cols-1 items-center gap-10 lg:gap-12 xl:grid-cols-12 xl:gap-12 wide:gap-14">
           <div className="flex flex-col items-center text-center md:items-start md:text-left xl:col-span-5">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/80 px-3.5 py-1.5 text-[11px] font-[800] uppercase tracking-[0.14em] text-[var(--primary-dark)] shadow-sm">
+            <div className="type-caption mb-4 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/80 px-3.5 py-1.5 font-extrabold uppercase tracking-[0.14em] text-[var(--primary-dark)] shadow-sm">
               <span className="h-2 w-2 rounded-full bg-[#F36B21]" />
               Why RailAgents
             </div>
 
-            <h2 className="text-[clamp(1.5rem,3vw,2.25rem)] font-[800] leading-[1.12] tracking-[-0.04em] text-[#0f2747] wide:text-[2.25rem]">
+            <h2 className="type-h2  tracking-[-0.04em] text-[#0f2747] ">
               Your guide to{" "}
               <span className="relative inline-block text-[var(--primary-dark)]">
                 railway agent information
@@ -75,7 +75,7 @@ export function WhyAndHow() {
               </span>
             </h2>
 
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-slate-600 sm:text-base wide:max-w-xl">
+            <p className="type-body-small mt-4 max-w-md leading-relaxed text-slate-600 wide:max-w-xl">
               Clear explanations and practical guides for common IRCTC agent questions, railway bookings, and travel topics.
             </p>
 
@@ -123,10 +123,10 @@ export function WhyAndHow() {
                     <BookOpen className="h-[18px] w-[18px]" />
                   </div>
 
-                  <h3 className="mt-3 text-base font-extrabold text-[#0f2747] sm:text-lg">
+                  <h3 className="type-card-title mt-3 text-[#0f2747] ">
                     Easy Explanations
                   </h3>
-                  <p className="mt-1 text-xs leading-relaxed text-slate-500 wide:text-sm">
+                  <p className="type-body-small mt-1 leading-relaxed text-slate-500 ">
                     Complex railway processes explained in simple language.
                   </p>
 
@@ -136,7 +136,7 @@ export function WhyAndHow() {
                 </div>
 
                 <div className="relative z-10 flex w-full shrink-0 items-center justify-center pt-1 sm:w-auto">
-                  <div className="absolute -top-3 right-2 text-xs font-bold text-[var(--primary-dark)] select-none wide:text-sm">
+                  <div className="type-caption absolute -top-3 right-2 font-bold text-[var(--primary-dark)] select-none ">
                     \|/
                   </div>
                   <div className="relative w-24 rounded-xl border border-orange-100 bg-gradient-to-br from-white to-[#fff8f0] p-3 shadow-md rotate-6 sm:w-28 wide:w-32 wide:p-3.5">
@@ -157,10 +157,10 @@ export function WhyAndHow() {
                     <ListChecks className="h-[18px] w-[18px]" />
                   </div>
 
-                  <h3 className="mt-3 text-base font-extrabold text-[#0f2747] sm:text-lg">
+                  <h3 className="type-card-title mt-3 text-[#0f2747] ">
                     Step-by-Step Guides
                   </h3>
-                  <p className="mt-1 text-xs leading-relaxed text-slate-500 wide:text-sm">
+                  <p className="type-body-small mt-1 leading-relaxed text-slate-500 ">
                     Detailed articles and videos to help you every time.
                   </p>
 
@@ -172,15 +172,15 @@ export function WhyAndHow() {
                 <div className="relative z-10 flex w-full shrink-0 items-center justify-center pt-2 sm:w-auto">
                   <div className="relative w-24 space-y-1.5 -rotate-3 sm:w-28 wide:w-32 wide:space-y-2">
                     <div className="flex items-center gap-2 rounded-lg border border-indigo-100 bg-white p-1.5 shadow-sm">
-                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-bold text-white wide:h-6 wide:w-6 wide:text-xs">1</span>
+                      <span className="type-caption flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-500 font-bold text-white wide:h-6 wide:w-6 ">1</span>
                       <div className="h-1.5 w-10 rounded-full bg-indigo-100 wide:h-2" />
                     </div>
                     <div className="flex translate-x-1 items-center gap-2 rounded-lg border border-indigo-100 bg-white p-1.5 shadow-sm">
-                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-500 text-[10px] font-bold text-white wide:h-6 wide:w-6 wide:text-xs">2</span>
+                      <span className="type-caption flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-500 font-bold text-white wide:h-6 wide:w-6 ">2</span>
                       <div className="h-1.5 w-8 rounded-full bg-blue-100 wide:h-2" />
                     </div>
                     <div className="flex translate-x-2 items-center gap-2 rounded-lg border border-indigo-100 bg-white p-1.5 shadow-sm">
-                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-400 text-[10px] font-bold text-white wide:h-6 wide:w-6 wide:text-xs">3</span>
+                      <span className="type-caption flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-400 font-bold text-white wide:h-6 wide:w-6 ">3</span>
                       <div className="h-1.5 w-6 rounded-full bg-indigo-100 wide:h-2" />
                     </div>
                   </div>
@@ -196,10 +196,10 @@ export function WhyAndHow() {
                     <BadgeCheck className="h-[18px] w-[18px]" />
                   </div>
 
-                  <h3 className="mt-3 text-base font-extrabold text-[#0f2747] sm:text-lg">
+                  <h3 className="type-card-title mt-3 text-[#0f2747] ">
                     Check Current Sources
                   </h3>
-                  <p className="mt-1 text-xs leading-relaxed text-slate-500 wide:text-sm">
+                  <p className="type-body-small mt-1 leading-relaxed text-slate-500 ">
                     Verify current rules, charges, and updates with official sources.
                   </p>
 
@@ -210,7 +210,7 @@ export function WhyAndHow() {
 
                 <div className="relative z-10 flex w-full shrink-0 items-center justify-center pt-1 sm:w-auto">
                   <div className="relative w-24 rounded-xl border border-amber-100 bg-white p-2.5 shadow-md sm:w-28 wide:w-32 wide:p-3">
-                    <span className="text-[10px] font-black tracking-wider text-amber-600 wide:text-xs">IRCTC</span>
+                    <span className="type-caption  font-black tracking-wider text-amber-600 ">IRCTC</span>
                     <div className="mt-1 space-y-1">
                       <div className="h-1.5 w-full rounded-full bg-slate-200 wide:h-2" />
                       <div className="h-1.5 w-3/4 rounded-full bg-slate-100 wide:h-2" />
@@ -232,10 +232,10 @@ export function WhyAndHow() {
                     <UsersRound className="h-[18px] w-[18px]" />
                   </div>
 
-                  <h3 className="mt-3 text-base font-extrabold text-[#0f2747] sm:text-lg">
+                  <h3 className="type-card-title mt-3 text-[#0f2747] ">
                     For Agents & Travellers
                   </h3>
-                  <p className="mt-1 text-xs leading-relaxed text-slate-500 wide:text-sm">
+                  <p className="type-body-small mt-1 leading-relaxed text-slate-500 ">
                     Useful information for new agents and everyday travellers.
                   </p>
 
@@ -277,11 +277,11 @@ export function WhyAndHow() {
         </div>
         <div className="site-container">
           <div className="mx-auto max-w-[720px] text-center md:mx-0 md:text-left wide:max-w-[850px]">
-            <p className="mb-3 inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.12em] text-[#F36B21] sm:text-sm">
+            <p className="type-body-small mb-3 inline-flex items-center gap-2 font-extrabold uppercase tracking-[0.12em] text-[#F36B21] ">
               <ShieldCheck className="h-4 w-4" />
               How It Works
             </p>
-            <h2 className="text-[clamp(1.5rem,3vw,2.25rem)] font-extrabold leading-[1.12] tracking-[-0.04em] text-[var(--navy)] wide:text-[2.25rem]">
+            <h2 className="type-h2  tracking-[-0.04em] text-[var(--navy)] ">
               Get answers in three simple steps
             </h2>
           </div>
@@ -299,13 +299,13 @@ export function WhyAndHow() {
                   <Icon className="h-5 w-5" />
                 </div>
                 <div className="min-w-0 pt-1 xl:pt-5 wide:pt-6">
-                  <p className="text-sm font-bold uppercase tracking-[0.1em] text-[#F36B21] wide:text-base">
+                  <p className="type-body  font-bold uppercase tracking-[0.1em] text-[#F36B21] ">
                     Step 0{index + 1}
                   </p>
-                  <h3 className="mt-1 text-base font-bold leading-snug text-[var(--navy)] sm:text-lg">
+                  <h3 className="type-card-title mt-1 text-[var(--navy)] ">
                     {title}
                   </h3>
-                  <p className="mt-2 max-w-[350px] text-sm leading-relaxed text-slate-600 wide:max-w-[380px]">
+                  <p className="type-body-small mt-2 max-w-[350px] leading-relaxed text-slate-600 wide:max-w-[380px]">
                     {description}
                   </p>
                 </div>

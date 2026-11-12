@@ -52,12 +52,12 @@ function RouteStationCard({ station, code, journeyDate, destination = false }: {
   }) : "Not available";
   return (
     <div className="min-w-0 rounded-lg border border-orange-100 bg-white p-3 sm:p-3.5">
-      <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500">{destination ? "Destination Station" : "Origin Station"}</p>
-      <p className="mt-2 break-words text-sm font-extrabold leading-snug text-[#102B46]">{station?.stationName || code || "Not available"}</p>
-      {code && <p className="mt-1 break-words font-mono text-xs text-slate-600">({code})</p>}
-      <div className="mt-3 space-y-1 border-t border-orange-100 pt-3 text-xs text-slate-600">
-        <p>{dateLabel}</p>
-        <p>{destination ? "Arrival" : "Departure"}: <strong className="text-[#102B46]">{(destination ? station?.arrivalTime : station?.departureTime) || "Not available"}</strong></p>
+      <p className="type-body  font-bold uppercase tracking-wide text-slate-500">{destination ? "Destination Station" : "Origin Station"}</p>
+      <p className="type-body-small mt-2 break-words font-extrabold leading-snug text-[#102B46]">{station?.stationName || code || "Not available"}</p>
+      {code && <p className="type-body-small mt-1 break-words font-mono text-slate-600">({code})</p>}
+      <div className="type-caption mt-3 space-y-1 border-t border-orange-100 pt-3 text-slate-600">
+        <p className="type-body">{dateLabel}</p>
+        <p className="type-body">{destination ? "Arrival" : "Departure"}: <strong className="text-[#102B46]">{(destination ? station?.arrivalTime : station?.departureTime) || "Not available"}</strong></p>
       </div>
     </div>
   );
@@ -122,15 +122,15 @@ function ChartScheduleStatus({
   if (status.state === "unknown") return null;
 
   if (!mounted) {
-    return <span className="mt-1.5 text-[11.5px] font-bold text-[#525252]">Checking status…</span>;
+    return <span className="type-caption mt-1.5 font-bold text-[#525252]">Checking status…</span>;
   }
 
   if (status.state === "pending") {
-    return <span className="mt-1.5 text-[11.5px] font-extrabold text-[#F36B21]">Scheduled</span>;
+    return <span className="type-caption mt-1.5 font-extrabold text-[#F36B21]">Scheduled</span>;
   }
 
   return (
-    <span className="mt-1.5 text-[11.5px] font-bold text-[#525252]">
+    <span className="type-caption mt-1.5 font-bold text-[#525252]">
       {status.label}
     </span>
   );
@@ -506,12 +506,12 @@ export function TrainChartPreparationTime({
               </span>
               <h2
                 id="chart-search-heading"
-                className="text-sm font-bold text-[#0F172A]"
+                className="type-section-compact  text-[#0F172A]"
               >
                 Check Train Chart Timing
               </h2>
             </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-1 text-xs font-semibold text-[#0F172A]">
+            <span className="type-caption inline-flex items-center gap-1.5 rounded-full border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-1 font-semibold text-[#0F172A]">
               <Radio className={`h-3 w-3 text-[#F36B21] ${chartingLoading ? "animate-pulse" : ""}`} />
               <span>{chartingLoading ? "Updating schedule…" : "Scheduled timings"}</span>
             </span>
@@ -525,7 +525,7 @@ export function TrainChartPreparationTime({
             <div className="relative order-1" ref={trainDropdownRef}>
               <label
                 htmlFor="train-search-input"
-                className="mb-1 flex h-5 items-center text-[11px] font-bold text-[#0F172A]"
+                className="type-label mb-1 flex h-5 items-center font-bold text-[#0F172A]"
               >
                 1. Train number or name
               </label>
@@ -550,7 +550,7 @@ export function TrainChartPreparationTime({
                     setTrainDropdownOpen(true);
                   }}
                   placeholder="Enter train number or name"
-                  className="h-11 w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-9 pr-14 text-[13px] font-medium text-[#0F172A] transition-colors placeholder:text-[#64748B] hover:border-[#F36B21] focus:border-[#F36B21] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F36B21]/20"
+                  className="type-input h-11 w-full rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-9 pr-14 font-medium text-[#0F172A] transition-colors placeholder:text-[#64748B] hover:border-[#F36B21] focus:border-[#F36B21] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F36B21]/20"
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                   {trainQuery && (
@@ -568,7 +568,7 @@ export function TrainChartPreparationTime({
                         setChartingError(null);
                         setTrainDropdownOpen(true);
                       }}
-                      className="flex h-7 w-7 items-center justify-center text-[#64748B] hover:text-[#26374A] rounded-md cursor-pointer"
+                      className="type-button flex h-7 w-7 items-center justify-center text-[#64748B] hover:text-[#26374A] rounded-md cursor-pointer"
                       aria-label="Clear train search"
                     >
                       <X className="h-3.5 w-3.5" />
@@ -577,7 +577,7 @@ export function TrainChartPreparationTime({
                   <button
                     type="button"
                     onClick={() => setTrainDropdownOpen((prev) => !prev)}
-                    className="flex h-7 w-7 items-center justify-center text-[#64748B] hover:text-[#26374A] rounded-md cursor-pointer"
+                    className="type-button flex h-7 w-7 items-center justify-center text-[#64748B] hover:text-[#26374A] rounded-md cursor-pointer"
                     aria-label="Toggle train suggestions"
                   >
                     <ChevronDown
@@ -592,19 +592,19 @@ export function TrainChartPreparationTime({
               {/* Train Suggestions Dropdown */}
               {trainDropdownOpen && (
                 <div className="absolute left-0 top-[calc(100%+6px)] z-50 w-full max-h-64 overflow-y-auto rounded-lg border border-[#E2E8F0] bg-white p-1.5 shadow-md">
-                  <div className="px-2.5 py-1.5 text-[10px] font-extrabold text-[#64748B] uppercase tracking-wider border-b border-[#E5EAF0] mb-1 flex items-center justify-between">
+                  <div className="type-caption px-2.5 py-1.5 font-extrabold text-[#64748B] uppercase tracking-wider border-b border-[#E5EAF0] mb-1 flex items-center justify-between">
                     <span>
                       {trainQuery.trim() ? "Matching trains" : "Search for a train"}
                     </span>
                     {trainSearchLoading && (
-                      <span className="text-[10px] text-[#A34C22] font-bold animate-pulse">
+                      <span className="type-caption  text-[#A34C22] font-bold animate-pulse">
                         Searching...
                       </span>
                     )}
                   </div>
 
                   {trainSuggestions.length === 0 ? (
-                    <div className="px-3 py-5 text-center text-xs text-[#64748B]">
+                    <div className="type-caption px-3 py-5 text-center text-[#64748B]">
                       {trainSearchLoading
                         ? "Searching trains…"
                         : trainSearchError
@@ -621,14 +621,14 @@ export function TrainChartPreparationTime({
                           key={trn.trainNumber}
                           type="button"
                           onClick={() => handleSelectTrainSuggestion(trn)}
-                          className={`w-full text-left px-3 py-2 rounded-lg text-xs flex items-center justify-between transition-colors cursor-pointer ${
+                          className={`type-button w-full text-left px-3 py-2 rounded-lg flex items-center justify-between transition-colors cursor-pointer ${
                             isSelected
                               ? "bg-[#FFF5EF] text-[#A34C22] font-bold"
                               : "hover:bg-[#FFF5EF]/70 group"
                           }`}
                         >
                           <div className="min-w-0 pr-2 flex items-center gap-2.5">
-                            <span className="shrink-0 font-mono text-[11px] font-black px-2 py-0.5 rounded-md bg-[#102B46] text-white group-hover:bg-[#A34C22] transition-colors">
+                            <span className="type-caption shrink-0 font-mono font-black px-2 py-0.5 rounded-md bg-[#102B46] text-white group-hover:bg-[#A34C22] transition-colors">
                               {trn.trainNumber}
                             </span>
                             <span className="font-bold text-[#26374A] truncate group-hover:text-[#A34C22]">
@@ -649,12 +649,12 @@ export function TrainChartPreparationTime({
               <div className="mb-1 flex h-5 items-center justify-between gap-2">
                 <label
                   htmlFor="boarding-station-btn"
-                  className="block text-[11px] font-bold text-[#0F172A]"
+                  className="type-label block font-bold text-[#0F172A]"
                 >
                   3. Boarding station
                 </label>
                 {chartingData && (
-                  <span className="shrink-0 text-[10px] font-semibold text-[#A34C22]">
+                  <span className="type-caption shrink-0 font-semibold text-[#A34C22]">
                     {boardingStations.length} Boarding Stops
                   </span>
                 )}
@@ -665,7 +665,7 @@ export function TrainChartPreparationTime({
                 type="button"
                 disabled={boardingStations.length === 0}
                 onClick={() => setBoardingDropdownOpen((prev) => !prev)}
-                className="flex min-h-11 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 py-2 text-left text-[13px] font-medium text-[#0F172A] transition-colors hover:border-[#F36B21] focus:border-[#F36B21] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F36B21]/20 disabled:cursor-not-allowed disabled:opacity-60"
+                className="type-button flex min-h-11 w-full cursor-pointer items-center justify-between gap-2 rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 py-2 text-left font-medium text-[#0F172A] transition-colors hover:border-[#F36B21] focus:border-[#F36B21] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F36B21]/20 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <div className="flex items-center gap-2 min-w-0">
                   <MapPin className="h-4 w-4 shrink-0 text-[#A34C22]" />
@@ -686,7 +686,7 @@ export function TrainChartPreparationTime({
               </button>
 
               {boardingStations.length === 0 && (
-                <p className="mt-1 text-[10px] leading-tight text-[#64748B]" aria-live="polite">
+                <p className="type-body-small mt-1 leading-tight text-[#64748B]" aria-live="polite">
                   {chartingLoading
                     ? "Loading boarding stations…"
                     : !selectedTrainNumber
@@ -707,13 +707,13 @@ export function TrainChartPreparationTime({
                         value={boardingFilterQuery}
                         onChange={(e) => setBoardingFilterQuery(e.target.value)}
                         placeholder="Filter route stations..."
-                        className="w-full h-8 rounded-lg border border-[#E5EAF0] bg-white pl-8 pr-2.5 text-xs font-semibold text-[#26374A] focus:border-[#E87535] focus:outline-none"
+                        className="type-input w-full h-8 rounded-lg border border-[#E5EAF0] bg-white pl-8 pr-2.5 font-semibold text-[#26374A] focus:border-[#E87535] focus:outline-none"
                       />
                     </div>
                   </div>
                   <div className="overflow-y-auto p-1.5 max-h-56 divide-y divide-[#E5EAF0]">
                     {filteredBoardingDropdownStations.length === 0 ? (
-                      <div className="px-3 py-4 text-center text-xs text-[#64748B]">
+                      <div className="type-caption px-3 py-4 text-center text-[#64748B]">
                         No route station matches &ldquo;{boardingFilterQuery}&rdquo;
                       </div>
                     ) : (
@@ -724,7 +724,7 @@ export function TrainChartPreparationTime({
                             key={stn.stationCode}
                             type="button"
                             onClick={() => handleBoardingStationSelect(stn)}
-                            className={`w-full text-left px-2.5 py-2 rounded-lg text-xs flex items-center justify-between transition-colors cursor-pointer ${
+                            className={`type-button w-full text-left px-2.5 py-2 rounded-lg flex items-center justify-between transition-colors cursor-pointer ${
                               isSelected
                                 ? "bg-[#FFF5EF] text-[#A34C22] font-bold"
                                 : "hover:bg-[#FFF5EF]/60"
@@ -736,16 +736,16 @@ export function TrainChartPreparationTime({
                                   {stn.stationName}
                                 </span>
                                 {idx === 0 && !boardingFilterQuery && (
-                                  <span className="rounded bg-[#E7F4F2] px-1.5 py-0.2 text-[9px] font-extrabold text-[#087F70]">
+                                  <span className="type-caption rounded bg-[#E7F4F2] px-1.5 py-0.2 font-extrabold text-[#087F70]">
                                     ORIGIN
                                   </span>
                                 )}
                               </div>
-                              <span className="text-[10.5px] text-[#64748B] block">
+                              <span className="type-caption  text-[#64748B] block">
                                 Boarding stop · Day {stn.day ?? "Not available"}
                               </span>
                             </div>
-                            <span className="shrink-0 font-mono text-[10.5px] font-extrabold px-2 py-0.5 rounded bg-[#F5F7FA] text-[#26374A]">
+                            <span className="type-caption shrink-0 font-mono font-extrabold px-2 py-0.5 rounded bg-[#F5F7FA] text-[#26374A]">
                               {stn.stationCode}
                             </span>
                           </button>
@@ -762,7 +762,7 @@ export function TrainChartPreparationTime({
               <div className="mb-1 flex h-5 items-center">
                 <label
                   htmlFor="chart-journey-date"
-                  className="block whitespace-nowrap text-[11px] font-bold text-[#0F172A]"
+                  className="type-label block whitespace-nowrap font-bold text-[#0F172A]"
                 >
                   2. Journey date
                 </label>
@@ -777,13 +777,13 @@ export function TrainChartPreparationTime({
                   onFocus={() => setDateInputFocused(true)}
                   onBlur={() => setDateInputFocused(false)}
                   onChange={(e) => handleDateChange(e.target.value)}
-                  className={`h-11 w-full cursor-pointer rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 text-[13px] font-medium transition-colors hover:border-[#F36B21] focus:border-[#F36B21] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F36B21]/20 ${journeyDate || dateInputFocused ? "text-[#0F172A]" : "text-transparent"}`}
+                  className={`type-input h-11 w-full cursor-pointer rounded-lg border border-[#E2E8F0] bg-[#F8FAFC] px-2.5 font-medium transition-colors hover:border-[#F36B21] focus:border-[#F36B21] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#F36B21]/20 ${journeyDate || dateInputFocused ? "text-[#0F172A]" : "text-transparent"}`}
                 />
-                {!journeyDate && !dateInputFocused && <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-2.5 flex items-center text-[13px] text-[#64748B]">Select journey date</span>}
+                {!journeyDate && !dateInputFocused && <span aria-hidden="true" className="type-helper pointer-events-none absolute inset-y-0 left-2.5 flex items-center text-[#64748B]">Select journey date</span>}
               </div>
             </div>
           </form>
-          <p className="mt-2.5 text-[11px] leading-snug text-[#64748B]">Select your train, boarding station and journey date to check scheduled chart preparation time.</p>
+          <p className="type-body-small mt-2.5 leading-snug text-[#64748B]">Select your train, boarding station and journey date to check scheduled chart preparation time.</p>
         </div>
       </section>
 
@@ -794,11 +794,11 @@ export function TrainChartPreparationTime({
           className="rounded-2xl border border-rose-200 bg-rose-50/90 p-4 sm:p-5 text-rose-900 flex items-start gap-3 shadow-xs"
         >
           <AlertCircle className="h-5 w-5 text-rose-600 shrink-0 mt-0.5" />
-          <div className="text-xs sm:text-sm">
-            <p className="font-extrabold text-rose-950">
+          <div className="type-caption  ">
+            <p className="type-body font-extrabold text-rose-950">
               Unable to Fetch Chart Preparation Timing
             </p>
-            <p className="mt-1 text-rose-800 leading-relaxed">{chartingError}</p>
+            <p className="type-body mt-1 text-rose-800 leading-relaxed">{chartingError}</p>
           </div>
         </div>
       )}
@@ -811,7 +811,7 @@ export function TrainChartPreparationTime({
           <span className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-[#FFF5EF] text-[#A34C22]">
             {chartingLoading ? <Clock className="h-5 w-5 animate-pulse" /> : <TrainFront className="h-5 w-5" />}
           </span>
-          <h3 className="mt-3 text-base font-bold text-[#102B46]">
+          <h3 className="type-h3 mt-3 text-[#102B46]">
             {chartingLoading
               ? "Loading chart schedule"
               : chartingData && !selectedStationInfo
@@ -820,7 +820,7 @@ export function TrainChartPreparationTime({
                 ? "Choose your journey date"
                 : "Search for a train to get started"}
           </h3>
-          <p className="mx-auto mt-1 max-w-md text-sm leading-relaxed text-[#64748B]">
+          <p className="type-body-small mx-auto mt-1 max-w-md leading-relaxed text-[#64748B]">
             {chartingLoading
               ? "We’re retrieving the chart timings and route stations."
               : chartingData && !selectedStationInfo
@@ -857,12 +857,12 @@ export function TrainChartPreparationTime({
                 <TrainFront aria-hidden="true" strokeWidth={2.25} className="h-4 w-4 shrink-0 text-[#F36B21]" />
                 <h2
                   id="boarding-station-spotlight-heading"
-                  className="min-w-0 break-words text-lg font-extrabold leading-tight text-[#171717] sm:text-[19px]"
+                  className="type-section-compact min-w-0 break-words text-[#171717] "
                 >
                   {chartingData.trainNumber} · {chartingData.trainName}
                 </h2>
               </div>
-              <span className="hidden shrink-0 items-center gap-1.5 rounded-sm border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-2.5 py-1 text-[11.5px] font-bold text-[#171717] sm:inline-flex">
+              <span className="type-caption hidden shrink-0 items-center gap-1.5 rounded-sm border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-2.5 py-1 font-bold text-[#171717] sm:inline-flex">
                 <CalendarDays aria-hidden="true" strokeWidth={2.25} className="h-3.5 w-3.5 text-[#F36B21]" />
                 Chart timing at boarding station
               </span>
@@ -873,16 +873,16 @@ export function TrainChartPreparationTime({
 
               <div className="grid min-w-0 gap-3 rounded-lg border border-orange-100 bg-orange-50/30 p-3">
                 <div className="min-w-0 w-full">
-                  <p className="text-xs font-black uppercase tracking-[0.08em] text-[#F36B21]">
+                  <p className="type-body  font-black uppercase tracking-[0.08em] text-[#F36B21]">
                     YOUR BOARDING STATION
                   </p>
-                  <h3 className="mt-1 w-full break-words text-lg font-extrabold leading-snug text-[#171717] sm:text-xl">
+                  <h3 className="type-h3 mt-1 w-full break-words text-[#171717] ">
                     {station.stationName}{" "}
-                    <span className="font-mono text-sm font-bold text-[#525252] sm:text-[15px]">
+                    <span className="type-body-small font-mono font-bold text-[#525252] ">
                       ({station.stationCode})
                     </span>
                   </h3>
-                  <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[12.5px] font-semibold leading-snug text-[#525252]">
+                  <div className="type-helper mt-2 flex flex-wrap items-center gap-x-4 gap-y-1.5 font-semibold leading-snug text-[#525252]">
                     <span className="inline-flex items-center gap-1.5">
                       <CalendarDays
                         aria-hidden="true"
@@ -918,9 +918,9 @@ export function TrainChartPreparationTime({
                     </span>
                   </div>
                   <div data-charting-kind={chartStation.kind} className={`mt-3 rounded-lg border p-3 ${chartingStyles[chartStation.kind].panel}`}>
-                    <p className="text-[11px] font-bold uppercase tracking-wide text-slate-600">Chart preparation station</p>
-                    <p className="mt-1 break-words text-base font-extrabold leading-snug text-[#102B46]">{chartStation.display}</p>
-                    {chartStation.label && <span className={`mt-2 inline-flex rounded-md border px-2 py-1 text-xs font-bold ${chartingStyles[chartStation.kind].badge}`}>{chartStation.label}</span>}
+                    <p className="type-body  font-bold uppercase tracking-wide text-slate-600">Chart preparation station</p>
+                    <p className="type-body mt-1 break-words font-extrabold leading-snug text-[#102B46]">{chartStation.display}</p>
+                    {chartStation.label && <span className={`type-caption mt-2 inline-flex rounded-md border px-2 py-1 font-bold ${chartingStyles[chartStation.kind].badge}`}>{chartStation.label}</span>}
                   </div>
                 </div>
 
@@ -933,11 +933,11 @@ export function TrainChartPreparationTime({
                       <Fragment key={heading}>
                         <div className="flex min-w-0 flex-col justify-between rounded-md border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-3 py-3 sm:px-3.5">
                           <div>
-                            <h4 className="text-xs font-black uppercase tracking-[0.06em] text-[#F36B21] sm:text-[13px]">
+                            <h4 className="type-h4  uppercase tracking-[0.06em] text-[#F36B21] ">
                               {heading}
                             </h4>
                             <p
-                              className={`mt-1.5 break-words text-xl font-black leading-tight tabular-nums tracking-tight sm:text-[26px] ${
+                              className={`type-body-large mt-1.5 break-words font-black leading-tight tabular-nums tracking-tight ${
                                 timing && !chartingLoading
                                   ? "text-[#171717]"
                                   : "text-[#525252]"
@@ -947,7 +947,7 @@ export function TrainChartPreparationTime({
                                 ? "Loading…"
                                 : timing?.time12 || "Not available"}
                             </p>
-                            <p className="mt-1 break-words text-xs font-bold leading-snug text-[#525252]">
+                            <p className="type-body-small mt-1 break-words font-bold leading-snug text-[#525252]">
                               {chartingLoading
                                 ? "Updating chart date…"
                                 : timing
@@ -982,14 +982,14 @@ export function TrainChartPreparationTime({
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#FED7AA] bg-[#FFFFFF] px-3 py-2.5 sm:px-4">
-              <p className="text-[11.5px] font-semibold leading-tight text-[#525252]">
+              <p className="type-body  font-semibold leading-tight text-[#525252]">
                 Scheduled times; actual chart preparation isn’t confirmed.
               </p>
               <div className="flex gap-1.5">
                 <button
                   type="button"
                   onClick={handleCopySchedule}
-                  className="inline-flex min-h-8 cursor-pointer items-center gap-1.5 rounded-sm border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-2.5 text-xs font-bold text-[#171717] transition-colors hover:border-[#F36B21] hover:text-[#F36B21]"
+                  className="type-button inline-flex min-h-8 cursor-pointer items-center gap-1.5 rounded-sm border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-2.5 font-bold text-[#171717] transition-colors hover:border-[#F36B21] hover:text-[#F36B21]"
                 >
                   {copied ? (
                     <Check strokeWidth={2.25} className="h-3.5 w-3.5 text-[#F36B21]" />
@@ -1001,7 +1001,7 @@ export function TrainChartPreparationTime({
                 <button
                   type="button"
                   onClick={handleWhatsAppShare}
-                  className="inline-flex min-h-8 cursor-pointer items-center gap-1.5 rounded-sm border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-2.5 text-xs font-bold text-[#171717] transition-colors hover:border-[#F36B21] hover:text-[#F36B21]"
+                  className="type-button inline-flex min-h-8 cursor-pointer items-center gap-1.5 rounded-sm border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-2.5 font-bold text-[#171717] transition-colors hover:border-[#F36B21] hover:text-[#F36B21]"
                 >
                   <Share2 strokeWidth={2.25} className="h-3.5 w-3.5 text-[#F36B21]" />
                   Share
@@ -1018,34 +1018,34 @@ export function TrainChartPreparationTime({
           <section aria-labelledby="route-stations-heading" className="overflow-hidden rounded-xl border border-[#E5EAF0] bg-white">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#E5EAF0] px-3 py-2.5 sm:px-4">
               <div>
-                <h2 id="route-stations-heading" className="text-sm font-bold text-[#102B46]">Route stations</h2>
-                <p className="mt-0.5 text-xs text-[#64748B]">Arrival, departure and both chart timings for each station.</p>
+                <h2 id="route-stations-heading" className="type-section-compact  text-[#102B46]">Route stations</h2>
+                <p className="type-body-small mt-0.5 text-[#64748B]">Arrival, departure and both chart timings for each station.</p>
               </div>
-              <label className="relative block w-full sm:w-56">
+              <label className="type-label relative block w-full sm:w-56">
                 <Search aria-hidden="true" className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#64748B]" />
                 <span className="sr-only">Filter route stations</span>
-                <input type="search" value={tableStationSearch} onChange={(event) => setTableStationSearch(event.target.value)} placeholder="Find a station" className="h-9 w-full rounded-lg border border-[#E5EAF0] bg-white pl-8 pr-3 text-xs text-[#26374A] outline-none focus:border-[#087F70] focus:ring-2 focus:ring-[#087F70]/15" />
+                <input type="search" value={tableStationSearch} onChange={(event) => setTableStationSearch(event.target.value)} placeholder="Find a station" className="type-input h-9 w-full rounded-lg border border-[#E5EAF0] bg-white pl-8 pr-3 text-[#26374A] outline-none focus:border-[#087F70] focus:ring-2 focus:ring-[#087F70]/15" />
               </label>
             </div>
             <div className="overflow-x-auto" role="region" aria-label="Station and chart timings" tabIndex={0}>
-              <table className="w-full min-w-[780px] table-fixed text-left" aria-label="Train route and chart preparation times">
+              <table className="type-table w-full min-w-[780px] table-fixed text-left" aria-label="Train route and chart preparation times">
                 <colgroup>
                   <col className="w-[30%]" /><col className="w-[10%]" /><col className="w-[10%]" />
                   <col className="w-[6%]" /><col className="w-[22%]" /><col className="w-[22%]" />
                 </colgroup>
-                <thead className="bg-slate-100 text-[11px] font-extrabold uppercase tracking-wide text-slate-700">
+                <thead className="type-caption bg-slate-100 font-extrabold uppercase tracking-wide text-slate-700">
                   <tr>
-                    <th scope="col" className="border-r border-slate-200 px-4 py-3 text-[#102B46]">Station</th>
-                    <th scope="col" className="px-2 py-3 text-center">Arrival</th>
-                    <th scope="col" className="px-2 py-2.5 text-center">Departure</th>
-                    <th scope="col" className="px-2 py-2.5 text-center">Day</th>
-                    <th scope="col" className="border-l-2 border-orange-200 bg-orange-100/70 px-3 py-3 text-orange-900">First Chart</th>
-                    <th scope="col" className="border-l-2 border-teal-200 bg-teal-100/60 px-3 py-3 text-teal-900">Second Chart</th>
+                    <th scope="col" className="type-table border-r border-slate-200 px-4 py-3 text-[#102B46]">Station</th>
+                    <th scope="col" className="type-table px-2 py-3 text-center">Arrival</th>
+                    <th scope="col" className="type-table px-2 py-2.5 text-center">Departure</th>
+                    <th scope="col" className="type-table px-2 py-2.5 text-center">Day</th>
+                    <th scope="col" className="type-table border-l-2 border-orange-200 bg-orange-100/70 px-3 py-3 text-orange-900">First Chart</th>
+                    <th scope="col" className="type-table border-l-2 border-teal-200 bg-teal-100/60 px-3 py-3 text-teal-900">Second Chart</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 text-sm">
+                <tbody className="type-body-small divide-y divide-slate-200 ">
                   {filteredTableStations.length === 0 ? (
-                    <tr><td colSpan={6} className="px-3 py-6 text-center text-[#64748B]">No stations match your search.</td></tr>
+                    <tr><td colSpan={6} className="type-table px-3 py-6 text-center text-[#64748B]">No stations match your search.</td></tr>
                   ) : filteredTableStations.map((stationRow) => {
                     const index = chartingData.stations.indexOf(stationRow);
                     const isLastStation = index === chartingData.stations.length - 1;
@@ -1053,28 +1053,28 @@ export function TrainChartPreparationTime({
                     const chartStation = describeChartingStation(stationRow, chartingData.stations);
                     return (
                       <tr key={stationRow.stationCode + "-" + index} className={selected ? "bg-orange-50/40" : "bg-white hover:bg-[#FFFCFA]"}>
-                        <th scope="row" className="border-r border-slate-200 px-4 py-3 text-left">
+                        <th scope="row" className="type-table border-r border-slate-200 px-4 py-3 text-left">
                           <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                            <span className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] font-bold text-slate-600">{stationRow.stationCode}</span>
+                            <span className="type-caption rounded bg-slate-100 px-1.5 py-0.5 font-mono font-bold text-slate-600">{stationRow.stationCode}</span>
                             <span className="font-bold text-[#171717]">{stationRow.stationName}</span>
-                            {index === 0 && <span className="text-[11px] font-medium text-slate-600">Origin</span>}
-                            {index === chartingData.stations.length - 1 && <span className="text-[9px] text-[#64748B]">Destination</span>}
-                            {selected && <span className="rounded border border-orange-200 bg-orange-50 px-1.5 py-0.5 text-[10px] font-bold text-orange-900">Your boarding</span>}
+                            {index === 0 && <span className="type-caption  font-medium text-slate-600">Origin</span>}
+                            {index === chartingData.stations.length - 1 && <span className="type-caption  text-[#64748B]">Destination</span>}
+                            {selected && <span className="type-caption rounded border border-orange-200 bg-orange-50 px-1.5 py-0.5 font-bold text-orange-900">Your boarding</span>}
                           </div>
-                          <div className="mt-2 break-words text-xs font-medium leading-relaxed text-slate-600">
+                          <div className="type-caption mt-2 break-words font-medium leading-relaxed text-slate-600">
                             <span className="block">Chart preparation: <strong className="font-bold text-[#102B46]">{chartStation.display}</strong></span>
-                            {chartStation.label && <span className={`mt-1 inline-flex rounded border px-1.5 py-0.5 text-[11px] font-semibold ${chartingStyles[chartStation.kind].badge}`}>{chartStation.label}</span>}
+                            {chartStation.label && <span className={`type-caption mt-1 inline-flex rounded border px-1.5 py-0.5 font-semibold ${chartingStyles[chartStation.kind].badge}`}>{chartStation.label}</span>}
                           </div>
                         </th>
-                        <td className="bg-slate-50/50 px-2 py-3 text-center font-semibold tabular-nums text-[#171717]">{stationRow.arrivalTime || "—"}</td>
-                        <td className="px-2 py-2.5 text-center font-semibold tabular-nums text-[#171717]">{stationRow.departureTime || "—"}</td>
-                        <td className="px-2 py-2.5 text-center font-semibold text-slate-700">{stationRow.day ?? "Not available"}</td>
+                        <td className="type-table bg-slate-50/50 px-2 py-3 text-center font-semibold tabular-nums text-[#171717]">{stationRow.arrivalTime || "—"}</td>
+                        <td className="type-table px-2 py-2.5 text-center font-semibold tabular-nums text-[#171717]">{stationRow.departureTime || "—"}</td>
+                        <td className="type-table px-2 py-2.5 text-center font-semibold text-slate-700">{stationRow.day ?? "Not available"}</td>
                         {[stationRow.firstChartDateTime, stationRow.secondChartDateTime].map((iso, chartIndex) => {
                           const timing = isLastStation ? null : formatIsoDateTimeIST(iso);
                           return (
-                            <td key={chartIndex} className={"border-l-2 px-3 py-3 align-top " + (chartIndex === 0 ? "border-orange-200 bg-orange-50/40" : "border-teal-200 bg-teal-50/40")}>
-                              <p className={"text-base font-extrabold tabular-nums " + (chartIndex === 0 ? "text-orange-950" : "text-teal-950")}>{isLastStation ? "—" : timing?.time12 || "Not available"}</p>
-                              {timing && <p className="mt-1 text-xs font-medium leading-5 text-slate-600">{timing.dateLabel} · IST</p>}
+                            <td key={chartIndex} className={`type-table ${"border-l-2 px-3 py-3 align-top " + (chartIndex === 0 ? "border-orange-200 bg-orange-50/40" : "border-teal-200 bg-teal-50/40")}`}>
+                              <p className={`type-body ${" font-extrabold tabular-nums " + (chartIndex === 0 ? "text-orange-950" : "text-teal-950")}`}>{isLastStation ? "—" : timing?.time12 || "Not available"}</p>
+                              {timing && <p className="type-body-small mt-1 font-medium leading-5 text-slate-600">{timing.dateLabel} · IST</p>}
                               {timing && <ChartScheduleStatus status={getScheduleStatus(iso)} mounted={mounted} />}
                             </td>
                           );
@@ -1085,7 +1085,7 @@ export function TrainChartPreparationTime({
                 </tbody>
               </table>
             </div>
-            <p className="border-t border-[#E5EAF0] px-4 py-2 text-[11px] text-[#64748B]">Scheduled chart timings from the provider; actual preparation is not confirmed. Swipe horizontally on small screens to view all columns.</p>
+            <p className="type-body-small border-t border-[#E5EAF0] px-4 py-2 text-[#64748B]">Scheduled chart timings from the provider; actual preparation is not confirmed. Swipe horizontally on small screens to view all columns.</p>
 
           </section>
         </>

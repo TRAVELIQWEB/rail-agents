@@ -30,33 +30,33 @@ export function AskNihalSection() {
           <div className="relative z-10 grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
             {/* Left Column (Copy & Prompts) */}
             <div className="lg:col-span-8 text-center lg:text-left">
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#F36B21]/40 bg-[#F36B21]/15 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#F36B21] shadow-2xs">
+              <span className="type-caption inline-flex items-center gap-2 rounded-full border border-[#F36B21]/40 bg-[#F36B21]/15 px-3.5 py-1.5 font-bold uppercase tracking-wider text-[#F36B21] shadow-2xs">
                 <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
                 Railway Guidance Desk
               </span>
 
               <h2
                 id="ask-nihal-heading"
-                className="mt-4 text-2xl font-black tracking-tight sm:text-3xl lg:text-4xl text-white leading-tight"
+                className="type-h2 mt-4 tracking-tight text-white "
               >
                 Have a Complex Railway Question?{" "}
                 <span className="text-[#F36B21]">Ask Nihal Singh</span>
               </h2>
 
-              <p className="mt-3.5 max-w-xl text-sm leading-relaxed text-slate-300 sm:text-base">
+              <p className="type-body-small mt-3.5 max-w-xl leading-relaxed text-slate-300 ">
                 Whether you need clarity on Tatkal timings, cancelled train refunds, RAC allocations, or IRCTC agent verification terms, get a structured, step-by-step answer.
               </p>
 
               {/* Sample Question Chips */}
               <div className="mt-5 space-y-2">
-                <p className="text-xs font-semibold text-slate-400">Popular queries visitors ask:</p>
+                <p className="type-body  font-semibold text-slate-400">Popular queries visitors ask:</p>
                 <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
                   {sampleQuestions.map((q) => (
                     <InternalLink
                       key={q}
                       href="/ask-nihal"
                       prefetch={false}
-                      className="rounded-lg border border-white/15 bg-white/10 px-3 py-1 text-xs text-slate-200 hover:border-[#F36B21] hover:bg-[#F36B21]/20 transition-colors"
+                      className="type-caption rounded-lg border border-white/15 bg-white/10 px-3 py-1 text-slate-200 hover:border-[#F36B21] hover:bg-[#F36B21]/20 transition-colors"
                     >
                       &ldquo;{q}&rdquo;
                     </InternalLink>
@@ -69,7 +69,7 @@ export function AskNihalSection() {
                 <InternalLink
                   href="/ask-nihal"
                   prefetch={false}
-                  className="group inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-xl bg-[#F36B21] px-6 py-3 text-sm font-bold text-white shadow-[0_8px_24px_-4px_rgba(243,107,33,0.5),0_0_20px_rgba(243,107,33,0.3)] transition-all duration-150 hover:bg-[#F36B21] hover:shadow-[0_12px_28px_-4px_rgba(243,107,33,0.65),0_0_30px_rgba(243,107,33,0.45)] hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+                  className="type-button group inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-xl bg-[#F36B21] px-6 py-3 font-bold text-white shadow-[0_8px_24px_-4px_rgba(243,107,33,0.5),0_0_20px_rgba(243,107,33,0.3)] transition-all duration-150 hover:bg-[#F36B21] hover:shadow-[0_12px_28px_-4px_rgba(243,107,33,0.65),0_0_30px_rgba(243,107,33,0.45)] hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
                 >
                   <MessageCircle aria-hidden="true" className="h-4 w-4" />
                   <span>Ask Nihal Singh</span>
@@ -82,7 +82,7 @@ export function AskNihalSection() {
                 <InternalLink
                   href="/guides"
                   prefetch={false}
-                  className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/5 px-6 py-3 text-sm font-bold text-white transition-all duration-150 hover:bg-white/10 hover:border-white/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+                  className="type-button inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/5 px-6 py-3 font-bold text-white transition-all duration-150 hover:bg-white/10 hover:border-white/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
                 >
                   <HelpCircle aria-hidden="true" className="h-4 w-4 text-slate-300" />
                   <span>Browse FAQs &amp; Rules</span>
@@ -95,7 +95,7 @@ export function AskNihalSection() {
                   aria-hidden="true"
                   className="mt-0.5 h-4 w-4 shrink-0 text-[#16A36A]"
                 />
-                <p className="text-[11px] leading-relaxed text-slate-300">
+                <p className="type-body  leading-relaxed text-slate-300">
                   <strong className="text-white">Transparency Notice:</strong> Nihal Singh is a fictional digital persona created by RailAgents to explain ticketing rules in accessible language. Answers are derived strictly from official Ministry of Railways documentation.
                 </p>
               </div>
@@ -119,7 +119,7 @@ export function AskNihalSection() {
                       sizes="(min-width: 640px) 224px, 192px"
                       className="object-contain object-bottom drop-shadow-lg"
                     />
-                    <div className="absolute bottom-2 inset-x-2 rounded-lg bg-[#142B45]/90 py-1 text-center text-[10px] font-bold text-[#F36B21] backdrop-blur-xs border border-white/10">
+                    <div className="type-caption absolute bottom-2 inset-x-2 rounded-lg bg-[#142B45]/90 py-1 text-center font-bold text-[#F36B21] backdrop-blur-xs border border-white/10">
                       Online Guidance Desk
                     </div>
                   </div>

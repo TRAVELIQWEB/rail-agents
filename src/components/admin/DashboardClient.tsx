@@ -79,7 +79,7 @@ export function DashboardClient({ stats, recentPosts }: Props) {
               <Sparkles size={12} className="text-orange-400" />
               <span>RailAgents · Editorial Control Room</span>
             </div>
-            <h1 id="dashboard-heading" className="mt-2.5 text-2xl font-black tracking-tight text-zinc-100 sm:text-3xl">
+            <h1 id="dashboard-heading" className="type-page-title mt-2.5 text-2xl font-black tracking-tight text-zinc-100 sm:text-3xl">
               Your Publishing Desk
             </h1>
             <p className="mt-1 max-w-xl text-xs leading-relaxed text-zinc-400 sm:text-sm">
@@ -120,7 +120,7 @@ export function DashboardClient({ stats, recentPosts }: Props) {
         <div className="mb-3.5 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-[11px] font-bold uppercase tracking-wider text-orange-400">Overview</p>
-            <h2 id="publishing-status-heading" className="mt-0.5 text-base font-extrabold tracking-tight text-zinc-100">
+            <h2 id="publishing-status-heading" className="type-h2 mt-0.5 text-base font-extrabold tracking-tight text-zinc-100">
               Publishing Metrics
             </h2>
           </div>
@@ -200,7 +200,7 @@ export function DashboardClient({ stats, recentPosts }: Props) {
       <section aria-labelledby="recent-articles-heading" className="overflow-hidden rounded-2xl border border-[#242933] bg-[#161920]">
         <div className="flex flex-col gap-3 border-b border-[#242933] bg-[#14171c] px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div>
-            <h2 id="recent-articles-heading" className="text-base font-extrabold tracking-tight text-zinc-100">
+            <h2 id="recent-articles-heading" className="type-h2 text-base font-extrabold tracking-tight text-zinc-100">
               Recently Updated Articles
             </h2>
             <p className="mt-0.5 text-xs text-zinc-400">
@@ -235,20 +235,20 @@ export function DashboardClient({ stats, recentPosts }: Props) {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs" aria-label="Recently updated articles">
+            <table className="type-table w-full text-left text-xs" aria-label="Recently updated articles">
               <thead>
                 <tr className="border-b border-[#242933] bg-[#14171c]/60 text-left text-[10.5px] font-bold uppercase tracking-wider text-zinc-400">
-                  <th scope="col" className="px-5 py-3.5">Article Title &amp; Slug</th>
-                  <th scope="col" className="hidden px-5 py-3.5 sm:table-cell">Category</th>
-                  <th scope="col" className="px-5 py-3.5">Status</th>
-                  <th scope="col" className="hidden px-5 py-3.5 md:table-cell">Last Updated</th>
-                  <th scope="col" className="px-5 py-3.5 text-right">Actions</th>
+                  <th scope="col" className="type-table px-5 py-3.5">Article Title &amp; Slug</th>
+                  <th scope="col" className="type-table hidden px-5 py-3.5 sm:table-cell">Category</th>
+                  <th scope="col" className="type-table px-5 py-3.5">Status</th>
+                  <th scope="col" className="type-table hidden px-5 py-3.5 md:table-cell">Last Updated</th>
+                  <th scope="col" className="type-table px-5 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#222630]">
                 {recentPosts.map((post) => (
                   <tr key={post.id} className="transition-colors hover:bg-[#1c2029]">
-                    <td className="max-w-md px-5 py-3.5">
+                    <td className="type-table max-w-md px-5 py-3.5">
                       <Link
                         href={`/admin/posts/${post.id}/edit`}
                         className="font-bold text-zinc-100 hover:text-orange-400 line-clamp-1 transition"
@@ -260,23 +260,23 @@ export function DashboardClient({ stats, recentPosts }: Props) {
                       </p>
                     </td>
 
-                    <td className="hidden sm:table-cell px-5 py-3.5">
+                    <td className="type-table hidden sm:table-cell px-5 py-3.5">
                       <span className="rounded-lg bg-[#1f242d] border border-[#2c323e] px-2.5 py-1 text-[11px] font-medium text-zinc-300">
                         {post.category}
                       </span>
                     </td>
 
-                    <td className="px-5 py-3.5">
+                    <td className="type-table px-5 py-3.5">
                       <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10.5px] font-bold capitalize ${STATUS_BADGE[post.status] || "bg-[#222731] text-zinc-300"}`}>
                         {post.status}
                       </span>
                     </td>
 
-                    <td className="hidden md:table-cell px-5 py-3.5 text-zinc-400 font-medium">
+                    <td className="type-table hidden md:table-cell px-5 py-3.5 text-zinc-400 font-medium">
                       {formatDate(post.updatedAt)}
                     </td>
 
-                    <td className="px-5 py-3.5 text-right">
+                    <td className="type-table px-5 py-3.5 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <Link
                           href={`/admin/posts/${post.id}/edit`}
@@ -303,7 +303,7 @@ export function DashboardClient({ stats, recentPosts }: Props) {
                         <button
                           type="button"
                           onClick={() => setConfirmId(post.id)}
-                          className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-transparent text-zinc-500 hover:border-red-500/30 hover:bg-red-950/40 hover:text-red-400 transition cursor-pointer"
+                          className="type-button inline-flex h-8 w-8 items-center justify-center rounded-lg border border-transparent text-zinc-500 hover:border-red-500/30 hover:bg-red-950/40 hover:text-red-400 transition cursor-pointer"
                           title="Delete article"
                           disabled={deleting === post.id}
                           aria-label={`Delete ${post.title}`}
@@ -330,7 +330,7 @@ export function DashboardClient({ stats, recentPosts }: Props) {
       {confirmId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-xs p-4" role="dialog" aria-modal="true">
           <div className="w-full max-w-sm rounded-2xl bg-[#161920] p-6 shadow-2xl border border-[#262b35] animate-in zoom-in-95 duration-150">
-            <h3 className="text-base font-black text-zinc-100">Delete this article?</h3>
+            <h3 className="type-h3 text-base font-black text-zinc-100">Delete this article?</h3>
             <p className="mt-1.5 text-xs text-zinc-400 leading-relaxed">
               This action is permanent and cannot be undone. The article and its associated data will be removed.
             </p>
@@ -338,7 +338,7 @@ export function DashboardClient({ stats, recentPosts }: Props) {
               <button
                 type="button"
                 onClick={() => setConfirmId(null)}
-                className="flex-1 rounded-xl border border-[#2c323e] bg-[#1f242d] py-2 text-xs font-bold text-zinc-200 transition hover:bg-[#282e3a] cursor-pointer"
+                className="type-button flex-1 rounded-xl border border-[#2c323e] bg-[#1f242d] py-2 text-xs font-bold text-zinc-200 transition hover:bg-[#282e3a] cursor-pointer"
               >
                 Cancel
               </button>
@@ -346,7 +346,7 @@ export function DashboardClient({ stats, recentPosts }: Props) {
                 type="button"
                 onClick={() => handleDelete(confirmId)}
                 disabled={!!deleting}
-                className="flex-1 rounded-xl bg-red-600 py-2 text-xs font-bold text-white transition hover:bg-red-500 disabled:opacity-60 cursor-pointer"
+                className="type-button flex-1 rounded-xl bg-red-600 py-2 text-xs font-bold text-white transition hover:bg-red-500 disabled:opacity-60 cursor-pointer"
               >
                 {deleting ? "Deleting..." : "Confirm Delete"}
               </button>

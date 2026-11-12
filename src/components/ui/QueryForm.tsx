@@ -62,10 +62,10 @@ export function QueryForm() {
           <MessageCircle aria-hidden="true" className="h-5 w-5 fill-white/20 text-white" />
         </div>
         <div>
-          <h2 className="text-lg font-extrabold tracking-tight text-[#0f2747] sm:text-xl">
+          <h2 className="type-h2  tracking-tight text-[#0f2747] ">
             How can we help you?
           </h2>
-          <p className="mt-0.5 text-xs sm:text-[13px] leading-relaxed text-slate-500">
+          <p className="type-body-small mt-0.5 leading-relaxed text-slate-500">
             Write your question and connect directly with our agent on WhatsApp.
           </p>
         </div>
@@ -74,7 +74,7 @@ export function QueryForm() {
       {handoffOpened ? (
         <div
           role="status"
-          className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-relaxed text-emerald-800"
+          className="type-body-small mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 leading-relaxed text-emerald-800"
         >
           WhatsApp opened with your query. Press Send in WhatsApp to contact RailAgents.
         </div>
@@ -82,7 +82,7 @@ export function QueryForm() {
       {submitError ? (
         <p
           role="alert"
-          className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          className="type-note mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800"
         >
           {submitError}
         </p>
@@ -92,7 +92,7 @@ export function QueryForm() {
         <div>
           <label
             htmlFor="query-input"
-            className="mb-1.5 block text-xs sm:text-sm font-bold text-[#0f2747]"
+            className="type-label mb-1.5 block font-bold text-[#0f2747]"
           >
             Your Query
           </label>
@@ -115,17 +115,17 @@ export function QueryForm() {
               aria-invalid={Boolean(queryError)}
               aria-describedby={queryError ? "query-error query-count" : "query-count"}
               placeholder="Type your railway or travel question here..."
-              className="h-32 min-h-[110px] max-h-[160px] w-full resize-y bg-transparent px-7 pb-5 pt-0 text-sm sm:text-base leading-relaxed text-[#0f2747] outline-none placeholder:text-slate-400"
+              className="type-input h-32 min-h-[110px] max-h-[160px] w-full resize-y border-0 bg-transparent px-7 pb-5 pt-0 leading-relaxed text-[#0f2747] shadow-none ring-0 outline-none focus:border-0 focus:shadow-none focus:ring-0 placeholder:text-slate-400"
             />
             <span
               id="query-count"
-              className="absolute bottom-2.5 right-3.5 select-none text-[11px] font-medium text-slate-400"
+              className="type-caption absolute bottom-2.5 right-3.5 select-none font-medium text-slate-400"
             >
               {query.length}/500
             </span>
           </div>
           {queryError ? (
-            <p id="query-error" className="mt-1 text-xs text-red-700" role="alert">
+            <p id="query-error" className="type-note mt-1 text-red-700" role="alert">
               {queryError}
             </p>
           ) : null}
@@ -135,7 +135,7 @@ export function QueryForm() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="uiverse-send-btn focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
+            className="type-button uiverse-send-btn focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
           >
             <div className="svg-wrapper-1">
               <div className="svg-wrapper">
@@ -159,7 +159,7 @@ export function QueryForm() {
             </span>
           </button>
 
-          <p className="flex items-center gap-1.5 text-[11px] text-slate-400">
+          <p className="type-body-small flex items-center gap-1.5 text-slate-400">
             <Lock aria-hidden="true" className="h-3 w-3 text-slate-400" />
             <span>Direct WhatsApp connection • Fast &amp; free</span>
           </p>

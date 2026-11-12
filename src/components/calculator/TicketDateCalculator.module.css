@@ -39,7 +39,7 @@
 }
 
 .calculator input {
-  font-size: 16px;
+  font-size: var(--type-body);
 }
 
 .calculator input::placeholder {

@@ -37,11 +37,11 @@ export function Testimonials() {
         <div>
           <div className="mb-5 flex items-end justify-between gap-4">
             <div>
-              <p className="mb-2 text-[0.8125rem] font-[800] uppercase tracking-[0.12em] text-[var(--primary-dark)]">
+              <p className="type-body-small mb-2 font-extrabold uppercase tracking-[0.12em] text-[var(--primary-dark)]">
                 What Our Users Say
               </p>
 
-              <h2 className="max-w-[760px] text-[clamp(1.5rem,3vw,2.25rem)] font-extrabold leading-[1.12] tracking-[-0.04em] text-[var(--navy)] wide:max-w-[900px] wide:text-[2.25rem]">
+              <h2 className="type-h2 max-w-[760px] tracking-[-0.04em] text-[var(--navy)] wide:max-w-[900px] ">
                 What Travel Agents Say About RailAgents
               </h2>
             </div>
@@ -54,74 +54,74 @@ export function Testimonials() {
               <article
                 key={testimonial.name}
                 className="
-                  group
-                  relative
-                  flex
-                  items-center
-                  text-center
-                  min-h-[270px]
-                  flex-col
-                  overflow-hidden
-                  rounded-[24px]
-                  border
-                  border-[#f1e4d9]
-                  bg-white
-                  p-5
-                  shadow-[0_6px_24px_rgba(15,39,71,0.04)]
-                  transition-all
-                  duration-300
-                  hover:-translate-y-1
-                  hover:border-[#fdc99f]
-                  hover:shadow-[0_16px_38px_rgba(15,39,71,0.08)]
-                  wide:min-h-[320px]
-                  wide:p-7
-                  sm:items-stretch
-                  sm:text-left
-                "
+ group
+ relative
+ flex
+ items-center
+ text-center
+ min-h-[270px]
+ flex-col
+ overflow-hidden
+ rounded-[24px]
+ border
+ border-[#f1e4d9]
+ bg-white
+ p-5
+ shadow-[0_6px_24px_rgba(15,39,71,0.04)]
+ transition-all
+ duration-300
+ hover:-translate-y-1
+ hover:border-[#fdc99f]
+ hover:shadow-[0_16px_38px_rgba(15,39,71,0.08)]
+ wide:min-h-[320px]
+ wide:p-7
+ sm:items-stretch
+ sm:text-left
+ "
               >
                 {/* decorative orange glow */}
                 <div
                   aria-hidden="true"
                   className="
-                    pointer-events-none
-                    absolute
-                    -right-10
-                    -top-10
-                    h-28
-                    w-28
-                    rounded-full
-                    bg-orange-100/60
-                    blur-2xl
-                  "
+ pointer-events-none
+ absolute
+ -right-10
+ -top-10
+ h-28
+ w-28
+ rounded-full
+ bg-orange-100/60
+ blur-2xl
+ "
                 />
 
                 {/* TOP PROFILE */}
                 <div className="relative z-10 flex w-full flex-col items-center justify-between gap-3 sm:flex-row sm:items-start">
                   <div className="flex flex-col items-center gap-3 sm:flex-row">
                     <span
-                      className="
-                        flex
-                        h-11
-                        w-11
-                        shrink-0
-                        items-center
-                        justify-center
-                        rounded-full
-                        bg-[#fff0df]
-                        text-[0.875rem]
-                        font-[800]
-                        text-[#b9500c]
-                      "
+                      className="type-body-small
+ flex
+ h-11
+ w-11
+ shrink-0
+ items-center
+ justify-center
+ rounded-full
+ bg-[#fff0df]
+
+ font-extrabold
+ text-[#b9500c]
+ "
                     >
                       {testimonial.initials}
                     </span>
 
                     <div className="min-w-0">
-                      <h3 className="truncate text-[0.95rem] font-[800] text-[var(--navy)]">
+                      <h3 className="type-card-title truncate text-[var(--navy)]">
                         {testimonial.name}
                       </h3>
 
-                      <p className="truncate text-[0.8125rem] text-slate-600">
+                      <p className="type-body-small truncate text-slate-600">
                         {testimonial.location}
                       </p>
                     </div>
@@ -148,19 +148,19 @@ export function Testimonials() {
                 {/* QUOTE AREA */}
                 <div
                   className="
-                    relative
-                    z-10
-                    mt-4
-                    flex
-                    flex-1
-                    items-center
-                    rounded-2xl
-                    bg-[#fffaf5]
-                    px-4
-                    py-4
-                  "
+ relative
+ z-10
+ mt-4
+ flex
+ flex-1
+ items-center
+ rounded-2xl
+ bg-[#fffaf5]
+ px-4
+ py-4
+ "
                 >
-                  <p className="text-center text-[0.92rem] leading-[1.65] text-slate-600 sm:text-left">
+                  <p className="type-body text-center leading-[1.65] text-slate-600 sm:text-left">
                     “{testimonial.quote}”
                   </p>
                 </div>
@@ -175,27 +175,27 @@ export function Testimonials() {
         {/* RIGHT CTA CARD */}
         <aside
           className="
-            relative
-            isolate
-            flex
-            min-h-[320px]
-            flex-col
-            justify-center
-            overflow-hidden
-            rounded-[28px]
-            border
-            border-[#ffe1c2]
-            bg-[linear-gradient(115deg,#fffaf4_0%,#ffead7_100%)]
-            p-7
-            items-center
-            text-center
-            shadow-[0_12px_35px_rgba(249,115,22,0.08)]
-            lg:items-start
-            lg:p-8
-            lg:text-left
-            wide:min-h-[400px]
-            wide:p-10
-          "
+ relative
+ isolate
+ flex
+ min-h-[320px]
+ flex-col
+ justify-center
+ overflow-hidden
+ rounded-[28px]
+ border
+ border-[#ffe1c2]
+ bg-[linear-gradient(115deg,#fffaf4_0%,#ffead7_100%)]
+ p-7
+ items-center
+ text-center
+ shadow-[0_12px_35px_rgba(249,115,22,0.08)]
+ lg:items-start
+ lg:p-8
+ lg:text-left
+ wide:min-h-[400px]
+ wide:p-10
+ "
         >
           {/* train image */}
           <div className="pointer-events-none absolute inset-y-0 right-0 -z-10 w-[58%] opacity-40">
@@ -208,28 +208,28 @@ export function Testimonials() {
           <div
             aria-hidden="true"
             className="
-              pointer-events-none
-              absolute
-              -bottom-24
-              -left-16
-              -z-10
-              h-64
-              w-64
-              rounded-full
-              bg-orange-200/30
-              blur-[70px]
-            "
+ pointer-events-none
+ absolute
+ -bottom-24
+ -left-16
+ -z-10
+ h-64
+ w-64
+ rounded-full
+ bg-orange-200/30
+ blur-[70px]
+ "
           />
 
-          <p className="mb-3 text-[0.8125rem] font-[800] uppercase tracking-[0.12em] text-[var(--primary-dark)]">
+          <p className="type-body-small mb-3 font-extrabold uppercase tracking-[0.12em] text-[var(--primary-dark)]">
             Explore IRCTC Agent Information
           </p>
 
-          <h2 className="max-w-[360px] text-[1.75rem] font-[800] leading-[1.12] tracking-[-0.04em] text-[var(--navy)] wide:max-w-[460px] wide:text-[2.125rem]">
+          <h2 className="type-h2 max-w-[360px] tracking-[-0.04em] text-[var(--navy)] wide:max-w-[460px] ">
             Understand the IRCTC Agent Process
           </h2>
 
-          <p className="mx-auto mt-4 max-w-[390px] text-sm leading-[1.65] text-slate-600 lg:mx-0 wide:max-w-[480px] lg:text-base">
+          <p className="type-body-small mx-auto mt-4 max-w-[390px] leading-[1.65] text-slate-600 lg:mx-0 wide:max-w-[480px] ">
             Explore practical guides about the registration process, documents,
             and details to verify with the relevant authorized provider.
           </p>
@@ -238,27 +238,27 @@ export function Testimonials() {
             <InternalLink
               href="/irctc-agent-registration"
               prefetch={false}
-              className="
-                inline-flex
-                h-11
-                shrink-0
-                items-center
-                justify-center
-                gap-1.5
-                rounded-xl
-                bg-[var(--primary)]
-                px-4
-                sm:px-5
-                text-xs
-                sm:text-[0.875rem]
-                font-[700]
-                text-white
-                shadow-[0_8px_20px_rgba(249,115,22,0.25)]
-                transition
-                hover:-translate-y-[1px]
-                hover:bg-[var(--primary-hover)]
-                whitespace-nowrap
-              "
+              className="type-button
+ inline-flex
+ h-11
+ shrink-0
+ items-center
+ justify-center
+ gap-1.5
+ rounded-xl
+ bg-[var(--primary)]
+ px-4
+ sm:px-5
+
+
+ font-bold
+ text-white
+ shadow-[0_8px_20px_rgba(249,115,22,0.25)]
+ transition
+ hover:-translate-y-[1px]
+ hover:bg-[var(--primary-hover)]
+ whitespace-nowrap
+ "
             >
               <span>Agent Process</span>
               <ArrowRight className="h-4 w-4 shrink-0" />
@@ -267,28 +267,28 @@ export function Testimonials() {
             <InternalLink
               href="/about"
               prefetch={false}
-              className="
-                inline-flex
-                h-11
-                shrink-0
-                items-center
-                justify-center
-                rounded-xl
-                border
-                border-[#F36B21]/40
-                bg-white/95
-                px-4
-                sm:px-5
-                text-xs
-                sm:text-[0.875rem]
-                font-[700]
-                text-[#b9500c]
-                backdrop-blur-sm
-                transition
-                hover:bg-white
-                hover:border-[#F36B21]/70
-                whitespace-nowrap
-              "
+              className="type-button
+ inline-flex
+ h-11
+ shrink-0
+ items-center
+ justify-center
+ rounded-xl
+ border
+ border-[#F36B21]/40
+ bg-white/95
+ px-4
+ sm:px-5
+
+
+ font-bold
+ text-[#b9500c]
+ backdrop-blur-sm
+ transition
+ hover:bg-white
+ hover:border-[#F36B21]/70
+ whitespace-nowrap
+ "
             >
               <span>About Us</span>
             </InternalLink>
@@ -304,13 +304,13 @@ function ImageTrainBackdrop() {
     <div className="absolute inset-0">
       <div
         className="
-          absolute
-          inset-0
-          bg-[url('/images/hero-railway-bg.webp')]
-          bg-cover
-          bg-center
-          opacity-80
-        "
+ absolute
+ inset-0
+ bg-[url('/images/hero-railway-bg.webp')]
+ bg-cover
+ bg-center
+ opacity-80
+ "
       />
     </div>
   );

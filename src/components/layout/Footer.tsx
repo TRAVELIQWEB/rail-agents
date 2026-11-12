@@ -6,17 +6,13 @@ import {
   FaYoutube,
 } from "react-icons/fa6";
 import { siteConfig } from "@/config/site";
+import { railTools } from "@/config/tools";
 import { Logo } from "@/components/layout/Logo";
 import { InternalLink } from "@/components/ui/InternalLink";
 
 const quickLinks = [
-  { label: "Live Train Status", href: "/live-train-status" },
-  { label: "PNR Status Check", href: "/pnr-status" },
-  { label: "Train Fare Calculator", href: "/train-ticket-agent-fare-calculator" },
-  { label: "Ticket Date Calculator", href: "/ticket-date-calculator" },
-  { label: "Chart Preparation Time", href: "/train-chart-preparation-time" },
-  { label: "Refund Calculator", href: "/irctc-cancellation-refund-calculator" },
   { label: "All Railway Tools", href: "/tools" },
+  ...railTools.map((tool) => ({ label: tool.shortTitle, href: tool.href })),
 ];
 
 const supportLinks = [
@@ -48,7 +44,7 @@ export function Footer() {
             <div className="flex min-h-11 items-center">
             <Logo variant="light" />
             </div>
-            <p className="mt-3 max-w-[300px] text-sm leading-6 text-white/75">
+            <p className="type-body-small mt-3 max-w-[300px] leading-6 text-white/75">
               Clear railway agent information, practical guides, and help with
               travel-related questions.
             </p>
@@ -80,8 +76,8 @@ export function Footer() {
           <FooterLinkColumn title="Guidance & Support" items={supportLinks} />
 
           <div className="min-w-0 text-left min-[380px]:col-span-2 lg:col-span-1">
-            <h2 className="flex min-h-11 items-center text-sm font-extrabold text-white">Stay Updated</h2>
-            <p className="mt-3 max-w-[280px] text-sm leading-6 text-white/75">
+            <h2 className="type-footer-heading flex min-h-11 items-center text-white">Stay Updated</h2>
+            <p className="type-body-small mt-3 max-w-[280px] leading-6 text-white/75">
               Follow us for the latest railway agent guides and updates.
             </p>
             {siteConfig.social.youtube ? (
@@ -89,7 +85,7 @@ export function Footer() {
                 href={siteConfig.social.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-3 inline-flex min-h-11 items-center rounded-lg bg-[var(--primary)] px-3.5 py-2.5 text-sm font-[600] text-white transition-colors hover:bg-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                className="type-button mt-3 inline-flex min-h-11 items-center rounded-lg bg-[var(--primary)] px-3.5 py-2.5 font-semibold text-white transition-colors hover:bg-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
               >
                 Subscribe on YouTube
               </a>
@@ -97,9 +93,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col items-start gap-2 border-t border-white/15 pt-5 text-left text-xs leading-6 text-white/65 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
-          <p>&copy; {currentYear} RailAgents. All rights reserved.</p>
-          <p className="lg:text-right">
+        <div className="type-caption mt-8 flex flex-col items-start gap-2 border-t border-white/15 pt-5 text-left leading-6 text-white/65 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+          <p className="type-caption">&copy; {currentYear} RailAgents. All rights reserved.</p>
+          <p className="type-caption lg:text-right">
             Designed and developed by{" "}
             <a
               href="https://coderlala.com"
@@ -125,8 +121,8 @@ function FooterLinkColumn({
 }) {
   return (
     <div className="min-w-0 text-left">
-      <h2 className="flex min-h-11 items-center text-sm font-extrabold text-white">{title}</h2>
-      <ul className="mt-3 flex flex-col items-start gap-2 text-sm leading-6 text-white/75">
+      <h2 className="type-footer-heading flex min-h-11 items-center text-white">{title}</h2>
+      <ul className="type-body-small mt-3 flex flex-col items-start gap-2 leading-6 text-white/75">
         {[...items].sort((a, b) => a.label.length - b.label.length).map(({ label, href }) => (
           <li key={href}>
             <InternalLink

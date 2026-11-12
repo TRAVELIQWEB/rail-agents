@@ -12,7 +12,7 @@
 .calculator :is(input, select) {
   max-width: 100%;
   min-height: 44px;
-  font-size: 16px;
+  font-size: var(--type-body);
 }
 
 .calculator button,
@@ -45,14 +45,14 @@
 
 @media (max-width: 639px) {
   .calculator {
-    font-size: 0.875rem;
+    font-size: var(--type-body-small);
     line-height: 1.5;
   }
 
   .calculator [class*="text-[9"],
   .calculator [class*="text-[10"],
   .calculator [class*="text-[11"] {
-    font-size: 0.75rem;
+    font-size: var(--type-caption);
   }
 
   .calculator :global(.grid-cols-12) {

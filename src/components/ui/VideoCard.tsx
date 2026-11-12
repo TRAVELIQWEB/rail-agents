@@ -29,15 +29,15 @@ export function VideoCard({ video }: VideoCardProps) {
             <Play aria-hidden="true" className="ml-0.5 h-4 w-4 fill-current" />
           </span>
         </span>
-        <span className="absolute bottom-2 right-2 rounded-md bg-black/80 px-2 py-1 text-xs font-semibold text-white">
+        <span className="type-caption absolute bottom-2 right-2 rounded-md bg-black/80 px-2 py-1 font-semibold text-white">
           {video.duration}
         </span>
       </div>
       <div className="flex flex-1 flex-col p-4 text-left lg:p-5">
-        <h3 className="line-clamp-2 min-h-[3rem] text-base font-semibold leading-snug text-[var(--navy)] group-hover:text-[var(--primary-dark)] md:text-[17px] xl:text-lg">
+        <h3 className="type-h3 line-clamp-2 min-h-[3rem] text-[var(--navy)] group-hover:text-[var(--primary-dark)] ">
           {video.title}
         </h3>
-        <div className="mt-auto flex flex-wrap items-center justify-between gap-x-3 gap-y-1 pt-3 text-sm text-slate-500">
+        <div className="type-body-small mt-auto flex flex-wrap items-center justify-between gap-x-3 gap-y-1 pt-3 text-slate-500">
           <span className="min-w-0">{formatYouTubeDate(video.publishedAt)}</span>
           <span className="inline-flex shrink-0 items-center gap-1">
             <Eye className="h-4 w-4" />

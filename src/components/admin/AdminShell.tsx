@@ -157,7 +157,7 @@ export function AdminShell({ children, email }: AdminShellProps) {
           type="button"
           onClick={handleLogout}
           disabled={loggingOut}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#262b35] bg-[#1a1e25] py-2.5 text-xs font-bold text-zinc-300 transition hover:bg-red-950/40 hover:text-red-300 hover:border-red-500/30 active:scale-[0.99] disabled:opacity-50 cursor-pointer"
+          className="type-button flex w-full items-center justify-center gap-2 rounded-xl border border-[#262b35] bg-[#1a1e25] py-2.5 text-xs font-bold text-zinc-300 transition hover:bg-red-950/40 hover:text-red-300 hover:border-red-500/30 active:scale-[0.99] disabled:opacity-50 cursor-pointer"
         >
           <LogOut size={13} />
           <span>{loggingOut ? "Signing out..." : "Sign Out"}</span>
@@ -187,7 +187,7 @@ export function AdminShell({ children, email }: AdminShellProps) {
               <button
                 type="button"
                 onClick={() => setSidebarOpen(false)}
-                className="rounded-lg p-1.5 text-zinc-400 hover:bg-[#1f242d] hover:text-white"
+                className="type-button rounded-lg p-1.5 text-zinc-400 hover:bg-[#1f242d] hover:text-white"
                 aria-label="Close menu"
               >
                 <X size={18} />
@@ -206,7 +206,7 @@ export function AdminShell({ children, email }: AdminShellProps) {
             <button
               type="button"
               onClick={() => setSidebarOpen(true)}
-              className="rounded-lg p-1.5 text-zinc-300 hover:bg-[#1f242d] lg:hidden cursor-pointer"
+              className="type-button rounded-lg p-1.5 text-zinc-300 hover:bg-[#1f242d] lg:hidden cursor-pointer"
               aria-label="Open sidebar navigation"
             >
               <Menu size={20} />

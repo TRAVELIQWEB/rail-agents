@@ -1,0 +1,2113 @@
+[
+  {
+    "file": "src/app/about/page.tsx",
+    "sizes": [
+      "text-xs",
+      "text-sm",
+      "text-base",
+      "text-2xl",
+      "sm:text-3xl",
+      "sm:text-base",
+      "sm:text-lg",
+      "text-lg",
+      "sm:text-xl",
+      "lg:text-2xl",
+      "sm:text-sm",
+      "text-xl",
+      "sm:text-2xl",
+      "lg:text-4xl"
+    ],
+    "weights": [
+      "font-bold",
+      "font-semibold",
+      "font-extrabold",
+      "font-[900]",
+      "font-[800]",
+      "font-medium",
+      "font-[850]"
+    ],
+    "lineHeights": [
+      "leading-relaxed",
+      "leading-[1.18]",
+      "leading-8",
+      "leading-snug",
+      "leading-7"
+    ],
+    "headings": [
+      "h1",
+      "h2",
+      "h2",
+      "h2",
+      "h3",
+      "h2",
+      "h3",
+      "h3",
+      "h2",
+      "h3",
+      "h2",
+      "h3",
+      "h3",
+      "h3",
+      "h2",
+      "h2",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/app/admin/dashboard/page.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/admin/layout.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/admin/login/layout.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/admin/login/page.tsx",
+    "sizes": [
+      "text-xl",
+      "text-xs",
+      "text-3xl",
+      "sm:text-5xl",
+      "text-sm",
+      "sm:text-base",
+      "sm:text-2xl",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-[900]",
+      "font-semibold",
+      "font-bold",
+      "font-normal",
+      "font-extrabold",
+      "font-medium"
+    ],
+    "lineHeights": [
+      "leading-[1.15]",
+      "leading-relaxed",
+      "leading-snug"
+    ],
+    "headings": [
+      "h1",
+      "h3",
+      "h3",
+      "h3",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/app/admin/page.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/admin/posts/new/page.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/admin/posts/page.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/admin/posts/[id]/edit/page.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/ask-nihal/page.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/blog/page.tsx",
+    "sizes": [
+      "text-xs",
+      "text-xl",
+      "sm:text-2xl",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-[800]",
+      "font-[750]",
+      "font-semibold",
+      "font-[850]"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h1",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/app/blog/[slug]/page.tsx",
+    "sizes": [
+      "text-xs",
+      "text-lg",
+      "sm:text-xl",
+      "text-sm",
+      "text-base",
+      "sm:text-lg",
+      "text-xl",
+      "sm:text-2xl"
+    ],
+    "weights": [
+      "font-semibold",
+      "font-bold",
+      "font-extrabold",
+      "font-[850]",
+      "font-normal",
+      "font-medium"
+    ],
+    "lineHeights": [
+      "leading-[1.25]",
+      "leading-relaxed",
+      "leading-snug"
+    ],
+    "headings": [
+      "h1",
+      "h2",
+      "h1",
+      "h2",
+      "h2",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/app/chart-times/page.tsx",
+    "sizes": [
+      "text-xl",
+      "sm:text-2xl",
+      "text-xs"
+    ],
+    "weights": [
+      "font-extrabold"
+    ],
+    "lineHeights": [
+      "leading-tight",
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h1"
+    ]
+  },
+  {
+    "file": "src/app/chart-times/[slug]/page.tsx",
+    "sizes": [
+      "text-xl",
+      "sm:text-2xl",
+      "text-xs"
+    ],
+    "weights": [
+      "font-extrabold"
+    ],
+    "lineHeights": [
+      "leading-tight",
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h1"
+    ]
+  },
+  {
+    "file": "src/app/contact/page.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/error.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-4xl",
+      "md:text-5xl",
+      "text-sm",
+      "sm:text-base"
+    ],
+    "weights": [
+      "font-extrabold",
+      "font-black",
+      "font-bold"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h1"
+    ]
+  },
+  {
+    "file": "src/app/fare-calculator/page.tsx",
+    "sizes": [
+      "text-lg",
+      "sm:text-2xl",
+      "text-xs",
+      "sm:text-sm",
+      "text-sm",
+      "sm:text-base"
+    ],
+    "weights": [
+      "font-bold"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h1",
+      "h2",
+      "h3",
+      "h3",
+      "h3",
+      "h2",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/app/global-error.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-4xl",
+      "md:text-5xl",
+      "text-sm",
+      "sm:text-base"
+    ],
+    "weights": [
+      "font-extrabold",
+      "font-black",
+      "font-bold"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h1"
+    ]
+  },
+  {
+    "file": "src/app/globals.css",
+    "sizes": [
+      "font-size: clamp(1.75rem, 4vw, 2.75rem)",
+      "font-size: clamp(1.5rem, 4vw, 2.75rem)",
+      "font-size: clamp(0.9375rem, 1.05vw, 1rem)",
+      "font-size: 16px",
+      "font-size: 1.5rem",
+      "font-size: 1.025rem",
+      "font-size: 1.75rem",
+      "font-size: 1.375rem",
+      "font-size: 1.2rem",
+      "font-size: 1.05rem",
+      "font-size: 0.875rem",
+      "font-size: 0.86em",
+      "font-size: 0.8125rem",
+      "font-size: 0.9rem",
+      "font-size: 13px",
+      "font-size: 12pt !important",
+      "font-size: 15px",
+      "font-size: 17px",
+      "font-size: 0.85rem",
+      "font-size: 11px"
+    ],
+    "weights": [
+      "font-weight: 850",
+      "font-weight: 750",
+      "font-weight: 650",
+      "font-weight: 800 !important",
+      "font-weight: 700 !important",
+      "font-weight: 800",
+      "font-weight: 600",
+      "font-weight: 700"
+    ],
+    "lineHeights": [
+      "line-height: 1.12",
+      "line-height: 1.65",
+      "line-height: 1.82",
+      "line-height: 1.28",
+      "line-height: 1.72",
+      "line-height: 1.7"
+    ],
+    "headings": []
+  },
+  {
+    "file": "src/app/guides/page.tsx",
+    "sizes": [
+      "sm:text-xs",
+      "text-xs",
+      "text-xl",
+      "sm:text-2xl",
+      "sm:text-sm",
+      "text-sm"
+    ],
+    "weights": [
+      "font-[800]",
+      "font-medium",
+      "font-[850]",
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h1",
+      "h2",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/app/guides/[slug]/page.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-4xl",
+      "text-base",
+      "sm:text-lg",
+      "text-lg",
+      "text-sm",
+      "text-xl",
+      "sm:text-2xl",
+      "sm:text-base",
+      "sm:text-xl",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-medium",
+      "font-semibold",
+      "font-bold",
+      "font-extrabold"
+    ],
+    "lineHeights": [
+      "leading-[1.2]",
+      "leading-relaxed",
+      "leading-snug"
+    ],
+    "headings": [
+      "h1",
+      "h2",
+      "h2",
+      "h3",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/app/irctc-agent-registration/page.tsx",
+    "sizes": [
+      "text-xs",
+      "text-sm",
+      "text-2xl",
+      "sm:text-3xl",
+      "sm:text-base",
+      "text-base",
+      "sm:text-sm",
+      "text-xl",
+      "sm:text-2xl",
+      "sm:text-lg"
+    ],
+    "weights": [
+      "font-[800]",
+      "font-[700]",
+      "font-medium",
+      "font-semibold",
+      "font-extrabold",
+      "font-bold",
+      "font-[900]",
+      "font-[850]",
+      "font-normal"
+    ],
+    "lineHeights": [
+      "leading-tight",
+      "leading-relaxed",
+      "leading-snug",
+      "leading-6"
+    ],
+    "headings": [
+      "h1",
+      "h2",
+      "h3",
+      "h2",
+      "h3",
+      "h3",
+      "h2",
+      "h3",
+      "h3",
+      "h2",
+      "h3",
+      "h3",
+      "h2",
+      "h2",
+      "h2",
+      "h2",
+      "h2",
+      "h2",
+      "h2",
+      "h2",
+      "h2",
+      "h2",
+      "h3",
+      "h2",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/app/irctc-agent-rules-regulations/page.tsx",
+    "sizes": [
+      "text-xs",
+      "text-sm",
+      "sm:text-base",
+      "text-2xl",
+      "text-base",
+      "sm:text-sm",
+      "sm:text-3xl"
+    ],
+    "weights": [
+      "font-semibold",
+      "font-bold",
+      "font-medium",
+      "font-normal",
+      "font-extrabold"
+    ],
+    "lineHeights": [
+      "leading-relaxed",
+      "leading-snug",
+      "leading-normal"
+    ],
+    "headings": [
+      "h1",
+      "h2",
+      "h2",
+      "h3",
+      "h2",
+      "h3",
+      "h3",
+      "h2",
+      "h3",
+      "h3",
+      "h3",
+      "h3",
+      "h3",
+      "h2",
+      "h3",
+      "h3",
+      "h3",
+      "h3",
+      "h3",
+      "h2",
+      "h2",
+      "h3",
+      "h3",
+      "h3",
+      "h2",
+      "h2",
+      "h3",
+      "h3",
+      "h2",
+      "h3",
+      "h3",
+      "h2",
+      "h3",
+      "h3",
+      "h2",
+      "h2",
+      "h2",
+      "h3",
+      "h2",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/app/irctc-cancellation-refund-calculator/page.tsx",
+    "sizes": [
+      "text-xl",
+      "sm:text-2xl",
+      "text-xs",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-bold",
+      "font-black",
+      "font-semibold"
+    ],
+    "lineHeights": [],
+    "headings": [
+      "h1"
+    ]
+  },
+  {
+    "file": "src/app/irctc-principal-service-providers-updated-29-03-2025/page.tsx",
+    "sizes": [
+      "text-xs",
+      "sm:text-sm",
+      "text-3xl",
+      "sm:text-4xl",
+      "text-base",
+      "sm:text-lg",
+      "text-sm",
+      "md:text-4xl",
+      "md:text-sm",
+      "text-2xl",
+      "sm:text-3xl",
+      "text-lg",
+      "text-xl",
+      "sm:text-2xl",
+      "sm:text-base"
+    ],
+    "weights": [
+      "font-medium",
+      "font-bold",
+      "font-extrabold",
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-[1.14]",
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h1",
+      "h2",
+      "h3",
+      "h3",
+      "h3",
+      "h3",
+      "h3",
+      "h2",
+      "h2",
+      "h2",
+      "h2",
+      "h2",
+      "h2",
+      "h2",
+      "h3",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/app/layout.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/live-train-status/page.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": [
+      "h1"
+    ]
+  },
+  {
+    "file": "src/app/live-train-status/[slug]/page.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/not-found.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-4xl",
+      "md:text-5xl",
+      "text-sm",
+      "sm:text-base"
+    ],
+    "weights": [
+      "font-extrabold",
+      "font-black",
+      "font-bold"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h1"
+    ]
+  },
+  {
+    "file": "src/app/page.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/pnr-status/layout.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/pnr-status/page.tsx",
+    "sizes": [
+      "text-xs",
+      "text-sm",
+      "sm:text-base",
+      "sm:text-sm",
+      "text-base",
+      "text-lg",
+      "sm:text-xl",
+      "placeholder:text-sm",
+      "sm:text-lg",
+      "text-xl",
+      "sm:text-2xl"
+    ],
+    "weights": [
+      "font-bold",
+      "font-semibold",
+      "font-extrabold",
+      "font-medium",
+      "font-normal"
+    ],
+    "lineHeights": [
+      "leading-relaxed",
+      "leading-[1.5]",
+      "leading-5"
+    ],
+    "headings": [
+      "h2",
+      "h3",
+      "h1",
+      "h2",
+      "h2",
+      "h1"
+    ]
+  },
+  {
+    "file": "src/app/providers.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/refund-process-for-wrong-mobile-number/page.tsx",
+    "sizes": [
+      "text-xs",
+      "sm:text-sm",
+      "text-2xl",
+      "sm:text-4xl",
+      "text-base",
+      "sm:text-lg",
+      "text-sm",
+      "text-xl",
+      "sm:text-base",
+      "text-lg"
+    ],
+    "weights": [
+      "font-medium",
+      "font-semibold",
+      "font-bold",
+      "font-extrabold"
+    ],
+    "lineHeights": [
+      "leading-tight",
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h1",
+      "h2",
+      "h2",
+      "h3",
+      "h2",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/app/terms/page.tsx",
+    "sizes": [
+      "text-xs",
+      "text-lg",
+      "sm:text-xl",
+      "text-sm"
+    ],
+    "weights": [
+      "font-bold",
+      "font-[850]",
+      "font-semibold",
+      "font-medium",
+      "font-extrabold"
+    ],
+    "lineHeights": [
+      "leading-relaxed",
+      "leading-7"
+    ],
+    "headings": [
+      "h1",
+      "h2",
+      "h3",
+      "h2",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/app/ticket-date-calculator/page.tsx",
+    "sizes": [
+      "text-3xl",
+      "sm:text-4xl",
+      "text-xs"
+    ],
+    "weights": [
+      "font-extrabold",
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-tight",
+      "leading-5"
+    ],
+    "headings": [
+      "h1"
+    ]
+  },
+  {
+    "file": "src/app/tools/page.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/tools/[tool]/page.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/app/train-chart-preparation-time/page.tsx",
+    "sizes": [
+      "text-xl",
+      "sm:text-2xl",
+      "text-xs"
+    ],
+    "weights": [
+      "font-extrabold"
+    ],
+    "lineHeights": [
+      "leading-tight",
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h1"
+    ]
+  },
+  {
+    "file": "src/app/train-chart-preparation-time/[slug]/page.tsx",
+    "sizes": [
+      "text-xl",
+      "sm:text-2xl",
+      "text-xs"
+    ],
+    "weights": [
+      "font-extrabold"
+    ],
+    "lineHeights": [
+      "leading-tight",
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h1"
+    ]
+  },
+  {
+    "file": "src/app/train-ticket-agent-fare-calculator/page.tsx",
+    "sizes": [
+      "text-xl",
+      "sm:text-2xl",
+      "text-xs"
+    ],
+    "weights": [
+      "font-extrabold"
+    ],
+    "lineHeights": [
+      "leading-5"
+    ],
+    "headings": [
+      "h1"
+    ]
+  },
+  {
+    "file": "src/app/videos/page.tsx",
+    "sizes": [
+      "text-xs",
+      "sm:text-sm",
+      "text-xl",
+      "text-sm"
+    ],
+    "weights": [
+      "font-[800]",
+      "font-semibold",
+      "font-[700]"
+    ],
+    "lineHeights": [
+      "leading-6"
+    ],
+    "headings": [
+      "h1",
+      "h2",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/components/admin/AdminShell.tsx",
+    "sizes": [
+      "text-xs",
+      "text-sm"
+    ],
+    "weights": [
+      "font-bold",
+      "font-extrabold",
+      "font-medium",
+      "font-black"
+    ],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/components/admin/DashboardClient.tsx",
+    "sizes": [
+      "text-2xl",
+      "sm:text-3xl",
+      "text-xs",
+      "sm:text-sm",
+      "text-base",
+      "text-3xl",
+      "text-sm"
+    ],
+    "weights": [
+      "font-bold",
+      "font-black",
+      "font-extrabold",
+      "font-medium"
+    ],
+    "lineHeights": [
+      "leading-relaxed",
+      "leading-none"
+    ],
+    "headings": [
+      "h1",
+      "h2",
+      "h2",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/admin/PostForm.tsx",
+    "sizes": [
+      "text-xs",
+      "text-xl",
+      "sm:text-2xl",
+      "text-sm",
+      "text-3xl",
+      "sm:text-4xl",
+      "text-base"
+    ],
+    "weights": [
+      "font-semibold",
+      "font-bold",
+      "font-medium",
+      "font-black",
+      "font-extrabold",
+      "font-normal"
+    ],
+    "lineHeights": [
+      "leading-relaxed",
+      "leading-tight",
+      "leading-7",
+      "leading-snug"
+    ],
+    "headings": [
+      "h1",
+      "h2",
+      "h2",
+      "h2",
+      "h2",
+      "h3",
+      "h2",
+      "h2",
+      "h1",
+      "h3",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/admin/PostsTableClient.tsx",
+    "sizes": [
+      "text-xl",
+      "sm:text-2xl",
+      "text-xs",
+      "sm:text-sm",
+      "text-sm",
+      "text-base"
+    ],
+    "weights": [
+      "font-bold",
+      "font-black",
+      "font-semibold",
+      "font-medium"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h1",
+      "h3",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/admin/RichEditor.tsx",
+    "sizes": [
+      "font-size: ${attributes.fontSize",
+      "text-sm",
+      "text-xs",
+      "sm:text-xs"
+    ],
+    "weights": [
+      "font-bold",
+      "font-semibold",
+      "font-black",
+      "font-medium"
+    ],
+    "lineHeights": [
+      "leading-relaxed",
+      "leading-tight"
+    ],
+    "headings": [
+      "h3",
+      "h3",
+      "h3",
+      "h3",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/AnalyticsScripts.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/components/blog/BlogArticleContent.tsx",
+    "sizes": [
+      "text-xs"
+    ],
+    "weights": [
+      "font-medium"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h2"
+    ]
+  },
+  {
+    "file": "src/components/blog/BlogList.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-3xl",
+      "sm:text-sm",
+      "text-xl",
+      "sm:text-2xl",
+      "text-sm",
+      "sm:text-xs",
+      "text-base"
+    ],
+    "weights": [
+      "font-black",
+      "font-extrabold",
+      "font-bold",
+      "font-[800]",
+      "font-[850]",
+      "font-medium",
+      "font-semibold",
+      "font-[750]"
+    ],
+    "lineHeights": [
+      "leading-relaxed",
+      "leading-snug"
+    ],
+    "headings": [
+      "h2",
+      "h3",
+      "h2",
+      "h2",
+      "h3",
+      "h3",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/calculator/CalculatorFAQ.tsx",
+    "sizes": [
+      "text-xs",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-bold"
+    ],
+    "lineHeights": [
+      "leading-snug",
+      "leading-relaxed"
+    ],
+    "headings": []
+  },
+  {
+    "file": "src/components/calculator/FareCalculator.module.css",
+    "sizes": [
+      "font-size: 16px",
+      "font-size: 0.875rem",
+      "font-size: 0.75rem",
+      "text-lg"
+    ],
+    "weights": [],
+    "lineHeights": [
+      "line-height: 1.5"
+    ],
+    "headings": []
+  },
+  {
+    "file": "src/components/calculator/FareCalculator.tsx",
+    "sizes": [
+      "sm:text-xs",
+      "text-xs",
+      "sm:text-sm",
+      "sm:text-base",
+      "text-xl",
+      "sm:text-2xl"
+    ],
+    "weights": [
+      "font-bold",
+      "font-semibold",
+      "font-extrabold",
+      "font-black",
+      "font-medium"
+    ],
+    "lineHeights": [
+      "leading-snug"
+    ],
+    "headings": [
+      "h2",
+      "h3",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/calculator/IRCTCCancellationRefundCalculator.tsx",
+    "sizes": [
+      "text-xs",
+      "sm:text-sm",
+      "text-sm",
+      "font-size: .75rem",
+      "sm:text-base",
+      "text-base",
+      "text-3xl",
+      "sm:text-4xl"
+    ],
+    "weights": [
+      "font-semibold",
+      "font-bold",
+      "font-black",
+      "font-extrabold",
+      "font-medium",
+      "font-normal",
+      "font-weight: 700 !important",
+      "font-weight: 700"
+    ],
+    "lineHeights": [
+      "line-height: 1.35",
+      "leading-snug",
+      "leading-tight",
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h3",
+      "h2",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/components/calculator/PrintEstimateModal.tsx",
+    "sizes": [
+      "font-size: 13px",
+      "font-size: 12px",
+      "text-xs",
+      "font-size: 11px",
+      "text-sm",
+      "text-lg",
+      "font-size: 18px",
+      "sm:text-base",
+      "sm:text-sm",
+      "text-base",
+      "sm:text-lg"
+    ],
+    "weights": [
+      "font-weight: 600",
+      "font-bold",
+      "font-weight: 700",
+      "font-semibold",
+      "font-black",
+      "font-weight: 900",
+      "font-medium"
+    ],
+    "lineHeights": [
+      "line-height: 1.5",
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h2",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/calculator/RailwayInformationAccordion.tsx",
+    "sizes": [
+      "text-xs"
+    ],
+    "weights": [
+      "font-bold",
+      "font-extrabold"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h3",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/calculator/TicketDateCalculator.module.css",
+    "sizes": [
+      "font-size: 16px"
+    ],
+    "weights": [
+      "font-weight: 400"
+    ],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/components/calculator/TicketDateCalculator.tsx",
+    "sizes": [
+      "text-sm",
+      "text-xs",
+      "text-base",
+      "text-xl",
+      "sm:text-2xl"
+    ],
+    "weights": [
+      "font-bold",
+      "font-semibold",
+      "font-medium",
+      "font-extrabold"
+    ],
+    "lineHeights": [
+      "leading-none",
+      "leading-snug",
+      "leading-relaxed",
+      "leading-5",
+      "leading-4"
+    ],
+    "headings": [
+      "h2",
+      "h3",
+      "h2",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/calculator/TicketDateFaqAccordion.tsx",
+    "sizes": [
+      "text-xs",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-bold"
+    ],
+    "lineHeights": [
+      "leading-snug",
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/calculator/TrainChartPreparationTime.tsx",
+    "sizes": [
+      "text-sm",
+      "text-xs",
+      "sm:text-sm",
+      "text-base",
+      "text-lg",
+      "sm:text-xl",
+      "text-xl"
+    ],
+    "weights": [
+      "font-bold",
+      "font-extrabold",
+      "font-semibold",
+      "font-medium",
+      "font-black"
+    ],
+    "lineHeights": [
+      "leading-snug",
+      "leading-tight",
+      "leading-relaxed",
+      "leading-5"
+    ],
+    "headings": [
+      "h2",
+      "h3",
+      "h2",
+      "h3",
+      "h4",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/components/FloatingWhatsApp.tsx",
+    "sizes": [
+      "text-sm",
+      "text-xs"
+    ],
+    "weights": [
+      "font-bold"
+    ],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/components/guides/GuidesDirectory.tsx",
+    "sizes": [
+      "text-sm",
+      "sm:text-sm",
+      "sm:text-xs",
+      "text-xs",
+      "text-xl",
+      "sm:text-2xl",
+      "lg:text-3xl",
+      "sm:text-base",
+      "text-base",
+      "sm:text-lg",
+      "text-lg"
+    ],
+    "weights": [
+      "font-semibold",
+      "font-[750]",
+      "font-[800]",
+      "font-[850]",
+      "font-medium"
+    ],
+    "lineHeights": [
+      "leading-tight",
+      "leading-relaxed",
+      "leading-snug"
+    ],
+    "headings": [
+      "h2",
+      "h3",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/components/home/AskNihalSection.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-3xl",
+      "lg:text-4xl",
+      "text-sm",
+      "sm:text-base"
+    ],
+    "weights": [
+      "font-bold",
+      "font-black",
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-tight",
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h2"
+    ]
+  },
+  {
+    "file": "src/components/home/ExploreTopics.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/components/home/ExploreTopicsSection.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-3xl",
+      "lg:text-4xl",
+      "text-sm",
+      "sm:text-base",
+      "text-lg",
+      "sm:text-xl",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-bold",
+      "font-black",
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h2",
+      "h3",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/home/FeaturedGuidesSection.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-3xl",
+      "lg:text-4xl",
+      "text-sm",
+      "sm:text-base",
+      "text-xl",
+      "sm:text-2xl"
+    ],
+    "weights": [
+      "font-bold",
+      "font-black",
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-relaxed",
+      "leading-snug"
+    ],
+    "headings": [
+      "h2",
+      "h3",
+      "h4"
+    ]
+  },
+  {
+    "file": "src/components/home/FeaturedServices.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-3xl",
+      "lg:text-4xl",
+      "text-sm",
+      "sm:text-base",
+      "text-base"
+    ],
+    "weights": [
+      "font-[800]",
+      "font-[900]",
+      "font-bold"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h2",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/home/FinalAskCta.tsx",
+    "sizes": [
+      "text-sm",
+      "text-xs",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-bold",
+      "font-[800]"
+    ],
+    "lineHeights": [
+      "leading-tight",
+      "leading-relaxed",
+      "leading-snug"
+    ],
+    "headings": [
+      "h2"
+    ]
+  },
+  {
+    "file": "src/components/home/Hero.tsx",
+    "sizes": [
+      "text-xs",
+      "sm:text-4xl",
+      "md:text-5xl",
+      "text-base",
+      "sm:text-lg",
+      "text-sm"
+    ],
+    "weights": [
+      "font-bold",
+      "font-black",
+      "font-medium",
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-[1.15]",
+      "leading-relaxed",
+      "leading-tight"
+    ],
+    "headings": [
+      "h1"
+    ]
+  },
+  {
+    "file": "src/components/home/HeroPhoneShowcase.tsx",
+    "sizes": [
+      "text-sm",
+      "sm:text-base"
+    ],
+    "weights": [
+      "font-black",
+      "font-extrabold",
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-tight"
+    ],
+    "headings": []
+  },
+  {
+    "file": "src/components/home/HowItWorksSection.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-3xl",
+      "lg:text-4xl",
+      "text-sm",
+      "sm:text-base",
+      "text-lg",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-bold",
+      "font-black",
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h2",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/home/LatestUpdatesSection.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-3xl",
+      "lg:text-4xl",
+      "text-sm",
+      "sm:text-base",
+      "text-base",
+      "sm:text-lg",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-bold",
+      "font-black",
+      "font-medium"
+    ],
+    "lineHeights": [
+      "leading-relaxed",
+      "leading-snug"
+    ],
+    "headings": [
+      "h2",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/home/LatestVideos.tsx",
+    "sizes": [
+      "text-xs",
+      "text-lg",
+      "text-sm"
+    ],
+    "weights": [
+      "font-[800]"
+    ],
+    "lineHeights": [
+      "leading-[1.6]"
+    ],
+    "headings": [
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/home/PopularToolsSection.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-3xl",
+      "lg:text-4xl",
+      "text-sm",
+      "sm:text-base",
+      "text-base",
+      "sm:text-lg",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-bold",
+      "font-black",
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h2",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/home/SocialCards.tsx",
+    "sizes": [
+      "text-xs",
+      "text-sm",
+      "sm:text-base",
+      "text-xl",
+      "sm:text-2xl",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-bold",
+      "font-extrabold",
+      "font-black"
+    ],
+    "lineHeights": [
+      "leading-[1.12]",
+      "leading-relaxed",
+      "leading-none"
+    ],
+    "headings": [
+      "h2",
+      "h3",
+      "h3",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/home/Testimonials.tsx",
+    "sizes": [
+      "text-sm",
+      "lg:text-base",
+      "text-xs"
+    ],
+    "weights": [
+      "font-[800]",
+      "font-extrabold",
+      "font-[700]"
+    ],
+    "lineHeights": [
+      "leading-[1.12]",
+      "leading-[1.65]"
+    ],
+    "headings": [
+      "h2",
+      "h3",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/components/home/VideoGuidesSection.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-3xl",
+      "lg:text-4xl",
+      "text-sm",
+      "sm:text-base",
+      "text-base",
+      "text-lg"
+    ],
+    "weights": [
+      "font-bold",
+      "font-black",
+      "font-medium"
+    ],
+    "lineHeights": [
+      "leading-relaxed",
+      "leading-snug"
+    ],
+    "headings": [
+      "h2",
+      "h3",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/home/WhyAndHow.tsx",
+    "sizes": [
+      "text-sm",
+      "sm:text-base",
+      "text-base",
+      "sm:text-lg",
+      "text-xs",
+      "wide:text-sm",
+      "wide:text-xs",
+      "sm:text-sm",
+      "wide:text-base"
+    ],
+    "weights": [
+      "font-[800]",
+      "font-extrabold",
+      "font-bold",
+      "font-black"
+    ],
+    "lineHeights": [
+      "leading-[1.12]",
+      "leading-relaxed",
+      "leading-snug"
+    ],
+    "headings": [
+      "h2",
+      "h3",
+      "h3",
+      "h3",
+      "h3",
+      "h2",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/home/WhyRailAgentsSection.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-3xl",
+      "lg:text-4xl",
+      "text-sm",
+      "sm:text-base",
+      "text-base",
+      "sm:text-lg",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-bold",
+      "font-black"
+    ],
+    "lineHeights": [
+      "leading-tight",
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h2",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/layout/Footer.tsx",
+    "sizes": [
+      "text-sm",
+      "text-xs"
+    ],
+    "weights": [
+      "font-extrabold",
+      "font-[600]",
+      "font-medium"
+    ],
+    "lineHeights": [
+      "leading-6"
+    ],
+    "headings": [
+      "h2",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/components/layout/Header.tsx",
+    "sizes": [
+      "text-sm",
+      "text-xs",
+      "xl:text-sm"
+    ],
+    "weights": [
+      "font-[600]",
+      "font-semibold",
+      "font-bold"
+    ],
+    "lineHeights": [
+      "leading-none"
+    ],
+    "headings": []
+  },
+  {
+    "file": "src/components/layout/Logo.tsx",
+    "sizes": [],
+    "weights": [
+      "font-[800]"
+    ],
+    "lineHeights": [
+      "leading-none"
+    ],
+    "headings": []
+  },
+  {
+    "file": "src/components/layout/MobileMenu.tsx",
+    "sizes": [
+      "text-base",
+      "text-sm"
+    ],
+    "weights": [
+      "font-[600]",
+      "font-extrabold",
+      "font-[650]",
+      "font-bold"
+    ],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/components/layout/SearchForm.tsx",
+    "sizes": [
+      "text-sm"
+    ],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/components/LiveTrainStatusTool.module.css",
+    "sizes": [
+      "font-size: 11px",
+      "font-size: 12px",
+      "font-size: 10px",
+      "font-size: clamp(22px, 2.2vw, 26px)",
+      "font-size: 14px",
+      "font-size: 20px",
+      "font-size: 13px",
+      "font-size: 15px"
+    ],
+    "weights": [
+      "font-weight: 500",
+      "font-weight: 700",
+      "font-weight: 800",
+      "font-semibold",
+      "font-weight: 400",
+      "font-weight: 600"
+    ],
+    "lineHeights": [
+      "line-height: 1.6",
+      "line-height: 1.15",
+      "line-height: 1.3",
+      "line-height: 1.35",
+      "line-height: 1.75"
+    ],
+    "headings": []
+  },
+  {
+    "file": "src/components/LiveTrainStatusTool.tsx",
+    "sizes": [
+      "text-xs",
+      "text-base",
+      "text-sm",
+      "text-xl",
+      "sm:text-2xl"
+    ],
+    "weights": [
+      "font-bold",
+      "font-black",
+      "font-extrabold",
+      "font-medium",
+      "font-[900]",
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-5",
+      "leading-4",
+      "leading-relaxed",
+      "leading-6"
+    ],
+    "headings": [
+      "h3",
+      "h2",
+      "h2",
+      "h1",
+      "h2",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/rules/AgentComplianceChecklist.tsx",
+    "sizes": [
+      "text-sm",
+      "text-xs",
+      "sm:text-sm",
+      "text-lg"
+    ],
+    "weights": [
+      "font-bold",
+      "font-medium",
+      "font-extrabold",
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h4",
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/seo/ToolPageSchema.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/components/tools/AllToolsLink.tsx",
+    "sizes": [
+      "text-sm"
+    ],
+    "weights": [
+      "font-medium"
+    ],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/components/tools/RailwayToolsWorkspace.tsx",
+    "sizes": [
+      "text-sm",
+      "text-xs",
+      "text-lg",
+      "sm:text-xl"
+    ],
+    "weights": [
+      "font-extrabold",
+      "font-bold",
+      "font-medium",
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-tight",
+      "leading-snug",
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h2",
+      "h3",
+      "h1"
+    ]
+  },
+  {
+    "file": "src/components/tools/ToolsDirectory.module.css",
+    "sizes": [
+      "font-size: 12px",
+      "font-size: 11px",
+      "font-size: clamp(30px, 3.5vw, 46px)",
+      "font-size: 15px",
+      "font-size: 13.5px",
+      "font-size: 14px",
+      "font-size: 11.5px",
+      "font-size: 13px",
+      "font-size: 20px",
+      "font-size: 10px",
+      "font-size: 17px",
+      "font-size: clamp(24px, 2.6vw, 32px)",
+      "font-size: 26px"
+    ],
+    "weights": [
+      "font-weight: 700",
+      "font-weight: 800",
+      "font-weight: 600",
+      "font-weight: 750"
+    ],
+    "lineHeights": [
+      "line-height: 1.15",
+      "line-height: 1.75",
+      "line-height: 1.7",
+      "line-height: 1.5",
+      "line-height: 1.3",
+      "line-height: 1.6",
+      "line-height: 1.4"
+    ],
+    "headings": []
+  },
+  {
+    "file": "src/components/tools/ToolsDirectory.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": [
+      "h1",
+      "h2",
+      "h3",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/components/ui/InteractiveButton.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/components/ui/InternalLink.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/components/ui/ParticleText.tsx",
+    "sizes": [],
+    "weights": [],
+    "lineHeights": [],
+    "headings": []
+  },
+  {
+    "file": "src/components/ui/QueryForm.tsx",
+    "sizes": [
+      "text-lg",
+      "sm:text-xl",
+      "text-xs",
+      "text-sm",
+      "sm:text-sm",
+      "sm:text-base"
+    ],
+    "weights": [
+      "font-extrabold",
+      "font-bold",
+      "font-medium"
+    ],
+    "lineHeights": [
+      "leading-relaxed"
+    ],
+    "headings": [
+      "h2"
+    ]
+  },
+  {
+    "file": "src/components/ui/QueryPage.tsx",
+    "sizes": [
+      "text-xs",
+      "text-2xl",
+      "sm:text-3xl",
+      "text-sm",
+      "sm:text-sm",
+      "sm:text-xs"
+    ],
+    "weights": [
+      "font-extrabold",
+      "font-black",
+      "font-bold"
+    ],
+    "lineHeights": [
+      "leading-[1.22]",
+      "leading-relaxed",
+      "leading-tight"
+    ],
+    "headings": [
+      "h1",
+      "h2"
+    ]
+  },
+  {
+    "file": "src/components/ui/SectionHeading.tsx",
+    "sizes": [
+      "text-xs",
+      "sm:text-sm"
+    ],
+    "weights": [
+      "font-semibold",
+      "font-[800]"
+    ],
+    "lineHeights": [
+      "leading-[1.12]"
+    ],
+    "headings": [
+      "h2"
+    ]
+  },
+  {
+    "file": "src/components/ui/TopicCard.tsx",
+    "sizes": [],
+    "weights": [
+      "font-[800]"
+    ],
+    "lineHeights": [
+      "leading-snug"
+    ],
+    "headings": []
+  },
+  {
+    "file": "src/components/ui/VideoCard.tsx",
+    "sizes": [
+      "text-xs",
+      "text-base",
+      "xl:text-lg",
+      "text-sm"
+    ],
+    "weights": [
+      "font-semibold"
+    ],
+    "lineHeights": [
+      "leading-snug"
+    ],
+    "headings": [
+      "h3"
+    ]
+  },
+  {
+    "file": "src/components/videos/VideoGuidesList.tsx",
+    "sizes": [
+      "text-sm"
+    ],
+    "weights": [
+      "font-[700]"
+    ],
+    "lineHeights": [],
+    "headings": []
+  }
+]

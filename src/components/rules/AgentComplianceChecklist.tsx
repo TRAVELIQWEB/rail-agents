@@ -149,8 +149,8 @@ export function AgentComplianceChecklist() {
     return (
       <div className="mb-6 last:mb-0">
         <div className="mb-3 border-b border-slate-200 pb-2">
-          <h4 className="text-sm font-bold uppercase tracking-wider text-[var(--navy)]">{title}</h4>
-          <p className="text-xs text-slate-500">{subtitle}</p>
+          <h4 className="type-h4  uppercase tracking-wider text-[var(--navy)]">{title}</h4>
+          <p className="type-body  text-slate-500">{subtitle}</p>
         </div>
         <div className="space-y-2.5">
           {items.map((item) => {
@@ -158,7 +158,7 @@ export function AgentComplianceChecklist() {
             return (
               <label
                 key={item.id}
-                className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-colors ${
+                className={`type-label flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition-colors ${
                   isChecked
                     ? "border-emerald-200 bg-emerald-50/50 text-emerald-950"
                     : "border-slate-200/90 bg-white hover:border-orange-200 hover:bg-orange-50/20 text-slate-800"
@@ -168,7 +168,7 @@ export function AgentComplianceChecklist() {
                   type="checkbox"
                   checked={isChecked}
                   onChange={() => toggleItem(item.id)}
-                  className="sr-only"
+                  className="type-input sr-only"
                 />
                 <span className="mt-0.5 shrink-0 text-slate-400">
                   {isChecked ? (
@@ -177,10 +177,10 @@ export function AgentComplianceChecklist() {
                     <Square className="h-4 w-4 text-slate-400" />
                   )}
                 </span>
-                <span className="flex-1 text-xs sm:text-sm font-medium leading-relaxed">
+                <span className="type-caption flex-1 font-medium leading-relaxed">
                   {item.label}
                   {item.mandatory && (
-                    <span className="ml-2 inline-flex items-center rounded-sm bg-red-50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-red-700">
+                    <span className="type-caption ml-2 inline-flex items-center rounded-sm bg-red-50 px-1.5 py-0.5 font-bold uppercase tracking-wider text-red-700">
                       Mandatory
                     </span>
                   )}
@@ -200,9 +200,9 @@ export function AgentComplianceChecklist() {
         <div>
           <div className="flex items-center gap-2">
             <CheckCircle2 className="h-5 w-5 text-emerald-600" />
-            <h3 className="text-lg font-extrabold text-[var(--navy)]">Interactive Agent Daily Compliance Checklist</h3>
+            <h3 className="type-h3  text-[var(--navy)]">Interactive Agent Daily Compliance Checklist</h3>
           </div>
-          <p className="mt-1 text-xs text-slate-600">
+          <p className="type-body-small mt-1 text-slate-600">
             Use this practical verification protocol every booking day to protect your agency against complaints, audit findings, and license suspensions.
           </p>
         </div>
@@ -211,7 +211,7 @@ export function AgentComplianceChecklist() {
           <button
             type="button"
             onClick={handlePrint}
-            className="inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer"
+            className="type-button inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-xl border border-slate-300 bg-white px-3 py-2 font-bold text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer"
           >
             <Printer className="h-3.5 w-3.5 text-slate-600" />
             <span>Print Checklist</span>
@@ -219,7 +219,7 @@ export function AgentComplianceChecklist() {
           <button
             type="button"
             onClick={handleReset}
-            className="inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors cursor-pointer"
+            className="type-button inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-xl border border-slate-200 bg-white px-3 py-2 font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors cursor-pointer"
             title="Reset checked items"
           >
             <RotateCcw className="h-3.5 w-3.5" />
@@ -230,7 +230,7 @@ export function AgentComplianceChecklist() {
 
       {/* Progress Bar */}
       <div className="my-5 print:hidden">
-        <div className="flex items-center justify-between text-xs font-bold mb-1.5 text-slate-700">
+        <div className="type-caption flex items-center justify-between font-bold mb-1.5 text-slate-700">
           <span>Daily Verification Progress</span>
           <span className="text-orange-600">{completedCount} of {totalItems} completed ({progressPercent}%)</span>
         </div>
@@ -250,8 +250,8 @@ export function AgentComplianceChecklist() {
       </div>
 
       {/* Print Footer Note */}
-      <div className="mt-5 pt-3 border-t border-slate-200 text-[11px] text-slate-500">
-        <p>
+      <div className="type-caption mt-5 pt-3 border-t border-slate-200 text-slate-500">
+        <p className="type-body">
           <strong>Notice:</strong> This compliance checklist is an educational standard formulated by RailAgents for retail ticketing counters. Keep completed printed logs at your counter to demonstrate active compliance during authorized railway inspections.
         </p>
       </div>

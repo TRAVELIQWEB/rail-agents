@@ -4,7 +4,9 @@ import { Inter } from "next/font/google";
 import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 import { siteConfig } from "@/config/site";
+import { PostHogProvider } from "./providers";
 import "./globals.css";
+import "./typography.css";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -99,20 +101,29 @@ export default function RootLayout({
       className={`${inter.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full bg-[var(--background)] text-[var(--navy)]">
-        <a href="#main-content" className="skip-link">Skip to main content</a>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
-          }}
-        />
-        {children}
-        <FloatingWhatsApp />
-        <Suspense fallback={null}>
-          <AnalyticsScripts />
-        </Suspense>
-      </body>
+    
+<body className="min-h-full bg-[var(--background)] text-[var(--navy)]">
+  <PostHogProvider>
+    <a href="#main-content" className="skip-link">
+      Skip to main content
+    </a>
+
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+      }}
+    />
+
+    {children}
+    <FloatingWhatsApp />
+
+    <Suspense fallback={null}>
+      <AnalyticsScripts />
+    </Suspense>
+  </PostHogProvider>
+</body>
+
     </html>
   );
 }

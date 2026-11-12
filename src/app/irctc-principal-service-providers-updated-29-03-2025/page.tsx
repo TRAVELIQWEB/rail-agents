@@ -922,7 +922,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 {/* Breadcrumb */}
                 <nav
                   aria-label="Breadcrumb"
-                  className="flex flex-wrap items-center gap-2 text-xs sm:text-sm font-medium text-slate-300/90 mb-5"
+                  className="type-caption flex flex-wrap items-center gap-2 font-medium text-slate-300/90 mb-5"
                 >
                   <Link href="/" className="hover:text-white transition-colors">
                     Home
@@ -934,33 +934,33 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 </nav>
 
                 {/* Badge */}
-                <div className="inline-flex items-center gap-2 rounded-full border border-orange-500/35 bg-orange-500/15 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-orange-300 mb-5">
+                <div className="type-caption inline-flex items-center gap-2 rounded-full border border-orange-500/35 bg-orange-500/15 px-3.5 py-1.5 font-bold uppercase tracking-wider text-orange-300 mb-5">
                   <ShieldCheck className="h-3.5 w-3.5 text-orange-400" />
                   IRCTC Service Provider Directory • 2025 snapshot
                 </div>
 
                 {/* H1 Heading */}
-                <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold tracking-tight text-white leading-[1.14] mb-5">
+                <h1 className="type-page-title  tracking-tight text-white mb-5">
                   List Of IRCTC{" "}
                   <span className="text-[#F36B21]">Principal Service Providers</span>
                 </h1>
 
-                <p className="text-base sm:text-lg text-slate-200/90 leading-relaxed mb-8 max-w-2xl">
+                <p className="type-body-large  text-slate-200/90 leading-relaxed mb-8 max-w-2xl">
                   The following is a list of all the Principal Service Providers of IRCTC, together
                   with their available contact information across B2B, Internet Cafe Scheme (ICS),
                   B2C, G2G, TIES, Overseas GSAs, and E-Governance schemes.
                 </p>
 
-                <div className="mb-6 max-w-2xl rounded-xl border border-amber-200/30 bg-amber-950/25 p-4 text-sm leading-relaxed text-amber-50">
-                  <p className="font-bold">This directory is an archived 29 March 2025 snapshot.</p>
-                  <p className="mt-1 text-amber-100/90">
+                <div className="type-body-small mb-6 max-w-2xl rounded-xl border border-amber-200/30 bg-amber-950/25 p-4 leading-relaxed text-amber-50">
+                  <p className="type-body font-bold">This directory is an archived 29 March 2025 snapshot.</p>
+                  <p className="type-body mt-1 text-amber-100/90">
                     IRCTC has published a newer March 2026 provider PDF. Check it for current listings and contact details.
                   </p>
                   <a
                     href={CURRENT_IRCTC_PDF_HREF}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-2 inline-flex min-h-10 items-center gap-1.5 font-bold text-white underline decoration-orange-300 underline-offset-4 hover:text-orange-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+                    className="type-button mt-2 inline-flex min-h-10 items-center gap-1.5 font-bold text-white underline decoration-orange-300 underline-offset-4 hover:text-orange-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
                   >
                     Open latest official IRCTC PDF <ExternalLink aria-hidden="true" className="h-4 w-4" />
                   </a>
@@ -970,7 +970,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 <div className="flex flex-wrap items-center gap-3.5">
                   <Link
                     href="/irctc-agent-registration"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#F36B21] hover:bg-[#F36B21] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-950/30 transition-all"
+                    className="type-button inline-flex items-center justify-center gap-2 rounded-xl bg-[#F36B21] hover:bg-[#F36B21] px-6 py-3.5 font-bold text-white shadow-lg shadow-orange-950/30 transition-all"
                   >
                     Become an IRCTC Agent
                     <ArrowRight className="h-4 w-4" />
@@ -978,7 +978,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
 
                   <a
                     href="#official-pdf"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 hover:bg-white/15 backdrop-blur-sm px-5 py-3.5 text-sm font-semibold text-white transition-all"
+                    className="type-button inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 hover:bg-white/15 backdrop-blur-sm px-5 py-3.5 font-semibold text-white transition-all"
                   >
                     <FileText className="h-4 w-4 text-orange-400" />
                     Jump to Official PDF
@@ -988,7 +988,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     href={OFFICIAL_PDF_HREF}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-orange-400/35 bg-orange-500/15 hover:bg-orange-500/25 px-5 py-3.5 text-sm font-semibold text-orange-200 transition-all"
+                    className="type-button inline-flex items-center justify-center gap-2 rounded-xl border border-orange-400/35 bg-orange-500/15 hover:bg-orange-500/25 px-5 py-3.5 font-semibold text-orange-200 transition-all"
                   >
                     View Official PDF
                     <ExternalLink className="h-4 w-4" />
@@ -1005,20 +1005,20 @@ export default function IrctcPrincipalServiceProvidersPage() {
                         <FileText className="h-4.5 w-4.5" />
                       </span>
                       <div>
-                        <p className="text-[11px] font-bold uppercase tracking-wider text-orange-300">
+                        <p className="type-body  font-bold uppercase tracking-wider text-orange-300">
                           Official Reference
                         </p>
-                        <p className="text-sm font-extrabold text-white">
+                        <p className="type-body  font-extrabold text-white">
                           IRCTC PSP Master List
                         </p>
                       </div>
                     </div>
-                    <span className="rounded-full bg-emerald-500/20 border border-emerald-400/30 px-2.5 py-0.5 text-[11px] font-bold text-emerald-300">
+                    <span className="type-caption rounded-full bg-emerald-500/20 border border-emerald-400/30 px-2.5 py-0.5 font-bold text-emerald-300">
                           2025 snapshot
                     </span>
                   </div>
 
-                  <ul className="space-y-2.5 text-xs sm:text-sm text-slate-200 mb-5">
+                  <ul className="type-caption space-y-2.5 text-slate-200 mb-5">
                     <li className="flex items-center justify-between py-1 border-b border-white/10">
                       <span className="text-slate-300">B2B Web Services PSPs</span>
                       <span className="font-bold text-white">34 Providers</span>
@@ -1041,7 +1041,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     href={OFFICIAL_PDF_HREF}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-white text-[#0F2747] hover:bg-orange-50 px-4 py-2.5 text-xs sm:text-sm font-extrabold transition-colors"
+                    className="type-button w-full inline-flex items-center justify-center gap-2 rounded-xl bg-white text-[#0F2747] hover:bg-orange-50 px-4 py-2.5 font-extrabold transition-colors"
                   >
                     <FileText className="h-4 w-4 text-[#F36B21]" />
                     Open Official IRCTC PDF
@@ -1064,14 +1064,14 @@ export default function IrctcPrincipalServiceProvidersPage() {
                   className="group bg-white rounded-2xl p-5 md:p-6 shadow-md hover:shadow-lg border border-slate-200/90 hover:border-orange-300 transition-all flex flex-col justify-between"
                 >
                   <div>
-                    <div className="text-3xl md:text-4xl font-extrabold text-[#0F2747] group-hover:text-[#F36B21] transition-colors mb-1">
+                    <div className="type-amount  font-extrabold text-[#0F2747] group-hover:text-[#F36B21] transition-colors mb-1">
                       {stat.count}
                     </div>
-                    <div className="text-xs md:text-sm font-bold text-slate-700 uppercase tracking-wider">
+                    <div className="type-caption  font-bold text-slate-700 uppercase tracking-wider">
                       {stat.label}
                     </div>
                   </div>
-                  <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                  <div className="type-caption mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-slate-500">
                     <span>{stat.sublabel}</span>
                     <span className="font-semibold text-[#F36B21] group-hover:translate-x-0.5 transition-transform">
                       Jump →
@@ -1087,14 +1087,14 @@ export default function IrctcPrincipalServiceProvidersPage() {
         <section className="py-3">
           <div className="site-container">
             <div className="rounded-2xl bg-white border border-slate-200/90 px-4 py-3 shadow-xs flex flex-wrap items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 mr-1">
+              <span className="type-caption  font-bold uppercase tracking-wider text-slate-500 mr-1">
                 Quick Jump:
               </span>
               {sectionJumpLinks.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
-                  className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
+                  className={`type-button inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 font-semibold transition-colors ${
                     item.href === "#official-pdf"
                       ? "bg-orange-50 text-[#F36B21] border border-orange-200 hover:bg-orange-100"
                       : "bg-slate-50 text-slate-700 border border-slate-200/70 hover:bg-slate-100 hover:text-slate-900"
@@ -1115,14 +1115,14 @@ export default function IrctcPrincipalServiceProvidersPage() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 {/* Left Column: Directory Explanation */}
                 <div className="lg:col-span-7">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#F36B21]">
+                  <span className="type-caption inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1.5 font-bold uppercase tracking-wider text-[#F36B21]">
                     <Building2 className="h-3.5 w-3.5" />
                     Directory Overview
                   </span>
-                  <h2 className="mt-4 text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+                  <h2 className="type-h2 mt-4 tracking-tight text-slate-900">
                     IRCTC Authorized Service Providers (Agents) Directory
                   </h2>
-                  <p className="mt-4 text-base leading-relaxed text-slate-600">
+                  <p className="type-body mt-4 leading-relaxed text-slate-600">
                     Because IRCTC does not appoint individual retail agents directly, anyone wishing
                     to operate as an authorized railway ticket booking agent must register through an
                     empaneled{" "}
@@ -1133,7 +1133,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     documents, issue hardware/software credentials, and provide booking and compliance
                     support.
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-3 leading-relaxed text-slate-600">
                     Use the categorized tables below to review authorized providers under the{" "}
                     <strong className="font-semibold text-slate-800">B2B Web Services Scheme</strong>{" "}
                     and{" "}
@@ -1142,7 +1142,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     </strong>
                     , or inspect the official IRCTC reference PDF directly.
                   </p>
-                  <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-xs font-medium text-slate-600 flex items-center gap-2">
+                  <div className="type-caption mt-5 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 font-medium text-slate-600 flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
                     <span>
                       Updated reference snapshot (29-03-2025) • Verify current details through
@@ -1156,14 +1156,14 @@ export default function IrctcPrincipalServiceProvidersPage() {
                   id="official-pdf"
                   className="lg:col-span-5 scroll-mt-28 rounded-2xl border-2 border-orange-200 bg-gradient-to-br from-orange-50/70 via-white to-amber-50/40 p-6 shadow-xs"
                 >
-                  <div className="inline-flex items-center gap-2 rounded-lg bg-orange-100/80 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[#F36B21]">
+                  <div className="type-caption inline-flex items-center gap-2 rounded-lg bg-orange-100/80 px-2.5 py-1 font-bold uppercase tracking-wider text-[#F36B21]">
                     <FileText className="h-3.5 w-3.5" />
                     Reference Document
                   </div>
-                  <h3 className="mt-3 text-lg font-extrabold text-slate-900">
+                  <h3 className="type-h3 mt-3 text-slate-900">
                     IRCTC Principal Service Providers PDF (Updated 29-03-2025)
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-2 leading-relaxed text-slate-600">
                     View or download the official IRCTC Principal Service Providers PDF snapshot
                     containing the scheme-wise list of authorized PSPs and admin contact details.
                   </p>
@@ -1173,7 +1173,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                       href={OFFICIAL_PDF_HREF}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#F36B21] hover:bg-[#B84307] px-4 py-3 text-sm font-bold text-white shadow-xs transition-colors"
+                      className="type-button inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#F36B21] hover:bg-[#B84307] px-4 py-3 font-bold text-white shadow-xs transition-colors"
                     >
                       View Source PDF
                       <ExternalLink className="h-4 w-4" />
@@ -1181,14 +1181,14 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     <a
                       href={OFFICIAL_PDF_HREF}
                       download="IRCTC-Authorised-Principal-Service-Providers-29-03-2025.pdf"
-                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 transition-colors"
+                      className="type-button inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 px-4 py-3 font-semibold text-slate-800 transition-colors"
                     >
                       <ArrowDownToLine className="h-4 w-4 text-slate-600" />
                       Download PDF
                     </a>
                   </div>
 
-                  <p className="mt-3 text-xs text-slate-500">
+                  <p className="type-body-small mt-3 text-slate-500">
                     Opens in a new browser tab or downloads directly for offline verification.
                   </p>
                 </div>
@@ -1197,13 +1197,13 @@ export default function IrctcPrincipalServiceProvidersPage() {
               {/* 4 Key Guidance Cards */}
               <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="rounded-2xl border border-slate-200/90 bg-[#FBF9F6] p-5">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#F36B21]">
+                  <div className="type-caption  font-bold uppercase tracking-wider text-[#F36B21]">
                     What a PSP does
                   </div>
-                  <h3 className="mt-1.5 text-base font-bold text-slate-900">
+                  <h3 className="type-h3 mt-1.5 text-slate-900">
                     Bridges IRCTC and retail booking agents
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-2 leading-relaxed text-slate-600">
                     Principal Service Providers handle agent KYC verification, digital certificate /
                     dongle or OTP authentication setup, wallet top-ups, and day-to-day technical
                     support for authorized railway ticket booking.
@@ -1211,13 +1211,13 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 </div>
 
                 <div className="rounded-2xl border border-slate-200/90 bg-[#FBF9F6] p-5">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#F36B21]">
+                  <div className="type-caption  font-bold uppercase tracking-wider text-[#F36B21]">
                     Why selection matters
                   </div>
-                  <h3 className="mt-1.5 text-base font-bold text-slate-900">
+                  <h3 className="type-h3 mt-1.5 text-slate-900">
                     Affects onboarding speed and daily operations
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-2 leading-relaxed text-slate-600">
                     The PSP you choose determines your portal usability, wallet settlement speed,
                     renewal charges, and helpdesk responsiveness when handling cancellations or TDR
                     filings.
@@ -1225,13 +1225,13 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 </div>
 
                 <div className="rounded-2xl border border-slate-200/90 bg-[#FBF9F6] p-5">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#F36B21]">
+                  <div className="type-caption  font-bold uppercase tracking-wider text-[#F36B21]">
                     How to verify
                   </div>
-                  <h3 className="mt-1.5 text-base font-bold text-slate-900">
+                  <h3 className="type-h3 mt-1.5 text-slate-900">
                     Cross-check company name and scheme category
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-2 leading-relaxed text-slate-600">
                     Always confirm that the company onboarding you is listed under the B2B or ICS
                     scheme in the official IRCTC directory, and verify all fee breakdowns in writing
                     before paying registration charges.
@@ -1239,13 +1239,13 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 </div>
 
                 <div className="rounded-2xl border border-slate-200/90 bg-[#FBF9F6] p-5">
-                  <div className="text-xs font-bold uppercase tracking-wider text-[#F36B21]">
+                  <div className="type-caption  font-bold uppercase tracking-wider text-[#F36B21]">
                     RailAgents’ role
                   </div>
-                  <h3 className="mt-1.5 text-base font-bold text-slate-900">
+                  <h3 className="type-h3 mt-1.5 text-slate-900">
                     Independent guidance, rules & railway tools
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-2 leading-relaxed text-slate-600">
                     Explore our{" "}
                     <Link
                       href="/irctc-agent-registration"
@@ -1286,17 +1286,17 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     <Building2 className="h-5 w-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                    <h2 className="type-h2  text-slate-900">
                       1. List of B2B Principal Service Providers
                     </h2>
-                    <p className="text-sm text-slate-500">
+                    <p className="type-body  text-slate-500">
                       Authorized B2B Web Services / Portal Scheme Providers (34 Entities)
                     </p>
                   </div>
                 </div>
                 <a
                   href="#official-pdf"
-                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
+                  className="type-button inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
                 >
                   <FileText className="h-3.5 w-3.5 text-[#F36B21]" />
                   Jump to Official PDF
@@ -1305,34 +1305,34 @@ export default function IrctcPrincipalServiceProvidersPage() {
 
               <div className="bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
+                  <table className="type-table w-full text-left border-collapse">
                     <thead>
-                      <tr className="bg-slate-900 text-white text-xs uppercase tracking-wider">
-                        <th className="py-3.5 px-5 font-semibold w-16">S.No</th>
-                        <th className="py-3.5 px-5 font-semibold">Company Name &amp; City</th>
-                        <th className="py-3.5 px-5 font-semibold">Admin Contact Details</th>
-                        <th className="py-3.5 px-5 font-semibold">Admin Email Address</th>
+                      <tr className="type-caption bg-slate-900 text-white uppercase tracking-wider">
+                        <th className="type-table py-3.5 px-5 font-semibold w-16">S.No</th>
+                        <th className="type-table py-3.5 px-5 font-semibold">Company Name &amp; City</th>
+                        <th className="type-table py-3.5 px-5 font-semibold">Admin Contact Details</th>
+                        <th className="type-table py-3.5 px-5 font-semibold">Admin Email Address</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-200 text-sm">
+                    <tbody className="type-body-small divide-y divide-slate-200 ">
                       {b2bProviders.map((row) => (
                         <tr
                           key={row.sno}
                           className="hover:bg-orange-50/40 transition-colors"
                         >
-                          <td className="py-3.5 px-5 font-semibold text-slate-500">
+                          <td className="type-table py-3.5 px-5 font-semibold text-slate-500">
                             {row.sno}
                           </td>
-                          <td className="py-3.5 px-5 font-semibold text-slate-900">
+                          <td className="type-table py-3.5 px-5 font-semibold text-slate-900">
                             {row.company}
                           </td>
-                          <td className="py-3.5 px-5 text-slate-700 whitespace-nowrap">
+                          <td className="type-table py-3.5 px-5 text-slate-700 whitespace-nowrap">
                             <span className="inline-flex items-center gap-1.5">
                               <Phone className="h-3.5 w-3.5 text-slate-400 shrink-0" />
                               {row.phone}
                             </span>
                           </td>
-                          <td className="py-3.5 px-5">
+                          <td className="type-table py-3.5 px-5">
                             <div className="flex items-start gap-1.5">
                               <Mail className="h-3.5 w-3.5 text-slate-400 shrink-0 mt-1" />
                               {renderEmailLinks(row.email)}
@@ -1354,17 +1354,17 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     <Users className="h-5 w-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                    <h2 className="type-h2  text-slate-900">
                       2. List of Internet Cafe Scheme (ICS) Principal Service Providers
                     </h2>
-                    <p className="text-sm text-slate-500">
+                    <p className="type-body  text-slate-500">
                       Authorized Internet Cafe Scheme (ICS) Providers ({icsProviders.length} Entities)
                     </p>
                   </div>
                 </div>
                 <a
                   href="#official-pdf"
-                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
+                  className="type-button inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
                 >
                   <FileText className="h-3.5 w-3.5 text-[#F36B21]" />
                   Jump to Official PDF
@@ -1373,34 +1373,34 @@ export default function IrctcPrincipalServiceProvidersPage() {
 
               <div className="bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
+                  <table className="type-table w-full text-left border-collapse">
                     <thead>
-                      <tr className="bg-slate-900 text-white text-xs uppercase tracking-wider">
-                        <th className="py-3.5 px-5 font-semibold w-16">S.No</th>
-                        <th className="py-3.5 px-5 font-semibold">Company Name &amp; City</th>
-                        <th className="py-3.5 px-5 font-semibold">Admin Contact Details</th>
-                        <th className="py-3.5 px-5 font-semibold">Admin Email Address</th>
+                      <tr className="type-caption bg-slate-900 text-white uppercase tracking-wider">
+                        <th className="type-table py-3.5 px-5 font-semibold w-16">S.No</th>
+                        <th className="type-table py-3.5 px-5 font-semibold">Company Name &amp; City</th>
+                        <th className="type-table py-3.5 px-5 font-semibold">Admin Contact Details</th>
+                        <th className="type-table py-3.5 px-5 font-semibold">Admin Email Address</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-200 text-sm">
+                    <tbody className="type-body-small divide-y divide-slate-200 ">
                       {icsProviders.map((row) => (
                         <tr
                           key={row.sno}
                           className="hover:bg-orange-50/40 transition-colors"
                         >
-                          <td className="py-3.5 px-5 font-semibold text-slate-500">
+                          <td className="type-table py-3.5 px-5 font-semibold text-slate-500">
                             {row.sno}
                           </td>
-                          <td className="py-3.5 px-5 font-semibold text-slate-900">
+                          <td className="type-table py-3.5 px-5 font-semibold text-slate-900">
                             {row.company}
                           </td>
-                          <td className="py-3.5 px-5 text-slate-700 whitespace-nowrap">
+                          <td className="type-table py-3.5 px-5 text-slate-700 whitespace-nowrap">
                             <span className="inline-flex items-center gap-1.5">
                               <Phone className="h-3.5 w-3.5 text-slate-400 shrink-0" />
                               {row.phone}
                             </span>
                           </td>
-                          <td className="py-3.5 px-5">
+                          <td className="type-table py-3.5 px-5">
                             <div className="flex items-start gap-1.5">
                               <Mail className="h-3.5 w-3.5 text-slate-400 shrink-0 mt-1" />
                               {renderEmailLinks(row.email)}
@@ -1422,17 +1422,17 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     <Sparkles className="h-5 w-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                    <h2 className="type-h2  text-slate-900">
                       3. B2C Principal Service Providers
                     </h2>
-                    <p className="text-sm text-slate-500">
+                    <p className="type-body  text-slate-500">
                       Business-to-Consumer Apps, OTAs &amp; Banking Platforms
                     </p>
                   </div>
                 </div>
                 <a
                   href="#official-pdf"
-                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
+                  className="type-button inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
                 >
                   <FileText className="h-3.5 w-3.5 text-[#F36B21]" />
                   Jump to Official PDF
@@ -1445,10 +1445,10 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     key={provider}
                     className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center gap-3 hover:border-orange-300 transition-colors"
                   >
-                    <div className="w-8 h-8 rounded-full bg-orange-50 border border-orange-200/70 flex items-center justify-center text-[#F36B21] font-bold text-xs shrink-0">
+                    <div className="type-caption w-8 h-8 rounded-full bg-orange-50 border border-orange-200/70 flex items-center justify-center text-[#F36B21] font-bold shrink-0">
                       {idx + 1}
                     </div>
-                    <span className="text-slate-800 font-medium text-sm">{provider}</span>
+                    <span className="type-body-small text-slate-800 font-medium ">{provider}</span>
                   </div>
                 ))}
               </div>
@@ -1463,10 +1463,10 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     <Landmark className="h-5 w-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-extrabold text-slate-900">
+                    <h2 className="type-h2  text-slate-900">
                       4. G2G Scheme (Government to Government)
                     </h2>
-                    <p className="text-xs text-slate-500">
+                    <p className="type-body  text-slate-500">
                       Authorized Government &amp; Defense Organizations (9 Entities)
                     </p>
                   </div>
@@ -1477,10 +1477,10 @@ export default function IrctcPrincipalServiceProvidersPage() {
                       key={entity}
                       className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/60"
                     >
-                      <span className="w-6 h-6 rounded-full bg-slate-900 text-white text-xs flex items-center justify-center font-bold shrink-0">
+                      <span className="type-caption w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold shrink-0">
                         {idx + 1}
                       </span>
-                      <span className="text-slate-800 font-medium text-sm">{entity}</span>
+                      <span className="type-body-small text-slate-800 font-medium ">{entity}</span>
                     </div>
                   ))}
                 </div>
@@ -1493,10 +1493,10 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     <Radio className="h-5 w-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-extrabold text-slate-900">
+                    <h2 className="type-h2  text-slate-900">
                       5. TIES Scheme (Train Information Enquiry Service)
                     </h2>
-                    <p className="text-xs text-slate-500">
+                    <p className="type-body  text-slate-500">
                       Authorized Train Enquiry Information Partners (5 Entities)
                     </p>
                   </div>
@@ -1507,10 +1507,10 @@ export default function IrctcPrincipalServiceProvidersPage() {
                       key={entity}
                       className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200/60"
                     >
-                      <span className="w-6 h-6 rounded-full bg-[#F36B21] text-white text-xs flex items-center justify-center font-bold shrink-0">
+                      <span className="type-caption w-6 h-6 rounded-full bg-[#F36B21] text-white flex items-center justify-center font-bold shrink-0">
                         {idx + 1}
                       </span>
-                      <span className="text-slate-800 font-medium text-sm">{entity}</span>
+                      <span className="type-body-small text-slate-800 font-medium ">{entity}</span>
                     </div>
                   ))}
                 </div>
@@ -1525,17 +1525,17 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     <Globe className="h-5 w-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                    <h2 className="type-h2  text-slate-900">
                       6. GSAs Abroad - Internet Cafe Scheme
                     </h2>
-                    <p className="text-sm text-slate-500">
+                    <p className="type-body  text-slate-500">
                       Authorized Overseas General Sales Agents (17 Entities)
                     </p>
                   </div>
                 </div>
                 <a
                   href="#official-pdf"
-                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
+                  className="type-button inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
                 >
                   <FileText className="h-3.5 w-3.5 text-[#F36B21]" />
                   Jump to Official PDF
@@ -1550,8 +1550,8 @@ export default function IrctcPrincipalServiceProvidersPage() {
                   >
                     <Globe className="h-5 w-5 text-[#F36B21] shrink-0 mt-0.5" />
                     <div>
-                      <div className="text-slate-900 font-bold text-sm">{gsa.name}</div>
-                      <div className="text-slate-500 text-xs mt-0.5">{gsa.location}</div>
+                      <div className="type-body-small text-slate-900 font-bold ">{gsa.name}</div>
+                      <div className="type-caption text-slate-500 mt-0.5">{gsa.location}</div>
                     </div>
                   </div>
                 ))}
@@ -1566,17 +1566,17 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     <ShieldCheck className="h-5 w-5" />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900">
+                    <h2 className="type-h2  text-slate-900">
                       7. E-Governance Scheme Working PSPs
                     </h2>
-                    <p className="text-sm text-slate-500">
+                    <p className="type-body  text-slate-500">
                       Citizen Service Center &amp; State E-Governance Partners (2 Entities)
                     </p>
                   </div>
                 </div>
                 <a
                   href="#official-pdf"
-                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
+                  className="type-button inline-flex items-center gap-1.5 self-start sm:self-auto rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-semibold text-slate-700 hover:border-orange-300 hover:text-[#F36B21] transition-colors"
                 >
                   <FileText className="h-3.5 w-3.5 text-[#F36B21]" />
                   Jump to Official PDF
@@ -1589,11 +1589,11 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     key={provider.sno}
                     className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs"
                   >
-                    <div className="inline-flex items-center gap-1.5 rounded-md bg-orange-50 px-2.5 py-1 text-xs font-bold text-[#F36B21] mb-3">
+                    <div className="type-caption inline-flex items-center gap-1.5 rounded-md bg-orange-50 px-2.5 py-1 font-bold text-[#F36B21] mb-3">
                       E-Governance Partner #{provider.sno}
                     </div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-3">{provider.company}</h3>
-                    <div className="space-y-2 text-sm text-slate-600">
+                    <h3 className="type-h3  text-slate-900 mb-3">{provider.company}</h3>
+                    <div className="type-body-small space-y-2 text-slate-600">
                       <div className="flex items-center gap-2">
                         <Phone className="h-4 w-4 text-slate-400 shrink-0" />
                         <span>{provider.phone}</span>
@@ -1615,14 +1615,14 @@ export default function IrctcPrincipalServiceProvidersPage() {
           <div className="site-container">
             <div className="rounded-3xl bg-slate-900 text-white p-8 md:p-12 shadow-xl relative overflow-hidden">
               <div className="relative z-10 max-w-3xl">
-                <div className="inline-flex items-center gap-2 rounded-full bg-orange-500/15 border border-orange-400/30 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-orange-300 mb-4">
+                <div className="type-caption inline-flex items-center gap-2 rounded-full bg-orange-500/15 border border-orange-400/30 px-3.5 py-1 font-semibold uppercase tracking-wider text-orange-300 mb-4">
                   <HelpCircle className="h-3.5 w-3.5 text-orange-400" />
                   Practical Railway Agent Guidance
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-3">
+                <h2 className="type-h2  tracking-tight text-white mb-3">
                   Need Help Understanding IRCTC Agent Registration &amp; Rules?
                 </h2>
-                <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-7">
+                <p className="type-body-small text-slate-300 leading-relaxed mb-7">
                   Learn how authorized PSP onboarding works, documents required for KYC,
                   permissible service charges, Tatkal booking timings, and cancellation OTP
                   compliance before you apply.
@@ -1630,14 +1630,14 @@ export default function IrctcPrincipalServiceProvidersPage() {
                 <div className="flex flex-wrap items-center gap-3.5">
                   <Link
                     href="/irctc-agent-registration"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#F36B21] hover:bg-[#B84307] px-6 py-3.5 text-sm font-bold text-white transition-colors"
+                    className="type-button inline-flex items-center justify-center gap-2 rounded-xl bg-[#F36B21] hover:bg-[#B84307] px-6 py-3.5 font-bold text-white transition-colors"
                   >
                     IRCTC Agent Registration Guide
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link
                     href="/ask-nihal"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 hover:bg-white/15 px-5 py-3.5 text-sm font-semibold text-white transition-colors"
+                    className="type-button inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 hover:bg-white/15 px-5 py-3.5 font-semibold text-white transition-colors"
                   >
                     Ask Nihal Singh
                   </Link>
@@ -1645,7 +1645,7 @@ export default function IrctcPrincipalServiceProvidersPage() {
                     href={OFFICIAL_PDF_HREF}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-orange-400/30 bg-orange-500/10 hover:bg-orange-500/20 px-5 py-3.5 text-sm font-semibold text-orange-200 transition-colors"
+                    className="type-button inline-flex items-center justify-center gap-2 rounded-xl border border-orange-400/30 bg-orange-500/10 hover:bg-orange-500/20 px-5 py-3.5 font-semibold text-orange-200 transition-colors"
                   >
                     Open Official PSP PDF
                     <ExternalLink className="h-4 w-4" />

@@ -106,17 +106,17 @@ export async function LatestUpdatesSection() {
         {/* Section Header */}
         <div className="flex flex-col items-start justify-between gap-4 border-b border-[#E5EAF0] pb-6 sm:flex-row sm:items-end sm:pb-8">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-1.5 rounded-md bg-[#FFF1E7] px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[#F36B21] border border-[#F36B21]/20">
+            <span className="type-caption inline-flex items-center gap-1.5 rounded-md bg-[#FFF1E7] px-2.5 py-1 font-bold uppercase tracking-wider text-[#F36B21] border border-[#F36B21]/20">
               <Newspaper className="h-3.5 w-3.5 text-[#F36B21]" aria-hidden="true" />
               Real-Time Bulletins
             </span>
             <h2
               id="latest-updates-heading"
-              className="mt-2 text-2xl font-black tracking-tight text-[#142B45] sm:text-3xl lg:text-4xl"
+              className="type-h2 mt-2 tracking-tight text-[#142B45] "
             >
               Latest Railway Updates &amp; Circulars
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-[#667085] sm:text-base">
+            <p className="type-body-small mt-2 leading-relaxed text-[#667085] ">
               Timely analysis of recent policy revisions, vigilance advisories, and booking operational guidelines.
             </p>
           </div>
@@ -124,7 +124,7 @@ export async function LatestUpdatesSection() {
           <InternalLink
             href="/blog"
             prefetch={false}
-            className="group inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-[#E5EAF0] bg-white px-4 py-2 text-sm font-bold text-[#F36B21] shadow-2xs hover:border-[#F36B21]/50 hover:bg-[#FFF1E7]/40 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#F36B21]"
+            className="type-button group inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-[#E5EAF0] bg-white px-4 py-2 font-bold text-[#F36B21] shadow-2xs hover:border-[#F36B21]/50 hover:bg-[#FFF1E7]/40 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#F36B21]"
           >
             <span>Browse all bulletins</span>
             <ArrowRight
@@ -151,7 +151,7 @@ export async function LatestUpdatesSection() {
                     sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                     className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                   />
-                  <span className="absolute top-3 left-3 rounded-md bg-[#142B45]/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-xs backdrop-blur-xs">
+                  <span className="type-caption absolute top-3 left-3 rounded-md bg-[#142B45]/90 px-2.5 py-1 font-bold uppercase tracking-wider text-white shadow-xs backdrop-blur-xs">
                     {post.category}
                   </span>
                 </div>
@@ -159,7 +159,7 @@ export async function LatestUpdatesSection() {
                 {/* Content */}
                 <div className="p-5 sm:p-6">
                   {/* Meta */}
-                  <div className="flex items-center gap-3 text-xs text-[#667085]">
+                  <div className="type-caption flex items-center gap-3 text-[#667085]">
                     <span className="inline-flex items-center gap-1 font-medium">
                       <Calendar className="h-3.5 w-3.5 text-[#F36B21]" aria-hidden="true" />
                       {formatDate(post.publishedAt)}
@@ -172,14 +172,14 @@ export async function LatestUpdatesSection() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="mt-3 text-base font-bold leading-snug text-[#142B45] transition-colors group-hover:text-[#F36B21] sm:text-lg line-clamp-2">
+                  <h3 className="type-card-title mt-3 text-[#142B45] transition-colors group-hover:text-[#F36B21] line-clamp-2">
                     <InternalLink href={`/blog/${post.slug}`}>
                       {post.title}
                     </InternalLink>
                   </h3>
 
                   {/* Excerpt */}
-                  <p className="mt-2 text-xs leading-relaxed text-[#667085] sm:text-sm line-clamp-2">
+                  <p className="type-body-small mt-2 leading-relaxed text-[#667085] line-clamp-2">
                     {post.excerpt}
                   </p>
                 </div>
@@ -189,7 +189,7 @@ export async function LatestUpdatesSection() {
               <div className="border-t border-[#E5EAF0] bg-[#F4F5F7]/30 px-5 py-3.5 sm:px-6">
                 <InternalLink
                   href={`/blog/${post.slug}`}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#F36B21] transition-colors group-hover:text-[#F36B21]"
+                  className="type-button inline-flex items-center gap-1.5 font-bold text-[#F36B21] transition-colors group-hover:text-[#F36B21]"
                 >
                   <span>Read full bulletin</span>
                   <ArrowRight

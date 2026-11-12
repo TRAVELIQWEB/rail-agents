@@ -15,16 +15,16 @@ export function SectionHeading({
   external = false,
 }: SectionHeadingProps) {
   const className =
-    "group inline-flex shrink-0 items-center gap-1.5 rounded-sm text-xs font-semibold text-[var(--primary-dark)] transition-colors duration-200 hover:text-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--primary)] sm:text-sm";
+    "group inline-flex shrink-0 items-center gap-1.5 rounded-sm type-button font-semibold text-[var(--primary-dark)] transition-colors duration-200 hover:text-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--primary)]";
 
   return (
     <div className="mb-6 flex flex-col items-center justify-between gap-3 text-center min-[520px]:flex-row min-[520px]:items-end min-[520px]:text-left sm:mb-8">
       <div className="min-w-0">
-        <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-[#fffaf6] px-3 py-1.5 text-[11px] font-[800] uppercase tracking-[0.14em] text-[#d46a0b] shadow-sm">
+        <div className="type-caption mb-2 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-[#fffaf6] px-3 py-1.5 font-extrabold uppercase tracking-[0.14em] text-[#d46a0b] shadow-sm">
           <span className="h-2 w-2 rounded-full bg-[#F36B21]" aria-hidden="true" />
           RailAgents
         </div>
-        <h2 className="text-center text-[clamp(1.5rem,3.5vw,2.125rem)] font-[800] leading-[1.12] tracking-[-0.04em] text-[var(--navy)] min-[520px]:text-left wide:text-[2.25rem]">
+        <h2 className="type-h2 text-center tracking-[-0.04em] text-[var(--navy)] min-[520px]:text-left ">
           {title}
         </h2>
       </div>

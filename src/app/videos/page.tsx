@@ -102,12 +102,12 @@ export default async function VideoGuidesPage() {
 
         <div className="site-container relative">
           <div className="mb-6 sm:mb-8">
-            <div className="mx-auto mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/70 px-3.5 py-1 text-xs font-[800] uppercase tracking-[0.12em] text-[var(--primary-text)] shadow-sm backdrop-blur-md min-[520px]:mx-0">
+            <div className="type-caption mx-auto mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/70 px-3.5 py-1 font-extrabold uppercase tracking-[0.12em] text-[var(--primary-text)] shadow-sm backdrop-blur-md min-[520px]:mx-0">
               <PlayCircle aria-hidden="true" className="h-3.5 w-3.5" />
               Video Learning
             </div>
             <div className="mb-4 flex flex-col items-center justify-between gap-3 text-center min-[520px]:flex-row min-[520px]:items-end min-[520px]:text-left sm:mb-6">
-              <h1 className="page-hero-title min-w-0 text-center min-[520px]:text-left">
+              <h1 className="type-page-title page-hero-title min-w-0 text-center min-[520px]:text-left">
                 Video <span className="hero-accent">Guides &amp; Tutorials</span>
               </h1>
               {channelVideosUrl ? (
@@ -115,14 +115,14 @@ export default async function VideoGuidesPage() {
                   href={channelVideosUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex shrink-0 items-center gap-1.5 rounded-sm text-xs font-semibold text-[var(--primary-dark)] transition-colors duration-200 hover:text-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--primary)] sm:text-sm"
+                  className="type-button group inline-flex shrink-0 items-center gap-1.5 rounded-sm font-semibold text-[var(--primary-dark)] transition-colors duration-200 hover:text-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--primary)] "
                 >
                   Visit YouTube Channel
                   <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
                 </a>
               ) : null}
             </div>
-            <p className="page-hero-description mx-auto mt-2 max-w-2xl text-center min-[520px]:mx-0 min-[520px]:text-left">
+            <p className="type-hero-description page-hero-description mx-auto mt-2 max-w-2xl text-center min-[520px]:mx-0 min-[520px]:text-left">
               Watch simple, practical video guides for railway and travel agents.
               Looking for comprehensive step-by-step reading? Explore our{" "}
               <Link href="/guides" className="font-semibold text-orange-600 underline underline-offset-2 hover:text-orange-700">
@@ -135,16 +135,16 @@ export default async function VideoGuidesPage() {
             </p>
           </div>
 
-          {videos.length > 0 ? <section aria-labelledby="latest-video-guides"><h2 id="latest-video-guides" className="sr-only">Latest railway video guides</h2><VideoGuidesList videos={videos} /></section> : (
+          {videos.length > 0 ? <section aria-labelledby="latest-video-guides"><h2 id="latest-video-guides" className="type-h2 sr-only">Latest railway video guides</h2><VideoGuidesList videos={videos} /></section> : (
             <div className="rounded-3xl border border-[#f1e4d9] bg-white/80 px-6 py-12 text-center shadow-[0_10px_30px_rgba(15,39,71,0.05)] backdrop-blur-md">
               <PlayCircle
                 aria-hidden="true"
                 className="mx-auto h-10 w-10 text-[#F36B21]"
               />
-              <h2 className="mt-4 text-xl font-[800] text-[var(--navy)]">
+              <h2 className="type-h2 mt-4 text-[var(--navy)]">
                 Video guides are coming soon
               </h2>
-              <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-slate-600">
+              <p className="type-body-small mx-auto mt-2 max-w-lg leading-6 text-slate-600">
                 We&apos;re preparing helpful railway and IRCTC guides. Please check
                 back soon for the latest videos.
               </p>
@@ -153,7 +153,7 @@ export default async function VideoGuidesPage() {
                   href={channelVideosUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-6 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--primary)] px-6 py-2.5 text-sm font-[700] text-white shadow-sm transition-colors hover:bg-[#e85d04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                  className="type-button mt-6 inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--primary)] px-6 py-2.5 font-bold text-white shadow-sm transition-colors hover:bg-[#e85d04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                 >
                   Browse our YouTube channel
                 </a>

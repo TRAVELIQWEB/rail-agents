@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BookOpen, Building2, Calculator, ShieldCheck, ArrowRight, Sparkles, FileText } from "lucide-react";
+import { Building2, Calculator, ArrowRight, FileText } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { GuidesDirectory } from "@/components/guides/GuidesDirectory";
@@ -87,61 +87,10 @@ export default function GuidesPage() {
       <Header />
 
       <main id="main-content" tabIndex={-1} className="relative flex-1 overflow-hidden bg-[#fff9f5]">
-        {/* Ambient subtle glow backgrounds */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -left-24 top-12 h-64 w-64 rounded-full bg-orange-100/40 blur-[80px]"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-24 top-60 h-72 w-72 rounded-full bg-orange-200/25 blur-[90px]"
-        />
-
-        {/* ══ 1. COMPACT HERO SECTION ══ */}
-        <section
-          aria-label="Guides introduction"
-          className="relative border-b border-[#f0e1d5] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] pt-4 pb-4"
-        >
-          <div className="site-container max-w-5xl">
-            <div className="mx-auto text-center">
-              <div className="mb-2.5 inline-flex max-w-full items-center gap-2 whitespace-nowrap rounded-full border border-[#f5dfcf] bg-white/80 px-3 py-1 text-[10px] font-[800] uppercase tracking-[0.08em] text-[#e96713] shadow-xs backdrop-blur-md sm:px-3.5 sm:text-xs sm:tracking-[0.12em]">
-                <BookOpen aria-hidden="true" className="h-3.5 w-3.5" />
-                RailAgents Knowledge Center
-              </div>
-
-              {/* H1: Two-Color Heading */}
-              <h1 className="page-hero-title">
-                Railway Agent Guides &amp;{" "}
-                <span className="hero-accent">Resources</span>
-              </h1>
-
-              <p className="page-hero-description mx-auto mt-2 max-w-2xl">
-                Clear, verified operational guides for railway ticketing agents and travel desks.
-                Explore mandatory IRCTC compliance, commercial booking workflows, Tatkal guidelines, and customer query management.
-              </p>
-
-              {/* Quick Status Badges */}
-              <div className="mt-4 flex flex-wrap items-center justify-center gap-3.5 text-xs text-slate-500">
-                <span className="inline-flex items-center gap-1.5 font-medium">
-                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" aria-hidden="true" />
-                  Official Compliance Referenced
-                </span>
-                <span className="text-slate-300" aria-hidden="true">•</span>
-                <span className="inline-flex items-center gap-1.5 font-medium">
-                  <Sparkles className="h-3.5 w-3.5 text-orange-500" aria-hidden="true" />
-                  Independent Educational Manuals
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ══ 2. MAIN GUIDES CONTAINER ══ */}
-        <section aria-label="Agent guides and tools" className="pt-4 pb-8 sm:pb-12 lg:pb-14">
-          <div className="site-container max-w-5xl space-y-12 sm:space-y-14">
-            
-            {/* Guides Directory with Search, Categories, Featured Guide & Grid */}
-            <GuidesDirectory />
+        {/* Guides hero, category navigation and search share one Blog-style header. */}
+        <section aria-label="Agent guides and tools" className="pb-8 sm:pb-12 lg:pb-14">
+          <GuidesDirectory />
+          <div className="site-container max-w-[1280px] mt-12 space-y-12 sm:mt-14 sm:space-y-14">
 
             {/* ══ 2B. DEDICATED RESOURCE SECTION: IRCTC PSP DIRECTORY ══ */}
             <section
@@ -150,17 +99,17 @@ export default function GuidesPage() {
             >
               <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
                 <div className="space-y-2.5">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-orange-100/90 px-3.5 py-1 text-xs font-[800] uppercase tracking-wider text-[var(--primary-dark)]">
+                  <div className="type-caption inline-flex items-center gap-2 rounded-full bg-orange-100/90 px-3.5 py-1 font-extrabold uppercase tracking-wider text-[var(--primary-dark)]">
                     <Building2 className="h-3.5 w-3.5" aria-hidden="true" />
                     Official PSP Reference Directory • Updated 29-03-2025
                   </div>
                   <h2
                     id="psp-directory-heading"
-                    className="text-xl sm:text-2xl font-[850] tracking-[-0.03em] text-[var(--navy)]"
+                    className="type-h2  tracking-[-0.03em] text-[var(--navy)]"
                   >
                     List of IRCTC Principal Service Providers (PSPs)
                   </h2>
-                  <p className="text-xs sm:text-sm leading-relaxed text-slate-600 max-w-2xl">
+                  <p className="type-body-small  leading-relaxed text-slate-600 max-w-2xl">
                     Verify authorized IRCTC Principal Service Providers before applying for an agent ID.
                     Browse the complete directory of B2B (34), Internet Cafe Scheme / ICS (73), B2C (25),
                     G2G, TIES, Overseas GSAs, and E-Governance providers with admin phone numbers, emails, and the official PDF.
@@ -170,7 +119,7 @@ export default function GuidesPage() {
                 <div className="pt-2 md:pt-0 shrink-0">
                   <Link
                     href="/irctc-principal-service-providers-updated-29-03-2025"
-                    className="single-line-btn inline-flex min-h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-[var(--primary)] px-6 py-3 text-sm font-[800] text-white shadow-xs transition-all hover:bg-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                    className="type-button single-line-btn inline-flex min-h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-[var(--primary)] px-6 py-3 font-extrabold text-white shadow-xs transition-all hover:bg-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                   >
                     <FileText className="h-4 w-4 text-white" aria-hidden="true" />
                     <span>View PSP Directory</span>
@@ -187,22 +136,22 @@ export default function GuidesPage() {
             >
               <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
                 <div className="space-y-2.5">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-blue-100/90 px-3.5 py-1 text-xs font-[800] uppercase tracking-wider text-blue-800">
+                  <div className="type-caption inline-flex items-center gap-2 rounded-full bg-blue-100/90 px-3.5 py-1 font-extrabold uppercase tracking-wider text-blue-800">
                     <Calculator className="h-3.5 w-3.5" aria-hidden="true" />
                     Interactive Utility Tool
                   </div>
                   <h2
                     id="agent-tools-heading"
-                    className="text-xl sm:text-2xl font-[850] tracking-[-0.03em] text-[var(--navy)]"
+                    className="type-h2  tracking-[-0.03em] text-[var(--navy)]"
                   >
                     Agent Train Ticket Fare &amp; Service Charge Calculator
                   </h2>
-                  <p className="text-xs sm:text-sm leading-relaxed text-slate-600 max-w-2xl">
+                  <p className="type-body-small  leading-relaxed text-slate-600 max-w-2xl">
                     Need to provide an immediate, itemized estimate to a passenger? Calculate exact base fares,
                     statutory IRCTC convenience fees, authorized agent service charges (₹20 Non-AC / ₹40 AC),
                     and payment gateway processing costs with full transparency.
                   </p>
-                  <p className="text-xs text-slate-500">
+                  <p className="type-body  text-slate-500">
                     Generates clean, printable client quotations compliant with official fee disclosure norms.
                   </p>
                 </div>
@@ -210,7 +159,7 @@ export default function GuidesPage() {
                 <div className="pt-2 md:pt-0 shrink-0">
                   <Link
                     href="/train-ticket-agent-fare-calculator"
-                    className="single-line-btn inline-flex min-h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-blue-200 bg-white px-6 py-3 text-sm font-[800] text-blue-900 shadow-xs transition-all hover:border-blue-300 hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+                    className="type-button single-line-btn inline-flex min-h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-blue-200 bg-white px-6 py-3 font-extrabold text-blue-900 shadow-xs transition-all hover:border-blue-300 hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
                   >
                     <Calculator className="h-4 w-4 text-blue-600" aria-hidden="true" />
                     <span>Launch Fare Calculator</span>
@@ -221,7 +170,7 @@ export default function GuidesPage() {
             </section>
 
             {/* ══ 4. COMPLIANCE & LEGAL NOTICE ══ */}
-            <div className="rounded-2xl border border-[#f0e1d5] bg-white/80 p-5 text-center sm:text-left text-xs leading-relaxed text-slate-500">
+            <div className="type-caption rounded-2xl border border-[#f0e1d5] bg-white/80 p-5 text-center sm:text-left leading-relaxed text-slate-500">
               <strong className="font-semibold text-slate-700">Educational Disclaimer:</strong> RailAgents is an independent educational platform for railway ticketing agents and travellers. We are not IRCTC or Indian Railways. Railway booking rules, service charges, cancellation terms, and provider onboarding criteria are subject to change by competent authorities. Always verify current instructions directly with your authorized Principal Service Provider (PSP) or the official IRCTC portal.
             </div>
 

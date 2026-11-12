@@ -58,10 +58,10 @@ export default function TrainChartPreparationTimePage() {
         <section className="compact-tool-heading border-b border-[#E5EAF0] bg-white py-3 sm:py-4">
           <div className="site-container">
             <div>
-              <h1 className="text-xl font-extrabold leading-tight tracking-tight text-[#102B46] sm:text-2xl">
+              <h1 className="type-page-title  tracking-tight text-[#102B46] ">
                 Train Chart <span className="text-[var(--primary)]">Preparation Time</span>
               </h1>
-              <p className="mt-1 text-xs leading-relaxed text-[#64748B]">
+              <p className="type-body-small mt-1 leading-relaxed text-[#64748B]">
                 Check API-reported chart times and the chart preparation station for your boarding stop.
               </p>
             </div>
