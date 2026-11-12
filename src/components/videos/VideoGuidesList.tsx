@@ -12,7 +12,7 @@ export function VideoGuidesList({ videos }: { videos: Video[] }) {
 
   return (
     <>
-      <p className="mb-4 text-center text-sm text-slate-600 sm:text-left" aria-live="polite">
+      <p className="type-body-small mb-4 text-center text-slate-600 sm:text-left" aria-live="polite">
         Showing {visibleVideos.length} of {videos.length} videos
       </p>
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-stretch gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3 xl:gap-6">
@@ -30,7 +30,7 @@ export function VideoGuidesList({ videos }: { videos: Video[] }) {
                   Math.max(VIDEOS_PER_PAGE, current - VIDEOS_PER_PAGE),
                 )
               }
-              className="single-line-btn inline-flex min-h-11 items-center justify-center rounded-full border border-[#eadbce] bg-white px-6 py-2.5 text-sm font-[700] text-[var(--navy)] shadow-sm transition-colors hover:border-orange-300 hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+              className="type-button single-line-btn inline-flex min-h-11 items-center justify-center rounded-full border border-[#eadbce] bg-white px-6 py-2.5 font-bold text-[var(--navy)] shadow-sm transition-colors hover:border-orange-300 hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
             >
               Show Fewer Videos
             </button>
@@ -43,7 +43,7 @@ export function VideoGuidesList({ videos }: { videos: Video[] }) {
                 Math.min(current + VIDEOS_PER_PAGE, videos.length),
               )
             }
-            className="single-line-btn inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--primary)] px-6 py-2.5 text-sm font-[700] text-white shadow-[0_8px_20px_rgba(249,115,22,0.18)] transition-colors hover:bg-[#e85d04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+            className="type-button single-line-btn inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--primary)] px-6 py-2.5 font-bold text-white shadow-[0_8px_20px_rgba(249,115,22,0.18)] transition-colors hover:bg-[#e85d04] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
           >
             Load More Videos
           </button>

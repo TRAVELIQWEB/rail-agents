@@ -598,7 +598,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
       <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-slate-200/90 bg-white px-5 py-4 shadow-xs sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2.5">
-            <h1 className="text-xl font-black tracking-tight text-slate-900 sm:text-2xl">
+            <h1 className="type-page-title text-xl font-black tracking-tight text-slate-900 sm:text-2xl">
               {mode === "create" ? "Create Article" : "Edit Article"}
             </h1>
             <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold uppercase border ${status === "published"
@@ -628,7 +628,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
           <button
             type="button"
             onClick={() => setShowLivePreview(true)}
-            className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 cursor-pointer"
+            className="type-button inline-flex h-9 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 text-xs font-bold text-slate-700 transition hover:bg-slate-50 cursor-pointer"
           >
             <Eye size={13} className="text-slate-500" />
             <span>Preview</span>
@@ -654,7 +654,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   <Sparkles size={15} />
                 </span>
                 <div>
-                  <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                  <h2 className="type-h2 text-xs font-extrabold uppercase tracking-wider text-slate-900">
                     Article Details &amp; Slug
                   </h2>
                   <p className="text-[11px] text-slate-400 font-normal">Core headline, permalink URL, and article summary</p>
@@ -668,7 +668,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
             {/* Title & Slug in a clean stacked layout with comfortable 42px input height */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                <label className="type-label block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                   Article Title <span className="text-orange-600">*</span>
                 </label>
                 <span className="text-[10.5px] font-semibold text-slate-400">{title.length} characters</span>
@@ -683,13 +683,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   setSaveStatus("unsaved");
                 }}
                 placeholder="Enter a clear, compelling article headline..."
-                className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 text-sm font-semibold text-slate-900 outline-none transition placeholder:font-normal placeholder:text-slate-400 hover:border-slate-300 focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100"
+                className="type-input h-11 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 text-sm font-semibold text-slate-900 outline-none transition placeholder:font-normal placeholder:text-slate-400 hover:border-slate-300 focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100"
               />
             </div>
 
             {/* Slug */}
             <div>
-              <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <label className="type-label mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                 Permalink / Slug <span className="text-orange-600">*</span>
               </label>
               <div className="flex h-10 items-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50/50 hover:border-slate-300 focus-within:border-orange-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-100 transition">
@@ -701,14 +701,14 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   value={slug}
                   onChange={(e) => { setSlug(e.target.value); setSlugManuallyEdited(true); }}
                   placeholder="article-permalink-slug"
-                  className="flex-1 h-full px-3 text-xs font-mono font-semibold text-slate-900 outline-none bg-transparent"
+                  className="type-input flex-1 h-full px-3 text-xs font-mono font-semibold text-slate-900 outline-none bg-transparent"
                 />
               </div>
             </div>
 
             {/* Excerpt */}
             <div>
-              <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              <label className="type-label mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                 Article Summary / Excerpt
               </label>
               <textarea
@@ -716,7 +716,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 onChange={(e) => setExcerpt(e.target.value)}
                 rows={2}
                 placeholder="Brief 1–2 sentence summary for blog cards and key takeaway box..."
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs leading-relaxed text-slate-800 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100"
+                className="type-input w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs leading-relaxed text-slate-800 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100"
               />
             </div>
           </div>
@@ -729,7 +729,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   <CheckCircle2 size={15} />
                 </span>
                 <div>
-                  <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                  <h2 className="type-h2 text-xs font-extrabold uppercase tracking-wider text-slate-900">
                     Article Content Body <span className="text-orange-600">*</span>
                   </h2>
                   <p className="text-[11px] text-slate-400 font-normal">Write or paste formatted content, headings, lists, and images</p>
@@ -764,7 +764,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   {coverMediaType === "video" ? <Video size={15} className="text-red-600" /> : <Upload size={15} />}
                 </span>
                 <div>
-                  <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                  <h2 className="type-h2 text-xs font-extrabold uppercase tracking-wider text-slate-900">
                     Featured Cover
                   </h2>
                   <p className="text-[11px] text-slate-400 font-normal">16:9 image or YouTube video</p>
@@ -778,10 +778,10 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
               <button
                 type="button"
                 onClick={() => setCoverMediaType("image")}
-                className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-bold transition-all cursor-pointer ${coverMediaType === "image"
+                className={`type-button ${`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-bold transition-all cursor-pointer ${coverMediaType === "image"
                   ? "bg-orange-600 text-white shadow-sm ring-1 ring-orange-700/20"
                   : "text-slate-600 hover:text-slate-900"
-                  }`}
+                  }`}` }
               >
                 <Upload size={13} className={coverMediaType === "image" ? "text-white" : "text-slate-500"} />
                 Cover Image
@@ -789,10 +789,10 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
               <button
                 type="button"
                 onClick={() => setCoverMediaType("video")}
-                className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-bold transition-all cursor-pointer ${coverMediaType === "video"
+                className={`type-button ${`flex-1 flex items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-bold transition-all cursor-pointer ${coverMediaType === "video"
                   ? "bg-orange-600 text-white shadow-sm ring-1 ring-orange-700/20"
                   : "text-slate-600 hover:text-slate-900"
-                  }`}
+                  }`}` }
               >
                 <Video size={13} className={coverMediaType === "video" ? "text-white" : "text-slate-500"} />
                 YouTube Video
@@ -803,7 +803,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
               /* YouTube Video Option */
               <div className="space-y-3.5 pt-0.5">
                 <div>
-                  <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                  <label className="type-label mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                     YouTube Video URL <span className="text-red-500">*</span>
                   </label>
                   <div className="flex gap-1.5">
@@ -812,13 +812,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                       value={featuredVideoUrl}
                       onChange={(e) => setFeaturedVideoUrl(e.target.value)}
                       placeholder="https://www.youtube.com/watch?v=... or /shorts/..."
-                      className="h-10 flex-1 rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
+                      className="type-input h-10 flex-1 rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
                     />
                     {featuredVideoUrl && (
                       <button
                         type="button"
                         onClick={() => setFeaturedVideoUrl("")}
-                        className="h-10 rounded-xl border border-slate-200 px-2.5 text-xs font-semibold text-slate-500 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
+                        className="type-button h-10 rounded-xl border border-slate-200 px-2.5 text-xs font-semibold text-slate-500 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
                         title="Clear link"
                       >
                         <X size={14} />
@@ -870,14 +870,14 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 {/* Custom 16:9 Cover Image for YouTube Shorts / Video */}
                 <div className="border-t border-slate-100 pt-3 space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="block text-[10.5px] font-bold uppercase tracking-wider text-slate-700">
+                    <label className="type-label block text-[10.5px] font-bold uppercase tracking-wider text-slate-700">
                       Custom 16:9 Cover Image (For YouTube Shorts)
                     </label>
                     {imagePreview && (
                       <button
                         type="button"
                         onClick={() => { setFeaturedImage(null); setImagePreview(null); }}
-                        className="text-[10.5px] font-bold text-red-600 hover:underline cursor-pointer"
+                        className="type-button text-[10.5px] font-bold text-red-600 hover:underline cursor-pointer"
                       >
                         Remove Cover
                       </button>
@@ -892,7 +892,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                       </div>
                     </div>
                   ) : (
-                    <label className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/60 px-3 text-center transition hover:border-orange-400 hover:bg-orange-50/40">
+                    <label className="type-label flex h-10 cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/60 px-3 text-center transition hover:border-orange-400 hover:bg-orange-50/40">
                       <Upload size={13} className="text-orange-600 shrink-0" />
                       <span className="text-xs font-bold text-slate-700">
                         {uploadingImage ? "Uploading..." : "Upload 16:9 Cover Image for Shorts"}
@@ -900,7 +900,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                       <input
                         type="file"
                         accept="image/jpeg,image/png,image/webp"
-                        className="sr-only"
+                        className="type-input sr-only"
                         disabled={uploadingImage}
                         onChange={(e) => {
                           const file = e.target.files?.[0];
@@ -921,14 +921,14 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     <button
                       type="button"
                       onClick={() => { setFeaturedImage(null); setImagePreview(null); }}
-                      className="absolute right-2 top-2 rounded-full bg-white/95 p-1.5 shadow-md hover:bg-red-50 text-slate-600 hover:text-red-600 transition cursor-pointer"
+                      className="type-button absolute right-2 top-2 rounded-full bg-white/95 p-1.5 shadow-md hover:bg-red-50 text-slate-600 hover:text-red-600 transition cursor-pointer"
                       title="Remove image"
                     >
                       <X size={13} />
                     </button>
                   </div>
                 ) : (
-                  <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50/50 py-5 text-center transition hover:border-orange-400 hover:bg-orange-50/30">
+                  <label className="type-label flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 bg-slate-50/50 py-5 text-center transition hover:border-orange-400 hover:bg-orange-50/30">
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-50 text-orange-600 mb-1.5 border border-orange-100">
                       <Upload size={15} />
                     </div>
@@ -939,7 +939,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     <input
                       type="file"
                       accept="image/jpeg,image/png,image/webp"
-                      className="sr-only"
+                      className="type-input sr-only"
                       disabled={uploadingImage}
                       onChange={(e) => {
                         const file = e.target.files?.[0];
@@ -950,13 +950,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 )}
 
                 <div>
-                  <label className="mb-1 block text-[10.5px] font-bold uppercase tracking-wider text-slate-600">
+                  <label className="type-label mb-1 block text-[10.5px] font-bold uppercase tracking-wider text-slate-600">
                     Or Paste Image URL
                   </label>
                   <input
                     type="url"
                     placeholder="https://example.com/image.jpg"
-                    className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
+                    className="type-input h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
                     onBlur={(e) => {
                       if (e.target.value.trim()) {
                         setFeaturedImage(e.target.value.trim());
@@ -968,7 +968,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-[10.5px] font-bold uppercase tracking-wider text-slate-600">
+                  <label className="type-label mb-1 block text-[10.5px] font-bold uppercase tracking-wider text-slate-600">
                     Image Alt Text (SEO &amp; Accessibility)
                   </label>
                   <input
@@ -976,7 +976,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     value={featuredImageAlt}
                     onChange={(e) => setFeaturedImageAlt(e.target.value)}
                     placeholder="Brief description of the cover image..."
-                    className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
+                    className="type-input h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
                   />
                 </div>
               </div>
@@ -991,7 +991,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   <Tag size={15} />
                 </span>
                 <div>
-                  <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                  <h2 className="type-h2 text-xs font-extrabold uppercase tracking-wider text-slate-900">
                     Taxonomy &amp; Author
                   </h2>
                   <p className="text-[11px] text-slate-400 font-normal">Category, author, and topic tags</p>
@@ -1004,7 +1004,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3.5">
                 <div>
                   <div className="mb-1.5 flex items-center justify-between gap-2">
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                    <label className="type-label block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                       Category <span className="text-orange-600">*</span>
                     </label>
                     <button
@@ -1013,7 +1013,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                         setIsAddingCategory((prev) => !prev);
                         setCustomCategoryInput("");
                       }}
-                      className="inline-flex items-center gap-1 text-[10.5px] font-bold text-orange-600 hover:text-orange-700 cursor-pointer transition-colors"
+                      className="type-button inline-flex items-center gap-1 text-[10.5px] font-bold text-orange-600 hover:text-orange-700 cursor-pointer transition-colors"
                     >
                       {isAddingCategory ? (
                         <span>Choose from list</span>
@@ -1050,7 +1050,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                         }}
                         placeholder="Type custom category & press Enter..."
                         autoFocus
-                        className="h-10 flex-1 rounded-xl border border-orange-400 bg-white px-3 text-xs font-semibold text-slate-800 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition"
+                        className="type-input h-10 flex-1 rounded-xl border border-orange-400 bg-white px-3 text-xs font-semibold text-slate-800 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition"
                       />
                       <button
                         type="button"
@@ -1063,7 +1063,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                           setCustomCategoryInput("");
                           setIsAddingCategory(false);
                         }}
-                        className="h-10 inline-flex items-center gap-1 rounded-xl bg-orange-600 px-3 text-xs font-bold text-white hover:bg-orange-700 cursor-pointer shrink-0 transition"
+                        className="type-button h-10 inline-flex items-center gap-1 rounded-xl bg-orange-600 px-3 text-xs font-bold text-white hover:bg-orange-700 cursor-pointer shrink-0 transition"
                       >
                         <Plus size={12} />
                         Add
@@ -1080,7 +1080,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                           setCategory(e.target.value);
                         }
                       }}
-                      className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-semibold text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition cursor-pointer"
+                      className="type-input h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-semibold text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition cursor-pointer"
                     >
                       {categoryOptions.map((c) => (
                         <option key={c} value={c}>{c}</option>
@@ -1091,13 +1091,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 </div>
 
                 <div>
-                  <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                  <label className="type-label mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                     Author <span className="text-orange-600">*</span>
                   </label>
                   <select
                     value={author}
                     onChange={(e) => setAuthor(e.target.value)}
-                    className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-semibold text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition cursor-pointer"
+                    className="type-input h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-semibold text-slate-800 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition cursor-pointer"
                   >
                     <option value="">Select author</option>
                     {authorOptions.map((option) => <option key={option} value={option}>{option}</option>)}
@@ -1107,7 +1107,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
 
               <div>
                 <div className="mb-1.5 flex items-center justify-between gap-2">
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                  <label className="type-label block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                     Tags <span className="font-normal text-slate-400 normal-case">(press Enter to add)</span>
                   </label>
                   {tags.length > 0 && (
@@ -1127,7 +1127,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                       <button
                         type="button"
                         onClick={() => removeTag(tag)}
-                        className="rounded-full p-0.5 text-orange-400 hover:bg-orange-200/60 hover:text-orange-900 transition-colors cursor-pointer"
+                        className="type-button rounded-full p-0.5 text-orange-400 hover:bg-orange-200/60 hover:text-orange-900 transition-colors cursor-pointer"
                         title="Remove tag"
                         aria-label={`Remove ${tag}`}
                       >
@@ -1142,13 +1142,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                       onChange={(e) => setTagInput(e.target.value)}
                       onKeyDown={addTag}
                       placeholder={tags.length === 0 ? "Type or paste tags and press Enter..." : "Add another tag..."}
-                      className="w-full bg-transparent py-0.5 text-xs font-semibold text-slate-800 outline-none placeholder:font-normal placeholder:text-slate-400"
+                      className="type-input w-full bg-transparent py-0.5 text-xs font-semibold text-slate-800 outline-none placeholder:font-normal placeholder:text-slate-400"
                     />
                     {tagInput.trim() && (
                       <button
                         type="button"
                         onClick={() => addTagsFromInput(tagInput)}
-                        className="ml-1.5 inline-flex items-center gap-1 rounded-lg bg-orange-600 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-orange-700 cursor-pointer shrink-0"
+                        className="type-button ml-1.5 inline-flex items-center gap-1 rounded-lg bg-orange-600 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-orange-700 cursor-pointer shrink-0"
                       >
                         <Plus size={11} />
                         Add
@@ -1169,7 +1169,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     <Sparkles size={15} />
                   </span>
                   <div>
-                    <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+                    <h3 className="type-h3 text-xs font-extrabold uppercase tracking-wider text-slate-900">
                       Related Posts
                     </h3>
                     <p className="text-[11px] text-slate-400 font-normal">Recommend existing articles</p>
@@ -1182,12 +1182,12 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 {availablePosts.filter((item) => item.id !== post?.id).length ? (
                   <div className="max-h-48 space-y-1.5 overflow-y-auto pr-1">
                     {availablePosts.filter((item) => item.id !== post?.id).map((item) => (
-                      <label key={item.id} className="flex cursor-pointer items-start gap-2.5 rounded-xl p-2.5 transition hover:bg-orange-50/40 border border-slate-100 hover:border-orange-200">
+                      <label key={item.id} className="type-label flex cursor-pointer items-start gap-2.5 rounded-xl p-2.5 transition hover:bg-orange-50/40 border border-slate-100 hover:border-orange-200">
                         <input
                           type="checkbox"
                           checked={relatedPostIds.includes(item.id)}
                           onChange={(e) => setRelatedPostIds((current) => e.target.checked ? [...current, item.id] : current.filter((id) => id !== item.id))}
-                          className="mt-0.5 h-4 w-4 accent-orange-600 rounded"
+                          className="type-input mt-0.5 h-4 w-4 accent-orange-600 rounded"
                         />
                         <span className="min-w-0">
                           <span className="block truncate text-xs font-bold text-slate-800">{item.title}</span>
@@ -1211,14 +1211,14 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
         <button
           type="button"
           onClick={() => setShowSeo((v) => !v)}
-          className="flex w-full items-center justify-between border-b border-slate-100 bg-white px-5 py-4 text-left transition hover:bg-slate-50/60 cursor-pointer"
+          className="type-button flex w-full items-center justify-between border-b border-slate-100 bg-white px-5 py-4 text-left transition hover:bg-slate-50/60 cursor-pointer"
         >
           <div className="flex items-center gap-3">
             <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-600 border border-orange-100">
               <Globe size={16} />
             </span>
             <div>
-              <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+              <h2 className="type-h2 text-xs font-extrabold uppercase tracking-wider text-slate-900">
                 Search Optimization (SEO, Meta &amp; Keyphrases)
               </h2>
               <p className="text-[11px] font-normal text-slate-400">
@@ -1243,7 +1243,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
               {/* Custom SEO Title */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                  <label className="type-label block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                     Custom SEO Title
                   </label>
                   <span className={`text-[10.5px] font-semibold ${(seoTitle || title).length > 55 ? "text-amber-600" : "text-slate-400"}`}>
@@ -1256,14 +1256,14 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   value={seoTitle}
                   onChange={(e) => setSeoTitle(e.target.value)}
                   placeholder={title || "Enter SEO title for Google search results..."}
-                  className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 text-xs font-semibold text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition placeholder:font-normal placeholder:text-slate-400"
+                  className="type-input h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 text-xs font-semibold text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition placeholder:font-normal placeholder:text-slate-400"
                 />
               </div>
 
               {/* Meta Description */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+                  <label className="type-label block text-[11px] font-bold uppercase tracking-wider text-slate-700">
                     Meta Description
                   </label>
                   <span className={`text-[10.5px] font-semibold ${(metaDescription || excerpt).length > 150 ? "text-amber-600" : "text-slate-400"}`}>
@@ -1276,7 +1276,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   onChange={(e) => setMetaDescription(e.target.value)}
                   maxLength={160}
                   placeholder={excerpt || "Write a compelling summary for search engine results..."}
-                  className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition placeholder:font-normal placeholder:text-slate-400"
+                  className="type-input h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition placeholder:font-normal placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -1284,7 +1284,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
             {/* Row 2: Focus Keyphrases & Suggested Keyphrases */}
             <div className="space-y-2.5">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <label className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-800">
+                <label className="type-label flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-800">
                   <span className="flex h-5 w-5 items-center justify-center rounded-md bg-orange-50 text-orange-600 border border-orange-100">
                     <Key size={11} />
                   </span>
@@ -1310,7 +1310,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     <button
                       type="button"
                       onClick={() => removeKeyphrase(phrase)}
-                      className="rounded-full p-0.5 text-orange-400 hover:bg-orange-200/60 hover:text-orange-900 transition-colors cursor-pointer"
+                      className="type-button rounded-full p-0.5 text-orange-400 hover:bg-orange-200/60 hover:text-orange-900 transition-colors cursor-pointer"
                       title="Remove keyphrase"
                       aria-label={`Remove ${phrase}`}
                     >
@@ -1335,13 +1335,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                       }
                     }}
                     placeholder={currentKeyphrases.length === 0 ? "Type a focus keyphrase and press Enter..." : "Add another keyphrase..."}
-                    className="w-full bg-transparent text-xs font-semibold text-slate-800 outline-none placeholder:font-normal placeholder:text-slate-400"
+                    className="type-input w-full bg-transparent text-xs font-semibold text-slate-800 outline-none placeholder:font-normal placeholder:text-slate-400"
                   />
                   {keyphraseInput.trim() && (
                     <button
                       type="button"
                       onClick={() => addKeyphrase(keyphraseInput)}
-                      className="ml-1.5 inline-flex items-center gap-1 rounded-lg bg-orange-600 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-orange-700 cursor-pointer shrink-0"
+                      className="type-button ml-1.5 inline-flex items-center gap-1 rounded-lg bg-orange-600 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-orange-700 cursor-pointer shrink-0"
                     >
                       <Plus size={11} />
                       Add
@@ -1369,7 +1369,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                         <button
                           type="button"
                           onClick={() => setShowAllKeyphrases((prev) => !prev)}
-                          className="text-xs font-bold text-orange-600 hover:text-orange-700 cursor-pointer transition-colors"
+                          className="type-button text-xs font-bold text-orange-600 hover:text-orange-700 cursor-pointer transition-colors"
                         >
                           {showAllKeyphrases ? "Show less" : `Show all (${unselected.length})`}
                         </button>
@@ -1382,7 +1382,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                           key={suggestion}
                           type="button"
                           onClick={() => addKeyphrase(suggestion)}
-                          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200/90 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 shadow-2xs hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 transition-all cursor-pointer"
+                          className="type-button inline-flex items-center gap-1.5 rounded-lg border border-slate-200/90 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 shadow-2xs hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 transition-all cursor-pointer"
                         >
                           <Plus size={11} className="text-orange-500 shrink-0" />
                           <span>{suggestion}</span>
@@ -1393,7 +1393,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                         <button
                           type="button"
                           onClick={() => setShowAllKeyphrases(true)}
-                          className="inline-flex items-center gap-1 rounded-lg border border-dashed border-orange-300 bg-orange-50/70 px-2.5 py-1 text-xs font-bold text-orange-700 hover:bg-orange-100 transition-colors cursor-pointer"
+                          className="type-button inline-flex items-center gap-1 rounded-lg border border-dashed border-orange-300 bg-orange-50/70 px-2.5 py-1 text-xs font-bold text-orange-700 hover:bg-orange-100 transition-colors cursor-pointer"
                         >
                           <span>+{unselected.length - 6} more</span>
                         </button>
@@ -1407,7 +1407,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
             {/* Row 3: Equal-Height Bottom Grid — Indexing Control (4 cols) + Google SERP Preview (8 cols) */}
             <div className="grid gap-4 lg:grid-cols-12 items-stretch">
               {/* Left 4 Cols: Search Engine Indexing Card */}
-              <label className="lg:col-span-4 flex flex-col justify-between cursor-pointer rounded-xl border border-slate-200/90 bg-slate-50/60 p-4 transition hover:border-orange-300 hover:bg-orange-50/20">
+              <label className="type-label lg:col-span-4 flex flex-col justify-between cursor-pointer rounded-xl border border-slate-200/90 bg-slate-50/60 p-4 transition hover:border-orange-300 hover:bg-orange-50/20">
                 <div className="flex items-center justify-between gap-2">
                   <span className="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
                     <Globe size={11} className="text-orange-600" />
@@ -1423,7 +1423,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     type="checkbox"
                     checked={allowIndexing}
                     onChange={(e) => setAllowIndexing(e.target.checked)}
-                    className="mt-0.5 h-4 w-4 accent-orange-600 rounded cursor-pointer shrink-0"
+                    className="type-input mt-0.5 h-4 w-4 accent-orange-600 rounded cursor-pointer shrink-0"
                   />
                   <div>
                     <span className="block text-xs font-bold text-slate-900">
@@ -1480,7 +1480,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
               <Share2 size={15} />
             </span>
             <div>
-              <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+              <h2 className="type-h2 text-xs font-extrabold uppercase tracking-wider text-slate-900">
                 Social Media Video &amp; Post Links
               </h2>
               <p className="text-[11px] text-slate-400">
@@ -1496,7 +1496,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           {/* Instagram Reel / Post URL */}
           <div>
-            <label className="mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+            <label className="type-label mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700">
               <span className="flex h-4 w-4 items-center justify-center rounded bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white">
                 <FaInstagram className="h-2.5 w-2.5" />
               </span>
@@ -1508,13 +1508,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 value={instagramUrl}
                 onChange={(e) => setInstagramUrl(e.target.value)}
                 placeholder="https://www.instagram.com/reel/..."
-                className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
+                className="type-input h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
               />
               {instagramUrl && (
                 <button
                   type="button"
                   onClick={() => setInstagramUrl("")}
-                  className="h-10 rounded-xl border border-slate-200 px-2.5 text-xs text-slate-400 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
+                  className="type-button h-10 rounded-xl border border-slate-200 px-2.5 text-xs text-slate-400 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
                   title="Clear Instagram link"
                 >
                   <X size={14} />
@@ -1525,7 +1525,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
 
           {/* Facebook Video / Reel URL */}
           <div>
-            <label className="mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+            <label className="type-label mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700">
               <span className="flex h-4 w-4 items-center justify-center rounded bg-[#1877f2] text-white">
                 <FaFacebookF className="h-2.5 w-2.5" />
               </span>
@@ -1537,13 +1537,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 value={facebookUrl}
                 onChange={(e) => setFacebookUrl(e.target.value)}
                 placeholder="https://www.facebook.com/reel/... or fb.watch/..."
-                className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
+                className="type-input h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
               />
               {facebookUrl && (
                 <button
                   type="button"
                   onClick={() => setFacebookUrl("")}
-                  className="h-10 rounded-xl border border-slate-200 px-2.5 text-xs text-slate-400 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
+                  className="type-button h-10 rounded-xl border border-slate-200 px-2.5 text-xs text-slate-400 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
                   title="Clear Facebook link"
                 >
                   <X size={14} />
@@ -1554,7 +1554,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
 
           {/* Additional YouTube / Shorts Link */}
           <div>
-            <label className="mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700">
+            <label className="type-label mb-1.5 flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-slate-700">
               <span className="flex h-4 w-4 items-center justify-center rounded bg-[#ff0000] text-white">
                 <FaYoutube className="h-2.5 w-2.5" />
               </span>
@@ -1566,13 +1566,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 value={youtubeSocialUrl}
                 onChange={(e) => setYoutubeSocialUrl(e.target.value)}
                 placeholder="https://www.youtube.com/shorts/..."
-                className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
+                className="type-input h-10 w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3 text-xs font-medium text-slate-900 outline-none focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-100 transition"
               />
               {youtubeSocialUrl && (
                 <button
                   type="button"
                   onClick={() => setYoutubeSocialUrl("")}
-                  className="h-10 rounded-xl border border-slate-200 px-2.5 text-xs text-slate-400 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
+                  className="type-button h-10 rounded-xl border border-slate-200 px-2.5 text-xs text-slate-400 hover:bg-slate-100 hover:text-red-600 cursor-pointer"
                   title="Clear YouTube link"
                 >
                   <X size={14} />
@@ -1606,7 +1606,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 resetForm();
               }
             }}
-            className="h-10 inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-2xs"
+            className="type-button h-10 inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-4 text-xs font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer shadow-2xs"
             title="Reset form to blank"
           >
             <RotateCcw size={13} className="text-slate-500" />
@@ -1633,13 +1633,13 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                 <p className="text-sm font-bold text-slate-900">Live article preview</p>
                 <p className="text-xs text-slate-500">Showing the latest editor content after HTML sanitization.</p>
               </div>
-              <button type="button" onClick={() => setShowLivePreview(false)} aria-label="Close preview" className="rounded-lg p-2 text-slate-500 hover:bg-slate-100"><X size={18} /></button>
+              <button type="button" onClick={() => setShowLivePreview(false)} aria-label="Close preview" className="type-button rounded-lg p-2 text-slate-500 hover:bg-slate-100"><X size={18} /></button>
             </div>
             <article className="mx-auto max-w-3xl p-5 sm:p-10">
               {/* eslint-disable-next-line @next/next/no-img-element -- preview supports arbitrary remote and local draft image URLs. */}
               {imagePreview && <img src={imagePreview} alt={featuredImageAlt || title || "Featured article"} className="mb-7 aspect-[16/9] w-full rounded-2xl object-cover" />}
               <p className="text-xs font-bold uppercase tracking-wider text-orange-700">{category}</p>
-              <h1 className="mt-3 text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">{title || "Your article title"}</h1>
+              <h1 className="type-page-title mt-3 text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">{title || "Your article title"}</h1>
               <p className="mt-4 text-base leading-7 text-slate-600">{excerpt || "Your article summary will appear here."}</p>
               <div className="mt-8 border-t border-slate-100 pt-6 blog-content" dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }} />
             </article>
@@ -1659,7 +1659,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
               <button
                 type="button"
                 onClick={() => setPublishedSuccessData(null)}
-                className="rounded-xl p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+                className="type-button rounded-xl p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
                 aria-label="Close success dialog"
               >
                 <X size={20} />
@@ -1676,7 +1676,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     : "Draft Saved"}
               </span>
 
-              <h3 className="mt-3 text-xl font-black text-slate-900 sm:text-2xl leading-snug">
+              <h3 className="type-h3 mt-3 text-xl font-black text-slate-900 sm:text-2xl leading-snug">
                 {publishedSuccessData.status === "published"
                   ? "Blog Published Successfully!"
                   : "Changes Saved Successfully!"}
@@ -1707,7 +1707,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     router.push("/admin/posts/new");
                   }
                 }}
-                className="flex-1 rounded-xl bg-slate-900 py-3 text-xs font-extrabold text-white shadow-md hover:bg-slate-800 transition-colors cursor-pointer text-center"
+                className="type-button flex-1 rounded-xl bg-slate-900 py-3 text-xs font-extrabold text-white shadow-md hover:bg-slate-800 transition-colors cursor-pointer text-center"
               >
                 + Write Another Post
               </button>
@@ -1717,7 +1717,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   setPublishedSuccessData(null);
                   router.push("/admin/posts");
                 }}
-                className="flex-1 rounded-xl border border-slate-200 py-3 text-xs font-extrabold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer text-center"
+                className="type-button flex-1 rounded-xl border border-slate-200 py-3 text-xs font-extrabold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer text-center"
               >
                 All Posts
               </button>
@@ -1748,7 +1748,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                   <Send size={18} />
                 </span>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">
+                  <h3 className="type-h3 text-base font-bold text-slate-900">
                     {mode === "edit" ? "Update Article" : "Ready to Publish?"}
                   </h3>
                   <p className="text-xs text-slate-500">Choose how you want to save this blog</p>
@@ -1757,7 +1757,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
               <button
                 type="button"
                 onClick={() => setShowPublishModal(false)}
-                className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition"
+                className="type-button rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition"
               >
                 <X size={18} />
               </button>
@@ -1765,7 +1765,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
 
             {/* Status Selection Pills */}
             <div className="mt-5">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+              <label className="type-label block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
                 Choose Status
               </label>
               <div className="grid grid-cols-3 gap-2 p-1.5 rounded-2xl bg-slate-100 border border-slate-200/80">
@@ -1774,10 +1774,10 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     key={s}
                     type="button"
                     onClick={() => setStatus(s)}
-                    className={`rounded-xl py-2 px-2 text-xs font-bold capitalize transition-all cursor-pointer ${status === s
+                    className={`type-button ${`rounded-xl py-2 px-2 text-xs font-bold capitalize transition-all cursor-pointer ${status === s
                       ? "bg-orange-600 text-white shadow-sm"
                       : "text-slate-600 hover:text-slate-900"
-                      }`}
+                      }`}` }
                   >
                     {s}
                   </button>
@@ -1788,14 +1788,14 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
             {/* Scheduled Date Picker */}
             {status === "scheduled" && (
               <div className="mt-4 rounded-2xl border border-blue-100 bg-blue-50/70 p-3.5">
-                <label className="mb-1.5 block text-xs font-bold text-blue-900">
+                <label className="type-label mb-1.5 block text-xs font-bold text-blue-900">
                   Select Scheduled Date & Time *
                 </label>
                 <input
                   type="datetime-local"
                   value={scheduledAt}
                   onChange={(e) => setScheduledAt(e.target.value)}
-                  className="w-full rounded-xl border border-blue-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:border-blue-500 focus:outline-none"
+                  className="type-input w-full rounded-xl border border-blue-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:border-blue-500 focus:outline-none"
                 />
               </div>
             )}
@@ -1803,14 +1803,14 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
             {/* Published Date (Optional) */}
             {status === "published" && (
               <div className="mt-4 rounded-2xl border border-emerald-100 bg-emerald-50/70 p-3.5">
-                <label className="mb-1.5 block text-xs font-bold text-emerald-950">
+                <label className="type-label mb-1.5 block text-xs font-bold text-emerald-950">
                   Custom Publication Date (Optional)
                 </label>
                 <input
                   type="datetime-local"
                   value={publishedAt}
                   onChange={(e) => setPublishedAt(e.target.value)}
-                  className="w-full rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:border-emerald-500 focus:outline-none"
+                  className="type-input w-full rounded-xl border border-emerald-200 bg-white px-3 py-2 text-xs font-semibold text-slate-800 focus:border-emerald-500 focus:outline-none"
                 />
                 <p className="mt-1 text-[11px] text-emerald-800/80">
                   Leave empty to publish with current timestamp.
@@ -1859,7 +1859,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
                     setShowPublishModal(false);
                   }}
                   disabled={isSubmitting}
-                  className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-amber-300 bg-amber-50/80 py-2.5 text-xs font-bold text-amber-900 transition hover:bg-amber-100 disabled:opacity-60 cursor-pointer"
+                  className="type-button w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-amber-300 bg-amber-50/80 py-2.5 text-xs font-bold text-amber-900 transition hover:bg-amber-100 disabled:opacity-60 cursor-pointer"
                 >
                   <RotateCcw size={14} className="text-amber-700" />
                   Unpublish to Draft
@@ -1869,7 +1869,7 @@ export function PostForm({ post, mode, availablePosts = [] }: PostFormProps) {
               <button
                 type="button"
                 onClick={() => setShowPublishModal(false)}
-                className="w-full rounded-xl border border-slate-200 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50 transition cursor-pointer"
+                className="type-button w-full rounded-xl border border-slate-200 py-2.5 text-xs font-bold text-slate-600 hover:bg-slate-50 transition cursor-pointer"
               >
                 Cancel
               </button>

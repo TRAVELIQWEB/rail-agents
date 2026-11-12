@@ -66,15 +66,15 @@ export default function TicketDateCalculatorPage() {
           <div className="site-container relative z-10">
             <div>
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <h1 className="text-3xl sm:text-4xl lg:text-[2.65rem] font-extrabold text-[#0b2240] tracking-tight leading-tight">
+              <h1 className="type-page-title  text-[#0b2240] tracking-tight ">
                 Railway Ticket{" "}
                 <span className="text-[var(--primary)] ">
                   Booking Date Calculator
                 </span>
               </h1>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-white px-2.5 py-0.5 text-[10px] font-semibold text-orange-700"><CalendarDays className="h-3 w-3" /> Plan your next journey</span>
+              <span className="type-caption inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-white px-2.5 py-0.5 font-semibold text-orange-700"><CalendarDays className="h-3 w-3" /> Plan your next journey</span>
               </div>
-              <p className="mt-1 text-xs text-slate-600 leading-5">
+              <p className="type-body-small mt-1 text-slate-600 leading-5">
                 Calculate Normal 60-day Advance Reservation opening dates and Tatkal booking schedules.
               </p>
             </div>

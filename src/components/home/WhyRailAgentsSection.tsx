@@ -62,20 +62,20 @@ export function WhyRailAgentsSection() {
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
           {/* Left Column: Authority Narrative (5 cols) */}
           <div className="lg:col-span-5 text-center lg:text-left">
-            <span className="inline-flex items-center gap-1.5 rounded-md bg-white px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[#142B45] border border-[#E5EAF0]">
+            <span className="type-caption inline-flex items-center gap-1.5 rounded-md bg-white px-2.5 py-1 font-bold uppercase tracking-wider text-[#142B45] border border-[#E5EAF0]">
               <Sparkles className="h-3.5 w-3.5 text-[#F36B21]" aria-hidden="true" />
               Platform Standards
             </span>
 
             <h2
               id="why-railagents-heading"
-              className="mt-3 text-2xl font-black tracking-tight text-[#142B45] sm:text-3xl lg:text-4xl leading-tight"
+              className="type-h2 mt-3 tracking-tight text-[#142B45] "
             >
               The Authoritative Standard for{" "}
               <span className="text-[#F36B21]">Railway Knowledge</span>
             </h2>
 
-            <p className="mt-4 text-sm leading-relaxed text-[#475467] sm:text-base">
+            <p className="type-body-small mt-4 leading-relaxed text-[#475467] ">
               Navigating Indian Railways rules should not involve guesswork, fraudulent touts, or conflicting circulars. We decode complex official commercial notifications into transparent, everyday calculations.
             </p>
 
@@ -83,15 +83,15 @@ export function WhyRailAgentsSection() {
             <div className="mt-6 space-y-2.5">
               <div className="flex items-center gap-2.5 rounded-xl border border-[#E5EAF0] bg-white p-3 shadow-2xs">
                 <CheckCircle2 className="h-4 w-4 shrink-0 text-[#16A36A]" aria-hidden="true" />
-                <span className="text-xs font-bold text-[#142B45]">100% Official Gazette &amp; Circular References</span>
+                <span className="type-caption  font-bold text-[#142B45]">100% Official Gazette &amp; Circular References</span>
               </div>
               <div className="flex items-center gap-2.5 rounded-xl border border-[#E5EAF0] bg-white p-3 shadow-2xs">
                 <CheckCircle2 className="h-4 w-4 shrink-0 text-[#16A36A]" aria-hidden="true" />
-                <span className="text-xs font-bold text-[#142B45]">Zero Touts, Forged Letterheads or Fake Quotas</span>
+                <span className="type-caption  font-bold text-[#142B45]">Zero Touts, Forged Letterheads or Fake Quotas</span>
               </div>
               <div className="flex items-center gap-2.5 rounded-xl border border-[#E5EAF0] bg-white p-3 shadow-2xs">
                 <CheckCircle2 className="h-4 w-4 shrink-0 text-[#16A36A]" aria-hidden="true" />
-                <span className="text-xs font-bold text-[#142B45]">Open, Accurate Public PRS Calculators</span>
+                <span className="type-caption  font-bold text-[#142B45]">Open, Accurate Public PRS Calculators</span>
               </div>
             </div>
 
@@ -99,7 +99,7 @@ export function WhyRailAgentsSection() {
               <InternalLink
                 href="/about"
                 prefetch={false}
-                className="inline-flex items-center gap-1.5 text-sm font-bold text-[#F36B21] hover:text-[#F36B21] transition-colors"
+                className="type-button inline-flex items-center gap-1.5 font-bold text-[#F36B21] hover:text-[#F36B21] transition-colors"
               >
                 <span>Read our editorial standards &amp; mission</span>
                 <ArrowRight aria-hidden="true" className="h-4 w-4" />
@@ -123,16 +123,16 @@ export function WhyRailAgentsSection() {
                       >
                         <Icon aria-hidden="true" className="h-6 w-6" />
                       </span>
-                      <span className="rounded-full bg-[#F4F5F7] px-2.5 py-0.5 text-[11px] font-bold text-[#142B45]">
+                      <span className="type-caption rounded-full bg-[#F4F5F7] px-2.5 py-0.5 font-bold text-[#142B45]">
                         {pillar.badge}
                       </span>
                     </div>
 
-                    <h3 className="mt-5 text-base font-bold text-[#142B45] sm:text-lg">
+                    <h3 className="type-card-title mt-5 text-[#142B45] ">
                       {pillar.title}
                     </h3>
 
-                    <p className="mt-2 text-xs leading-relaxed text-[#667085] sm:text-sm">
+                    <p className="type-body-small mt-2 leading-relaxed text-[#667085] ">
                       {pillar.description}
                     </p>
                   </div>

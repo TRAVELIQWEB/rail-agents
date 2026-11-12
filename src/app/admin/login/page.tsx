@@ -110,7 +110,7 @@ export default function AdminLoginPage() {
             <span>Railway Help &amp; Query Desk</span>
           </div>
 
-          <h1 className="text-3xl font-[900] leading-[1.15] tracking-tight text-zinc-100 sm:text-5xl lg:text-[3.1rem]">
+          <h1 className="type-page-title text-3xl font-[900] leading-[1.15] tracking-tight text-zinc-100 sm:text-5xl lg:text-[3.1rem]">
             Every railway query, <br />
             rule &amp; update in <br />
             <span className="text-[#F36B21]">one place.</span>
@@ -126,7 +126,7 @@ export default function AdminLoginPage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-500/10 text-orange-400 border border-orange-500/20">
                 <FileQuestion size={16} />
               </div>
-              <h3 className="mt-2.5 text-xs font-bold text-zinc-100">Ticket &amp; Tatkal Queries</h3>
+              <h3 className="type-h3 mt-2.5 text-xs font-bold text-zinc-100">Ticket &amp; Tatkal Queries</h3>
               <p className="mt-1 text-[11px] text-zinc-400 leading-snug">Booking windows, waitlist charts, quota allocations &amp; counter rules.</p>
             </div>
 
@@ -134,7 +134,7 @@ export default function AdminLoginPage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-500/10 text-orange-400 border border-orange-500/20">
                 <AlertCircle size={16} />
               </div>
-              <h3 className="mt-2.5 text-xs font-bold text-zinc-100">Refunds &amp; Cancellations</h3>
+              <h3 className="type-h3 mt-2.5 text-xs font-bold text-zinc-100">Refunds &amp; Cancellations</h3>
               <p className="mt-1 text-[11px] text-zinc-400 leading-snug">TDR filing guidelines, clerkage deductions, and auto-refund timelines.</p>
             </div>
 
@@ -142,7 +142,7 @@ export default function AdminLoginPage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-500/10 text-orange-400 border border-orange-500/20">
                 <Compass size={16} />
               </div>
-              <h3 className="mt-2.5 text-xs font-bold text-zinc-100">Travel Rules &amp; Rights</h3>
+              <h3 className="type-h3 mt-2.5 text-xs font-bold text-zinc-100">Travel Rules &amp; Rights</h3>
               <p className="mt-1 text-[11px] text-zinc-400 leading-snug">Luggage allowances, concession entitlements, and passenger rights.</p>
             </div>
           </div>
@@ -168,7 +168,7 @@ export default function AdminLoginPage() {
           <div className="w-full max-w-[410px] rounded-2xl border border-[#242933] bg-[#161920] p-7 sm:p-8 shadow-xl">
             <div className="flex items-center justify-between border-b border-[#242933] pb-4">
               <div>
-                <h2 className="text-xl font-extrabold text-zinc-100 sm:text-2xl">
+                <h2 className="type-h2 text-xl font-extrabold text-zinc-100 sm:text-2xl">
                   Admin Sign In
                 </h2>
                 <p className="mt-0.5 text-xs text-zinc-400">
@@ -191,7 +191,7 @@ export default function AdminLoginPage() {
 
             <form onSubmit={handleSubmit} className="mt-5 space-y-4">
               <div>
-                <label htmlFor="admin-email" className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-zinc-300">
+                <label htmlFor="admin-email" className="type-label mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-zinc-300">
                   Admin Email
                 </label>
                 <input
@@ -202,12 +202,12 @@ export default function AdminLoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@railagents.in"
                   autoComplete="email"
-                  className="h-11 w-full rounded-xl border border-[#2a303c] bg-[#111318] px-3.5 text-xs font-semibold text-zinc-100 outline-none transition placeholder:font-normal placeholder:text-zinc-500 focus:border-[#F36B21]"
+                  className="type-input h-11 w-full rounded-xl border border-[#2a303c] bg-[#111318] px-3.5 text-xs font-semibold text-zinc-100 outline-none transition placeholder:font-normal placeholder:text-zinc-500 focus:border-[#F36B21]"
                 />
               </div>
 
               <div>
-                <label htmlFor="admin-password" className="mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-zinc-300">
+                <label htmlFor="admin-password" className="type-label mb-1.5 block text-[11px] font-bold uppercase tracking-wider text-zinc-300">
                   Password
                 </label>
                 <div className="relative flex items-center">
@@ -219,12 +219,12 @@ export default function AdminLoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
                     autoComplete="current-password"
-                    className="h-11 w-full rounded-xl border border-[#2a303c] bg-[#111318] px-3.5 pr-12 text-xs font-semibold text-zinc-100 outline-none transition placeholder:font-normal placeholder:text-zinc-500 focus:border-[#F36B21]"
+                    className="type-input h-11 w-full rounded-xl border border-[#2a303c] bg-[#111318] px-3.5 pr-12 text-xs font-semibold text-zinc-100 outline-none transition placeholder:font-normal placeholder:text-zinc-500 focus:border-[#F36B21]"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
-                    className="absolute right-1 flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#F36B21]"
+                    className="type-button absolute right-1 flex h-11 w-11 cursor-pointer items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[#F36B21]"
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -243,7 +243,7 @@ export default function AdminLoginPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="flex h-11 w-full items-center justify-center rounded-xl bg-[#F36B21] px-6 text-xs sm:text-sm font-bold text-white transition hover:bg-[#F36B21] disabled:opacity-60 cursor-pointer"
+                  className="type-button flex h-11 w-full items-center justify-center rounded-xl bg-[#F36B21] px-6 text-xs sm:text-sm font-bold text-white transition hover:bg-[#F36B21] disabled:opacity-60 cursor-pointer"
                 >
                   {isLoading ? "Signing in..." : "Sign In to Dashboard →"}
                 </button>

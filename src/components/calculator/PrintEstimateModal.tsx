@@ -139,9 +139,9 @@ export function PrintEstimateModal({
               .font-bold { font-weight: 700; }
               .font-semibold { font-weight: 600; }
               .font-black { font-weight: 900; }
-              .text-xs { font-size: 11px; }
-              .text-sm { font-size: 13px; }
-              .text-lg { font-size: 18px; }
+              .type-caption { font-size: 11px; }
+              .type-body-small { font-size: 13px; }
+              .type-body-large { font-size: 18px; }
               .text-amber { color: #b45309; }
               .bg-amber { background-color: #fffbeb; }
               .disclaimer-box {
@@ -241,17 +241,17 @@ export function PrintEstimateModal({
               <Printer className="h-4 w-4" />
             </span>
             <div>
-              <h2 id="estimate-modal-title" className="text-sm font-bold text-[var(--navy)] sm:text-base">
+              <h2 id="estimate-modal-title" className="type-result-title  text-[var(--navy)] ">
                 Customer Fare Estimate Slip
               </h2>
-              <p className="text-xs text-slate-500">Ref: {referenceId}</p>
+              <p className="type-body  text-slate-500">Ref: {referenceId}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={handleCopyText}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--primary)]"
+              className="type-button inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--primary)]"
               title="Copy estimate text to clipboard"
             >
               {copied ? (
@@ -279,7 +279,7 @@ export function PrintEstimateModal({
               type="button"
               onClick={onClose}
               aria-label="Close estimate modal"
-              className="icon-action ml-1 p-1.5 text-slate-500"
+              className="type-button icon-action ml-1 p-1.5 text-slate-500"
             >
               <X className="h-5 w-5" />
             </button>
@@ -297,130 +297,130 @@ export function PrintEstimateModal({
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-black tracking-tight text-[var(--navy)]">
+                  <span className="type-body-large  font-black tracking-tight text-[var(--navy)]">
                     RailAgents<span className="text-[var(--primary)]">.in</span>
                   </span>
-                  <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-bold text-[var(--primary-dark)] uppercase tracking-wider">
+                  <span className="type-caption rounded-full bg-orange-100 px-2 py-0.5 font-bold text-[var(--primary-dark)] uppercase tracking-wider">
                     Agent Quotation
                   </span>
                 </div>
-                <p className="mt-0.5 text-xs text-slate-500">
+                <p className="type-body-small mt-0.5 text-slate-500">
                   IRCTC Agent Ticket Fare Breakdown & Payment Estimate
                 </p>
               </div>
 
-              <div className="text-left sm:text-right text-xs text-slate-600">
-                <p className="font-semibold text-slate-800">Quotation No: {referenceId}</p>
-                <p className="text-slate-500">Generated: {currentDate}</p>
+              <div className="type-caption text-left sm:text-right text-slate-600">
+                <p className="type-body font-semibold text-slate-800">Quotation No: {referenceId}</p>
+                <p className="type-body text-slate-500">Generated: {currentDate}</p>
               </div>
             </div>
           </div>
 
           {/* Journey & Passenger Meta */}
-          <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 rounded-xl bg-orange-50/70 p-3.5 text-xs border border-orange-100">
+          <div className="type-caption mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3 rounded-xl bg-orange-50/70 p-3.5 border border-orange-100">
             <div>
               <span className="text-slate-500 block">Category</span>
-              <span className="font-bold text-[var(--navy)] text-sm">
+              <span className="type-body-small font-bold text-[var(--navy)] ">
                 {result.category === "AC" ? "AC (Air Conditioned)" : "Non-AC (Sleeper/2S)"}
               </span>
-              <span className="block text-[11px] text-slate-600">
+              <span className="type-caption block text-slate-600">
                 {result.category === "AC" ? "IRCTC: ₹35.40 • Agent: ₹40" : "IRCTC: ₹17.70 • Agent: ₹20"}
               </span>
             </div>
             <div>
               <span className="text-slate-500 block">Total Passengers</span>
-              <span className="font-bold text-[var(--navy)] text-sm">
+              <span className="type-body-small font-bold text-[var(--navy)] ">
                 {result.totalPassengers} Passenger{result.totalPassengers > 1 ? "s" : ""}
               </span>
-              <span className="block text-[11px] text-slate-600">
+              <span className="type-caption block text-slate-600">
                 {result.adults} Adult{result.adults === 1 ? "" : "s"}
                 {result.children > 0 ? `, ${result.children} Child` : ""}
               </span>
             </div>
             <div>
               <span className="text-slate-500 block">PG Charge Rate</span>
-              <span className="font-bold text-slate-700 text-xs">
+              <span className="type-caption font-bold text-slate-700 ">
                 {result.railwayFare <= 2000 ? "0.75% (≤ ₹2,000)" : "1.00% (> ₹2,000)"}
               </span>
-              <span className="block text-[10px] text-slate-500">
+              <span className="type-caption block text-slate-500">
                 {result.pgAppliedRateDescription}
               </span>
             </div>
             <div>
               <span className="text-slate-500 block">Quota / Status</span>
-              <span className="font-bold text-slate-700 text-xs">General / Normal</span>
-              <span className="block text-[11px] text-emerald-700 font-medium">Estimated</span>
+              <span className="type-caption font-bold text-slate-700 ">General / Normal</span>
+              <span className="type-caption block text-emerald-700 font-medium">Estimated</span>
             </div>
           </div>
 
           {/* Detailed Itemized Charges Table */}
           <div className="mt-5">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+            <h3 className="type-h3  uppercase tracking-wider text-slate-500 mb-2">
               Itemized Charge Breakdown
             </h3>
             <div className="rounded-xl border border-slate-200 overflow-hidden">
-              <table className={`${styles.slipTable} w-full text-left text-xs sm:text-sm`}>
+              <table className={`type-table ${styles.slipTable} w-full text-left `}>
                 <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
                   <tr>
-                    <th className="py-2.5 px-3 sm:px-4">Charge Component</th>
-                    <th className="py-2.5 px-3 sm:px-4 text-center">Description / Rate</th>
-                    <th className="py-2.5 px-3 sm:px-4 text-right">Amount (₹)</th>
+                    <th className="type-table py-2.5 px-3 sm:px-4">Charge Component</th>
+                    <th className="type-table py-2.5 px-3 sm:px-4 text-center">Description / Rate</th>
+                    <th className="type-table py-2.5 px-3 sm:px-4 text-right">Amount (₹)</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-slate-700">
                   <tr>
-                    <td className="py-2.5 px-3 sm:px-4 font-medium text-[var(--navy)]">
+                    <td className="type-table py-2.5 px-3 sm:px-4 font-medium text-[var(--navy)]">
                       Total Railway Base Fare
                     </td>
-                    <td className="py-2.5 px-3 sm:px-4 text-center text-xs text-slate-500">
+                    <td className="type-table py-2.5 px-3 sm:px-4 text-center text-slate-500">
                       Combined PRS fare for {result.totalPassengers} pax
                     </td>
-                    <td className="py-2.5 px-3 sm:px-4 text-right font-semibold text-slate-900">
+                    <td className="type-table py-2.5 px-3 sm:px-4 text-right font-semibold text-slate-900">
                       {formatINR(result.railwayFare)}
                     </td>
                   </tr>
 
                   <tr>
-                    <td className="py-2.5 px-3 sm:px-4">IRCTC Convenience Fee</td>
-                    <td className="py-2.5 px-3 sm:px-4 text-center text-xs text-slate-500">
+                    <td className="type-table py-2.5 px-3 sm:px-4">IRCTC Convenience Fee</td>
+                    <td className="type-table py-2.5 px-3 sm:px-4 text-center text-slate-500">
                       {result.category === "AC" ? "Standard AC Fee" : "Standard Non-AC Fee"}
                     </td>
-                    <td className="py-2.5 px-3 sm:px-4 text-right font-medium">
+                    <td className="type-table py-2.5 px-3 sm:px-4 text-right font-medium">
                       {formatINR(result.irctcFee)}
                     </td>
                   </tr>
 
                   <tr>
-                    <td className="py-2.5 px-3 sm:px-4">Agent Service Fee</td>
-                    <td className="py-2.5 px-3 sm:px-4 text-center text-xs text-slate-500">
+                    <td className="type-table py-2.5 px-3 sm:px-4">Agent Service Fee</td>
+                    <td className="type-table py-2.5 px-3 sm:px-4 text-center text-slate-500">
                       Booking service charge
                     </td>
-                    <td className="py-2.5 px-3 sm:px-4 text-right font-medium">
+                    <td className="type-table py-2.5 px-3 sm:px-4 text-right font-medium">
                       {formatINR(result.agentFee)}
                     </td>
                   </tr>
 
                   <tr className="bg-orange-50/40">
-                    <td className="py-2.5 px-3 sm:px-4 font-medium text-slate-900">
+                    <td className="type-table py-2.5 px-3 sm:px-4 font-medium text-slate-900">
                       Payment Gateway (PG) Charge
                     </td>
-                    <td className="py-2.5 px-3 sm:px-4 text-center text-xs text-slate-600">
+                    <td className="type-table py-2.5 px-3 sm:px-4 text-center text-slate-600">
                       {result.railwayFare <= 2000
                         ? "Fare ≤ ₹2,000 → 0.75% on (Fare + IRCTC)"
                         : "Fare > ₹2,000 → 1.00% on (Fare + IRCTC)"}
                     </td>
-                    <td className="py-2.5 px-3 sm:px-4 text-right font-semibold text-[var(--primary-dark)]">
+                    <td className="type-table py-2.5 px-3 sm:px-4 text-right font-semibold text-[var(--primary-dark)]">
                       {formatINR(result.pgCharge)}
                     </td>
                   </tr>
 
                   {result.otherCharges > 0 ? (
                     <tr>
-                      <td className="py-2.5 px-3 sm:px-4">Other Verified Charges / Taxes</td>
-                      <td className="py-2.5 px-3 sm:px-4 text-center text-xs text-slate-500">
+                      <td className="type-table py-2.5 px-3 sm:px-4">Other Verified Charges / Taxes</td>
+                      <td className="type-table py-2.5 px-3 sm:px-4 text-center text-slate-500">
                         Applicable taxes or charges
                       </td>
-                      <td className="py-2.5 px-3 sm:px-4 text-right font-medium">
+                      <td className="type-table py-2.5 px-3 sm:px-4 text-right font-medium">
                         {formatINR(result.otherCharges)}
                       </td>
                     </tr>
@@ -428,10 +428,10 @@ export function PrintEstimateModal({
                 </tbody>
                 <tfoot className="border-t-2 border-slate-300 bg-[#fffaf5]">
                   <tr>
-                    <td colSpan={2} className="py-3 px-3 sm:px-4 text-sm font-bold text-[var(--navy)]">
+                    <td colSpan={2} className="type-table py-3 px-3 sm:px-4 font-bold text-[var(--navy)]">
                       Final Total Payable:
                     </td>
-                    <td className="py-3 px-3 sm:px-4 text-right text-base sm:text-lg font-black text-[var(--primary)]">
+                    <td className="type-table py-3 px-3 sm:px-4 text-right font-black text-[var(--primary)]">
                       {formatINR(result.finalTotalPayable)}
                     </td>
                   </tr>
@@ -440,19 +440,19 @@ export function PrintEstimateModal({
             </div>
 
             {/* Total In Words */}
-            <div className="mt-2.5 rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-700 border border-slate-200">
+            <div className="type-caption mt-2.5 rounded-lg bg-slate-50 px-3 py-2 text-slate-700 border border-slate-200">
               <span className="font-semibold text-slate-900">Amount in Words: </span>
               <span className="italic">{result.amountInWords}</span>
             </div>
           </div>
 
           {/* Official Estimate Disclaimer */}
-          <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50/70 p-3.5 text-xs text-amber-900">
+          <div className="type-caption mt-5 rounded-xl border border-amber-200 bg-amber-50/70 p-3.5 text-amber-900">
             <div className="flex items-start gap-2">
               <Info className="h-4 w-4 shrink-0 mt-0.5 text-amber-700" />
               <div className="leading-relaxed">
-                <p className="font-bold text-amber-950">Important Estimate Disclaimer:</p>
-                <p className="mt-0.5 text-[11px] text-amber-800">
+                <p className="type-body font-bold text-amber-950">Important Estimate Disclaimer:</p>
+                <p className="type-body-small mt-0.5 text-amber-800">
                   This calculation slip is an estimated quotation prepared for customer reference and cost clarity. It is <strong>NOT</strong> an official Indian Railways reservation ticket, e-ticket, or confirmed PNR. Ticket issuance is strictly subject to real-time seat availability and PRS reservation system confirmation at the time of final booking.
                 </p>
               </div>
@@ -460,27 +460,27 @@ export function PrintEstimateModal({
           </div>
 
           {/* Agent Stamp / Verification Box */}
-          <div className="mt-6 pt-4 border-t border-dashed border-slate-200 grid grid-cols-2 gap-4 text-xs text-slate-500">
+          <div className="type-caption mt-6 pt-4 border-t border-dashed border-slate-200 grid grid-cols-2 gap-4 text-slate-500">
             <div>
-              <p className="font-semibold text-slate-700">Issued by RailAgents Verified Agent</p>
-              <p className="text-[11px] mt-0.5">Assistance with IRCTC authorized bookings & travel planning</p>
+              <p className="type-body font-semibold text-slate-700">Issued by RailAgents Verified Agent</p>
+              <p className="type-body  mt-0.5">Assistance with IRCTC authorized bookings & travel planning</p>
             </div>
             <div className="text-right">
               <div className="ml-auto h-10 w-36 max-w-full border-b border-slate-300" />
-              <p className="mt-1 text-[11px] font-medium text-slate-600">Authorized Agent Stamp / Sign</p>
+              <p className="type-body-small mt-1 font-medium text-slate-600">Authorized Agent Stamp / Sign</p>
             </div>
           </div>
         </div>
 
         {/* Footer info in Modal */}
         <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50 px-4 py-3 sm:px-6 print:hidden">
-          <p className="text-xs text-slate-500">
-            Press <kbd className="rounded bg-white px-1.5 py-0.5 border text-[10px] font-mono shadow-sm">Ctrl+P</kbd> or click Print Slip.
+          <p className="type-body  text-slate-500">
+            Press <kbd className="type-caption rounded bg-white px-1.5 py-0.5 border font-mono shadow-sm">Ctrl+P</kbd> or click Print Slip.
           </p>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-slate-300 bg-white px-4 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+            className="type-button rounded-lg border border-slate-300 bg-white px-4 py-1.5 font-semibold text-slate-700 hover:bg-slate-100"
           >
             Close
           </button>

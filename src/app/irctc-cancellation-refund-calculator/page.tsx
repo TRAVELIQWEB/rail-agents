@@ -59,19 +59,19 @@ export default function IRCTCCancellationRefundCalculatorPage() {
           <div className="site-container relative">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-white px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-orange-800 shadow-2xs">
+                <p className="type-body-small inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-white px-2.5 py-0.5 font-bold uppercase tracking-wider text-orange-800 shadow-2xs">
                   <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
                   Railway Utility Tool
                 </p>
-                <h1 className="mt-1 text-xl sm:text-2xl font-black tracking-tight text-[#0F2747]">
+                <h1 className="type-page-title mt-1 tracking-tight text-[#0F2747]">
                   IRCTC Cancellation <span className="text-[#C6530A]">&amp; Refund Calculator</span>
                 </h1>
-                <p className="mt-0.5 text-xs text-slate-600 sm:text-sm">
+                <p className="type-body-small mt-0.5 text-slate-600 ">
                   Estimate PRS cancellation charges, clerkage fees, and your net bank refund breakdown.
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
+              <div className="type-caption flex items-center gap-2 font-semibold text-slate-600">
                 <span className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 shadow-2xs">
                   <BadgeCheck aria-hidden="true" className="h-3.5 w-3.5 text-orange-600" />
                   Official PRS Rules

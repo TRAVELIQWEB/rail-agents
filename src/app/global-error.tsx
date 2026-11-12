@@ -52,18 +52,18 @@ export default function GlobalError({
             </div>
 
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-orange-200/80 bg-orange-50/80 px-3.5 py-1 text-xs font-extrabold uppercase tracking-widest text-[#9a3412] shadow-sm">
+            <div className="type-caption inline-flex items-center gap-2 rounded-full border border-orange-200/80 bg-orange-50/80 px-3.5 py-1 font-extrabold uppercase tracking-widest text-[#9a3412] shadow-sm">
               <span className="h-2 w-2 rounded-full bg-[#F36B21] animate-pulse" />
               <span>Page Not Found · Lost in Transit</span>
             </div>
 
             {/* Heading */}
-            <h1 className="mt-4 text-2xl font-black tracking-tight text-[#0f2747] sm:text-4xl md:text-5xl">
+            <h1 className="type-page-title mt-4 tracking-tight text-[#0f2747] ">
               Looks Like You Took an Unscheduled Stop
             </h1>
 
             {/* Description */}
-            <p className="mx-auto mt-3 max-w-lg text-sm text-slate-600 sm:text-base leading-relaxed">
+            <p className="type-body-small mx-auto mt-3 max-w-lg text-slate-600 leading-relaxed">
               The rail line or page you are trying to visit doesn&apos;t exist, was renamed, or has departed to another platform.
             </p>
 
@@ -72,7 +72,7 @@ export default function GlobalError({
               <button
                 type="button"
                 onClick={() => reset()}
-                className="inline-flex h-12 items-center gap-2 rounded-xl bg-[#F36B21] px-6 text-sm font-bold text-white shadow-lg shadow-orange-500/25 transition hover:-translate-y-0.5 hover:bg-[#F36B21] cursor-pointer"
+                className="type-button inline-flex h-12 items-center gap-2 rounded-xl bg-[#F36B21] px-6 font-bold text-white shadow-lg shadow-orange-500/25 transition hover:-translate-y-0.5 hover:bg-[#F36B21] cursor-pointer"
               >
                 <RotateCcw className="h-4 w-4" />
                 <span>Try Again</span>
@@ -81,7 +81,7 @@ export default function GlobalError({
               <Link
                 href="/"
                 prefetch={false}
-                className="inline-flex h-12 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-6 text-sm font-bold text-slate-700 shadow-sm transition hover:bg-white hover:border-slate-300 cursor-pointer"
+                className="type-button inline-flex h-12 items-center gap-2 rounded-xl border border-slate-200 bg-white/90 px-6 font-bold text-slate-700 shadow-sm transition hover:bg-white hover:border-slate-300 cursor-pointer"
               >
                 <ArrowLeft className="h-4 w-4" />
                 <span>Back to Safety (Home)</span>

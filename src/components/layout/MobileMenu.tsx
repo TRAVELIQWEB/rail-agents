@@ -54,7 +54,7 @@ export function MobileMenu() {
         aria-expanded={isOpen}
         aria-controls="mobile-navigation"
         onClick={() => setIsOpen((open) => !open)}
-        className={`icon-action flex h-11 w-11 cursor-pointer items-center justify-center border border-[var(--primary-border)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${isOpen
+        className={`type-navigation icon-action flex h-11 w-11 cursor-pointer items-center justify-center border border-[var(--primary-border)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${isOpen
           ? "bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)] hover:text-white"
           : ""
           }`}
@@ -78,7 +78,7 @@ export function MobileMenu() {
                   prefetch={false}
                   current={isActive}
                   onClick={() => setIsOpen(false)}
-                  className={`flex min-h-11 items-center justify-between rounded-lg px-3 py-2 text-base font-[600] transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${isActive
+                  className={`type-body flex min-h-11 items-center justify-between rounded-lg px-3 py-2 font-semibold transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${isActive
                     ? "bg-[var(--primary-soft)] text-[var(--primary-dark)]"
                     : "text-[var(--body-text)]"
                     }`}
@@ -90,7 +90,7 @@ export function MobileMenu() {
 
             {/* Tools Subgroup */}
             <div className="pt-2 mt-1 border-t border-slate-100">
-              <span className="px-3 text-[10px] font-extrabold uppercase tracking-wider text-stone-400 block mb-1">
+              <span className="type-caption px-3 font-extrabold uppercase tracking-wider text-stone-400 block mb-1">
                 Tools &amp; Calculators
               </span>
               {railTools.map((tool) => {
@@ -105,7 +105,7 @@ export function MobileMenu() {
                     prefetch={false}
                     current={isToolActive}
                     onClick={() => setIsOpen(false)}
-                    className={`flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 text-sm font-[650] transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${isToolActive
+                    className={`type-body-small flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 font-semibold transition-colors hover:bg-[var(--primary-soft)] hover:text-[var(--primary-dark)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--primary)] ${isToolActive
                       ? "bg-[var(--primary-soft)] text-[var(--primary-dark)] font-bold"
                       : "text-[var(--navy)]"
                       }`}
@@ -134,7 +134,7 @@ export function MobileMenu() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsOpen(false)}
-              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 py-2.5 text-[0.9375rem] font-bold text-white shadow-[0_4px_14px_rgba(37,211,102,0.3)] transition-all duration-200 hover:bg-[#20ba5a]"
+              className="type-navigation inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 py-2.5 font-bold text-white shadow-[0_4px_14px_rgba(37,211,102,0.3)] transition-all duration-200 hover:bg-[#20ba5a]"
             >
               <FaWhatsapp className="h-5 w-5 shrink-0" aria-hidden="true" />
               <span>WhatsApp Us</span>

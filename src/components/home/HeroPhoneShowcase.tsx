@@ -58,7 +58,7 @@ export function HeroPhoneShowcase() {
                 <span className="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-lg bg-[#F36B21] text-white shadow-2xs">
                   <Train className="h-3.5 w-3.5" aria-hidden="true" />
                 </span>
-                <span className="text-sm sm:text-base font-black tracking-tight text-[#142B45]">
+                <span className="type-body-small  font-black tracking-tight text-[#142B45]">
                   Rail<span className="text-[#F36B21]">Agents</span>
                 </span>
               </div>
@@ -75,10 +75,10 @@ export function HeroPhoneShowcase() {
                     <Train className="h-4.5 w-4.5" aria-hidden="true" />
                   </span>
                   <div className="min-w-0 flex-1 text-left">
-                    <p className="text-[12px] sm:text-[13px] font-extrabold text-[#142B45] leading-tight group-hover:text-[#F36B21] transition-colors">
+                    <p className="type-body-small  font-extrabold text-[#142B45] leading-tight group-hover:text-[#F36B21] transition-colors">
                       Live Train Status
                     </p>
-                    <p className="text-[9px] sm:text-[10px] text-[#64748B] leading-tight truncate mt-0.5">
+                    <p className="type-body-small  text-[#64748B] leading-tight truncate mt-0.5">
                       Real-time train running status
                     </p>
                   </div>
@@ -95,10 +95,10 @@ export function HeroPhoneShowcase() {
                     <Ticket className="h-4.5 w-4.5" aria-hidden="true" />
                   </span>
                   <div className="min-w-0 flex-1 text-left">
-                    <p className="text-[12px] sm:text-[13px] font-extrabold text-[#142B45] leading-tight group-hover:text-[#F36B21] transition-colors">
+                    <p className="type-body-small  font-extrabold text-[#142B45] leading-tight group-hover:text-[#F36B21] transition-colors">
                       PNR Status
                     </p>
-                    <p className="text-[9px] sm:text-[10px] text-[#64748B] leading-tight truncate mt-0.5">
+                    <p className="type-body-small  text-[#64748B] leading-tight truncate mt-0.5">
                       Check your ticket details
                     </p>
                   </div>
@@ -115,10 +115,10 @@ export function HeroPhoneShowcase() {
                     <Clock className="h-4.5 w-4.5" aria-hidden="true" />
                   </span>
                   <div className="min-w-0 flex-1 text-left">
-                    <p className="text-[12px] sm:text-[13px] font-extrabold text-[#142B45] leading-tight group-hover:text-[#F36B21] transition-colors">
+                    <p className="type-body-small  font-extrabold text-[#142B45] leading-tight group-hover:text-[#F36B21] transition-colors">
                       Chart Timing
                     </p>
-                    <p className="text-[9px] sm:text-[10px] text-[#64748B] leading-tight truncate mt-0.5">
+                    <p className="type-body-small  text-[#64748B] leading-tight truncate mt-0.5">
                       First &amp; final chart preparation time
                     </p>
                   </div>
@@ -135,10 +135,10 @@ export function HeroPhoneShowcase() {
                     <Calendar className="h-4.5 w-4.5" aria-hidden="true" />
                   </span>
                   <div className="min-w-0 flex-1 text-left">
-                    <p className="text-[12px] sm:text-[13px] font-extrabold text-[#142B45] leading-tight group-hover:text-[#F36B21] transition-colors">
+                    <p className="type-body-small  font-extrabold text-[#142B45] leading-tight group-hover:text-[#F36B21] transition-colors">
                       Ticket Date Calculator
                     </p>
-                    <p className="text-[9px] sm:text-[10px] text-[#64748B] leading-tight truncate mt-0.5">
+                    <p className="type-body-small  text-[#64748B] leading-tight truncate mt-0.5">
                       Find valid IRCTC booking dates
                     </p>
                   </div>
@@ -163,10 +163,10 @@ export function HeroPhoneShowcase() {
           >
             <div className="flex items-center gap-1.5 sm:gap-2">
               <Ticket className="h-4 w-4 text-[#F36B21]" aria-hidden="true" />
-              <span className="text-[12px] sm:text-[13px] font-black text-[#142B45]">PNR Status</span>
+              <span className="type-caption  font-black text-[#142B45]">PNR Status</span>
             </div>
             
-            <div className="mt-2.5 inline-flex items-center gap-1 rounded-full bg-[#E8F8F0] px-2.5 py-1 text-[10px] sm:text-[11px] font-extrabold text-[#16A36A]">
+            <div className="type-caption mt-2.5 inline-flex items-center gap-1 rounded-full bg-[#E8F8F0] px-2.5 py-1 font-extrabold text-[#16A36A]">
               <CheckCircle2 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
               <span>Confirmed</span>
             </div>
@@ -191,10 +191,10 @@ export function HeroPhoneShowcase() {
           >
             <div className="flex items-center gap-1.5 sm:gap-2">
               <Train className="h-4 w-4 text-[#F36B21]" aria-hidden="true" />
-              <span className="text-[12px] sm:text-[13px] font-black text-[#142B45]">Live Train</span>
+              <span className="type-caption  font-black text-[#142B45]">Live Train</span>
             </div>
 
-            <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#E8F8F0] px-2.5 py-1 text-[10px] sm:text-[11px] font-extrabold text-[#16A36A]">
+            <div className="type-caption mt-2 inline-flex items-center gap-1 rounded-full bg-[#E8F8F0] px-2.5 py-1 font-extrabold text-[#16A36A]">
               <span className="h-2 w-2 rounded-full bg-[#16A36A] animate-pulse" />
               <span>Running On Time</span>
             </div>
@@ -226,23 +226,23 @@ export function HeroPhoneShowcase() {
           >
             <div className="flex items-center gap-1.5 sm:gap-2 mb-2">
               <Clock className="h-4 w-4 text-[#F36B21]" aria-hidden="true" />
-              <span className="text-[12px] sm:text-[13px] font-black text-[#142B45]">Chart Timing</span>
+              <span className="type-caption  font-black text-[#142B45]">Chart Timing</span>
             </div>
 
             <div className="space-y-2 border-t border-[#F1F5F9] pt-2">
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5 text-[10px] sm:text-[11px] text-[#64748B] font-semibold">
+                <span className="type-caption flex items-center gap-1.5 text-[#64748B] font-semibold">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#F36B21]" />
                   First Chart
                 </span>
-                <span className="text-[11px] sm:text-[12px] font-black text-[#142B45]">09:58 AM</span>
+                <span className="type-caption  font-black text-[#142B45]">09:58 AM</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-1.5 text-[10px] sm:text-[11px] text-[#64748B] font-semibold">
+                <span className="type-caption flex items-center gap-1.5 text-[#64748B] font-semibold">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#F36B21]" />
                   Final Chart
                 </span>
-                <span className="text-[11px] sm:text-[12px] font-black text-[#142B45]">07:45 PM</span>
+                <span className="type-caption  font-black text-[#142B45]">07:45 PM</span>
               </div>
             </div>
           </Link>

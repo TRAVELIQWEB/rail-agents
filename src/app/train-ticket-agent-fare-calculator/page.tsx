@@ -51,10 +51,10 @@ export default function TrainTicketAgentFareCalculatorPage() {
         <AllToolsLink />
         <section className="compact-tool-heading border-b border-[#f2e6d9] bg-gradient-to-b from-[#fffcf8] via-[#faf5ee] to-[#f7f0e6] py-4 sm:py-5">
           <div className="site-container">
-            <h1 className="text-xl font-extrabold tracking-tight text-[#0b2240] sm:text-2xl">
+            <h1 className="type-page-title  tracking-tight text-[#0b2240] ">
               IRCTC Agent <span className="text-[var(--primary)]">Ticket Fare Calculator</span>
             </h1>
-            <p className="mt-1 text-xs leading-5 text-slate-600">
+            <p className="type-body-small mt-1 leading-5 text-slate-600">
               Calculate ticket fares, IRCTC fees, payment gateway charges and agent service fees.
             </p>
           </div>

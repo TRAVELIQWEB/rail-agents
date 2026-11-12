@@ -33,7 +33,7 @@ export function TopicCard({ topic }: TopicCardProps) {
           <Icon className="h-5 w-5 shrink-0" />
         </div>
 
-        <span className="min-w-0 text-[1.02rem] font-[800] leading-snug tracking-[-0.02em] text-[var(--navy)] transition-colors duration-200 group-hover:text-[var(--primary-dark)]">
+        <span className="type-body-large min-w-0 font-extrabold leading-snug tracking-[-0.02em] text-[var(--navy)] transition-colors duration-200 group-hover:text-[var(--primary-dark)]">
           {topic.title}
         </span>
       </div>

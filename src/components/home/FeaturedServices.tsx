@@ -111,18 +111,18 @@ export function FeaturedServices() {
       <div className="site-container">
         {/* Section Header */}
         <div className="mx-auto max-w-3xl text-center">
-          <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3.5 py-1 text-xs font-[800] uppercase tracking-wider text-[#F36B21] shadow-2xs">
+          <div className="type-caption mb-2.5 inline-flex items-center gap-2 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3.5 py-1 font-extrabold uppercase tracking-wider text-[#F36B21] shadow-2xs">
             <span className="h-2 w-2 rounded-full bg-[#F36B21]" />
             Core Railway Services &amp; Tools
           </div>
           <h2
             id="featured-services-heading"
-            className="text-2xl font-[900] tracking-tight text-[var(--navy)] sm:text-3xl lg:text-4xl"
+            className="type-h2  tracking-tight text-[var(--navy)] "
           >
             Essential Railway Tools &amp;{" "}
             <span className="text-[var(--primary)]">Agent Resources</span>
           </h2>
-          <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+          <p className="type-body-small mt-3 leading-relaxed text-slate-600 ">
             Quickly navigate to our most popular Indian Railway tracking tools, verified agent compliance guides, and travel resources.
           </p>
         </div>
@@ -145,21 +145,21 @@ export function FeaturedServices() {
                     >
                       <Icon aria-hidden="true" className="h-5 w-5" />
                     </span>
-                    <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-bold text-slate-600">
+                    <span className="type-caption rounded-full bg-slate-100 px-2.5 py-0.5 font-bold text-slate-600">
                       {service.badge}
                     </span>
                   </div>
 
-                  <h3 className="mt-4 text-base font-[800] text-[var(--navy)] group-hover:text-[var(--primary)] transition-colors">
+                  <h3 className="type-card-title mt-4 text-[var(--navy)] group-hover:text-[var(--primary)] transition-colors">
                     {service.title}
                   </h3>
-                  <p className="mt-1.5 text-xs leading-relaxed text-slate-600 line-clamp-3">
+                  <p className="type-body-small mt-1.5 leading-relaxed text-slate-600 line-clamp-3">
                     {service.description}
                   </p>
                 </div>
 
                 <div
-                  className={`mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-xs font-bold ${service.actionColor}`}
+                  className={`type-caption mt-4 flex items-center justify-between border-t border-slate-100 pt-3 font-bold ${service.actionColor}`}
                 >
                   <span>Open {service.shortTitle}</span>
                   <ArrowRight

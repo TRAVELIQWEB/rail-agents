@@ -37,9 +37,9 @@ export function FloatingWhatsApp() {
       >
         <FaWhatsapp aria-hidden="true" className="h-7 w-7 md:h-8 md:w-8" />
       </a>
-      <div className="pointer-events-none absolute bottom-1/2 right-full mr-3 hidden w-max translate-y-1/2 translate-x-1 rounded-xl border border-[#f1dfcb] bg-white px-4 py-3 text-sm text-[var(--navy)] opacity-0 shadow-[0_8px_28px_rgba(15,39,71,0.14)] transition duration-200 group-hover:translate-x-0 group-hover:opacity-100 group-focus-within:translate-x-0 group-focus-within:opacity-100 md:block">
-        <p className="font-bold">Need help?</p>
-        <p className="mt-0.5 text-xs text-slate-600">Chat with us on WhatsApp</p>
+      <div className="type-body-small pointer-events-none absolute bottom-1/2 right-full mr-3 hidden w-max translate-y-1/2 translate-x-1 rounded-xl border border-[#f1dfcb] bg-white px-4 py-3 text-[var(--navy)] opacity-0 shadow-[0_8px_28px_rgba(15,39,71,0.14)] transition duration-200 group-hover:translate-x-0 group-hover:opacity-100 group-focus-within:translate-x-0 group-focus-within:opacity-100 md:block">
+        <p className="type-body font-bold">Need help?</p>
+        <p className="type-body-small mt-0.5 text-slate-600">Chat with us on WhatsApp</p>
       </div>
     </div>
   );

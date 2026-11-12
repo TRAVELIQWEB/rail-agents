@@ -11,12 +11,12 @@ export function SocialCards() {
       ========================== */}
       <div className="text-center mb-6 sm:mb-8">
         {/* Top Pill Badge */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#ffd5c2] bg-[#fff3ec] px-4 py-1.5 text-xs font-bold text-[var(--primary-dark)] shadow-sm mb-3">
-          <span className="text-sm">👥</span> Stay Connected
+        <div className="type-caption inline-flex items-center gap-2 rounded-full border border-[#ffd5c2] bg-[#fff3ec] px-4 py-1.5 font-bold text-[var(--primary-dark)] shadow-sm mb-3">
+          <span className="type-body-small ">👥</span> Stay Connected
         </div>
 
         {/* Heading */}
-        <h2 className="text-[clamp(1.5rem,3vw,2.125rem)] font-extrabold leading-[1.12] tracking-tight text-[var(--navy)] wide:text-[2.25rem]">
+        <h2 className="type-h2  tracking-tight text-[var(--navy)] ">
           Follow Us for{" "}
           <span className="relative inline-block text-[var(--primary)]">
             Daily Updates
@@ -35,7 +35,7 @@ export function SocialCards() {
         </h2>
 
         {/* Subtitle */}
-        <p className="mt-3 max-w-2xl mx-auto px-4 text-sm leading-relaxed text-slate-600 sm:text-base">
+        <p className="type-body-small mt-3 max-w-2xl mx-auto px-4 leading-relaxed text-slate-600 ">
           Get the latest railway updates, helpful tips, video guides and community support across all our social media channels.
         </p>
 
@@ -58,12 +58,12 @@ export function SocialCards() {
             {/* 3D Icon Box */}
             <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff4d4d] via-[#ff0000] to-[#cc0000] text-white shadow-[0_8px_20px_rgba(255,0,0,0.35),inset_0_2px_4px_rgba(255,255,255,0.4)]">
               {/* Spark accents on top */}
-              <div className="absolute -top-2 -right-1 text-red-500 text-xs font-bold leading-none select-none">✨</div>
+              <div className="type-caption absolute -top-2 -right-1 text-red-500 font-bold leading-none select-none">✨</div>
               <FaYoutube className="h-5 w-5" />
             </div>
 
             {/* Category Tag */}
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#fecaca] bg-[#fff0f0] px-3 py-1 text-xs font-bold text-[#e11d48]">
+            <div className="type-caption inline-flex items-center gap-1.5 rounded-full border border-[#fecaca] bg-[#fff0f0] px-3 py-1 font-bold text-[#e11d48]">
               <span>🎥</span> Video Guides
             </div>
           </div>
@@ -72,10 +72,10 @@ export function SocialCards() {
           <div className="relative z-10 mt-6 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
             {/* Left Content */}
             <div className="sm:col-span-7 flex flex-col items-center text-center sm:items-start sm:text-left">
-              <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--navy)]">
+              <h3 className="type-card-title  text-[var(--navy)]">
                 Watch on <span className="text-[#ff0000]">YouTube</span>
               </h3>
-              <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <p className="type-body-small mt-2 text-slate-600 leading-relaxed">
                 Step-by-step railway guides and travel business tips in easy video tutorials.
               </p>
 
@@ -85,7 +85,7 @@ export function SocialCards() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Subscribe on YouTube"
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F36B21] to-[#9a3412] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)] transition-all duration-200 hover:scale-105 hover:shadow-[0_8px_25px_rgba(249,115,22,0.4)]"
+                className="type-button mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F36B21] to-[#9a3412] px-5 py-2.5 font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)] transition-all duration-200 hover:scale-105 hover:shadow-[0_8px_25px_rgba(249,115,22,0.4)]"
               >
                 Subscribe <ArrowRight className="h-4 w-4" />
               </a>
@@ -95,7 +95,7 @@ export function SocialCards() {
             <div className="sm:col-span-5 relative flex flex-col items-center sm:items-end justify-center mt-4 sm:mt-0">
               {/* Annotation Label + Curved Arrow */}
               <div className="absolute -top-7 right-2 z-20 flex flex-col items-center select-none pointer-events-none">
-                <span className="text-[11px] font-black text-[#e11d48] tracking-tight -rotate-3 whitespace-nowrap drop-shadow-sm">
+                <span className="type-caption  font-black text-[#e11d48] tracking-tight -rotate-3 whitespace-nowrap drop-shadow-sm">
                   New Videos Every Week
                 </span>
                 <svg className="w-8 h-6 text-[#e11d48] -mt-0.5 transform rotate-12" viewBox="0 0 40 30" fill="none">
@@ -143,12 +143,12 @@ export function SocialCards() {
             {/* 3D Icon Box */}
             <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white shadow-[0_8px_20px_rgba(238,42,123,0.35),inset_0_2px_4px_rgba(255,255,255,0.4)]">
               {/* Spark accents on top */}
-              <div className="absolute -top-2 -right-1 text-pink-500 text-xs font-bold leading-none select-none">✨</div>
+              <div className="type-caption absolute -top-2 -right-1 text-pink-500 font-bold leading-none select-none">✨</div>
               <FaInstagram className="h-5 w-5" />
             </div>
 
             {/* Category Tag */}
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#f5d0fe] bg-[#fae8ff] px-3 py-1 text-xs font-bold text-[#c026d3]">
+            <div className="type-caption inline-flex items-center gap-1.5 rounded-full border border-[#f5d0fe] bg-[#fae8ff] px-3 py-1 font-bold text-[#c026d3]">
               <span>🖼️</span> Daily Updates
             </div>
           </div>
@@ -157,10 +157,10 @@ export function SocialCards() {
           <div className="relative z-10 mt-6 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
             {/* Left Content */}
             <div className="sm:col-span-7 flex flex-col items-center text-center sm:items-start sm:text-left">
-              <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--navy)]">
+              <h3 className="type-card-title  text-[var(--navy)]">
                 Follow on <span className="bg-gradient-to-r from-[#e1306c] to-[#c13584] bg-clip-text text-transparent">Instagram</span>
               </h3>
-              <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <p className="type-body-small mt-2 text-slate-600 leading-relaxed">
                 Quick tips, updates, reels and useful booking information.
               </p>
 
@@ -170,7 +170,7 @@ export function SocialCards() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Follow on Instagram"
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F36B21] to-[#9a3412] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)] transition-all duration-200 hover:scale-105 hover:shadow-[0_8px_25px_rgba(249,115,22,0.4)]"
+                className="type-button mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F36B21] to-[#9a3412] px-5 py-2.5 font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)] transition-all duration-200 hover:scale-105 hover:shadow-[0_8px_25px_rgba(249,115,22,0.4)]"
               >
                 Follow <ArrowRight className="h-4 w-4" />
               </a>
@@ -180,7 +180,7 @@ export function SocialCards() {
             <div className="sm:col-span-5 relative flex flex-col items-center sm:items-end justify-center mt-4 sm:mt-0">
               {/* Annotation Label + Curved Arrow */}
               <div className="absolute -top-7 right-2 z-20 flex flex-col items-center select-none pointer-events-none">
-                <span className="text-[11px] font-black text-[#c026d3] tracking-tight -rotate-3 whitespace-nowrap drop-shadow-sm">
+                <span className="type-caption  font-black text-[#c026d3] tracking-tight -rotate-3 whitespace-nowrap drop-shadow-sm">
                   Tips, Reels & Updates
                 </span>
                 <svg className="w-8 h-6 text-[#c026d3] -mt-0.5 transform rotate-12" viewBox="0 0 40 30" fill="none">
@@ -193,7 +193,7 @@ export function SocialCards() {
               <div className="relative w-32 sm:w-36 rounded-2xl border border-slate-200/80 bg-white p-2 shadow-[0_12px_30px_rgba(0,0,0,0.12)] rotate-6 transition-transform duration-300 group-hover:rotate-3 group-hover:scale-105">
                 {/* Header */}
                 <div className="flex items-center gap-1.5 pb-1.5 border-b border-slate-100">
-                  <div className="h-4 w-4 rounded-full bg-gradient-to-tr from-[#f9ce34] to-[#ee2a7b] flex items-center justify-center text-[8px] text-white font-bold">R</div>
+                  <div className="type-caption h-4 w-4 rounded-full bg-gradient-to-tr from-[#f9ce34] to-[#ee2a7b] flex items-center justify-center text-white font-bold">R</div>
                   <div className="h-1.5 w-12 rounded-full bg-slate-200" />
                 </div>
 
@@ -238,12 +238,12 @@ export function SocialCards() {
             {/* 3D Icon Box */}
             <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-b from-[#3b82f6] via-[#1d4ed8] to-[#1e40af] text-white shadow-[0_8px_20px_rgba(29,78,216,0.35),inset_0_2px_4px_rgba(255,255,255,0.4)]">
               {/* Spark accents on top */}
-              <div className="absolute -top-2 -right-1 text-blue-500 text-xs font-bold leading-none select-none">✨</div>
+              <div className="type-caption absolute -top-2 -right-1 text-blue-500 font-bold leading-none select-none">✨</div>
               <FaFacebookF className="h-5 w-5" />
             </div>
 
             {/* Category Tag */}
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-[#bae6fd] bg-[#e0f2fe] px-3 py-1 text-xs font-bold text-[#075985]">
+            <div className="type-caption inline-flex items-center gap-1.5 rounded-full border border-[#bae6fd] bg-[#e0f2fe] px-3 py-1 font-bold text-[#075985]">
               <span>👥</span> Community
             </div>
           </div>
@@ -252,10 +252,10 @@ export function SocialCards() {
           <div className="relative z-10 mt-6 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
             {/* Left Content */}
             <div className="sm:col-span-7 flex flex-col items-center text-center sm:items-start sm:text-left">
-              <h3 className="text-xl sm:text-2xl font-extrabold text-[var(--navy)]">
+              <h3 className="type-card-title  text-[var(--navy)]">
                 Join on <span className="text-[#1877f2]">Facebook</span>
               </h3>
-              <p className="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <p className="type-body-small mt-2 text-slate-600 leading-relaxed">
                 Stay updated with posts, guides and community discussions.
               </p>
 
@@ -265,7 +265,7 @@ export function SocialCards() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Join on Facebook"
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F36B21] to-[#9a3412] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)] transition-all duration-200 hover:scale-105 hover:shadow-[0_8px_25px_rgba(249,115,22,0.4)]"
+                className="type-button mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#F36B21] to-[#9a3412] px-5 py-2.5 font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.3)] transition-all duration-200 hover:scale-105 hover:shadow-[0_8px_25px_rgba(249,115,22,0.4)]"
               >
                 Follow <ArrowRight className="h-4 w-4" />
               </a>
@@ -275,7 +275,7 @@ export function SocialCards() {
             <div className="sm:col-span-5 relative flex flex-col items-center sm:items-end justify-center mt-4 sm:mt-0">
               {/* Annotation Label + Curved Arrow */}
               <div className="absolute -top-7 right-2 z-20 flex flex-col items-center select-none pointer-events-none">
-                <span className="text-[11px] font-black text-[#075985] tracking-tight -rotate-3 whitespace-nowrap drop-shadow-sm">
+                <span className="type-caption  font-black text-[#075985] tracking-tight -rotate-3 whitespace-nowrap drop-shadow-sm">
                   Be Part of Our Community
                 </span>
                 <svg className="w-8 h-6 text-[#0284c7] -mt-0.5 transform rotate-12" viewBox="0 0 40 30" fill="none">
@@ -288,7 +288,7 @@ export function SocialCards() {
               <div className="relative w-32 sm:w-36 rounded-2xl border border-slate-200/80 bg-white p-2 shadow-[0_12px_30px_rgba(0,0,0,0.12)] rotate-6 transition-transform duration-300 group-hover:rotate-3 group-hover:scale-105">
                 {/* Header */}
                 <div className="flex items-center gap-1.5 pb-1.5 border-b border-slate-100">
-                  <div className="h-4 w-4 rounded-full bg-[#1877f2] flex items-center justify-center text-[8px] text-white font-bold">f</div>
+                  <div className="type-caption h-4 w-4 rounded-full bg-[#1877f2] flex items-center justify-center text-white font-bold">f</div>
                   <div className="h-1.5 w-14 rounded-full bg-slate-200" />
                 </div>
 

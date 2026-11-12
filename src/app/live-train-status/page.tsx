@@ -110,8 +110,8 @@ function LiveTrainStatusFallback() {
         <AllToolsLink />
         <section className={styles.hero}>
           <div className="site-tool-container">
-            <h1 className={styles.title}>Live Train <span>Running Status</span></h1>
-            <p className={styles.description}>Check real-time train location, delay status, platform numbers, and station timetables.</p>
+            <h1 className={`type-page-title ${styles.title}`}>Live Train <span>Running Status</span></h1>
+            <p className={`type-body ${styles.description}`}>Check real-time train location, delay status, platform numbers, and station timetables.</p>
           </div>
         </section>
         <div aria-busy="true" aria-label="Loading live train status tool" className="site-tool-container space-y-4 py-6">

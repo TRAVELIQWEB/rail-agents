@@ -16,17 +16,17 @@ export async function VideoGuidesSection() {
         {/* Section Header */}
         <div className="flex flex-col items-start justify-between gap-4 border-b border-[#E5EAF0] pb-6 sm:flex-row sm:items-end sm:pb-8">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-1.5 rounded-md bg-[#FFF1E7] px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[#F36B21] border border-[#F36B21]/20">
+            <span className="type-caption inline-flex items-center gap-1.5 rounded-md bg-[#FFF1E7] px-2.5 py-1 font-bold uppercase tracking-wider text-[#F36B21] border border-[#F36B21]/20">
               <span className="h-1.5 w-1.5 rounded-full bg-[#F36B21]" />
               Video Tutorials
             </span>
             <h2
               id="video-guides-heading"
-              className="mt-2 text-2xl font-black tracking-tight text-[#142B45] sm:text-3xl lg:text-4xl"
+              className="type-h2 mt-2 tracking-tight text-[#142B45] "
             >
               Latest Video Guides
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-[#667085] sm:text-base">
+            <p className="type-body-small mt-2 leading-relaxed text-[#667085] ">
               Visual walkthroughs explaining IRCTC updates, Tatkal timings, and common passenger ticketing scenarios.
             </p>
           </div>
@@ -36,7 +36,7 @@ export async function VideoGuidesSection() {
               href={channelUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex shrink-0 items-center gap-2 rounded-xl bg-[#F36B21] px-4 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-[#F36B21] transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#F36B21]"
+              className="type-button group inline-flex shrink-0 items-center gap-2 rounded-xl bg-[#F36B21] px-4 py-2.5 font-bold text-white shadow-xs hover:bg-[#F36B21] transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#F36B21]"
             >
               <span>Subscribe on YouTube</span>
               <ExternalLink
@@ -77,25 +77,25 @@ export async function VideoGuidesSection() {
                       </span>
                     </div>
 
-                    <span className="absolute bottom-2.5 right-2.5 rounded bg-black/80 px-2 py-0.5 text-[11px] font-bold text-white backdrop-blur-xs">
+                    <span className="type-caption absolute bottom-2.5 right-2.5 rounded bg-black/80 px-2 py-0.5 font-bold text-white backdrop-blur-xs">
                       Video Walkthrough
                     </span>
                   </div>
 
                   {/* Body Content */}
                   <div className="p-5">
-                    <h3 className="text-base font-bold leading-snug text-[#142B45] group-hover:text-[#F36B21] transition-colors line-clamp-2">
+                    <h3 className="type-card-title  text-[#142B45] group-hover:text-[#F36B21] transition-colors line-clamp-2">
                       {video.title}
                     </h3>
                     {video.publishedAt && (
-                      <p className="mt-2 text-xs font-medium text-[#667085]">
+                      <p className="type-body-small mt-2 font-medium text-[#667085]">
                         {video.publishedAt}
                       </p>
                     )}
                   </div>
                 </div>
 
-                <div className="border-t border-[#E5EAF0] bg-[#F4F5F7]/30 px-5 py-3.5 flex items-center justify-between text-xs font-bold text-[#F36B21]">
+                <div className="type-caption border-t border-[#E5EAF0] bg-[#F4F5F7]/30 px-5 py-3.5 flex items-center justify-between font-bold text-[#F36B21]">
                   <span>Watch on YouTube</span>
                   <ArrowRight aria-hidden="true" className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                 </div>
@@ -107,10 +107,10 @@ export async function VideoGuidesSection() {
             <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FFF1E7] text-[#F36B21] border border-[#F36B21]/20">
               <CirclePlay aria-hidden="true" className="h-7 w-7" />
             </span>
-            <h3 className="mt-4 text-lg font-bold text-[#142B45]">
+            <h3 className="type-card-title mt-4 text-[#142B45]">
               Explore RailAgents on YouTube
             </h3>
-            <p className="mx-auto mt-2 max-w-md text-sm text-[#667085]">
+            <p className="type-body-small mx-auto mt-2 max-w-md text-[#667085]">
               Subscribe to our YouTube channel for weekly video tutorials on IRCTC updates, Tatkal strategies, and agent operations.
             </p>
             {channelUrl && (
@@ -118,7 +118,7 @@ export async function VideoGuidesSection() {
                 href={channelUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#F36B21] px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-[#F36B21] transition-colors"
+                className="type-button mt-5 inline-flex items-center gap-2 rounded-xl bg-[#F36B21] px-5 py-2.5 font-bold text-white shadow-sm hover:bg-[#F36B21] transition-colors"
               >
                 <span>Visit YouTube Channel</span>
                 <ExternalLink aria-hidden="true" className="h-4 w-4" />

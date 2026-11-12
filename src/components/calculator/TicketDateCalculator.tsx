@@ -437,12 +437,12 @@ export function TicketDateCalculator() {
               <span className="h-2 w-2 rounded-full bg-orange-500 shadow-[0_0_6px_rgba(249,115,22,0.6)]" />
               <h2
                 id="journey-details-heading"
-                className="text-sm font-bold tracking-wide text-[#0b2240]"
+                className="type-section-compact  tracking-wide text-[#0b2240]"
               >
                 Railway Journey Details
               </h2>
             </div>
-            <span className="text-xs font-semibold text-stone-500">
+            <span className="type-caption  font-semibold text-stone-500">
               60-day advance reservation
             </span>
           </div>
@@ -453,7 +453,7 @@ export function TicketDateCalculator() {
           >
             {/* FROM FIELD */}
             <div className="sm:col-span-1 md:col-span-4 relative" ref={fromRef}>
-              <label htmlFor="journey-from" className="block text-xs font-bold text-stone-800 mb-1">
+              <label htmlFor="journey-from" className="type-label block font-bold text-stone-800 mb-1">
                 From Station
               </label>
               <div className="relative">
@@ -474,12 +474,12 @@ export function TicketDateCalculator() {
                     setFromOpen(true);
                   }}
                   placeholder="Enter origin station"
-                  className="w-full min-w-0 h-11 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 pr-8 text-base font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none"
+                  className="type-input w-full min-w-0 h-11 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 pr-8 font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={() => setFromOpen((prev) => !prev)}
-                  className="absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded text-stone-600 hover:text-stone-800"
+                  className="type-button absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded text-stone-600 hover:text-stone-800"
                   aria-label="Toggle from station list"
                 >
                   <ChevronDown className={`h-3.5 w-3.5 transition-transform ${fromOpen ? "rotate-180" : ""}`} />
@@ -488,20 +488,20 @@ export function TicketDateCalculator() {
 
               {fromOpen && (
                 <div className="absolute left-0 top-[102%] z-50 w-full sm:w-72 max-h-56 overflow-y-auto rounded-lg border border-stone-200 bg-white p-1.5 shadow-xl">
-                  <div className="px-2 py-1 text-[10px] font-bold text-stone-400 uppercase tracking-wider border-b border-stone-100 mb-1 flex items-center justify-between">
+                  <div className="type-caption px-2 py-1 font-bold text-stone-400 uppercase tracking-wider border-b border-stone-100 mb-1 flex items-center justify-between">
                     <span>{fromInput.trim() ? "Search Results" : "Top Railway Stations"}</span>
-                    {fromLoading && <span className="text-[9px] text-orange-600 font-semibold animate-pulse">Searching...</span>}
+                    {fromLoading && <span className="type-caption  text-orange-600 font-semibold animate-pulse">Searching...</span>}
                   </div>
                   {fromLoading && fromSuggestions.length === 0 ? (
-                    <div className="px-3 py-4 text-center text-xs text-stone-500">
+                    <div className="type-caption px-3 py-4 text-center text-stone-500">
                       Searching stations...
                     </div>
                   ) : fromStationError && fromSuggestions.length === 0 ? (
-                    <div className="px-3 py-3 text-center text-xs text-rose-600">
+                    <div className="type-caption px-3 py-3 text-center text-rose-600">
                       {fromStationError}
                     </div>
                   ) : fromSuggestions.length === 0 ? (
-                    <div className="px-3 py-4 text-center text-xs text-stone-500">
+                    <div className="type-caption px-3 py-4 text-center text-stone-500">
                       No matching stations found.
                     </div>
                   ) : (
@@ -518,7 +518,7 @@ export function TicketDateCalculator() {
                             setFromCode(stn.code);
                             setFromOpen(false);
                           }}
-                          className={`w-full text-left px-2.5 py-1.5 rounded-md text-xs flex items-center justify-between transition-colors ${isSameAsTo
+                          className={`type-button w-full text-left px-2.5 py-1.5 rounded-md flex items-center justify-between transition-colors ${isSameAsTo
                             ? "opacity-40 cursor-not-allowed bg-stone-50"
                             : "hover:bg-orange-50 group cursor-pointer"
                             }`}
@@ -527,11 +527,11 @@ export function TicketDateCalculator() {
                             <span className={`font-bold block truncate ${isSameAsTo ? "text-stone-400" : "text-stone-900 group-hover:text-orange-700"}`}>
                               {stn.name}
                             </span>
-                            <span className="text-[10px] text-stone-500">
+                            <span className="type-caption  text-stone-500">
                               {isSameAsTo ? "Already selected as To" : "Indian Railways"}
                             </span>
                           </div>
-                          <span className="shrink-0 text-[10px] font-mono font-extrabold px-1.5 py-0.5 rounded bg-stone-100 text-stone-700 group-hover:bg-orange-200 group-hover:text-orange-900">
+                          <span className="type-caption shrink-0 font-mono font-extrabold px-1.5 py-0.5 rounded bg-stone-100 text-stone-700 group-hover:bg-orange-200 group-hover:text-orange-900">
                             {stn.code}
                           </span>
                         </button>
@@ -548,7 +548,7 @@ export function TicketDateCalculator() {
                 type="button"
                 onClick={handleSwapStations}
                 title="Swap Stations"
-                className="h-11 w-11 rounded-full border border-stone-200 text-stone-500 hover:text-orange-600 hover:border-orange-300 flex items-center justify-center transition-colors cursor-pointer bg-white shadow-2xs rotate-90 md:rotate-0"
+                className="type-button h-11 w-11 rounded-full border border-stone-200 text-stone-500 hover:text-orange-600 hover:border-orange-300 flex items-center justify-center transition-colors cursor-pointer bg-white shadow-2xs rotate-90 md:rotate-0"
               >
                 <ArrowRightLeft className="h-3.5 w-3.5" />
               </button>
@@ -556,7 +556,7 @@ export function TicketDateCalculator() {
 
             {/* TO FIELD */}
             <div className="sm:col-span-1 md:col-span-4 relative" ref={toRef}>
-              <label htmlFor="journey-to" className="block text-xs font-bold text-stone-800 mb-1">
+              <label htmlFor="journey-to" className="type-label block font-bold text-stone-800 mb-1">
                 To Station
               </label>
               <div className="relative">
@@ -577,12 +577,12 @@ export function TicketDateCalculator() {
                     setToOpen(true);
                   }}
                   placeholder="Enter destination station"
-                  className="w-full min-w-0 h-11 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 pr-8 text-base font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none"
+                  className="type-input w-full min-w-0 h-11 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 pr-8 font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={() => setToOpen((prev) => !prev)}
-                  className="absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded text-stone-600 hover:text-stone-800"
+                  className="type-button absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded text-stone-600 hover:text-stone-800"
                   aria-label="Toggle to station list"
                 >
                   <ChevronDown className={`h-3.5 w-3.5 transition-transform ${toOpen ? "rotate-180" : ""}`} />
@@ -591,20 +591,20 @@ export function TicketDateCalculator() {
 
               {toOpen && (
                 <div className="absolute right-0 top-[102%] z-50 w-full sm:w-72 max-h-56 overflow-y-auto rounded-lg border border-stone-200 bg-white p-1.5 shadow-xl">
-                  <div className="px-2 py-1 text-[10px] font-bold text-stone-400 uppercase tracking-wider border-b border-stone-100 mb-1 flex items-center justify-between">
+                  <div className="type-caption px-2 py-1 font-bold text-stone-400 uppercase tracking-wider border-b border-stone-100 mb-1 flex items-center justify-between">
                     <span>{toInput.trim() ? "Search Results" : "Top Railway Stations"}</span>
-                    {toLoading && <span className="text-[9px] text-orange-600 font-semibold animate-pulse">Searching...</span>}
+                    {toLoading && <span className="type-caption  text-orange-600 font-semibold animate-pulse">Searching...</span>}
                   </div>
                   {toLoading && toSuggestions.length === 0 ? (
-                    <div className="px-3 py-4 text-center text-xs text-stone-500">
+                    <div className="type-caption px-3 py-4 text-center text-stone-500">
                       Searching stations...
                     </div>
                   ) : toStationError && toSuggestions.length === 0 ? (
-                    <div className="px-3 py-3 text-center text-xs text-rose-600">
+                    <div className="type-caption px-3 py-3 text-center text-rose-600">
                       {toStationError}
                     </div>
                   ) : toSuggestions.length === 0 ? (
-                    <div className="px-3 py-4 text-center text-xs text-stone-500">
+                    <div className="type-caption px-3 py-4 text-center text-stone-500">
                       No matching stations found.
                     </div>
                   ) : (
@@ -621,7 +621,7 @@ export function TicketDateCalculator() {
                             setToCode(stn.code);
                             setToOpen(false);
                           }}
-                          className={`w-full text-left px-2.5 py-1.5 rounded-md text-xs flex items-center justify-between transition-colors ${isSameAsFrom
+                          className={`type-button w-full text-left px-2.5 py-1.5 rounded-md flex items-center justify-between transition-colors ${isSameAsFrom
                             ? "opacity-40 cursor-not-allowed bg-stone-50"
                             : "hover:bg-orange-50 group cursor-pointer"
                             }`}
@@ -630,11 +630,11 @@ export function TicketDateCalculator() {
                             <span className={`font-bold block truncate ${isSameAsFrom ? "text-stone-400" : "text-stone-900 group-hover:text-orange-700"}`}>
                               {stn.name}
                             </span>
-                            <span className="text-[10px] text-stone-500">
+                            <span className="type-caption  text-stone-500">
                               {isSameAsFrom ? "Already selected as From" : "Indian Railways"}
                             </span>
                           </div>
-                          <span className="shrink-0 text-[10px] font-mono font-extrabold px-1.5 py-0.5 rounded bg-stone-100 text-stone-700 group-hover:bg-orange-200 group-hover:text-orange-900">
+                          <span className="type-caption shrink-0 font-mono font-extrabold px-1.5 py-0.5 rounded bg-stone-100 text-stone-700 group-hover:bg-orange-200 group-hover:text-orange-900">
                             {stn.code}
                           </span>
                         </button>
@@ -647,7 +647,7 @@ export function TicketDateCalculator() {
 
             {/* JOURNEY DATE */}
             <div className="sm:col-span-1 md:col-span-3">
-              <label htmlFor="journey-date" className="block text-xs font-bold text-stone-800 mb-1">
+              <label htmlFor="journey-date" className="type-label block font-bold text-stone-800 mb-1">
                 Journey Date
               </label>
               <input
@@ -655,7 +655,7 @@ export function TicketDateCalculator() {
                 type="date"
                 value={journeyDate}
                 onChange={(e) => handleJourneyDateChange(e.target.value)}
-                className="w-full min-w-0 h-11 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 text-base font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none cursor-pointer"
+                className="type-input w-full min-w-0 h-11 rounded-xl border border-stone-200 bg-[#faf8f5] px-3 font-medium text-stone-900 transition-colors hover:border-orange-300 focus:border-orange-500 focus:bg-white focus:outline-none cursor-pointer"
               />
             </div>
           </form>
@@ -678,7 +678,7 @@ export function TicketDateCalculator() {
                   <CalendarIcon className="h-4 w-4 text-orange-600" />
                   <h3
                     id="booking-calendar-heading"
-                    className="text-sm font-bold tracking-wide text-[#0b2240]"
+                    className="type-h3  tracking-wide text-[#0b2240]"
                   >
                     Booking Calendar
                   </h3>
@@ -687,18 +687,18 @@ export function TicketDateCalculator() {
                   <button
                     type="button"
                     onClick={handlePrevMonth}
-                    className="p-2 rounded-lg hover:bg-stone-100 text-stone-600 cursor-pointer"
+                    className="type-button p-2 rounded-lg hover:bg-stone-100 text-stone-600 cursor-pointer"
                     title="Previous Month"
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </button>
-                  <span className="text-xs font-extrabold text-stone-900 min-w-[110px] text-center">
+                  <span className="type-caption  font-extrabold text-stone-900 min-w-[110px] text-center">
                     {MONTH_NAMES[calendarViewDate.month - 1]} {calendarViewDate.year}
                   </span>
                   <button
                     type="button"
                     onClick={handleNextMonth}
-                    className="p-2 rounded-lg hover:bg-stone-100 text-stone-600 cursor-pointer"
+                    className="type-button p-2 rounded-lg hover:bg-stone-100 text-stone-600 cursor-pointer"
                     title="Next Month"
                   >
                     <ChevronRight className="h-4 w-4" />
@@ -707,7 +707,7 @@ export function TicketDateCalculator() {
               </div>
 
               {/* Day Names Header */}
-              <div className="grid grid-cols-7 gap-1.5 text-center text-xs font-bold text-stone-400 py-1 border-b border-stone-100">
+              <div className="type-caption grid grid-cols-7 gap-1.5 text-center font-bold text-stone-400 py-1 border-b border-stone-100">
                 <span>Su</span>
                 <span>Mo</span>
                 <span>Tu</span>
@@ -749,7 +749,7 @@ export function TicketDateCalculator() {
                         }}
                         aria-label={`${item.dayNumber} ${MONTH_NAMES[calendarViewDate.month - 1]} ${calendarViewDate.year}`}
                         aria-pressed={item.isSelected}
-                        className={`w-full h-full rounded-lg text-xs flex flex-col items-center justify-center transition-all cursor-pointer ${colorClasses}`}
+                        className={`type-button w-full h-full rounded-lg flex flex-col items-center justify-center transition-all cursor-pointer ${colorClasses}`}
                       >
                         <span>{item.dayNumber}</span>
                       </button>
@@ -758,15 +758,15 @@ export function TicketDateCalculator() {
                       {item.status !== "PAST" && (
                         <div className="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/day:flex flex-col items-center z-50 w-44">
                           <div className="rounded-xl bg-[#0b2240] px-3 py-2 text-white shadow-xl border border-[#1e3a5f] text-center w-full">
-                            <span className="text-xs text-stone-300 block font-medium leading-none">
+                            <span className="type-caption  text-stone-300 block font-medium leading-none">
                               Booking opens on:
                             </span>
-                            <strong className="text-[11.5px] font-bold block text-white mt-1 leading-snug">
+                            <strong className="type-caption  font-bold block text-white mt-1 leading-snug">
                               {item.openingFormatted.includes("(")
                                 ? `${item.openingFormatted.split("(")[1].replace(")", "")}, ${item.openingFormatted.split(" (")[0]}`
                                 : item.openingFormatted}
                             </strong>
-                            <div className="text-sm mt-1">🗓️</div>
+                            <div className="type-body-small  mt-1">🗓️</div>
                           </div>
                           <div className="w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-[#0b2240]" />
                         </div>
@@ -777,7 +777,7 @@ export function TicketDateCalculator() {
               </div>
 
               {/* Calendar Legend (Single Appearance) */}
-              <div className="mt-1 pt-2 border-t border-stone-100 flex flex-wrap items-center justify-between gap-2 text-xs text-stone-600">
+              <div className="type-caption mt-1 pt-2 border-t border-stone-100 flex flex-wrap items-center justify-between gap-2 text-stone-600">
                 <span className="flex items-center gap-1">
                   <span className="h-2 w-2 rounded-full bg-emerald-500" />
                   <span>General Open</span>
@@ -811,13 +811,13 @@ export function TicketDateCalculator() {
                   <span className="h-2 w-2 rounded-full bg-orange-500" />
                   <h2
                     id="booking-schedule-heading"
-                    className="text-sm font-bold tracking-wide text-[#0b2240]"
+                    className="type-section-compact  tracking-wide text-[#0b2240]"
                   >
                     Your Booking Schedule
                   </h2>
                 </div>
                 {canShowSchedule && bookingStatus && (
-                  <span className={`px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider text-white ${bookingStatus.badgeColor}`}>
+                  <span className={`type-caption px-2.5 py-0.5 rounded font-bold uppercase tracking-wider text-white ${bookingStatus.badgeColor}`}>
                     {bookingStatus.title}
                   </span>
                 )}
@@ -832,19 +832,19 @@ export function TicketDateCalculator() {
                       <div>
                         <div className="flex flex-wrap items-center gap-2">
                           <CheckCircle2 className="h-4 w-4 text-cyan-400 shrink-0" />
-                          <span className="text-xs font-semibold tracking-wide text-sky-200">
+                          <span className="type-caption  font-semibold tracking-wide text-sky-200">
                             Normal Advance Reservation (60-Day ARP)
                           </span>
-                          <span className="text-[10px] font-semibold bg-white/10 px-2 py-0.5 rounded text-stone-300">
+                          <span className="type-caption  font-semibold bg-white/10 px-2 py-0.5 rounded text-stone-300">
                             8:00 AM IST
                           </span>
                         </div>
 
-                        <div className="mt-3 text-xl sm:text-2xl font-bold tracking-tight text-white">
+                        <div className="type-result mt-3 font-bold tracking-tight text-white">
                           {formatReadableDate(normalBookingDateIso)}
                         </div>
 
-                        <p className="mt-0.5 text-xs text-stone-300">
+                        <p className="type-body-small mt-0.5 text-stone-300">
                           Calculated as Journey Date minus 60 calendar days (journey date excluded).
                         </p>
                       </div>
@@ -852,15 +852,15 @@ export function TicketDateCalculator() {
                       {/* Single General Countdown (Only shown when opening is in future) */}
                       <div className="shrink-0 text-left md:text-right">
                         {generalCountdown.isZero ? (
-                          <span className="inline-block px-3 py-1 rounded bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold tracking-wide">
+                          <span className="type-caption inline-block px-3 py-1 rounded bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-bold tracking-wide">
                             ALREADY OPEN
                           </span>
                         ) : (
                           <div className="p-2 rounded-lg bg-white/10 border border-white/10">
-                            <span className="block text-[10px] uppercase font-bold text-cyan-300 tracking-wider">
+                            <span className="type-caption block uppercase font-bold text-cyan-300 tracking-wider">
                               Opening Countdown:
                             </span>
-                            <span className="text-base font-mono font-bold text-cyan-200 block mt-0.5">
+                            <span className="type-body  font-mono font-bold text-cyan-200 block mt-0.5">
                               {mounted ? generalCountdown.formatted : "-- : -- : --"}
                             </span>
                           </div>
@@ -875,23 +875,23 @@ export function TicketDateCalculator() {
                     <div className="rounded-xl bg-slate-50/80 p-4 border border-stone-200 flex flex-col justify-between">
                       <div className="space-y-1">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-extrabold uppercase tracking-wide text-amber-900 flex items-center gap-1.5">
+                          <span className="type-caption  font-extrabold uppercase tracking-wide text-amber-900 flex items-center gap-1.5">
                             <Zap className="h-3.5 w-3.5 text-amber-600" />
                             AC Tatkal
                           </span>
-                          <span className="text-xs font-bold text-stone-500">10:00 AM IST</span>
+                          <span className="type-caption  font-bold text-stone-500">10:00 AM IST</span>
                         </div>
 
-                        <div className="text-sm font-bold text-stone-900">
+                        <div className="type-body-small  font-bold text-stone-900">
                           {formatReadableDate(tatkalBookingDateIso)}
                         </div>
 
-                        <div className="text-xs text-stone-600">
+                        <div className="type-caption  text-stone-600">
                           Applicable classes: <strong>1A, 2A, 3A, 3E, CC, EC</strong>
                         </div>
                       </div>
 
-                      <div className="pt-1.5 mt-1.5 border-t border-stone-200/80 flex items-center justify-between text-xs">
+                      <div className="type-caption pt-1.5 mt-1.5 border-t border-stone-200/80 flex items-center justify-between ">
                         <span className="text-stone-500 font-medium">Status:</span>
                         {acTatkalCountdown.isZero ? (
                           <span className="font-bold text-stone-600">Opening Time Passed</span>
@@ -907,23 +907,23 @@ export function TicketDateCalculator() {
                     <div className="rounded-xl bg-slate-50/80 p-4 border border-stone-200 flex flex-col justify-between">
                       <div className="space-y-1">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-extrabold uppercase tracking-wide text-orange-900 flex items-center gap-1.5">
+                          <span className="type-caption  font-extrabold uppercase tracking-wide text-orange-900 flex items-center gap-1.5">
                             <Zap className="h-3.5 w-3.5 text-orange-600" />
                             Non-AC Tatkal
                           </span>
-                          <span className="text-xs font-bold text-stone-500">11:00 AM IST</span>
+                          <span className="type-caption  font-bold text-stone-500">11:00 AM IST</span>
                         </div>
 
-                        <div className="text-sm font-bold text-stone-900">
+                        <div className="type-body-small  font-bold text-stone-900">
                           {formatReadableDate(tatkalBookingDateIso)}
                         </div>
 
-                        <div className="text-xs text-stone-600">
+                        <div className="type-caption  text-stone-600">
                           Applicable classes: <strong>SL, 2S</strong>
                         </div>
                       </div>
 
-                      <div className="pt-1.5 mt-1.5 border-t border-stone-200/80 flex items-center justify-between text-xs">
+                      <div className="type-caption pt-1.5 mt-1.5 border-t border-stone-200/80 flex items-center justify-between ">
                         <span className="text-stone-500 font-medium">Status:</span>
                         {nonAcTatkalCountdown.isZero ? (
                           <span className="font-bold text-stone-600">Opening Time Passed</span>
@@ -938,12 +938,12 @@ export function TicketDateCalculator() {
 
                   {/* CURRENT BOOKING NOTICE (ONLY FOR SAME-DAY OR NEAR-DATE JOURNEYS) */}
                   {(bookingStatus.isSameDay || bookingStatus.isNearDate) && (
-                    <div className="rounded-lg bg-amber-50/70 border border-amber-200/80 p-2.5 text-xs text-stone-800">
+                    <div className="type-caption rounded-lg bg-amber-50/70 border border-amber-200/80 p-2.5 text-stone-800">
                       <div className="flex items-start gap-2">
-                        <span className="p-0.5 rounded bg-amber-200/80 text-amber-900 font-bold text-[10px]">
+                        <span className="type-caption p-0.5 rounded bg-amber-200/80 text-amber-900 font-bold ">
                           Current Booking
                         </span>
-                        <p className="text-xs text-stone-700 leading-relaxed">
+                        <p className="type-body  text-stone-700 leading-relaxed">
                           After chart preparation (typically 4 hours before departure), IRCTC opens Current Booking for vacant confirmed accommodation at normal ticket fare without Tatkal charges, subject to train availability.
                         </p>
                       </div>
@@ -951,7 +951,7 @@ export function TicketDateCalculator() {
                   )}
 
                   {/* COMPACT AUTHORISED AGENT RESTRICTIONS STRIP */}
-                  <div className="rounded-lg bg-[#faf8f5] border border-stone-200 px-3 py-2 text-stone-700 text-xs flex flex-wrap items-center justify-between gap-2">
+                  <div className="type-caption rounded-lg bg-[#faf8f5] border border-stone-200 px-3 py-2 text-stone-700 flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-1.5 font-bold text-stone-900">
                       <ShieldAlert className="h-3.5 w-3.5 text-amber-600 shrink-0" />
                       <span>Authorised Agent Restrictions:</span>
@@ -976,7 +976,7 @@ export function TicketDateCalculator() {
                           setCopied(true);
                           setTimeout(() => setCopied(false), 2000);
                         }}
-                        className="h-11 px-2.5 rounded-lg border border-stone-200 bg-white text-xs font-bold text-stone-700 hover:bg-stone-50 flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                        className="type-button h-11 px-2.5 rounded-lg border border-stone-200 bg-white font-bold text-stone-700 hover:bg-stone-50 flex items-center gap-1.5 cursor-pointer shadow-2xs"
                       >
                         {copied ? <Check className="h-3 w-3 text-emerald-600" /> : <Copy className="h-3 w-3 text-stone-500" />}
                         <span>{copied ? "Copied" : "Copy"}</span>
@@ -985,7 +985,7 @@ export function TicketDateCalculator() {
                       <button
                         type="button"
                         onClick={handleWhatsAppShare}
-                        className="h-11 px-2.5 rounded-lg border border-emerald-300 bg-emerald-50 text-xs font-bold text-emerald-800 hover:bg-emerald-100 flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                        className="type-button h-11 px-2.5 rounded-lg border border-emerald-300 bg-emerald-50 font-bold text-emerald-800 hover:bg-emerald-100 flex items-center gap-1.5 cursor-pointer shadow-2xs"
                       >
                         <Share2 className="h-3 w-3 text-emerald-600" />
                         <span>WhatsApp</span>
@@ -994,7 +994,7 @@ export function TicketDateCalculator() {
                       <button
                         type="button"
                         onClick={handleDownloadIcs}
-                        className="h-11 px-2.5 rounded-lg border border-stone-200 bg-white text-xs font-bold text-stone-700 hover:bg-stone-50 flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                        className="type-button h-11 px-2.5 rounded-lg border border-stone-200 bg-white font-bold text-stone-700 hover:bg-stone-50 flex items-center gap-1.5 cursor-pointer shadow-2xs"
                         title="Download .ics Calendar Event"
                       >
                         <Download className="h-3 w-3 text-stone-500" />
@@ -1006,7 +1006,7 @@ export function TicketDateCalculator() {
                       <button
                         type="button"
                         onClick={handleReset}
-                        className="h-11 px-2.5 rounded-lg border border-stone-200 bg-white text-xs font-bold text-stone-700 hover:bg-stone-50 flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                        className="type-button h-11 px-2.5 rounded-lg border border-stone-200 bg-white font-bold text-stone-700 hover:bg-stone-50 flex items-center gap-1.5 cursor-pointer shadow-2xs"
                       >
                         <RotateCcw className="h-3 w-3 text-stone-500" />
                         <span>Reset</span>
@@ -1016,7 +1016,7 @@ export function TicketDateCalculator() {
                         href="https://www.irctc.co.in"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="h-11 px-3 rounded-lg bg-orange-500 hover:bg-orange-600 text-xs font-bold text-white transition-colors flex items-center gap-1.5 shadow-2xs"
+                        className="type-caption h-11 px-3 rounded-lg bg-orange-500 hover:bg-orange-600 font-bold text-white transition-colors flex items-center gap-1.5 shadow-2xs"
                       >
                         <span>Book on IRCTC</span>
                         <ExternalLink className="h-3 w-3" />
@@ -1026,8 +1026,8 @@ export function TicketDateCalculator() {
                 </div>
               ) : (
                 <div aria-label="How to check your booking date" className="rounded-xl border border-orange-100 bg-gradient-to-br from-orange-50/70 to-white p-4">
-                  <h3 className="text-sm font-bold text-[#0b2240]">Check your booking date in 3 steps</h3>
-                  <p className="mt-1 text-xs leading-5 text-stone-600">Complete all three details above. Your booking schedule will appear here automatically.</p>
+                  <h3 className="type-h3  text-[#0b2240]">Check your booking date in 3 steps</h3>
+                  <p className="type-body-small mt-1 leading-5 text-stone-600">Complete all three details above. Your booking schedule will appear here automatically.</p>
                   <ol className="mt-3 space-y-2">
                     {[
                       { title: "Select your From station", detail: "Choose your origin from the suggestions or enter it manually.", done: hasFromStation },
@@ -1035,10 +1035,10 @@ export function TicketDateCalculator() {
                       { title: "Choose your journey date", detail: "Enter the date above or pick a date in the calendar.", done: hasValidJourneyDate },
                     ].map((step, index) => (
                       <li key={step.title} className={`flex items-start gap-3 rounded-lg border p-2.5 ${step.done ? "border-emerald-100 bg-emerald-50/60" : "border-slate-200 bg-white"}`}>
-                        <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${step.done ? "bg-emerald-100 text-emerald-800" : "bg-orange-100 text-orange-800"}`}>
+                        <span className={`type-caption flex h-6 w-6 shrink-0 items-center justify-center rounded-full font-bold ${step.done ? "bg-emerald-100 text-emerald-800" : "bg-orange-100 text-orange-800"}`}>
                           {step.done ? <Check aria-label="Completed" className="h-3.5 w-3.5" /> : index + 1}
                         </span>
-                        <div><p className="text-xs font-bold text-[#0b2240]">{step.title}</p><p className="mt-0.5 text-[11px] leading-4 text-stone-600">{step.detail}</p></div>
+                        <div><p className="type-body  font-bold text-[#0b2240]">{step.title}</p><p className="type-body-small mt-0.5 leading-4 text-stone-600">{step.detail}</p></div>
                       </li>
                     ))}
                   </ol>

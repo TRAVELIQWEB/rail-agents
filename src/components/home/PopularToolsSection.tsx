@@ -96,17 +96,17 @@ export function PopularToolsSection() {
         {/* Section Header */}
         <div className="flex flex-col items-start justify-between gap-4 border-b border-[#E5EAF0] pb-6 sm:flex-row sm:items-end sm:pb-8">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-1.5 rounded-md bg-white px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-[#142B45] border border-[#E5EAF0]">
+            <span className="type-caption inline-flex items-center gap-1.5 rounded-md bg-white px-2.5 py-1 font-bold uppercase tracking-wider text-[#142B45] border border-[#E5EAF0]">
               <Wrench className="h-3.5 w-3.5 text-[#F36B21]" aria-hidden="true" />
               Verified Utility Suite
             </span>
             <h2
               id="popular-tools-heading"
-              className="mt-2 text-2xl font-black tracking-tight text-[#142B45] sm:text-3xl lg:text-4xl"
+              className="type-h2 mt-2 tracking-tight text-[#142B45] "
             >
               Most-Used Railway Tools
             </h2>
-            <p className="mt-2 text-sm leading-relaxed text-[#667085] sm:text-base">
+            <p className="type-body-small mt-2 leading-relaxed text-[#667085] ">
               Accurate, PRS-verified calculation and live tracking tools built to simplify everyday ticketing.
             </p>
           </div>
@@ -114,7 +114,7 @@ export function PopularToolsSection() {
           <InternalLink
             href="/tools"
             prefetch={false}
-            className="group inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-[#E5EAF0] bg-white px-4 py-2 text-sm font-bold text-[#F36B21] shadow-2xs hover:border-[#F36B21]/50 hover:bg-[#FFF1E7]/40 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#F36B21]"
+            className="type-button group inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-[#E5EAF0] bg-white px-4 py-2 font-bold text-[#F36B21] shadow-2xs hover:border-[#F36B21]/50 hover:bg-[#FFF1E7]/40 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#F36B21]"
           >
             <span>View all tools</span>
             <ArrowRight
@@ -146,23 +146,23 @@ export function PopularToolsSection() {
                       <Icon aria-hidden="true" className="h-6 w-6" />
                     </span>
                     <span
-                      className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${config.badgeBg} ${config.badgeText}`}
+                      className={`type-caption rounded-full px-2.5 py-0.5 font-bold ${config.badgeBg} ${config.badgeText}`}
                     >
                       {config.tag}
                     </span>
                   </div>
 
-                  <h3 className="mt-5 text-base font-bold text-[#142B45] group-hover:text-[#F36B21] transition-colors sm:text-lg">
+                  <h3 className="type-card-title mt-5 text-[#142B45] group-hover:text-[#F36B21] transition-colors ">
                     {tool.title}
                   </h3>
 
-                  <p className="mt-2 text-xs leading-relaxed text-[#667085] sm:text-sm">
+                  <p className="type-body-small mt-2 leading-relaxed text-[#667085] ">
                     {tool.description}
                   </p>
                 </div>
 
                 {/* Bottom Action Row */}
-                <div className="mt-5 pt-3.5 border-t border-[#E5EAF0] flex items-center justify-between text-xs">
+                <div className="type-caption mt-5 pt-3.5 border-t border-[#E5EAF0] flex items-center justify-between ">
                   <span className="font-semibold text-[#667085]">{tool.badge}</span>
                   <span className="inline-flex items-center gap-1 font-bold text-[#F36B21] transition-transform duration-150 group-hover:translate-x-0.5">
                     <span>{config.actionText}</span>

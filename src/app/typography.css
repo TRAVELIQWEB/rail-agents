@@ -1,0 +1,177 @@
+/* RailAgents typography: mobile <640, tablet 640–1023, desktop >=1024. */
+:root {
+  --type-display: clamp(1.875rem, calc(1.5rem + 1.25vw), 2.5rem);
+  --type-page-title: clamp(1.625rem, calc(1.3rem + 1.25vw), 2.25rem);
+  --type-h2: clamp(1.375rem, calc(1.1rem + .9vw), 1.875rem);
+  --type-h3: 1.25rem;
+  --type-h4: 1.125rem;
+  --type-h5: 1.0625rem;
+  --type-h6: 1rem;
+  --type-hero-description: 1rem;
+  --type-body-large: 1.0625rem;
+  --type-introduction: 1.0625rem;
+  --type-body: 1rem;
+  --type-body-small: .875rem;
+  --type-helper: .8125rem;
+  --type-caption: .75rem;
+  --type-label: .875rem;
+  --type-button: .9375rem;
+  --type-input: 1rem;
+  --type-table: .875rem;
+  --type-card-title: 1.0625rem;
+  --type-card-description: .9375rem;
+  --type-article-title: 1.125rem;
+  --type-article-h2: 1.5rem;
+  --type-article-h3: 1.25rem;
+  --type-article-h4: 1.125rem;
+  --type-section-compact: 1.375rem;
+  --type-result: 1.25rem;
+  --type-result-title: 1.125rem;
+  --type-amount: 1.625rem;
+  --type-logo: 1.125rem;
+  --type-navigation: .9375rem;
+  --type-article-body: 1rem;
+  --type-heading-color: #142B45;
+  --type-body-color: #344054;
+  --type-secondary-color: #667085;
+  --type-leading-h1: 1.15;
+  --type-leading-h2: 1.2;
+  --type-leading-h3: 1.25;
+  --type-leading-h4: 1.3;
+  --type-leading-h5: 1.35;
+  --type-leading-h6: 1.4;
+  --type-leading-body: 1.7;
+  --type-leading-list: 1.65;
+  --type-leading-small: 1.55;
+  --type-leading-caption: 1.5;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --type-h3: 1.375rem;
+    --type-h4: 1.1875rem;
+    --type-h5: 1.125rem;
+    --type-hero-description: 1.0625rem;
+    --type-article-body: 1.0625rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --type-h3: 1.5rem;
+    --type-h4: 1.25rem;
+    --type-hero-description: 1.125rem;
+    --type-introduction: 1.125rem;
+    --type-card-title: 1.125rem;
+    --type-card-description: 1rem;
+    --type-article-title: 1.25rem;
+    --type-article-h2: 1.75rem;
+    --type-article-h3: 1.375rem;
+    --type-section-compact: 1.5rem;
+    --type-result: 1.5rem;
+    --type-amount: 2rem;
+    --type-logo: 1.25rem;
+    --type-navigation: .875rem;
+  }
+}
+
+@layer base {
+  body { font-size: var(--type-body); line-height: var(--type-leading-body); }
+  :where(h1, h2, h3, h4, h5, h6) { color: var(--type-heading-color); overflow-wrap: anywhere; }
+  h1 { font-size: var(--type-page-title); font-weight: 800; line-height: var(--type-leading-h1); }
+  h2 { font-size: var(--type-h2); font-weight: 700; line-height: var(--type-leading-h2); }
+  h3 { font-size: var(--type-h3); font-weight: 700; line-height: var(--type-leading-h3); }
+  h4 { font-size: var(--type-h4); font-weight: 600; line-height: var(--type-leading-h4); }
+  h5 { font-size: var(--type-h5); font-weight: 600; line-height: var(--type-leading-h5); }
+  h6 { font-size: var(--type-h6); font-weight: 600; line-height: var(--type-leading-h6); }
+  p { color: var(--type-body-color); }
+  li { line-height: var(--type-leading-list); }
+  :where(input, select, textarea) { font-size: var(--type-input); }
+}
+
+/* Role classes own typography only. Important defeats legacy module font rules,
+   without overriding layout, status colours, editor styles or print formatting. */
+.type-display, .home-hero-title { font-size: var(--type-display) !important; font-weight: 800 !important; line-height: var(--type-leading-h1) !important; }
+.type-page-title, .page-hero-title { font-size: var(--type-page-title) !important; font-weight: 800 !important; line-height: var(--type-leading-h1) !important; }
+.type-h2 { font-size: var(--type-h2) !important; font-weight: 700 !important; line-height: var(--type-leading-h2) !important; }
+.type-h3 { font-size: var(--type-h3) !important; font-weight: 700 !important; line-height: var(--type-leading-h3) !important; }
+.type-h4 { font-size: var(--type-h4) !important; font-weight: 600 !important; line-height: var(--type-leading-h4) !important; }
+.type-h5 { font-size: var(--type-h5) !important; font-weight: 600 !important; line-height: var(--type-leading-h5) !important; }
+.type-h6 { font-size: var(--type-h6) !important; font-weight: 600 !important; line-height: var(--type-leading-h6) !important; }
+.type-section-compact { font-size: var(--type-section-compact) !important; font-weight: 700 !important; line-height: var(--type-leading-h2) !important; }
+.type-card-title { font-size: var(--type-card-title) !important; font-weight: 700 !important; line-height: var(--type-leading-h3) !important; }
+.type-card-description { font-size: var(--type-card-description) !important; font-weight: 400 !important; line-height: var(--type-leading-small) !important; }
+.type-article-title { font-size: var(--type-article-title) !important; font-weight: 700 !important; line-height: var(--type-leading-h3) !important; }
+.type-hero-description, .page-hero-description { font-size: var(--type-hero-description) !important; font-weight: 400 !important; line-height: var(--type-leading-body) !important; }
+.type-body-large { font-size: var(--type-body-large) !important; line-height: var(--type-leading-body) !important; }
+.type-introduction { font-size: var(--type-introduction) !important; font-weight: 400 !important; line-height: var(--type-leading-body) !important; }
+.type-body { font-size: var(--type-body) !important; line-height: var(--type-leading-body) !important; }
+.type-body-small { font-size: var(--type-body-small) !important; line-height: var(--type-leading-small) !important; }
+/* Paragraph roles use normal weight; explicit result/notice roles retain emphasis. */
+p:is(.type-body, .type-body-large, .type-body-small, .type-helper) { font-weight: 400 !important; }
+.type-note { font-size: var(--type-body-small) !important; font-weight: 500 !important; line-height: var(--type-leading-small) !important; }
+.type-helper { font-size: var(--type-helper) !important; line-height: var(--type-leading-small) !important; }
+.type-caption { font-size: var(--type-caption) !important; font-weight: 500 !important; line-height: var(--type-leading-caption) !important; }
+.type-label { font-size: var(--type-label) !important; line-height: var(--type-leading-small) !important; }
+.type-button { font-size: var(--type-button) !important; line-height: var(--type-leading-small) !important; }
+.type-button span { font-size: inherit !important; }
+.type-input { font-size: var(--type-input) !important; line-height: var(--type-leading-small) !important; }
+.type-table { font-size: var(--type-table) !important; line-height: var(--type-leading-small) !important; }
+.type-result-title { font-size: var(--type-result-title) !important; font-weight: 700 !important; line-height: var(--type-leading-h3) !important; }
+.type-subheading { font-size: var(--type-article-h3) !important; font-weight: 700 !important; line-height: var(--type-leading-h3) !important; }
+.type-result { font-size: var(--type-result) !important; font-weight: 700 !important; line-height: var(--type-leading-h3) !important; }
+.type-amount { font-size: var(--type-amount) !important; font-weight: 800 !important; line-height: var(--type-leading-h2) !important; }
+.type-logo { font-size: var(--type-logo) !important; font-weight: 800 !important; line-height: 1 !important; }
+.type-navigation { font-size: var(--type-navigation) !important; line-height: var(--type-leading-small) !important; }
+.type-footer-heading { font-size: var(--type-h6) !important; font-weight: 600 !important; line-height: var(--type-leading-h6) !important; }
+
+.blog-content {
+  max-width: 760px;
+  font-size: var(--type-article-body);
+  line-height: var(--type-leading-body);
+  color: var(--type-body-color);
+}
+/* Existing floated article media needs the original containing width; limiting
+   that container to 760px would squeeze its adjacent text into a narrow strip. */
+.clearfix:has(> [class~="lg:float-left"]) .blog-content { max-width: none; }
+.blog-content :is(p, li) { color: var(--type-body-color); }
+.blog-content p { font-size: var(--type-article-body); line-height: var(--type-leading-body); margin-bottom: 16px; }
+.blog-content :is(ul, ol) { font-size: var(--type-body); line-height: var(--type-leading-list); }
+.blog-content li + li { margin-top: 8px; }
+.blog-content h2 { font-size: var(--type-article-h2); font-weight: 700; line-height: var(--type-leading-h2); margin-top: 36px; margin-bottom: 12px; }
+.blog-content h3 { font-size: var(--type-article-h3); font-weight: 700; line-height: var(--type-leading-h3); margin-top: 24px; margin-bottom: 8px; }
+.blog-content h4 { font-size: var(--type-article-h4); font-weight: 600; line-height: var(--type-leading-h4); }
+.blog-content :is(table, td, th) { font-size: var(--type-table); }
+.blog-content figcaption { font-size: var(--type-caption); line-height: var(--type-leading-caption); color: var(--type-secondary-color); }
+.type-guide-article { --type-article-body: var(--type-body); }
+.type-guide-article :is(p, li) { font-size: var(--type-body) !important; line-height: var(--type-leading-body) !important; }
+.type-guide-article h2 { font-size: var(--type-article-h2) !important; }
+.type-guide-article h3 { font-size: var(--type-article-h3) !important; }
+.type-guide-article h4 { font-size: var(--type-article-h4) !important; }
+.type-guide-article > section > :is(h2, h3) { margin-bottom: 12px; }
+
+/* UI exceptions retain semantic hierarchy while using compact visual roles. */
+table :is(td, th) { font-size: var(--type-table); }
+table :is(td, th) > .type-caption { font-size: var(--type-caption) !important; }
+nav :is(a, button) { font-size: var(--type-navigation); }
+footer :is(a, li) { font-size: var(--type-body-small); }
+footer p { color: inherit; }
+.type-page-title { margin-bottom: 16px; }
+/* Keep the established compact tools sidebar, with standard navigation text. */
+.tools-sidebar :is(h2, h3) { font-size: var(--type-h6) !important; }
+.tools-sidebar nav > button { font-size: var(--type-label) !important; }
+.tools-sidebar-bottom p { font-size: var(--type-body-small) !important; }
+footer :is(li, a.type-button) { font-size: var(--type-body-small) !important; }
+[data-live-timing] [data-timing-label], [data-live-timing] [data-timing-missing] { font-size: var(--type-caption) !important; }
+[data-live-timing] [data-timing-scheduled] time { font-size: var(--type-table) !important; }
+[data-live-station-name] > div:first-child > span:first-child { font-size: var(--type-body) !important; }
+[data-live-station-name] > div:last-child { font-size: var(--type-caption) !important; }
+
+main :is(.type-caption, .type-helper, .type-body-small, .type-label, .type-button):is([class~="text-[#F36B21]"], [class~="text-[#f36b21]"], [class~="text-orange-500"], [class~="text-orange-600"], [class~="text-orange-700"]):not([class~="bg-orange-500"], [class~="bg-orange-600"], [class~="bg-orange-700"], [class~="bg-[#F36B21]"]) {
+  color: var(--primary-text) !important;
+}
+main .type-caption:is([class~="bg-orange-500"], [class~="bg-orange-600"], [class~="bg-[#F36B21]"]) { color: #ffffff !important; }
+
+@media print {
+  #printable-estimate-slip { font-size: 12pt; }
+}

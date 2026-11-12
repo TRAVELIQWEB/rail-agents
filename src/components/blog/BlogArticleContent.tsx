@@ -111,7 +111,7 @@ function SectionVisual({ image }: { image: BlogSectionImageConfig }) {
         />
       </div>
       {image.caption && (
-        <figcaption className="mt-2.5 text-left text-xs sm:text-[13px] font-medium leading-relaxed text-slate-500 not-italic">
+        <figcaption className="type-caption mt-2.5 text-left font-medium leading-relaxed text-slate-500 not-italic">
           {image.caption}
         </figcaption>
       )}

@@ -203,7 +203,7 @@ export default function IrctcAgentRulesPage() {
       {/* Breadcrumb Navigation */}
       <div className="border-b border-slate-200/80 bg-white">
         <div className="site-container py-3">
-          <nav aria-label="Breadcrumb" className="text-xs text-slate-500">
+          <nav aria-label="Breadcrumb" className="type-caption  text-slate-500">
             <ol className="flex flex-wrap items-center gap-1.5">
               <li>
                 <Link href="/" className="hover:text-[var(--primary)] transition-colors">
@@ -247,29 +247,29 @@ export default function IrctcAgentRulesPage() {
           </div>
 
           <div className="site-container relative z-10 max-w-6xl py-7 sm:py-9 lg:py-10">
-            <div className="inline-flex items-center gap-2 rounded-full border border-orange-200/80 bg-orange-50/80 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-orange-700 mb-3 shadow-2xs">
+            <div className="type-caption inline-flex items-center gap-2 rounded-full border border-orange-200/80 bg-orange-50/80 px-3.5 py-1 font-bold uppercase tracking-wider text-orange-700 mb-3 shadow-2xs">
               <Scale size={13} className="text-orange-600" />
               <span>Official Regulatory &amp; Compliance Standards</span>
             </div>
 
-            <h1 className="page-hero-title max-w-3xl">
+            <h1 className="type-page-title page-hero-title max-w-3xl">
               IRCTC Agent Rules &amp; Regulations:{" "}
               <span className="hero-accent block sm:inline">What Every Railway Agent Must Know</span>
             </h1>
 
-            <p className="page-hero-description mt-3.5 max-w-2xl">
+            <p className="type-hero-description page-hero-description mt-3.5 max-w-2xl">
               Working as an IRCTC railway agent involves more than booking train tickets. Agents need to understand
               registration requirements, customer responsibilities, permitted booking practices, applicable charges,
               cancellation and refund procedures, and the activities they must avoid.
             </p>
 
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
+            <p className="type-body-small mt-3 max-w-2xl leading-relaxed text-slate-600 ">
               This guide explains the key rules and practical dos and don&apos;ts that aspiring and existing railway agents
               should understand. Because requirements may change and can differ by scheme, always verify important
               decisions against the latest applicable IRCTC policy and official instructions.
             </p>
 
-            <div className="mt-6 flex max-w-3xl flex-wrap items-center gap-4 border-t border-slate-200/70 pt-4 text-xs text-slate-500">
+            <div className="type-caption mt-6 flex max-w-3xl flex-wrap items-center gap-4 border-t border-slate-200/70 pt-4 text-slate-500">
               <div className="flex items-center gap-1.5 font-medium">
                 <Clock size={14} className="text-slate-400" />
                 <span>Last reviewed: <strong className="text-slate-800 font-semibold">{lastReviewedDate}</strong></span>
@@ -297,12 +297,12 @@ export default function IrctcAgentRulesPage() {
             {/* STICKY DESKTOP TABLE OF CONTENTS (25%) */}
             <aside className="lg:col-span-3 sticky top-24 self-start order-2 lg:order-1 print:hidden">
               <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-xs">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center justify-between border-b border-slate-100 pb-2">
+                <h2 className="type-h2  uppercase tracking-wider text-slate-500 mb-3 flex items-center justify-between border-b border-slate-100 pb-2">
                   <span>Table of Contents</span>
-                  <span className="text-[11px] font-normal text-slate-400">14 Chapters</span>
+                  <span className="type-caption  font-normal text-slate-400">14 Chapters</span>
                 </h2>
                 <nav aria-label="Quick jump navigation">
-                  <ol className="space-y-1 text-xs">
+                  <ol className="type-caption space-y-1 ">
                     {TOC_SECTIONS.map((sec) => (
                       <li key={sec.id}>
                         <a
@@ -317,12 +317,12 @@ export default function IrctcAgentRulesPage() {
                 </nav>
 
                 <div className="mt-5 pt-4 border-t border-slate-100">
-                  <p className="text-[11px] text-slate-500 leading-normal mb-2.5">
+                  <p className="type-body  text-slate-500 leading-normal mb-2.5">
                     Have an unresolved compliance dispute or railway query?
                   </p>
                   <Link
                     href="/ask-nihal"
-                    className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-orange-50 border border-orange-200 px-3 py-2 text-xs font-bold text-orange-700 hover:bg-orange-100 transition-colors"
+                    className="type-button inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-orange-50 border border-orange-200 px-3 py-2 font-bold text-orange-700 hover:bg-orange-100 transition-colors"
                   >
                     <HelpCircle size={13} />
                     <span>Ask Nihal Singh a Question</span>
@@ -339,13 +339,13 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-a" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="type-caption flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-orange-800">
                     A
                   </span>
-                  <h2 className="text-2xl font-bold text-[var(--navy)]">Understand Your Agent Status</h2>
+                  <h2 className="type-h2  text-[var(--navy)]">Understand Your Agent Status</h2>
                 </div>
 
-                <p className="text-slate-700">
+                <p className="type-body text-slate-700">
                   Operating as an authorized railway e-ticketing agent is a regulated commercial privilege granted under
                   specific legal frameworks of Indian Railways and the Indian Railway Catering and Tourism Corporation (IRCTC).
                   Understanding your exact legal and structural position in this ecosystem is the first line of defense
@@ -353,21 +353,21 @@ export default function IrctcAgentRulesPage() {
                 </p>
 
                 <div className="my-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-xs">
-                  <h3 className="text-base font-bold text-[var(--navy)] mb-3 flex items-center gap-2">
+                  <h3 className="type-h3  text-[var(--navy)] mb-3 flex items-center gap-2">
                     <Building className="h-4 w-4 text-orange-600" />
                     Key Terminology: PSP vs. RSP
                   </h3>
-                  <div className="grid gap-4 sm:grid-cols-2 text-xs sm:text-sm">
+                  <div className="type-caption grid gap-4 sm:grid-cols-2 ">
                     <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-3.5">
                       <strong className="block text-slate-900 font-bold mb-1">Principal Service Provider (PSP)</strong>
-                      <p className="text-slate-600 text-xs leading-relaxed">
+                      <p className="type-body-small text-slate-600 leading-relaxed">
                         A corporate entity or organization directly contracted with IRCTC (such as CSC, digital wallets,
                         or national travel consolidators) possessing web-service integration with IRCTC reservation servers.
                       </p>
                     </div>
                     <div className="rounded-xl border border-slate-100 bg-slate-50/70 p-3.5">
                       <strong className="block text-slate-900 font-bold mb-1">Retail Service Provider (RSP)</strong>
-                      <p className="text-slate-600 text-xs leading-relaxed">
+                      <p className="type-body-small text-slate-600 leading-relaxed">
                         The individual retail agent, cyber cafe owner, or travel agency appointed by a licensed PSP.
                         Your daily login ID and operational terminal are officially categorized as an RSP.
                       </p>
@@ -375,14 +375,14 @@ export default function IrctcAgentRulesPage() {
                   </div>
                 </div>
 
-                <div className="space-y-3 text-slate-700 text-sm">
-                  <p>
+                <div className="type-body-small space-y-3 text-slate-700 ">
+                  <p className="type-body">
                     <strong>Scheme-Specific Linkage:</strong> Every RSP ID is permanently anchored to the specific agreement
                     and technical portal of your contracted PSP. A retail agent registered under one PSP (e.g., a B2C corporate
                     gateway) is bound by the rules, fee ceilings, and technical terms stipulated in that specific contract.
                     Never assume that every ticket-booking or travel-agent scheme has identical obligations or commission schedules.
                   </p>
-                  <p>
+                  <p className="type-body">
                     <strong>Ticketing vs. Tourism Agents:</strong> Authorized railway e-ticketing agents are licensed strictly
                     to book reserved electronic tickets on behalf of genuine passengers. They must be clearly distinguished from
                     IRCTC Rail Tour Package operators, specialized Bharat Gaurav tourist train agents, or General Sales Agents (GSA)
@@ -390,7 +390,7 @@ export default function IrctcAgentRulesPage() {
                   </p>
                 </div>
 
-                <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50/60 p-4 text-xs text-amber-900">
+                <div className="type-caption mt-4 rounded-xl border border-amber-200 bg-amber-50/60 p-4 text-amber-900">
                   <strong className="font-bold flex items-center gap-1.5 mb-1 text-amber-950">
                     <Info size={14} className="text-amber-700" />
                     Notice of Educational Independence:
@@ -406,23 +406,23 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-b" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="type-caption flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-orange-800">
                     B
                   </span>
-                  <h2 className="text-2xl font-bold text-[var(--navy)]">Registration and Account Security</h2>
+                  <h2 className="type-h2  text-[var(--navy)]">Registration and Account Security</h2>
                 </div>
 
-                <p className="text-slate-700 text-sm leading-relaxed mb-4">
+                <p className="type-body-small text-slate-700 leading-relaxed mb-4">
                   Maintaining accurate legal records and strict digital security controls is mandatory. Because ticketing agents
                   handle sensitive passenger information and official railway inventory, IRCTC enforces strict identity integrity
                   from onboarding through daily operations.
                 </p>
 
                 <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs mb-5">
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--navy)] mb-3">
+                  <h3 className="type-h3  uppercase tracking-wider text-[var(--navy)] mb-3">
                     Core Registration Requirements Under Current Policy
                   </h3>
-                  <ul className="space-y-2.5 text-xs sm:text-sm text-slate-700">
+                  <ul className="type-caption space-y-2.5 text-slate-700">
                     <li className="flex items-start gap-2">
                       <CheckCircle2 size={16} className="text-emerald-600 mt-0.5 shrink-0" />
                       <span>
@@ -455,12 +455,12 @@ export default function IrctcAgentRulesPage() {
                   </ul>
                 </div>
 
-                <div className="rounded-xl border border-red-200 bg-red-50/50 p-4 text-xs sm:text-sm text-red-950">
-                  <h3 className="font-bold flex items-center gap-1.5 text-red-900 mb-2">
+                <div className="type-caption rounded-xl border border-red-200 bg-red-50/50 p-4 text-red-950">
+                  <h3 className="type-h3  flex items-center gap-1.5 text-red-900 mb-2">
                     <ShieldAlert size={16} className="text-red-700" />
                     Practical Warnings for Aspiring Agents:
                   </h3>
-                  <ul className="list-disc pl-5 space-y-1 text-xs text-red-900/90 leading-relaxed">
+                  <ul className="type-caption list-disc pl-5 space-y-1 text-red-900/90 leading-relaxed">
                     <li><strong>Never purchase another person&apos;s ID:</strong> Agent IDs are strictly non-transferable. Operating under someone else&apos;s name is fraudulent.</li>
                     <li><strong>Never share credentials or OTPs:</strong> Never provide your master login, token password, or verification SMS to telecallers, software vendors, or colleagues.</li>
                     <li><strong>Beware of unauthorized intermediaries:</strong> Only register through verified Principal Service Providers officially listed on IRCTC&apos;s portal.</li>
@@ -473,13 +473,13 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-c" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="type-caption flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-orange-800">
                     C
                   </span>
-                  <h2 className="text-2xl font-bold text-[var(--navy)]">Booking Rules Every Agent Should Know</h2>
+                  <h2 className="type-h2  text-[var(--navy)]">Booking Rules Every Agent Should Know</h2>
                 </div>
 
-                <p className="text-slate-700 text-sm mb-4 leading-relaxed">
+                <p className="type-body-small text-slate-700 mb-4 leading-relaxed">
                   Daily ticket booking must strictly adhere to the procedures mandated by Indian Railways Coaching Tariff
                   and IRCTC Agent Operations guidelines. Compliance during the intake and issuance phase prevents over 90%
                   of agent disputes.
@@ -487,56 +487,56 @@ export default function IrctcAgentRulesPage() {
 
                 <div className="grid gap-3 sm:grid-cols-2 mb-5">
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
+                    <h3 className="type-h3  uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
                       <UserCheck size={14} className="text-orange-600" />
                       Customer Intake &amp; Consent
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed">
+                    <p className="type-body  text-slate-600 leading-relaxed">
                       Always collect a written or digital booking requisition containing exact passenger names (as per government ID),
                       ages, gender, and preferred berth options. Keep customer consent on file.
                     </p>
                   </div>
 
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
+                    <h3 className="type-h3  uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
                       <Receipt size={14} className="text-orange-600" />
                       Passenger Mobile Entry
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed">
+                    <p className="type-body  text-slate-600 leading-relaxed">
                       Under IRCTC compliance rules, you <strong>must enter the customer&apos;s own active mobile number</strong> during
                       booking. Never input your agency&apos;s phone number. Direct PNR alerts and cancellation OTPs must reach the traveller.
                     </p>
                   </div>
 
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
+                    <h3 className="type-h3  uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
                       <Train size={14} className="text-orange-600" />
                       ERS Printout Delivery
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed">
+                    <p className="type-body  text-slate-600 leading-relaxed">
                       Deliver the complete official Electronic Reservation Slip (ERS). The printed slip automatically displays
                       your agency name, address, phone number, and official fare breakdown.
                     </p>
                   </div>
 
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
+                    <h3 className="type-h3  uppercase tracking-wider text-[var(--navy)] mb-1.5 flex items-center gap-1.5">
                       <Clock size={14} className="text-orange-600" />
                       Booking Windows &amp; Limits
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed">
+                    <p className="type-body  text-slate-600 leading-relaxed">
                       Observe general reservation Advance Reservation Period (ARP) timings and the mandatory initial 15-minute
                       agent lock during general morning counter opening (08:00 to 08:15 AM).
                     </p>
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-4 text-xs sm:text-sm text-blue-950">
-                  <h3 className="font-bold text-blue-900 mb-1 flex items-center gap-1.5">
+                <div className="type-caption rounded-xl border border-blue-200 bg-blue-50/50 p-4 text-blue-950">
+                  <h3 className="type-h3  text-blue-900 mb-1 flex items-center gap-1.5">
                     <Info size={15} className="text-blue-700" />
                     Explaining Ticket Status Realistically:
                   </h3>
-                  <p className="text-xs text-blue-900/90 leading-relaxed">
+                  <p className="type-body  text-blue-900/90 leading-relaxed">
                     Always inform the passenger of their precise ticket status upon issuance: <strong>Confirmed (CNF)</strong>,
                     <strong>Reservation Against Cancellation (RAC)</strong>, or <strong>Waitlisted (WL)</strong>. Explain that
                     waitlist confirmation depends entirely on cancellations and railway chart preparation. An agent must never
@@ -550,15 +550,15 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-d" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 font-bold text-xs text-red-800">
+                  <span className="type-caption flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 font-bold text-red-800">
                     D
                   </span>
-                  <h2 className="text-2xl font-bold text-red-950">
+                  <h2 className="type-h2  text-red-950">
                     IRCTC Agent Mistakes That Can Put Your ID at Risk
                   </h2>
                 </div>
 
-                <p className="text-slate-700 text-sm mb-5 leading-relaxed">
+                <p className="type-body-small text-slate-700 mb-5 leading-relaxed">
                   Indian Railways Railway Board, Vigilance Department, and Cyber Crime cells continuously monitor ticketing
                   patterns. Below are major prohibited practices, practical scenarios, correct procedures, and the specific
                   consequences outlined in official regulatory policies.
@@ -569,25 +569,25 @@ export default function IrctcAgentRulesPage() {
                   {/* Item 1 */}
                   <div className="rounded-xl border border-red-200 bg-white p-4 shadow-2xs">
                     <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-bold text-sm text-red-900">
+                      <h3 className="type-h3  text-red-900">
                         1. Commercial Ticket Booking on Personal Consumer IDs
                       </h3>
-                      <span className="rounded bg-red-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-red-800 shrink-0">
+                      <span className="type-caption rounded bg-red-100 px-2 py-0.5 font-extrabold uppercase text-red-800 shrink-0">
                         Criminal Offence
                       </span>
                     </div>
-                    <p className="mt-1 text-xs text-slate-700 leading-relaxed">
+                    <p className="type-body-small mt-1 text-slate-700 leading-relaxed">
                       <strong>The Rule:</strong> Using standard personal consumer accounts (created on irctc.co.in) to book tickets
                       for customers for commercial gain or service fees is strictly forbidden.
                     </p>
-                    <p className="mt-1 text-xs text-slate-600">
+                    <p className="type-body-small mt-1 text-slate-600">
                       <strong>Practical Example:</strong> A cyber cafe owner uses their personal IRCTC ID during Tatkal hours
                       because their commercial wallet balance is low or they want to bypass the commercial 30-minute lock.
                     </p>
-                    <p className="mt-1 text-xs text-emerald-800 bg-emerald-50/60 p-2 rounded-lg font-medium">
+                    <p className="type-body-small mt-1 text-emerald-800 bg-emerald-50/60 p-2 rounded-lg font-medium">
                       <strong>Correct Way:</strong> Every commercial transaction must pass exclusively through your authorized RSP portal using your official agent credentials.
                     </p>
-                    <p className="mt-1 text-xs text-red-700">
+                    <p className="type-body-small mt-1 text-red-700">
                       <strong>Consequences:</strong> Prosecution under Section 143 of the Railways Act, 1989 (imprisonment up to 3 years and/or fine up to ₹10,000), immediate deactivation of personal IDs, and permanent blacklisting of associated mobile/PAN details.
                     </p>
                   </div>
@@ -595,23 +595,23 @@ export default function IrctcAgentRulesPage() {
                   {/* Item 2 */}
                   <div className="rounded-xl border border-red-200 bg-white p-4 shadow-2xs">
                     <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-bold text-sm text-red-900">
+                      <h3 className="type-h3  text-red-900">
                         2. Overcharging Above Prescribed Service Fees
                       </h3>
-                      <span className="rounded bg-orange-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-orange-900 shrink-0">
+                      <span className="type-caption rounded bg-orange-100 px-2 py-0.5 font-extrabold uppercase text-orange-900 shrink-0">
                         License Violation
                       </span>
                     </div>
-                    <p className="mt-1 text-xs text-slate-700 leading-relaxed">
+                    <p className="type-body-small mt-1 text-slate-700 leading-relaxed">
                       <strong>The Rule:</strong> Collecting amounts exceeding the printed railway fare, payment gateway charges, and authorized agency service fee (₹20/₹40 + GST) is illegal overcharging.
                     </p>
-                    <p className="mt-1 text-xs text-slate-600">
+                    <p className="type-body-small mt-1 text-slate-600">
                       <strong>Practical Example:</strong> Demanding an extra ₹200 or ₹500 from a desperate traveller for booking a scarce Tatkal berth during festival rush.
                     </p>
-                    <p className="mt-1 text-xs text-emerald-800 bg-emerald-50/60 p-2 rounded-lg font-medium">
+                    <p className="type-body-small mt-1 text-emerald-800 bg-emerald-50/60 p-2 rounded-lg font-medium">
                       <strong>Correct Way:</strong> Bill only the authorized service charge, display charges prominently on your shop noticeboard, and provide an itemized receipt.
                     </p>
-                    <p className="mt-1 text-xs text-red-700">
+                    <p className="type-body-small mt-1 text-red-700">
                       <strong>Consequences:</strong> Administrative financial penalties (standard IRCTC schedule imposes fines up to ₹5,000 per complaint on first offence), terminal suspension, and license termination upon repeated customer complaints.
                     </p>
                   </div>
@@ -619,23 +619,23 @@ export default function IrctcAgentRulesPage() {
                   {/* Item 3 */}
                   <div className="rounded-xl border border-red-200 bg-white p-4 shadow-2xs">
                     <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-bold text-sm text-red-900">
+                      <h3 className="type-h3  text-red-900">
                         3. Entering Agency Mobile Numbers Instead of Passenger Numbers
                       </h3>
-                      <span className="rounded bg-amber-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-amber-900 shrink-0">
+                      <span className="type-caption rounded bg-amber-100 px-2 py-0.5 font-extrabold uppercase text-amber-900 shrink-0">
                         Audit Finding
                       </span>
                     </div>
-                    <p className="mt-1 text-xs text-slate-700 leading-relaxed">
+                    <p className="type-body-small mt-1 text-slate-700 leading-relaxed">
                       <strong>The Rule:</strong> The mobile number submitted during booking must belong directly to the primary passenger travelling on that PNR.
                     </p>
-                    <p className="mt-1 text-xs text-slate-600">
+                    <p className="type-body-small mt-1 text-slate-600">
                       <strong>Practical Example:</strong> An agent enters their own counter phone number to intercept train delay SMS alerts or retain control over cancellation OTPs.
                     </p>
-                    <p className="mt-1 text-xs text-emerald-800 bg-emerald-50/60 p-2 rounded-lg font-medium">
+                    <p className="type-body-small mt-1 text-emerald-800 bg-emerald-50/60 p-2 rounded-lg font-medium">
                       <strong>Correct Way:</strong> Always request, verify, and input the actual traveller&apos;s mobile number. Direct SMS notifications protect passengers from itinerary misinformation.
                     </p>
-                    <p className="mt-1 text-xs text-red-700">
+                    <p className="type-body-small mt-1 text-red-700">
                       <strong>Consequences:</strong> Automated algorithmic flagging by IRCTC vigilance; repeated instances trigger immediate temporary terminal lock pending explanation.
                     </p>
                   </div>
@@ -643,23 +643,23 @@ export default function IrctcAgentRulesPage() {
                   {/* Item 4 */}
                   <div className="rounded-xl border border-red-200 bg-white p-4 shadow-2xs">
                     <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-bold text-sm text-red-900">
+                      <h3 className="type-h3  text-red-900">
                         4. Deploying Unauthorized Automation or Autofill Software
                       </h3>
-                      <span className="rounded bg-red-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-red-800 shrink-0">
+                      <span className="type-caption rounded bg-red-100 px-2 py-0.5 font-extrabold uppercase text-red-800 shrink-0">
                         Severe Cyber Offence
                       </span>
                     </div>
-                    <p className="mt-1 text-xs text-slate-700 leading-relaxed">
+                    <p className="type-body-small mt-1 text-slate-700 leading-relaxed">
                       <strong>The Rule:</strong> Using third-party browser extensions, bot scripts, or illegal Tatkal automation software to bypass captchas or booking queues is strictly prohibited.
                     </p>
-                    <p className="mt-1 text-xs text-slate-600">
+                    <p className="type-body-small mt-1 text-slate-600">
                       <strong>Practical Example:</strong> Installing an illegal &ldquo;Tatkal speed booster&rdquo; plugin purchased on Telegram to automate passenger form filling and bank OTP bypass.
                     </p>
-                    <p className="mt-1 text-xs text-emerald-800 bg-emerald-50/60 p-2 rounded-lg font-medium">
+                    <p className="type-body-small mt-1 text-emerald-800 bg-emerald-50/60 p-2 rounded-lg font-medium">
                       <strong>Correct Way:</strong> Use only standard, unmanipulated web browsers through the authorized PSP agent URL with manual keyboard data entry.
                     </p>
-                    <p className="mt-1 text-xs text-red-700">
+                    <p className="type-body-small mt-1 text-red-700">
                       <strong>Consequences:</strong> Joint enforcement by Railway Protection Force (RPF) and Cyber Police, confiscation of computer hardware, immediate permanent deactivation, and criminal prosecution under the Information Technology Act and Railways Act.
                     </p>
                   </div>
@@ -667,23 +667,23 @@ export default function IrctcAgentRulesPage() {
                   {/* Item 5 */}
                   <div className="rounded-xl border border-red-200 bg-white p-4 shadow-2xs">
                     <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-bold text-sm text-red-900">
+                      <h3 className="type-h3  text-red-900">
                         5. Unauthorized Cancellations &amp; Withholding Refunds
                       </h3>
-                      <span className="rounded bg-red-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-red-800 shrink-0">
+                      <span className="type-caption rounded bg-red-100 px-2 py-0.5 font-extrabold uppercase text-red-800 shrink-0">
                         Breach of Trust
                       </span>
                     </div>
-                    <p className="mt-1 text-xs text-slate-700 leading-relaxed">
+                    <p className="type-body-small mt-1 text-slate-700 leading-relaxed">
                       <strong>The Rule:</strong> An agent must never cancel a ticket without the customer&apos;s request or delay the disbursement of cancellation refunds once processed by Indian Railways.
                     </p>
-                    <p className="mt-1 text-xs text-slate-600">
+                    <p className="type-body-small mt-1 text-slate-600">
                       <strong>Practical Example:</strong> Cancelling a confirmed ticket to resell the seat or withholding the refund amount when a customer requests a cancellation due to emergency.
                     </p>
-                    <p className="mt-1 text-xs text-emerald-800 bg-emerald-50/60 p-2 rounded-lg font-medium">
+                    <p className="type-body-small mt-1 text-emerald-800 bg-emerald-50/60 p-2 rounded-lg font-medium">
                       <strong>Correct Way:</strong> Require the passenger&apos;s written requisition or OTP authentication before triggering cancellation, and disburse the refund immediately upon receipt from your PSP.
                     </p>
-                    <p className="mt-1 text-xs text-red-700">
+                    <p className="type-body-small mt-1 text-red-700">
                       <strong>Consequences:</strong> Immediate debarment from the agent network, recovery of refund amounts from security deposit, and potential liability for cheating under IPC.
                     </p>
                   </div>
@@ -695,65 +695,65 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-e" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="type-caption flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-orange-800">
                     E
                   </span>
-                  <h2 className="text-2xl font-bold text-[var(--navy)]">Service Charges, Payment Gateways &amp; Receipts</h2>
+                  <h2 className="type-h2  text-[var(--navy)]">Service Charges, Payment Gateways &amp; Receipts</h2>
                 </div>
 
-                <p className="text-slate-700 text-sm mb-4 leading-relaxed">
+                <p className="type-body-small text-slate-700 mb-4 leading-relaxed">
                   Price transparency is a fundamental pillar of IRCTC agent compliance. Every rupee collected from a passenger
                   must correlate exactly to official railway tariffs, payment gateway levies, or approved agency service fees.
                 </p>
 
                 {/* Pricing Breakdown Table */}
                 <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-2xs mb-5">
-                  <table className="w-full text-left text-xs sm:text-sm">
+                  <table className="type-table w-full text-left ">
                     <thead className="border-b border-slate-200 bg-slate-50 text-[var(--navy)] font-bold">
                       <tr>
-                        <th className="p-3">Fee Component</th>
-                        <th className="p-3">Non-AC Classes (2S, SL, General)</th>
-                        <th className="p-3">AC Classes (3A, 2A, 1A, CC, 3E, EC)</th>
-                        <th className="p-3">Applicable Policy Reference</th>
+                        <th className="type-table p-3">Fee Component</th>
+                        <th className="type-table p-3">Non-AC Classes (2S, SL, General)</th>
+                        <th className="type-table p-3">AC Classes (3A, 2A, 1A, CC, 3E, EC)</th>
+                        <th className="type-table p-3">Applicable Policy Reference</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-700">
                       <tr>
-                        <td className="p-3 font-semibold text-slate-900">Railway Base Fare &amp; Taxes</td>
-                        <td className="p-3">Exact fare as printed on ticket</td>
-                        <td className="p-3">Exact fare as printed on ticket</td>
-                        <td className="p-3 text-slate-500 text-xs">Indian Railways Coaching Tariff</td>
+                        <td className="type-table p-3 font-semibold text-slate-900">Railway Base Fare &amp; Taxes</td>
+                        <td className="type-table p-3">Exact fare as printed on ticket</td>
+                        <td className="type-table p-3">Exact fare as printed on ticket</td>
+                        <td className="type-table p-3 text-slate-500 ">Indian Railways Coaching Tariff</td>
                       </tr>
                       <tr>
-                        <td className="p-3 font-semibold text-slate-900">Permissible Agent Service Charge</td>
-                        <td className="p-3 font-bold text-orange-600">₹20 per ticket (+ 18% GST)</td>
-                        <td className="p-3 font-bold text-orange-600">₹40 per ticket (+ 18% GST)</td>
-                        <td className="p-3 text-slate-500 text-xs">IRCTC Master Policy (Section 6)</td>
+                        <td className="type-table p-3 font-semibold text-slate-900">Permissible Agent Service Charge</td>
+                        <td className="type-table p-3 font-bold text-orange-600">₹20 per ticket (+ 18% GST)</td>
+                        <td className="type-table p-3 font-bold text-orange-600">₹40 per ticket (+ 18% GST)</td>
+                        <td className="type-table p-3 text-slate-500 ">IRCTC Master Policy (Section 6)</td>
                       </tr>
                       <tr>
-                        <td className="p-3 font-semibold text-slate-900">Payment Gateway (PG) Charge</td>
-                        <td className="p-3">Actual charges as billed by bank / PG</td>
-                        <td className="p-3">Actual charges as billed by bank / PG</td>
-                        <td className="p-3 text-slate-500 text-xs">Bank / Payment Aggregator terms</td>
+                        <td className="type-table p-3 font-semibold text-slate-900">Payment Gateway (PG) Charge</td>
+                        <td className="type-table p-3">Actual charges as billed by bank / PG</td>
+                        <td className="type-table p-3">Actual charges as billed by bank / PG</td>
+                        <td className="type-table p-3 text-slate-500 ">Bank / Payment Aggregator terms</td>
                       </tr>
                       <tr>
-                        <td className="p-3 font-semibold text-slate-900">Official Receipt Mandatory?</td>
-                        <td className="p-3 text-emerald-700 font-bold">Yes — Required for all bookings</td>
-                        <td className="p-3 text-emerald-700 font-bold">Yes — Required for all bookings</td>
-                        <td className="p-3 text-slate-500 text-xs">Mandatory compliance rule</td>
+                        <td className="type-table p-3 font-semibold text-slate-900">Official Receipt Mandatory?</td>
+                        <td className="type-table p-3 text-emerald-700 font-bold">Yes — Required for all bookings</td>
+                        <td className="type-table p-3 text-emerald-700 font-bold">Yes — Required for all bookings</td>
+                        <td className="type-table p-3 text-slate-500 ">Mandatory compliance rule</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
 
-                <div className="space-y-3 text-xs sm:text-sm text-slate-700">
-                  <p>
+                <div className="type-caption space-y-3 text-slate-700">
+                  <p className="type-body">
                     <strong>Scheme Discrepancy Note:</strong> Different PSP schemes (such as corporate API providers, CSC e-Governance,
                     or travel aggregator franchises) may maintain distinct internal commission-sharing arrangements with retail agents.
                     However, the maximum permissible service charge collected directly from the customer must never exceed the
                     IRCTC policy ceiling unless an explicit official revision has been notified.
                   </p>
-                  <p>
+                  <p className="type-body">
                     <strong>Mandatory Receipt Issuance:</strong> Whenever you collect payment from a passenger, provide an official
                     receipt detailing the ticket fare, PG fee, and agency service charge. The printed Electronic Reservation Slip (ERS)
                     already includes the permitted service charge itemized at the bottom; do not alter or obscure this section.
@@ -766,44 +766,44 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-f" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="type-caption flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-orange-800">
                     F
                   </span>
-                  <h2 className="text-2xl font-bold text-[var(--navy)]">Shop, Signage, and Authorization Certificate</h2>
+                  <h2 className="type-h2  text-[var(--navy)]">Shop, Signage, and Authorization Certificate</h2>
                 </div>
 
-                <p className="text-slate-700 text-sm mb-4 leading-relaxed">
+                <p className="type-body-small text-slate-700 mb-4 leading-relaxed">
                   Authorized railway ticketing counters are subject to surprise physical inspections by Railway Vigilance,
                   IRCTC inspection officers, and authorized PSP compliance executives. Maintaining a compliant premises is mandatory.
                 </p>
 
-                <div className="grid gap-4 sm:grid-cols-2 text-xs sm:text-sm mb-4">
+                <div className="type-caption grid gap-4 sm:grid-cols-2 mb-4">
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h3 className="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+                    <h3 className="type-h3  text-slate-900 mb-1 flex items-center gap-1.5">
                       <Building size={14} className="text-orange-600" />
                       Display Authorization Certificate
                     </h3>
-                    <p className="text-slate-600 text-xs leading-relaxed">
+                    <p className="type-body-small text-slate-600 leading-relaxed">
                       Frame and prominently display your official IRCTC / PSP Retail Service Provider certificate in public view
                       near your counter. Ensure the agent name, RSP ID, and validity period are easily readable by walk-in customers.
                     </p>
                   </div>
 
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h3 className="font-bold text-slate-900 mb-1 flex items-center gap-1.5">
+                    <h3 className="type-h3  text-slate-900 mb-1 flex items-center gap-1.5">
                       <FileText size={14} className="text-orange-600" />
                       Noticeboard of Permissible Charges
                     </h3>
-                    <p className="text-slate-600 text-xs leading-relaxed">
+                    <p className="type-body-small text-slate-600 leading-relaxed">
                       Display a clear bilingual (Hindi/English or regional language) signboard stating the official permissible
                       service charges: <strong>₹20 + GST for Non-AC</strong> and <strong>₹40 + GST for AC</strong> classes.
                     </p>
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4 text-xs text-slate-700">
-                  <h3 className="font-bold text-slate-900 mb-1">Cooperation with Authorized Compliance Inspections:</h3>
-                  <p className="leading-relaxed">
+                <div className="type-caption rounded-xl border border-slate-200 bg-slate-50/70 p-4 text-slate-700">
+                  <h3 className="type-h3  text-slate-900 mb-1">Cooperation with Authorized Compliance Inspections:</h3>
+                  <p className="type-body leading-relaxed">
                     When an authorized railway official or PSP auditor visits your counter and presents official identification,
                     you must cooperate fully. They may inspect your customer booking requisition registers, recent cancellation slips,
                     printed ERS templates, and shop display certificates. Attempting to obstruct inspection or conceal records can lead
@@ -817,13 +817,13 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-g" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="type-caption flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-orange-800">
                     G
                   </span>
-                  <h2 className="text-2xl font-bold text-[var(--navy)]">Cancellation and Refund Rules</h2>
+                  <h2 className="type-h2  text-[var(--navy)]">Cancellation and Refund Rules</h2>
                 </div>
 
-                <p className="text-slate-700 text-sm mb-4 leading-relaxed">
+                <p className="type-body-small text-slate-700 mb-4 leading-relaxed">
                   Ticket cancellations and refund processing are heavily scrutinized areas of retail railway operations.
                   Refund amounts are governed strictly by Indian Railways Cancellation and Refund Rules, 2015 (amended), and
                   depend entirely on ticket status, charting time, and cancellation submission timing.
@@ -831,58 +831,58 @@ export default function IrctcAgentRulesPage() {
 
                 {/* Cancellation Slabs Reference Table */}
                 <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-2xs mb-5">
-                  <table className="w-full text-left text-xs sm:text-sm">
+                  <table className="type-table w-full text-left ">
                     <thead className="border-b border-slate-200 bg-slate-50 text-[var(--navy)] font-bold">
                       <tr>
-                        <th className="p-3">Cancellation Timing (Confirmed Tickets)</th>
-                        <th className="p-3">Official Railway Deduction</th>
-                        <th className="p-3">Agent Action Required</th>
+                        <th className="type-table p-3">Cancellation Timing (Confirmed Tickets)</th>
+                        <th className="type-table p-3">Official Railway Deduction</th>
+                        <th className="type-table p-3">Agent Action Required</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-slate-700">
                       <tr>
-                        <td className="p-3 font-semibold text-slate-900">More than 48 hours before scheduled departure</td>
-                        <td className="p-3 font-medium">Flat clerkage deduction per passenger (Class dependent: ₹240 for 1A/EC, ₹200 for 2A, ₹180 for 3A/CC, ₹120 for SL, ₹60 for 2S)</td>
-                        <td className="p-3 text-xs text-slate-600">Cancel online via agent portal, generate cancellation slip</td>
+                        <td className="type-table p-3 font-semibold text-slate-900">More than 48 hours before scheduled departure</td>
+                        <td className="type-table p-3 font-medium">Flat clerkage deduction per passenger (Class dependent: ₹240 for 1A/EC, ₹200 for 2A, ₹180 for 3A/CC, ₹120 for SL, ₹60 for 2S)</td>
+                        <td className="type-table p-3 text-slate-600">Cancel online via agent portal, generate cancellation slip</td>
                       </tr>
                       <tr>
-                        <td className="p-3 font-semibold text-slate-900">Between 48 hours and 12 hours before departure</td>
-                        <td className="p-3 font-medium">25% of base fare subject to minimum flat clerkage fee</td>
-                        <td className="p-3 text-xs text-slate-600">Explain percentage deduction to customer before confirming</td>
+                        <td className="type-table p-3 font-semibold text-slate-900">Between 48 hours and 12 hours before departure</td>
+                        <td className="type-table p-3 font-medium">25% of base fare subject to minimum flat clerkage fee</td>
+                        <td className="type-table p-3 text-slate-600">Explain percentage deduction to customer before confirming</td>
                       </tr>
                       <tr>
-                        <td className="p-3 font-semibold text-slate-900">Between 12 hours and 4 hours before departure (up to chart preparation)</td>
-                        <td className="p-3 font-medium">50% of base fare subject to minimum flat clerkage fee</td>
-                        <td className="p-3 text-xs text-slate-600">Verify charting status; cancel before chart is prepared</td>
+                        <td className="type-table p-3 font-semibold text-slate-900">Between 12 hours and 4 hours before departure (up to chart preparation)</td>
+                        <td className="type-table p-3 font-medium">50% of base fare subject to minimum flat clerkage fee</td>
+                        <td className="type-table p-3 text-slate-600">Verify charting status; cancel before chart is prepared</td>
                       </tr>
                       <tr>
-                        <td className="p-3 font-semibold text-slate-900">Less than 4 hours before departure / After chart preparation</td>
-                        <td className="p-3 font-bold text-red-600">No refund admissible online on confirmed tickets</td>
-                        <td className="p-3 text-xs text-slate-600">Online cancellation disabled; check if TDR is eligible</td>
+                        <td className="type-table p-3 font-semibold text-slate-900">Less than 4 hours before departure / After chart preparation</td>
+                        <td className="type-table p-3 font-bold text-red-600">No refund admissible online on confirmed tickets</td>
+                        <td className="type-table p-3 text-slate-600">Online cancellation disabled; check if TDR is eligible</td>
                       </tr>
                       <tr>
-                        <td className="p-3 font-semibold text-slate-900">RAC or Waitlisted Tickets cancelled up to 30 mins before departure</td>
-                        <td className="p-3 font-medium">Clerkage charge of ₹60 + GST per passenger deducted</td>
-                        <td className="p-3 text-xs text-slate-600">Cancel online; reminder: fully waitlisted e-tickets auto-refund</td>
+                        <td className="type-table p-3 font-semibold text-slate-900">RAC or Waitlisted Tickets cancelled up to 30 mins before departure</td>
+                        <td className="type-table p-3 font-medium">Clerkage charge of ₹60 + GST per passenger deducted</td>
+                        <td className="type-table p-3 text-slate-600">Cancel online; reminder: fully waitlisted e-tickets auto-refund</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
 
-                <div className="space-y-3 text-xs sm:text-sm text-slate-700">
-                  <p>
+                <div className="type-caption space-y-3 text-slate-700">
+                  <p className="type-body">
                     <strong>OTP-Based Refund Authentication:</strong> When an agent cancels a customer&apos;s ticket, IRCTC generates
                     a secure One-Time Password (OTP) sent directly to the customer&apos;s registered mobile number. The agent must obtain
                     this OTP from the passenger, enter it into the agent portal refund verification screen, and disburse the verified refund.
                     Never withhold refunds; keeping cash refunds after claiming them from your PSP is an offence.
                   </p>
-                  <p>
+                  <p className="type-body">
                     <strong>Official Cancellation Rules Link:</strong> Review the authoritative Indian Railways cancellation guidelines directly at{" "}
                     <a
                       href="https://contents.irctc.co.in/en/eticketCancel.html"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-bold text-[var(--primary)] hover:underline inline-flex items-center gap-0.5"
+                      className="type-button font-bold text-[var(--primary)] hover:underline inline-flex items-center gap-0.5"
                     >
                       <span>IRCTC Official Cancellation &amp; Refund Policy</span>
                       <ExternalLink size={11} />
@@ -896,23 +896,23 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-h" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="type-caption flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-orange-800">
                     H
                   </span>
-                  <h2 className="text-2xl font-bold text-[var(--navy)]">TDR: Important Responsibilities and Procedures</h2>
+                  <h2 className="type-h2  text-[var(--navy)]">TDR: Important Responsibilities and Procedures</h2>
                 </div>
 
-                <p className="text-slate-700 text-sm mb-4 leading-relaxed">
+                <p className="type-body-small text-slate-700 mb-4 leading-relaxed">
                   A Ticket Deposit Receipt (TDR) is a formal claim filed through the IRCTC portal when normal online cancellation
                   is not possible due to chart preparation or special operational railway contingencies. Filing a TDR requires
                   strict factual accuracy.
                 </p>
 
                 <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs mb-5">
-                  <h3 className="text-sm font-bold uppercase tracking-wider text-[var(--navy)] mb-3">
+                  <h3 className="type-h3  uppercase tracking-wider text-[var(--navy)] mb-3">
                     Recognized Situations for Filing a TDR
                   </h3>
-                  <div className="grid gap-3 sm:grid-cols-2 text-xs text-slate-700">
+                  <div className="type-caption grid gap-3 sm:grid-cols-2 text-slate-700">
                     <div className="border border-slate-100 rounded-lg p-2.5 bg-slate-50/50">
                       <strong>Train Late &gt; 3 Hours:</strong> Passenger did not travel because train arrived more than 3 hours late at boarding station.
                     </div>
@@ -928,12 +928,12 @@ export default function IrctcAgentRulesPage() {
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-4 text-xs sm:text-sm text-amber-950 space-y-2">
-                  <h3 className="font-bold text-amber-900 flex items-center gap-1.5">
+                <div className="type-caption rounded-xl border border-amber-200 bg-amber-50/70 p-4 text-amber-950 space-y-2">
+                  <h3 className="type-h3  text-amber-900 flex items-center gap-1.5">
                     <AlertTriangle size={15} className="text-amber-700" />
                     Important TDR Realities to Explain to Customers:
                   </h3>
-                  <ul className="list-disc pl-5 space-y-1 text-xs text-amber-900/90 leading-relaxed">
+                  <ul className="type-caption list-disc pl-5 space-y-1 text-amber-900/90 leading-relaxed">
                     <li><strong>Filing a TDR does not guarantee money back:</strong> Claims are audited by the relevant Zonal Railway Commercial Department against computerized charting logs and guard memos.</li>
                     <li><strong>Never choose an inaccurate TDR reason:</strong> Selecting a false reason (such as claiming the train was cancelled when it operated normally) leads to instant claim repudiation and potential vigilance inquiry.</li>
                     <li><strong>Processing timeframe:</strong> TDR claims can take between 15 to 90 days depending on the railway zone&apos;s audit cycles. Keep the TDR registration reference safe for portal tracking.</li>
@@ -946,24 +946,24 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-i" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="type-caption flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-orange-800">
                     I
                   </span>
-                  <h2 className="text-2xl font-bold text-[var(--navy)]">Tatkal Booking Dos and Don&apos;ts</h2>
+                  <h2 className="type-h2  text-[var(--navy)]">Tatkal Booking Dos and Don&apos;ts</h2>
                 </div>
 
-                <p className="text-slate-700 text-sm mb-4 leading-relaxed">
+                <p className="type-body-small text-slate-700 mb-4 leading-relaxed">
                   Tatkal booking is subject to the strictest surveillance across Indian Railways. Because high demand creates
                   opportunities for fraudulent booking cartels, authorized agents must operate with heightened discipline.
                 </p>
 
                 <div className="grid gap-4 sm:grid-cols-2 mb-5">
                   <div className="rounded-xl border border-emerald-200 bg-emerald-50/40 p-4 shadow-2xs">
-                    <h3 className="font-bold text-xs uppercase tracking-wider text-emerald-900 mb-2 flex items-center gap-1.5">
+                    <h3 className="type-h3  uppercase tracking-wider text-emerald-900 mb-2 flex items-center gap-1.5">
                       <CheckCircle2 size={15} className="text-emerald-600" />
                       Tatkal Booking Dos:
                     </h3>
-                    <ul className="space-y-2 text-xs text-emerald-950">
+                    <ul className="type-caption space-y-2 text-emerald-950">
                       <li>• Observe Tatkal opening windows: AC Tatkal opens for agents at <strong>10:30 AM</strong> (30-min lock); Non-AC Tatkal opens for agents at <strong>11:30 AM</strong>.</li>
                       <li>• Verify government photo ID details for each passenger before attempting Tatkal bookings.</li>
                       <li>• Always input the passenger&apos;s own phone number for direct Tatkal OTP authentication.</li>
@@ -972,11 +972,11 @@ export default function IrctcAgentRulesPage() {
                   </div>
 
                   <div className="rounded-xl border border-red-200 bg-red-50/40 p-4 shadow-2xs">
-                    <h3 className="font-bold text-xs uppercase tracking-wider text-red-900 mb-2 flex items-center gap-1.5">
+                    <h3 className="type-h3  uppercase tracking-wider text-red-900 mb-2 flex items-center gap-1.5">
                       <XCircle size={15} className="text-red-600" />
                       Tatkal Booking Don&apos;ts:
                     </h3>
-                    <ul className="space-y-2 text-xs text-red-950">
+                    <ul className="type-caption space-y-2 text-red-950">
                       <li>• <strong>Never use unauthorized Tatkal software:</strong> Tools claiming instant checkout or captcha bypass are criminal hacking offences.</li>
                       <li>• <strong>Never guarantee Tatkal confirmation:</strong> Seat quotas exhaust in seconds; guaranteeing confirmation is deceptive trade practice.</li>
                       <li>• <strong>Never create speculative or fictitious bookings:</strong> Booking tickets under dummy names to sell later is illegal under the Railways Act.</li>
@@ -991,33 +991,33 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-j" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="type-caption flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-orange-800">
                     J
                   </span>
-                  <h2 className="text-2xl font-bold text-[var(--navy)]">Customer Data, Consent, and Record Keeping</h2>
+                  <h2 className="type-h2  text-[var(--navy)]">Customer Data, Consent, and Record Keeping</h2>
                 </div>
 
-                <p className="text-slate-700 text-sm mb-4 leading-relaxed">
+                <p className="type-body-small text-slate-700 mb-4 leading-relaxed">
                   Retail ticketing agents routinely process sensitive personal identifiers, including passenger names, ages,
                   Aadhaar copies, and phone numbers. Proper data stewardship and physical record maintenance are legal prerequisites.
                 </p>
 
-                <div className="space-y-3 text-xs sm:text-sm text-slate-700">
+                <div className="type-caption space-y-3 text-slate-700">
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h3 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-1">
+                    <h3 className="type-h3  text-slate-900 uppercase tracking-wider mb-1">
                       Data Minimization &amp; Privacy Protection
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed">
+                    <p className="type-body  text-slate-600 leading-relaxed">
                       Collect only the passenger details strictly required to process the railway reservation. Never distribute,
                       sell, or share customer contact databases with third-party marketing companies, insurance telemarketers, or loan agents.
                     </p>
                   </div>
 
                   <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                    <h3 className="font-bold text-slate-900 text-xs uppercase tracking-wider mb-1">
+                    <h3 className="type-h3  text-slate-900 uppercase tracking-wider mb-1">
                       Requisition Slip Retention
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed">
+                    <p className="type-body  text-slate-600 leading-relaxed">
                       Maintain a sequential physical file or scanned digital archive of signed customer booking requisitions,
                       cancellation request slips, and printed transaction ledgers. When railway vigilance conducts investigations
                       into suspicious PNRs, having the customer&apos;s signed requisition slip protects you from benami booking allegations.
@@ -1031,29 +1031,29 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-k" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="type-caption flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-orange-800">
                     K
                   </span>
-                  <h2 className="text-2xl font-bold text-[var(--navy)]">Complaints, Inspections, and Compliance</h2>
+                  <h2 className="type-h2  text-[var(--navy)]">Complaints, Inspections, and Compliance</h2>
                 </div>
 
-                <p className="text-slate-700 text-sm mb-4 leading-relaxed">
+                <p className="type-body-small text-slate-700 mb-4 leading-relaxed">
                   Handling passenger grievances constructively and responding to formal queries from your PSP or IRCTC
                   with authentic evidence prevents minor administrative disputes from escalating into terminal debarment.
                 </p>
 
-                <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4 text-xs sm:text-sm text-slate-700 space-y-2">
-                  <p>
+                <div className="type-caption rounded-xl border border-slate-200 bg-slate-50/70 p-4 text-slate-700 space-y-2">
+                  <p className="type-body">
                     <strong>Prompt Grievance Response:</strong> If a customer registers a dispute regarding ticket cancellation,
                     refund deductions, or service charges with RailMadad, IRCTC, or your PSP, provide documented proof
                     (printed ERS, cancellation receipt, and signed requisition) within the timeframe requested by your PSP.
                   </p>
-                  <p>
+                  <p className="type-body">
                     <strong>Never Alter Records:</strong> Never alter printed ticket slips, falsify timestamps, or forge passenger
                     signatures to defend an operational error. Submitting falsified records to a compliance officer guarantees
                     immediate contract termination and potential criminal referral.
                   </p>
-                  <p>
+                  <p className="type-body">
                     <strong>Scheme Compliance Channel:</strong> For questions about your specific software integration, wallet
                     recharge disputes, or terminal re-activation, contact your designated PSP nodal officer. If unresolved, consult
                     the official IRCTC Agent Support Helpdesk.
@@ -1066,13 +1066,13 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-l" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 font-bold text-xs text-emerald-800">
+                  <span className="type-caption flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 font-bold text-emerald-800">
                     L
                   </span>
-                  <h2 className="text-2xl font-bold text-[var(--navy)]">Daily Agent Compliance Checklist</h2>
+                  <h2 className="type-h2  text-[var(--navy)]">Daily Agent Compliance Checklist</h2>
                 </div>
 
-                <p className="text-slate-700 text-sm mb-5 leading-relaxed">
+                <p className="type-body-small text-slate-700 mb-5 leading-relaxed">
                   Use this interactive, printable verification protocol every booking morning. Checking each phase protects
                   your business from audit discrepancies, passenger disputes, and compliance penalties.
                 </p>
@@ -1086,24 +1086,24 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-m" className="scroll-mt-24">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-xs text-orange-800">
+                  <span className="type-caption flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 font-bold text-orange-800">
                     M
                   </span>
-                  <h2 className="text-2xl font-bold text-[var(--navy)]">Frequently Asked Questions</h2>
+                  <h2 className="type-h2  text-[var(--navy)]">Frequently Asked Questions</h2>
                 </div>
 
-                <p className="text-slate-700 text-sm mb-6 leading-relaxed">
+                <p className="type-body-small text-slate-700 mb-6 leading-relaxed">
                   Clear, authoritative answers to common regulatory, operational, and licensing questions faced by railway ticketing agents.
                 </p>
 
                 <div className="space-y-4">
                   {FAQS.map((faq, index) => (
                     <div key={index} className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs">
-                      <h3 className="text-sm font-bold text-[var(--navy)] mb-2 flex items-start gap-2">
+                      <h3 className="type-h3  text-[var(--navy)] mb-2 flex items-start gap-2">
                         <HelpCircle size={16} className="text-orange-600 mt-0.5 shrink-0" />
                         <span>{faq.q}</span>
                       </h3>
-                      <p className="text-xs sm:text-sm text-slate-600 pl-6 leading-relaxed">
+                      <p className="type-body-small  text-slate-600 pl-6 leading-relaxed">
                         {faq.a}
                       </p>
                     </div>
@@ -1116,23 +1116,23 @@ export default function IrctcAgentRulesPage() {
               -------------------------------------------------------------- */}
               <section id="section-n" className="scroll-mt-24">
                 <div className="rounded-3xl border border-orange-200 bg-gradient-to-br from-orange-50/70 via-white to-amber-50/50 p-6 sm:p-8 shadow-xs">
-                  <div className="flex items-center gap-2 mb-2 text-xs font-bold uppercase tracking-wider text-orange-700">
+                  <div className="type-caption flex items-center gap-2 mb-2 font-bold uppercase tracking-wider text-orange-700">
                     <Train size={14} className="text-orange-600" />
                     <span>Editorial Perspective</span>
                   </div>
 
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-[var(--navy)]">
+                  <h2 className="type-h2  text-[var(--navy)]">
                     Learn the Rules Before You Make a Mistake
                   </h2>
 
-                  <p className="mt-4 text-sm sm:text-base text-slate-700 leading-relaxed">
+                  <p className="type-body-small mt-4 text-slate-700 leading-relaxed">
                     Over my 20 years of hands-on railway ticketing and agent operations experience, I have observed that
                     almost every agent who lost their ID or faced a vigilance investigation made avoidable mistakes—often
                     out of ignorance rather than ill intent. Using personal IDs during peak hours, failing to enter the passenger&apos;s
                     own phone number, or yielding to pressure to overcharge are shortcuts that inevitably lead to trouble.
                   </p>
 
-                  <p className="mt-3 text-sm sm:text-base text-slate-700 leading-relaxed">
+                  <p className="type-body-small mt-3 text-slate-700 leading-relaxed">
                     A successful, sustainable railway ticketing counter is built on transparency, meticulous record-keeping,
                     and treating passenger trust as your greatest asset. Know the rules, follow the prescribed procedures, and
                     verify current policy circulars before executing difficult bookings.
@@ -1141,14 +1141,14 @@ export default function IrctcAgentRulesPage() {
                   <div className="mt-6 flex flex-wrap gap-3">
                     <Link
                       href="/guides"
-                      className="inline-flex items-center gap-2 rounded-xl bg-[var(--navy)] px-4 py-2.5 text-xs font-bold text-white hover:bg-slate-800 transition-colors shadow-xs"
+                      className="type-button inline-flex items-center gap-2 rounded-xl bg-[var(--navy)] px-4 py-2.5 font-bold text-white hover:bg-slate-800 transition-colors shadow-xs"
                     >
                       <BookOpen size={14} />
                       <span>Explore Railway Agent Guides</span>
                     </Link>
                     <Link
                       href="/ask-nihal"
-                      className="inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-2.5 text-xs font-bold text-white hover:bg-[var(--primary-hover)] transition-colors shadow-xs"
+                      className="type-button inline-flex items-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-2.5 font-bold text-white hover:bg-[var(--primary-hover)] transition-colors shadow-xs"
                     >
                       <MessageCircle size={14} />
                       <span>Ask Nihal a Question</span>
@@ -1157,7 +1157,7 @@ export default function IrctcAgentRulesPage() {
                       href={whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2.5 text-xs font-bold text-emerald-800 hover:bg-emerald-100 transition-colors"
+                      className="type-button inline-flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2.5 font-bold text-emerald-800 hover:bg-emerald-100 transition-colors"
                     >
                       <MessageCircle size={14} className="text-emerald-600" />
                       <span>WhatsApp Guidance</span>
@@ -1170,11 +1170,11 @@ export default function IrctcAgentRulesPage() {
                   OFFICIAL PRIMARY SOURCES DIRECTORY
               -------------------------------------------------------------- */}
               <section className="border-t border-slate-200 pt-8">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
+                <h3 className="type-h3  uppercase tracking-wider text-slate-500 mb-3 flex items-center gap-1.5">
                   <ExternalLink size={13} className="text-slate-400" />
                   <span>Primary Official Policy Sources Consulted</span>
                 </h3>
-                <div className="grid gap-2 sm:grid-cols-2 text-xs">
+                <div className="type-caption grid gap-2 sm:grid-cols-2 ">
                   <a
                     href="https://contents.irctc.co.in/en/Agent_Policy.pdf"
                     target="_blank"

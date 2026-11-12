@@ -144,9 +144,13 @@ export default async function ToolsPage({ searchParams }: ToolsPageProps) {
       <Header />
       <main id="main-content" tabIndex={-1} className={styles.workspace}>
         <div className="tools-workspace-container mt-2 sm:mt-3.5 lg:mt-4 py-6">
-        <Suspense fallback={<ToolsWorkspaceFallback />}>
-          <RailwayToolsWorkspace />
-        </Suspense>
+          <div className={styles.pageIntro}>
+            <h1 id="railway-tools-title">Railway Tools &amp; Calculators</h1>
+            <p>Live train status, PNR checks, fares and booking tools in one place.</p>
+          </div>
+          <Suspense fallback={<ToolsWorkspaceFallback />}>
+            <RailwayToolsWorkspace />
+          </Suspense>
         </div>
       </main>
       <Footer />

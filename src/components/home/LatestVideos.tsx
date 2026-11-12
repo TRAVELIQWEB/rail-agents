@@ -30,7 +30,7 @@ export async function LatestVideos() {
         ========================== */}
 
         <div className="mb-5 sm:mb-6">
-          <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/70 px-3.5 py-1.5 text-xs font-[800] uppercase tracking-[0.12em] text-[var(--primary-dark)] shadow-sm backdrop-blur-md min-[520px]:mx-0">
+          <div className="type-caption mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-[#f5dfcf] bg-white/70 px-3.5 py-1.5 font-extrabold uppercase tracking-[0.12em] text-[var(--primary-dark)] shadow-sm backdrop-blur-md min-[520px]:mx-0">
             <PlayCircle className="h-3.5 w-3.5" />
             Video Learning
           </div>
@@ -57,11 +57,11 @@ export async function LatestVideos() {
           <div className="rounded-3xl border border-[#f1e4d9] bg-white/70 px-6 py-10 text-center shadow-[0_10px_30px_rgba(15,39,71,0.05)] backdrop-blur-md">
             <PlayCircle className="mx-auto h-10 w-10 text-[#F36B21]" />
 
-            <h3 className="mt-4 text-lg font-[800] text-[var(--navy)]">
+            <h3 className="type-card-title mt-4 text-[var(--navy)]">
               Video guides are coming soon
             </h3>
 
-            <p className="mx-auto mt-2 max-w-[480px] text-sm leading-[1.6] text-slate-600">
+            <p className="type-body-small mx-auto mt-2 max-w-[480px] leading-[1.6] text-slate-600">
               We&apos;re adding useful railway and IRCTC video guides to help
               you learn faster.
             </p>

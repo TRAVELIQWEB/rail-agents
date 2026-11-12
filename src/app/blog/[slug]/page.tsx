@@ -247,7 +247,7 @@ export default async function BlogPostPage({ params }: Props) {
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2.5">
               <nav
                 aria-label="Breadcrumb"
-                className="inline-flex items-center gap-1.5 rounded-full border border-[#eadbce] bg-white/90 px-3 py-1 text-xs font-semibold text-slate-500 shadow-2xs"
+                className="type-caption inline-flex items-center gap-1.5 rounded-full border border-[#eadbce] bg-white/90 px-3 py-1 font-semibold text-slate-500 shadow-2xs"
               >
                 <Link
                   href="/"
@@ -270,7 +270,7 @@ export default async function BlogPostPage({ params }: Props) {
 
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-1.5 rounded-full border border-[#eadbce] bg-white px-3 py-1 text-xs font-bold text-[#0f2747] shadow-2xs transition hover:border-orange-300 hover:bg-orange-50/60 hover:text-orange-700"
+                className="type-button inline-flex items-center gap-1.5 rounded-full border border-[#eadbce] bg-white px-3 py-1 font-bold text-[#0f2747] shadow-2xs transition hover:border-orange-300 hover:bg-orange-50/60 hover:text-orange-700"
               >
                 <ArrowLeft size={13} />
                 <span>All Journal Articles</span>
@@ -279,28 +279,28 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Category & Verified Guide Pill Row */}
             <div className="mb-2 flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-600 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white shadow-xs">
+              <span className="type-caption inline-flex items-center gap-1.5 rounded-full bg-orange-600 px-2.5 py-0.5 font-extrabold uppercase tracking-wider text-white shadow-xs">
                 <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
                 {post.category}
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200/80 bg-emerald-50/90 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800">
+              <span className="type-caption inline-flex items-center gap-1.5 rounded-full border border-emerald-200/80 bg-emerald-50/90 px-2.5 py-0.5 font-bold text-emerald-800">
                 <CheckCircle2 size={11} className="text-emerald-600" />
                 Verified Guide
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#eadbce] bg-white/80 px-2.5 py-0.5 text-[10px] font-bold text-slate-600">
+              <span className="type-caption inline-flex items-center gap-1.5 rounded-full border border-[#eadbce] bg-white/80 px-2.5 py-0.5 font-bold text-slate-600">
                 <Clock size={11} className="text-orange-500" />
                 {readingTime} min read
               </span>
             </div>
 
             {/* Article Headline */}
-            <h1 className="text-lg sm:text-xl lg:text-[26px] font-[850] tracking-[-0.025em] text-[#0f2747] leading-[1.25] max-w-5xl">
+            <h1 className="type-page-title  tracking-[-0.025em] text-[#0f2747] max-w-5xl">
               {post.title}
             </h1>
 
             {/* Subtitle / Lead Excerpt in Hero */}
             {post.excerpt && (
-              <p className="mt-1.5 max-w-4xl text-xs sm:text-[13px] font-normal leading-relaxed text-slate-600">
+              <p className="type-introduction mt-1.5 max-w-4xl font-normal leading-relaxed text-slate-600">
                 {post.excerpt}
               </p>
             )}
@@ -317,10 +317,10 @@ export default async function BlogPostPage({ params }: Props) {
                   {hasVideo && socialVideo ? (
                     <div className="overflow-hidden rounded-2xl border border-[#e6d7c7] bg-[#fffdfa] p-3 sm:p-3.5 shadow-[0_6px_24px_rgba(15,23,42,0.06)]">
                       {/* Video Header Bar */}
-                      <div className="mb-2.5 flex items-center justify-between px-1 text-xs text-slate-600">
+                      <div className="type-caption mb-2.5 flex items-center justify-between px-1 text-slate-600">
                         <div className="flex items-center gap-2">
                           <span
-                            className={`flex h-5 w-5 items-center justify-center rounded-full ${platformBadgeBg} text-white font-bold text-[10px] shadow-2xs`}
+                            className={`type-caption flex h-5 w-5 items-center justify-center rounded-full ${platformBadgeBg} text-white font-bold shadow-2xs`}
                           >
                             ▶
                           </span>
@@ -332,7 +332,7 @@ export default async function BlogPostPage({ params }: Props) {
                           href={socialVideo.watchUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`text-xs font-extrabold ${platformLinkColor} hover:underline flex items-center gap-1`}
+                          className={`type-caption  font-extrabold ${platformLinkColor} hover:underline flex items-center gap-1`}
                         >
                           <span>Watch on {platformName}</span>
                           <span>↗</span>
@@ -373,7 +373,7 @@ export default async function BlogPostPage({ params }: Props) {
                       </div>
 
                       {/* If custom 16:9 cover image was also uploaded alongside a vertical video, show a crisp caption bar */}
-                      <div className="mt-2.5 flex items-center justify-between px-1 text-[11px] font-medium text-slate-500">
+                      <div className="type-caption mt-2.5 flex items-center justify-between px-1 font-medium text-slate-500">
                         <span>Official RailAgents Video Briefing</span>
                         <span className="font-semibold text-orange-600">
                           HD Embed
@@ -390,7 +390,7 @@ export default async function BlogPostPage({ params }: Props) {
                           className="h-full w-full object-cover object-center transition-transform duration-500 hover:scale-[1.02]"
                         />
                       </div>
-                      <figcaption className="mt-2.5 flex items-center justify-between px-1 text-[11px] font-medium text-slate-500">
+                      <figcaption className="type-caption mt-2.5 flex items-center justify-between px-1 font-medium text-slate-500">
                         <span className="line-clamp-1">
                           {post.featuredImageAlt || post.title}
                         </span>
@@ -408,11 +408,11 @@ export default async function BlogPostPage({ params }: Props) {
                         <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-orange-500/15 text-orange-600">
                           <Sparkles size={13} />
                         </span>
-                        <span className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-orange-800">
+                        <span className="type-caption  font-extrabold uppercase tracking-[0.08em] text-orange-800">
                           Key Article Takeaway
                         </span>
                       </div>
-                      <p className="text-xs sm:text-[13.5px] font-medium leading-relaxed text-slate-700">
+                      <p className="type-body-small  font-medium leading-relaxed text-slate-700">
                         {post.excerpt}
                       </p>
                     </div>
@@ -432,14 +432,14 @@ export default async function BlogPostPage({ params }: Props) {
               {/* Shifted to Bottom: Author Info, Publish Date & Topic Tags */}
               <div className="rounded-2xl border border-[#eadbce] bg-[#fffcf8] p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#0f2747] to-[#1e3a5f] text-xs font-extrabold text-white shadow-xs ring-2 ring-orange-100">
+                  <div className="type-caption flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#0f2747] to-[#1e3a5f] font-extrabold text-white shadow-xs ring-2 ring-orange-100">
                     {authorInitials || <User size={16} />}
                   </div>
                   <div>
-                    <div className="text-sm font-extrabold text-[#0f2747]">
+                    <div className="type-body-small  font-extrabold text-[#0f2747]">
                       {post.author}
                     </div>
-                    <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-slate-500">
+                    <div className="type-caption flex flex-wrap items-center gap-2 font-medium text-slate-500">
                       <span>Editorial Desk</span>
                       {publishDate && (
                         <>
@@ -457,14 +457,14 @@ export default async function BlogPostPage({ params }: Props) {
                 {/* Topics / Tags */}
                 {post.tags.length > 0 && (
                   <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="mr-1 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    <span className="type-caption mr-1 inline-flex items-center gap-1 font-bold uppercase tracking-wider text-slate-400">
                       <Tag size={12} className="text-orange-500" />
                       Topics:
                     </span>
                     {post.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full border border-[#e6d7c7] bg-white px-2.5 py-1 text-xs font-bold text-[#0f2747] shadow-2xs"
+                        className="type-caption rounded-full border border-[#e6d7c7] bg-white px-2.5 py-1 font-bold text-[#0f2747] shadow-2xs"
                       >
                         #{tag}
                       </span>
@@ -480,10 +480,10 @@ export default async function BlogPostPage({ params }: Props) {
                   <div className="rounded-2xl border border-orange-200/80 bg-gradient-to-r from-[#fff8f1] via-white to-[#fff8f1] p-5 sm:p-6 shadow-2xs">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div>
-                        <p className="text-[11px] font-extrabold uppercase tracking-wider text-orange-600">
+                        <p className="type-body  font-extrabold uppercase tracking-wider text-orange-600">
                           Watch &amp; Connect on Social Media
                         </p>
-                        <h2 className="mt-0.5 text-base sm:text-lg font-extrabold text-[#0f2747]">
+                        <h2 className="type-h2 mt-0.5 text-[#0f2747]">
                           Follow this topic on our official social channels
                         </h2>
                       </div>
@@ -550,14 +550,14 @@ export default async function BlogPostPage({ params }: Props) {
                     </div>
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-sm font-extrabold text-[#0f2747]">
+                        <span className="type-body-small  font-extrabold text-[#0f2747]">
                           Published by {post.author}
                         </span>
-                        <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-orange-800">
+                        <span className="type-caption rounded-full bg-orange-100 px-2.5 py-0.5 font-extrabold uppercase tracking-wider text-orange-800">
                           RailAgents Editorial
                         </span>
                       </div>
-                      <p className="mt-1 text-xs sm:text-[13px] leading-relaxed text-slate-600">
+                      <p className="type-body-small mt-1 leading-relaxed text-slate-600">
                         Have questions about IRCTC authorized agent rules, ID onboarding, or compliant railway ticket booking operations? Our team helps travel businesses stay updated and compliant.
                       </p>
                     </div>
@@ -566,14 +566,14 @@ export default async function BlogPostPage({ params }: Props) {
                   <div className="flex flex-wrap items-center gap-2.5 shrink-0">
                     <Link
                       href="/contact"
-                      className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-orange-600 px-5 py-2 text-xs font-extrabold text-white shadow-xs transition hover:bg-orange-700"
+                      className="type-button inline-flex min-h-10 items-center justify-center gap-2 rounded-full bg-orange-600 px-5 py-2 font-extrabold text-white shadow-xs transition hover:bg-orange-700"
                     >
                       <span>Ask Our Team</span>
                       <ArrowRight size={14} />
                     </Link>
                     <Link
                       href="/blog"
-                      className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-[#dccab8] bg-white px-4 py-2 text-xs font-extrabold text-[#0f2747] transition hover:border-orange-300 hover:bg-orange-50/50"
+                      className="type-button inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-[#dccab8] bg-white px-4 py-2 font-extrabold text-[#0f2747] transition hover:border-orange-300 hover:bg-orange-50/50"
                     >
                       <BookOpen size={14} className="text-orange-600" />
                       <span>More Guides</span>
@@ -592,19 +592,19 @@ export default async function BlogPostPage({ params }: Props) {
             >
               <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between border-b border-[#eadbce] pb-4">
                 <div>
-                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-orange-600">
+                  <span className="type-caption  font-extrabold uppercase tracking-wider text-orange-600">
                     Continue Reading
                   </span>
                   <h2
                     id="related-posts-heading"
-                    className="mt-0.5 text-xl sm:text-2xl font-[850] tracking-tight text-[#0f2747]"
+                    className="type-h2 mt-0.5 tracking-tight text-[#0f2747]"
                   >
                     More Insights from RailAgents Journal
                   </h2>
                 </div>
                 <Link
                   href="/blog"
-                  className="inline-flex items-center gap-1.5 text-xs font-extrabold text-orange-600 hover:text-orange-700"
+                  className="type-button inline-flex items-center gap-1.5 font-extrabold text-orange-600 hover:text-orange-700"
                 >
                   <span>View all articles</span>
                   <ArrowRight size={14} />
@@ -638,23 +638,23 @@ export default async function BlogPostPage({ params }: Props) {
                             </div>
                           )}
                           <div className="absolute left-3 top-3">
-                            <span className="inline-flex rounded-full bg-white/95 px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-orange-700 shadow-2xs">
+                            <span className="type-caption inline-flex rounded-full bg-white/95 px-2.5 py-0.5 font-extrabold uppercase tracking-wider text-orange-700 shadow-2xs">
                               {related.category}
                             </span>
                           </div>
                         </div>
 
                         <div className="p-5">
-                          <h3 className="text-base font-extrabold leading-snug text-[#0f2747] group-hover:text-orange-600 transition-colors line-clamp-2">
+                          <h3 className="type-article-title  text-[#0f2747] group-hover:text-orange-600 transition-colors line-clamp-2">
                             {related.title}
                           </h3>
-                          <p className="mt-2 text-xs leading-relaxed text-slate-600 line-clamp-2">
+                          <p className="type-body-small mt-2 leading-relaxed text-slate-600 line-clamp-2">
                             {related.excerpt}
                           </p>
                         </div>
                       </div>
 
-                      <div className="border-t border-[#f3eae0] px-5 py-3 flex items-center justify-between text-[11px] font-bold text-orange-600">
+                      <div className="type-caption border-t border-[#f3eae0] px-5 py-3 flex items-center justify-between font-bold text-orange-600">
                         <span className="text-slate-500 font-medium">
                           {related.author}
                         </span>

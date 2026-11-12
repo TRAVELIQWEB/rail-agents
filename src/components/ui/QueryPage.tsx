@@ -66,13 +66,13 @@ export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
               {/* ══ LEFT COLUMN (42%): Heading & Information Cards ══ */}
               <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
                 {/* Badge: 14px (12-16px) margin below */}
-                <div className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-[#f5d0be] bg-white/90 px-3.5 py-1 text-xs font-extrabold uppercase tracking-wider text-[#F36B21] shadow-2xs backdrop-blur-sm">
+                <div className="type-caption mb-3.5 inline-flex items-center gap-2 rounded-full border border-[#f5d0be] bg-white/90 px-3.5 py-1 font-extrabold uppercase tracking-wider text-[#F36B21] shadow-2xs backdrop-blur-sm">
                   <span className="h-2 w-2 rounded-full bg-[#F36B21] animate-pulse" />
                   <span>{isContact ? "CONTACT RAILAGENTS • SUPPORT DESK" : "ASK NIHAL SINGH • RAILWAY GUIDANCE"}</span>
                 </div>
 
                 {/* Exact Heading: Navy and Orange, balanced font size & line-height */}
-                <h1 className="text-2xl sm:text-3xl lg:text-[1.95rem] font-black leading-[1.22] tracking-tight text-[#0f2747]">
+                <h1 className="type-page-title  tracking-tight text-[#0f2747]">
                   {isContact ? (
                     <>
                       Contact RailAgents —{" "}
@@ -87,7 +87,7 @@ export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
                 </h1>
 
                 {/* Description: 18px (16-20px) margin above */}
-                <p className="mt-4 sm:mt-4.5 text-sm sm:text-[15px] leading-relaxed text-slate-600 max-w-lg">
+                <p className="type-body-small mt-4 sm:mt-4.5 leading-relaxed text-slate-600 max-w-lg">
                   {isContact
                     ? "Have questions about IRCTC agent registration, railway ticketing rules, or general travel guidance? Reach out to our team directly."
                     : "From IRCTC agent registration and railway bookings to bus, air, hotel, and other travel questions, tell us what you need help understanding."}
@@ -104,10 +104,10 @@ export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
                         <Icon className="h-5 w-5" />
                       </div>
                       <div className="min-w-0">
-                        <h2 className="text-xs sm:text-sm font-extrabold text-[#0f2747]">
+                        <h2 className="type-card-title text-[#0f2747]">
                           {title}
                         </h2>
-                        <p className="text-[11px] sm:text-xs text-slate-500 leading-tight">
+                        <p className="type-body-small  text-slate-500 leading-tight">
                           {subtitle}
                         </p>
                       </div>
@@ -131,10 +131,10 @@ export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
                     <Lightbulb className="h-5 w-5" />
                   </span>
                   <div>
-                    <p className="text-xs font-black uppercase tracking-wider text-[#F36B21]">
+                    <p className="type-body  font-black uppercase tracking-wider text-[#F36B21]">
                       ASK WITH CONFIDENCE
                     </p>
-                    <p className="mt-0.5 text-xs text-slate-600 sm:text-[13px] leading-relaxed">
+                    <p className="type-body-small mt-0.5 text-slate-600 leading-relaxed">
                       Tell us a little about your question. We&apos;ll help you find
                       useful information about travel and railway topics.
                     </p>
@@ -142,7 +142,7 @@ export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
                 </div>
 
                 <div className="flex flex-col items-center sm:items-end gap-1.5 shrink-0 border-t border-slate-100 pt-3 sm:border-t-0 sm:pt-0">
-                  <p className="text-xs font-bold text-[#0f2747]">Follow RailAgents</p>
+                  <p className="type-body  font-bold text-[#0f2747]">Follow RailAgents</p>
                   <ul className="social-icon-list">
                     {socialLinks.map(({ label, href, icon: Icon }) => (
                       <li key={label} className="social-icon-item">

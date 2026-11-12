@@ -103,10 +103,10 @@ export default function FareCalculatorPage() {
 
           <div className="site-container relative z-10">
             <div className="mx-auto max-w-2xl text-center">
-              <h1 className="page-hero-title">
+              <h1 className="type-page-title page-hero-title">
                 IRCTC Agent <span className="text-[var(--primary)]">Ticket Fare Calculator</span>
               </h1>
-              <p className="page-hero-description mx-auto mt-1.5 hidden max-w-lg sm:block">
+              <p className="type-hero-description page-hero-description mx-auto mt-1.5 hidden max-w-lg sm:block">
                 Accurate ticket estimates with automated PG charges and instant print slips.
               </p>
             </div>
@@ -125,13 +125,13 @@ export default function FareCalculatorPage() {
           <div className="site-container">
             <div className="mx-auto max-w-4xl">
               <div className="text-center mb-7 sm:mb-9">
-                <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-orange-100/70 text-orange-900 text-[11px] font-bold uppercase tracking-wider mb-2">
+                <div className="type-caption inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-orange-100/70 text-orange-900 font-bold uppercase tracking-wider mb-2">
                   Transparent Calculations
                 </div>
-                <h2 className="text-lg sm:text-2xl font-bold text-stone-900 tracking-tight">
+                <h2 className="type-h2  text-stone-900 tracking-tight">
                   How Railway Agent Charges Work
                 </h2>
-                <p className="mt-1 text-xs sm:text-sm text-stone-500 max-w-lg mx-auto">
+                <p className="type-body-small mt-1 text-stone-500 max-w-lg mx-auto">
                   Standard rules authorized under Indian Railways & IRCTC ticketing guidelines.
                 </p>
               </div>
@@ -143,11 +143,11 @@ export default function FareCalculatorPage() {
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-600 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_2px_4px_rgba(249,115,22,0.1)] group-hover:scale-105 transition-transform duration-200">
                       <CreditCard className="h-4.5 w-4.5" />
                     </div>
-                    <h3 className="text-sm font-bold text-stone-900 group-hover:text-orange-900 transition-colors duration-200">
+                    <h3 className="type-h3  text-stone-900 group-hover:text-orange-900 transition-colors duration-200">
                       Payment Gateway
                     </h3>
                   </div>
-                  <p className="text-xs text-stone-600 leading-relaxed">
+                  <p className="type-body  text-stone-600 leading-relaxed">
                     0.75% for fares up to ₹2,000 and 1.00% for fares above ₹2,000, computed accurately on total before PG.
                   </p>
                 </div>
@@ -157,11 +157,11 @@ export default function FareCalculatorPage() {
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_2px_4px_rgba(245,158,11,0.1)] group-hover:scale-105 transition-transform duration-200">
                       <Users className="h-4.5 w-4.5" />
                     </div>
-                    <h3 className="text-sm font-bold text-stone-900 group-hover:text-amber-950 transition-colors duration-200">
+                    <h3 className="type-h3  text-stone-900 group-hover:text-amber-950 transition-colors duration-200">
                       Passenger Quota
                     </h3>
                   </div>
-                  <p className="text-xs text-stone-600 leading-relaxed">
+                  <p className="type-body  text-stone-600 leading-relaxed">
                     Maximum 6 passengers allowed on a single general quota booking (adults & children aged 5–11 combined).
                   </p>
                 </div>
@@ -171,11 +171,11 @@ export default function FareCalculatorPage() {
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-700 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),0_2px_4px_rgba(249,115,22,0.1)] group-hover:scale-105 transition-transform duration-200">
                       <ShieldCheck className="h-4.5 w-4.5" />
                     </div>
-                    <h3 className="text-sm font-bold text-stone-900 group-hover:text-orange-950 transition-colors duration-200">
+                    <h3 className="type-h3  text-stone-900 group-hover:text-orange-950 transition-colors duration-200">
                       Service Fee Limits
                     </h3>
                   </div>
-                  <p className="text-xs text-stone-600 leading-relaxed">
+                  <p className="type-body  text-stone-600 leading-relaxed">
                     IRCTC cap of ₹20 for Non-AC classes (2S, SL) and ₹40 for AC classes, transparently charged per transaction.
                   </p>
                 </div>
@@ -189,13 +189,13 @@ export default function FareCalculatorPage() {
           <div className="site-container">
             <div className="mx-auto max-w-2xl">
               <div className="text-center mb-6 sm:mb-8">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-200/60">
+                <span className="type-caption  font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-200/60">
                   Got Questions?
                 </span>
-                <h2 className="mt-2 text-lg sm:text-2xl font-bold text-stone-900 tracking-tight">
+                <h2 className="type-h2 mt-2 text-stone-900 tracking-tight">
                   Frequently Asked Questions
                 </h2>
-                <p className="mt-1 text-xs text-stone-500">
+                <p className="type-body-small mt-1 text-stone-500">
                   Everything you need to know about railway fare estimates and agent fees.
                 </p>
               </div>
@@ -209,23 +209,23 @@ export default function FareCalculatorPage() {
         <section className="py-8 sm:py-10 bg-white border-t border-[#ede1d3]">
           <div className="site-container">
             <div className="mx-auto max-w-3xl rounded-2xl bg-gradient-to-r from-[#faf6f0] via-[#fffcf8] to-[#faf6f0] border border-[#ede1d3] p-5 sm:p-7 shadow-[0_4px_20px_rgba(180,140,100,0.06)] text-center">
-              <h3 className="text-sm sm:text-base font-bold text-stone-900 tracking-tight">
+              <h3 className="type-h3  text-stone-900 tracking-tight">
                 Want to become an Authorized IRCTC Train Ticket Agent?
               </h3>
-              <p className="mt-1 text-xs text-stone-600 max-w-lg mx-auto">
+              <p className="type-body-small mt-1 text-stone-600 max-w-lg mx-auto">
                 Start your authorized railway ticket agency business today with complete documentation assistance and portal setup.
               </p>
-              <div className="mt-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs font-bold">
+              <div className="type-caption mt-4 flex flex-wrap items-center justify-center gap-3 sm:gap-4 font-bold">
                 <Link
                   href="/irctc-agent-registration"
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#F36B21] to-[#9a3412] px-4 py-2 text-white shadow-[0_3px_10px_rgba(249,115,22,0.3)] hover:from-[#9a3412] hover:to-[#7c2d12] hover:-translate-y-0.5 transition-all duration-150"
+                  className="type-button inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#F36B21] to-[#9a3412] px-4 py-2 text-white shadow-[0_3px_10px_rgba(249,115,22,0.3)] hover:from-[#9a3412] hover:to-[#7c2d12] hover:-translate-y-0.5 transition-all duration-150"
                 >
                   <span>Step-by-Step Registration Guide</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-[#e4d5c4] bg-white px-4 py-2 text-stone-700 hover:bg-[#faf6f0] hover:border-orange-300 hover:text-stone-900 transition-all duration-150"
+                  className="type-button inline-flex items-center gap-1.5 rounded-xl border border-[#e4d5c4] bg-white px-4 py-2 text-stone-700 hover:bg-[#faf6f0] hover:border-orange-300 hover:text-stone-900 transition-all duration-150"
                 >
                   <span>Talk to an Expert</span>
                   <ArrowRight className="h-3.5 w-3.5 text-stone-400" />

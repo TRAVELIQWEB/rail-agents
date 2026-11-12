@@ -27,9 +27,7 @@ export function Logo({ variant = "default", size = "default" }: LogoProps) {
         } shrink-0 object-contain drop-shadow-sm transition-transform duration-200 group-hover:-translate-y-px`}
       />
       <span
-        className={`whitespace-nowrap font-[800] leading-none tracking-[-0.055em] ${
-          isSmall ? "text-[1.1rem]" : "text-[1.05rem] min-[360px]:text-[1.2rem] xs:text-[1.4rem] sm:text-[1.75rem] min-[1180px]:text-[1.25rem] xl:text-[1.5rem] 2xl:text-[1.875rem] wide:text-[2rem]"
-        }`}
+        className="type-logo whitespace-nowrap font-extrabold leading-none tracking-[-0.055em]"
       >
         <span className={isLight ? "text-white" : "text-[var(--navy)]"}>Rail</span>
         <span className="text-[var(--primary)]">Agents</span>

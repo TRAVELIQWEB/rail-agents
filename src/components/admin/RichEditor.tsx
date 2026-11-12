@@ -1105,7 +1105,7 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
           <section className="min-w-0 flex-1 flex flex-col w-full h-full min-h-0 box-border overflow-hidden" aria-label="Visual article editor">
             {mode === "split" && (
               <div className="flex h-11 items-center justify-between border-b border-slate-100 bg-slate-50 px-4 py-2 flex-shrink-0 box-border">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700">Visual Document</h3>
+                <h3 className="type-label font-bold uppercase tracking-wider text-slate-700">Visual Document</h3>
                 <span className="text-[10px] font-semibold text-slate-400">Preview & Edit</span>
               </div>
             )}
@@ -1126,7 +1126,7 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
               }`}
             >
               <div className="min-w-0 flex items-center gap-2">
-                <h3 className="text-xs font-bold text-slate-800 shrink-0">HTML Source</h3>
+                <h3 className="type-label font-bold text-slate-800 shrink-0">HTML Source</h3>
                 {mode !== "split" ? (
                   <p className="text-[10px] text-slate-500 hidden sm:block">
                     Edit source and apply changes.
@@ -1237,7 +1237,7 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
       {isLinkDialogOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
           <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl border border-slate-100">
-            <h3 className="mb-3 text-sm font-black text-slate-900">Insert Link</h3>
+            <h3 className="type-card-title mb-3 text-slate-900">Insert Link</h3>
             <input
               ref={linkInputRef}
               type="url"
@@ -1274,7 +1274,7 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
                   <Play size={16} />
                 </div>
                 <div>
-                  <h3 className="text-sm font-black text-slate-900">Embed YouTube Video</h3>
+                  <h3 className="type-card-title text-slate-900">Embed YouTube Video</h3>
                   <p className="text-[11px] text-slate-500">Insert responsive YouTube embed directly into your article.</p>
                 </div>
               </div>
@@ -1365,7 +1365,7 @@ export function RichEditor({ value, onChange, placeholder = "Start writing your 
                   <ImageIcon size={16} />
                 </div>
                 <div>
-                  <h3 className="text-sm font-black text-slate-900">Insert Image</h3>
+                  <h3 className="type-card-title text-slate-900">Insert Image</h3>
                   <p className="text-[11px] text-slate-500">Add an image URL or upload directly with caption & alt text.</p>
                 </div>
               </div>

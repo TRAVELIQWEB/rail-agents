@@ -6,6 +6,7 @@ import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 import { siteConfig } from "@/config/site";
 import { PostHogProvider } from "./providers";
 import "./globals.css";
+import "./typography.css";
 
 const inter = Inter({
   subsets: ["latin"],

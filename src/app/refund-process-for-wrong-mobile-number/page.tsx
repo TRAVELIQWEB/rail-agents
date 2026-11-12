@@ -141,7 +141,7 @@ export default function RefundProcessWrongMobileNumberPage() {
         <section className="border-b border-slate-200 bg-gradient-to-b from-[#FFF7ED] via-white to-[#F8FAFC] pt-8 pb-10 sm:pt-10 sm:pb-12">
           <div className="site-container max-w-5xl">
             <nav aria-label="Breadcrumb" className="mb-5">
-              <ol className="flex flex-wrap items-center gap-1.5 text-xs sm:text-sm font-medium text-slate-500">
+              <ol className="type-caption flex flex-wrap items-center gap-1.5 font-medium text-slate-500">
                 <li>
                   <Link href="/" className="hover:text-[#F36B21] transition-colors">
                     Home
@@ -164,24 +164,24 @@ export default function RefundProcessWrongMobileNumberPage() {
               </ol>
             </nav>
 
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#FECDD3] bg-[#FFF1F2] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#BE123C] mb-4">
+            <div className="type-caption inline-flex items-center gap-2 rounded-full border border-[#FECDD3] bg-[#FFF1F2] px-3.5 py-1 font-bold uppercase tracking-wider text-[#BE123C] mb-4">
               <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
               Cancellation &amp; OTP Refund Guide
             </div>
 
-            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-[#102B4E] leading-tight">
+            <h1 className="type-page-title  tracking-tight text-[#102B4E] ">
               IRCTC Refund Process for{" "}
               <span className="text-[#F36B21]">Wrong Mobile Number</span> on Ticket
             </h1>
 
-            <p className="mt-3.5 text-base sm:text-lg leading-relaxed text-slate-600 max-w-3xl">
+            <p className="type-body mt-3.5 leading-relaxed text-slate-600 max-w-3xl">
               For authorized IRCTC railway agents (RSPs), refund credit after ticket cancellation or
               fully waitlisted auto-cancellation requires OTP verification sent to the passenger’s
               mobile number. Here is what to do when an incorrect mobile number was entered during
               booking.
             </p>
 
-            <div className="mt-5 flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-500">
+            <div className="type-caption mt-5 flex flex-wrap items-center gap-4 font-semibold text-slate-500">
               <span className="inline-flex items-center gap-1.5">
                 <Clock className="h-3.5 w-3.5 text-[#2563EB]" aria-hidden="true" />5 min read
               </span>
@@ -206,10 +206,10 @@ export default function RefundProcessWrongMobileNumberPage() {
                     aria-hidden="true"
                   />
                   <div>
-                    <h2 className="text-base font-extrabold text-[#102B4E]">
+                    <h2 className="type-h2  text-[#102B4E]">
                       Why Mobile Number Accuracy Is Critical for Agent Bookings
                     </h2>
-                    <p className="mt-1.5 text-sm leading-relaxed text-slate-700">
+                    <p className="type-body-small mt-1.5 leading-relaxed text-slate-700">
                       Under IRCTC’s customer-protection OTP refund policy, whenever an agent-booked
                       e-ticket is cancelled (or a waitlisted ticket is dropped after chart
                       preparation), IRCTC sends a One-Time Password (OTP) to the passenger mobile
@@ -222,7 +222,7 @@ export default function RefundProcessWrongMobileNumberPage() {
 
               {/* Step-by-Step Resolution */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-7 shadow-xs">
-                <h2 className="text-xl font-extrabold text-[#102B4E] mb-5">
+                <h2 className="type-h2  text-[#102B4E] mb-5">
                   Step-by-Step Process When the Mobile Number Is Wrong
                 </h2>
                 <div className="space-y-4">
@@ -232,14 +232,14 @@ export default function RefundProcessWrongMobileNumberPage() {
                       className="rounded-xl border border-slate-200/80 bg-[#F8FAFC] p-4 sm:p-5"
                     >
                       <div className="flex items-center gap-2.5 mb-2">
-                        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#EFF6FF] border border-[#BFDBFE] text-xs font-extrabold text-[#2563EB]">
+                        <span className="type-caption inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#EFF6FF] border border-[#BFDBFE] font-extrabold text-[#2563EB]">
                           {item.step}
                         </span>
-                        <h3 className="text-sm sm:text-base font-bold text-[#102B4E]">
+                        <h3 className="type-h3  text-[#102B4E]">
                           {item.title}
                         </h3>
                       </div>
-                      <p className="text-xs sm:text-sm leading-relaxed text-slate-600">
+                      <p className="type-body-small  leading-relaxed text-slate-600">
                         {item.description}
                       </p>
                     </div>
@@ -251,11 +251,11 @@ export default function RefundProcessWrongMobileNumberPage() {
               <div className="rounded-2xl border border-[#BBF7D0] bg-[#ECFDF5]/60 p-6 sm:p-7">
                 <div className="flex items-center gap-2.5 mb-3">
                   <Smartphone className="h-5 w-5 text-[#15803D]" aria-hidden="true" />
-                  <h2 className="text-lg font-extrabold text-[#102B4E]">
+                  <h2 className="type-h2  text-[#102B4E]">
                     Best Practices to Prevent Wrong Mobile Number Issues
                   </h2>
                 </div>
-                <ul className="space-y-2.5 text-sm text-slate-700">
+                <ul className="type-body-small space-y-2.5 text-slate-700">
                   <li className="flex items-start gap-2.5">
                     <CheckCircle2
                       className="h-4 w-4 text-[#15803D] shrink-0 mt-0.5"
@@ -293,20 +293,20 @@ export default function RefundProcessWrongMobileNumberPage() {
             {/* Right Sidebar */}
             <aside className="lg:col-span-4 space-y-5 lg:sticky lg:top-24">
               <div className="rounded-2xl border border-[#FECDD3] bg-[#FFF1F2]/70 p-5 shadow-xs">
-                <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#BE123C]">
+                <div className="type-caption inline-flex items-center gap-1.5 font-extrabold uppercase tracking-wider text-[#BE123C]">
                   <Calculator className="h-4 w-4" aria-hidden="true" />
                   Calculate Deductions
                 </div>
-                <h2 className="mt-2 text-base font-extrabold text-[#102B4E]">
+                <h2 className="type-h2 mt-2 text-[#102B4E]">
                   IRCTC Cancellation &amp; Refund Calculator
                 </h2>
-                <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
+                <p className="type-body-small mt-1.5 leading-relaxed text-slate-600">
                   Check exact class-wise cancellation charges, timing slabs, and net refundable
                   amounts before cancelling a ticket.
                 </p>
                 <Link
                   href="/irctc-cancellation-refund-calculator"
-                  className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#BE123C] hover:bg-[#9F1239] px-4 py-2.5 text-xs font-bold text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#BE123C]"
+                  className="type-button mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#BE123C] hover:bg-[#9F1239] px-4 py-2.5 font-bold text-white transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#BE123C]"
                 >
                   Open Refund Calculator
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -314,34 +314,34 @@ export default function RefundProcessWrongMobileNumberPage() {
               </div>
 
               <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs space-y-3">
-                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-wider text-[#2563EB]">
+                <div className="type-caption flex items-center gap-2 font-extrabold uppercase tracking-wider text-[#2563EB]">
                   <PhoneCall className="h-4 w-4" aria-hidden="true" />
                   Related Agent Resources
                 </div>
                 <Link
                   href="/irctc-principal-service-providers-updated-29-03-2025"
-                  className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-bold text-[#102B4E] hover:border-[#2563EB] hover:bg-[#EFF6FF] hover:text-[#2563EB] transition-colors"
+                  className="type-caption flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 font-bold text-[#102B4E] hover:border-[#2563EB] hover:bg-[#EFF6FF] hover:text-[#2563EB] transition-colors"
                 >
                   <span>IRCTC PSP Contact Directory</span>
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </Link>
                 <Link
                   href="/guides/ticket-cancellation-refund-guide"
-                  className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-bold text-[#102B4E] hover:border-[#2563EB] hover:bg-[#EFF6FF] hover:text-[#2563EB] transition-colors"
+                  className="type-caption flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 font-bold text-[#102B4E] hover:border-[#2563EB] hover:bg-[#EFF6FF] hover:text-[#2563EB] transition-colors"
                 >
                   <span>Ticket Cancellation &amp; Refund Guide</span>
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </Link>
                 <Link
                   href="/irctc-agent-rules-regulations"
-                  className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-xs font-bold text-[#102B4E] hover:border-[#2563EB] hover:bg-[#EFF6FF] hover:text-[#2563EB] transition-colors"
+                  className="type-caption flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 font-bold text-[#102B4E] hover:border-[#2563EB] hover:bg-[#EFF6FF] hover:text-[#2563EB] transition-colors"
                 >
                   <span>IRCTC Agent Rules &amp; Compliance</span>
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </Link>
                 <Link
                   href="/ask-nihal"
-                  className="flex items-center justify-between rounded-xl border border-[#FED7AA] bg-[#FFF7ED] px-3.5 py-2.5 text-xs font-bold text-[#F36B21] hover:bg-orange-100/70 transition-colors"
+                  className="type-caption flex items-center justify-between rounded-xl border border-[#FED7AA] bg-[#FFF7ED] px-3.5 py-2.5 font-bold text-[#F36B21] hover:bg-orange-100/70 transition-colors"
                 >
                   <span className="inline-flex items-center gap-1.5">
                     <HelpCircle className="h-3.5 w-3.5" aria-hidden="true" />

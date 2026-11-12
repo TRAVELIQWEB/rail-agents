@@ -38,13 +38,13 @@ export function SearchForm({ mobile = false }: SearchFormProps) {
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         placeholder={mobile ? "Search..." : "Search guides, videos..."}
-        className="min-w-0 flex-1 border-0 bg-transparent text-sm text-[var(--navy)] outline-none placeholder:text-slate-400 focus-visible:ring-0"
+        className="type-input min-w-0 flex-1 border-0 bg-transparent text-[var(--navy)] outline-none placeholder:text-slate-400 focus-visible:ring-0"
       />
       <button
         type="submit"
         aria-label="Submit search"
         title="Search blog & guides"
-        className={`flex shrink-0 cursor-pointer items-center justify-center rounded-full text-[#F36B21] transition hover:bg-[var(--primary)] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${
+        className={`type-button flex shrink-0 cursor-pointer items-center justify-center rounded-full text-[#F36B21] transition hover:bg-[var(--primary)] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] ${
           mobile ? "h-11 w-11" : "h-6 w-6"
         }`}
       >

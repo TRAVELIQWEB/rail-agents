@@ -282,19 +282,19 @@ export default function AboutPage() {
               {/* Left Column: Text & CTAs */}
               <div className="text-center md:text-left lg:col-span-7">
                 {/* Eyebrow */}
-                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[#F36B21] shadow-xs">
+                <div className="type-caption mb-3 inline-flex items-center gap-2 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3.5 py-1 font-bold uppercase tracking-wider text-[#F36B21] shadow-xs">
                   <span className="h-2 w-2 rounded-full bg-[#F36B21]" />
                   RAILWAY AGENT GUIDANCE • PRACTICAL KNOWLEDGE
                 </div>
 
                 {/* H1 */}
-                <h1 className="page-hero-title">
+                <h1 className="type-page-title page-hero-title">
                   20 Years of Experience. <br className="hidden sm:inline" />
                   <span className="hero-accent">A Wealth of Knowledge</span> to Share.
                 </h1>
 
                 {/* Supporting Copy */}
-                <p className="page-hero-description mt-4 max-w-2xl">
+                <p className="type-hero-description page-hero-description mt-4 max-w-2xl">
                   Hello, I&apos;m Nihal Singh. Through RailAgents, I aim to help aspiring and
                   existing railway agents better understand the practical side of this field—from
                   everyday dos and don&apos;ts to important rules, processes, and common mistakes.
@@ -303,7 +303,7 @@ export default function AboutPage() {
                 </p>
 
                 {/* Experience Highlights Pill Bar */}
-                <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-slate-700 md:justify-start">
+                <div className="type-caption mt-6 flex flex-wrap items-center justify-center gap-2 font-semibold text-slate-700 md:justify-start">
                   <span className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200/90 bg-white px-3 py-1.5 shadow-2xs">
                     <CheckCircle2 className="h-4 w-4 text-[#F36B21]" />
                     Practical Field Knowledge
@@ -322,7 +322,7 @@ export default function AboutPage() {
                 <div className="mt-7 flex flex-col items-center gap-3.5 sm:flex-row sm:justify-start">
                   <Link
                     href="/ask-nihal"
-                    className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-3.5 text-sm font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.32)] transition-all hover:bg-[#F36B21] hover:shadow-[0_8px_24px_rgba(249,115,22,0.4)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:w-auto"
+                    className="type-button inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-6 py-3.5 font-bold text-white shadow-[0_6px_20px_rgba(249,115,22,0.32)] transition-all hover:bg-[#F36B21] hover:shadow-[0_8px_24px_rgba(249,115,22,0.4)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:w-auto"
                   >
                     <MessageCircle className="h-4 w-4" />
                     Ask Nihal a Question
@@ -330,7 +330,7 @@ export default function AboutPage() {
                   </Link>
                   <Link
                     href="/guides"
-                    className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-sm font-bold text-[var(--navy)] shadow-xs transition-colors hover:border-[#F36B21] hover:bg-[#fff9f4] hover:text-[#F36B21] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:w-auto"
+                    className="type-button inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 font-bold text-[var(--navy)] shadow-xs transition-colors hover:border-[#F36B21] hover:bg-[#fff9f4] hover:text-[#F36B21] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:w-auto"
                   >
                     <BookOpen className="h-4 w-4 text-[#F36B21]" />
                     Explore Railway Agent Guides
@@ -342,7 +342,7 @@ export default function AboutPage() {
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-[#F36B21]">
                     <ShieldCheck className="h-4.5 w-4.5" />
                   </span>
-                  <p className="text-xs leading-relaxed text-slate-600">
+                  <p className="type-body  leading-relaxed text-slate-600">
                     <strong className="font-extrabold text-[var(--navy)]">Independent Educational Guidance:</strong>{" "}
                     Practical insights built on 20 years of field experience to help agents work safely and lawfully.
                   </p>
@@ -371,14 +371,14 @@ export default function AboutPage() {
                     <div className="mt-4 text-left">
                       <div className="flex items-center justify-between border-b border-[#f4dbcb] pb-2.5">
                         <div>
-                          <p className="text-base font-[900] text-[var(--navy)]">Nihal Singh</p>
-                          <p className="text-xs font-semibold text-[#F36B21]">Practical Railway Agent Guide</p>
+                          <p className="type-body  font-extrabold text-[var(--navy)]">Nihal Singh</p>
+                          <p className="type-body  font-semibold text-[#F36B21]">Practical Railway Agent Guide</p>
                         </div>
-                        <span className="rounded-md border border-[#fed7aa] bg-white px-2.5 py-1 text-[11px] font-bold text-[#F36B21]">
+                        <span className="type-caption rounded-md border border-[#fed7aa] bg-white px-2.5 py-1 font-bold text-[#F36B21]">
                           20 Years Exp.
                         </span>
                       </div>
-                      <p className="mt-2.5 text-xs leading-relaxed text-slate-600">
+                      <p className="type-body-small mt-2.5 leading-relaxed text-slate-600">
                         Helping individuals and operating agents learn practical railway work, understand applicable rules, and avoid common errors.
                       </p>
                     </div>
@@ -391,7 +391,7 @@ export default function AboutPage() {
 
             {/* Bottom Docked Experience & Guidance Strip (Fills viewport cleanly with zero empty space) */}
             <div className="my-auto pt-4 border-t border-[#f0e1d2]">
-              <div className="mb-2.5 flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-500">
+              <div className="type-caption mb-2.5 flex items-center justify-between font-bold uppercase tracking-wider text-slate-500">
                 <span className="inline-flex items-center gap-1.5 text-[#F36B21]">
                   <ShieldCheck className="h-3.5 w-3.5 text-[#F36B21]" />
                   Core Pillars of RailAgents Guidance
@@ -431,10 +431,10 @@ export default function AboutPage() {
                       <Icon className="h-5 w-5" />
                     </span>
                     <div className="min-w-0">
-                      <p className="truncate text-xs sm:text-[13.5px] font-[800] text-[var(--navy)]">
+                      <p className="type-body-small truncate font-extrabold text-[var(--navy)]">
                         {title}
                       </p>
-                      <p className="mt-0.5 truncate text-[11.5px] font-medium text-slate-500">
+                      <p className="type-body-small mt-0.5 truncate font-medium text-slate-500">
                         {detail}
                       </p>
                     </div>
@@ -458,11 +458,11 @@ export default function AboutPage() {
 
               {/* Mobile Heading First (< lg) */}
               <div className="block lg:hidden text-center sm:text-left">
-                <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-[#F36B21]">
+                <div className="type-caption mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3 py-1 font-extrabold uppercase tracking-wider text-[#F36B21]">
                   <HelpCircle className="h-3.5 w-3.5" />
                   <span>Digital Brand Identity</span>
                 </div>
-                <h2 className="text-2xl font-[900] tracking-tight text-[var(--navy)] sm:text-3xl">
+                <h2 className="type-h2  tracking-tight text-[var(--navy)] ">
                   Meet Nihal Singh — The Digital Face of RailAgents
                 </h2>
                 <div className="mt-2 h-1 w-20 rounded-full bg-gradient-to-r from-orange-500 to-amber-400 mx-auto sm:mx-0" />
@@ -486,14 +486,14 @@ export default function AboutPage() {
               <div className="lg:col-span-7 xl:col-span-7">
                 {/* Desktop Heading (Hidden on Mobile) */}
                 <div className="hidden lg:block">
-                  <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-[#F36B21]">
+                  <div className="type-caption mb-2.5 inline-flex items-center gap-1.5 rounded-full border border-[#fed7aa] bg-[#fff7ed] px-3 py-1 font-extrabold uppercase tracking-wider text-[#F36B21]">
                     <HelpCircle className="h-3.5 w-3.5" />
                     <span>Digital Brand Identity</span>
                   </div>
 
                   <h2
                     id="meet-nihal-heading"
-                    className="text-2xl font-[900] tracking-tight text-[var(--navy)] sm:text-3xl lg:text-[2.25rem] leading-[1.18]"
+                    className="type-h2  tracking-tight text-[var(--navy)] "
                   >
                     Meet Nihal Singh — The Digital Face of RailAgents
                   </h2>
@@ -502,17 +502,17 @@ export default function AboutPage() {
                 </div>
 
                 {/* 4 Transparency & Character Narrative Paragraphs */}
-                <div className="mt-5 space-y-3.5 text-[15px] leading-relaxed text-slate-600 sm:text-base sm:leading-8">
-                  <p>
+                <div className="type-body mt-5 space-y-3.5 leading-relaxed text-slate-600 sm:leading-8">
+                  <p className="type-body">
                     Nihal Singh is a fictional digital character and the digital face of RailAgents, created to make railway-related information and travel guidance more accessible, understandable, and engaging for travelers.
                   </p>
-                  <p>
+                  <p className="type-body">
                     Nihal Singh does not represent a real individual. The character serves as the digital face of RailAgents, helping present railway information, travel guidance, and platform updates in a friendly and approachable manner.
                   </p>
-                  <p>
+                  <p className="type-body">
                     As the digital face of the platform, Nihal Singh helps travelers and agents navigate railway booking rules, understand ticketing procedures, and access clear guidance with confidence.
                   </p>
-                  <p>
+                  <p className="type-body">
                     RailAgents values transparency and responsible communication. Nihal Singh is a fictional digital character and does not represent an actual person, Indian Railways employee, government official, or authorized railway representative.
                   </p>
                 </div>
@@ -521,7 +521,7 @@ export default function AboutPage() {
                 <div className="mt-7 flex flex-wrap items-center gap-3">
                   <Link
                     href="/ask-nihal"
-                    className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-2.5 text-sm font-bold text-white shadow-xs transition-colors hover:bg-[#F36B21]"
+                    className="type-button inline-flex min-h-11 items-center gap-2 rounded-xl bg-[var(--primary)] px-5 py-2.5 font-bold text-white shadow-xs transition-colors hover:bg-[#F36B21]"
                   >
                     <MessageCircle className="h-4 w-4" />
                     <span>Send a Question to Nihal</span>
@@ -530,7 +530,7 @@ export default function AboutPage() {
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-[var(--navy)] shadow-2xs transition-colors hover:border-orange-300 hover:bg-orange-50/50"
+                    className="type-button inline-flex min-h-11 items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 font-bold text-[var(--navy)] shadow-2xs transition-colors hover:border-orange-300 hover:bg-orange-50/50"
                   >
                     <svg className="h-4 w-4 fill-emerald-600" viewBox="0 0 24 24">
                       <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c4.54 0 8.24 3.7 8.24 8.24 0 2.2-.86 4.27-2.42 5.82a8.19 8.19 0 0 1-5.82 2.42c-1.48 0-2.93-.39-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.18 8.18 0 0 1-1.25-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.25-1.5-1.4-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1s.9 2.44 1.03 2.61c.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.1-.23-.17-.48-.29" />
@@ -550,8 +550,8 @@ export default function AboutPage() {
                     <CheckCircle2 className="h-5 w-5" />
                   </span>
                   <div>
-                    <p className="text-sm font-bold text-[var(--navy)]">Understanding Applicable Rules</p>
-                    <p className="mt-1 text-xs leading-relaxed text-slate-600">Knowing authorized booking windows, pricing structures, and refund eligibility protects both the agent and the passenger.</p>
+                    <p className="type-body  font-bold text-[var(--navy)]">Understanding Applicable Rules</p>
+                    <p className="type-body-small mt-1 leading-relaxed text-slate-600">Knowing authorized booking windows, pricing structures, and refund eligibility protects both the agent and the passenger.</p>
                   </div>
                 </div>
               </div>
@@ -562,8 +562,8 @@ export default function AboutPage() {
                     <CheckCircle2 className="h-5 w-5" />
                   </span>
                   <div>
-                    <p className="text-sm font-bold text-[var(--navy)]">Learning from Frequent Mistakes</p>
-                    <p className="mt-1 text-xs leading-relaxed text-slate-600">Most operational hurdles—from incorrect name spellings to unverified TDR claims—are preventable with disciplined workflows.</p>
+                    <p className="type-body  font-bold text-[var(--navy)]">Learning from Frequent Mistakes</p>
+                    <p className="type-body-small mt-1 leading-relaxed text-slate-600">Most operational hurdles—from incorrect name spellings to unverified TDR claims—are preventable with disciplined workflows.</p>
                   </div>
                 </div>
               </div>
@@ -574,8 +574,8 @@ export default function AboutPage() {
                     <CheckCircle2 className="h-5 w-5" />
                   </span>
                   <div>
-                    <p className="text-sm font-bold text-[var(--navy)]">Clear, Realistic Answers</p>
-                    <p className="mt-1 text-xs leading-relaxed text-slate-600">Encouraging readers to seek clarification on challenging scenarios rather than taking risky or unauthorized shortcuts.</p>
+                    <p className="type-body  font-bold text-[var(--navy)]">Clear, Realistic Answers</p>
+                    <p className="type-body-small mt-1 leading-relaxed text-slate-600">Encouraging readers to seek clarification on challenging scenarios rather than taking risky or unauthorized shortcuts.</p>
                   </div>
                 </div>
               </div>
@@ -593,14 +593,14 @@ export default function AboutPage() {
             <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
               {/* Left Column (7 cols): Heading & Description */}
               <div className="text-left lg:col-span-7">
-                <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#F36B21]">
+                <span className="type-caption inline-flex items-center gap-1.5 font-extrabold uppercase tracking-wider text-[#F36B21]">
                   <Info className="h-3.5 w-3.5" />
                   The Core Mission
                 </span>
-                <h2 className="mt-2 text-2xl font-[900] tracking-tight text-[var(--navy)] sm:text-3xl lg:text-[2.25rem]">
+                <h2 className="type-h2 mt-2 tracking-tight text-[var(--navy)] ">
                   Making Railway Agent Knowledge Easier to Understand
                 </h2>
-                <p className="mt-4 text-base leading-relaxed text-slate-600 sm:text-lg sm:leading-8">
+                <p className="type-body mt-4 leading-relaxed text-slate-600 sm:leading-8">
                   Railway ticketing rules, terms, booking windows, waitlist handling, TDR refunds,
                   compliance obligations, and fraud risks can be overwhelming for beginners and
                   confusing even for established agents. RailAgents exists to demystify these topics
@@ -613,12 +613,12 @@ export default function AboutPage() {
                 <div className="rounded-2xl border border-orange-200/90 bg-gradient-to-br from-orange-50/90 via-white to-orange-100/50 p-6 sm:p-7 shadow-xs">
                   <div className="flex items-center gap-2">
                     <span className="h-2 w-2 rounded-full bg-[#F36B21]" />
-                    <p className="text-xs font-bold uppercase tracking-widest text-[#F36B21]">Our Central Philosophy</p>
+                    <p className="type-body  font-bold uppercase tracking-widest text-[#F36B21]">Our Central Philosophy</p>
                   </div>
-                  <p className="mt-3 text-lg font-[900] leading-snug text-[var(--navy)] sm:text-xl lg:text-2xl">
+                  <p className="type-body-large mt-3 font-extrabold leading-snug text-[var(--navy)] ">
                     &ldquo;Learn from experience. Understand the rules. Work responsibly.&rdquo;
                   </p>
-                  <p className="mt-2.5 text-xs leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-2.5 leading-relaxed text-slate-600">
                     Grounded in practical operational realities, protecting both agent credentials and passenger peace of mind.
                   </p>
                 </div>
@@ -636,19 +636,19 @@ export default function AboutPage() {
                     <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-100/70 text-[#F36B21]">
                       <Icon className="h-5 w-5" />
                     </span>
-                    <span className="text-xs font-[900] tracking-wider text-orange-400">
+                    <span className="type-caption  font-extrabold tracking-wider text-orange-400">
                       STEP {number}
                     </span>
                   </div>
 
-                  <h3 className="mt-4 text-lg font-[850] text-[var(--navy)]">
+                  <h3 className="type-subheading mt-4 text-[var(--navy)]">
                     {title}
                   </h3>
-                  <p className="mt-1 text-xs font-semibold text-[#F36B21]">
+                  <p className="type-body-small mt-1 font-semibold text-[#F36B21]">
                     {summary}
                   </p>
 
-                  <p className="mt-3 text-sm leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-3 leading-relaxed text-slate-600">
                     {description}
                   </p>
                 </div>
@@ -666,14 +666,14 @@ export default function AboutPage() {
             {/* Header: Left-aligned with View All Guides button on right */}
             <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 border-b border-slate-100 pb-6 text-left">
               <div className="max-w-3xl">
-                <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#F36B21]">
+                <span className="type-caption inline-flex items-center gap-1.5 font-extrabold uppercase tracking-wider text-[#F36B21]">
                   <BookOpen className="h-3.5 w-3.5" />
                   Comprehensive Knowledge Areas
                 </span>
-                <h2 className="mt-2 text-2xl font-[900] tracking-tight text-[var(--navy)] sm:text-3xl lg:text-[2.25rem]">
+                <h2 className="type-h2 mt-2 tracking-tight text-[var(--navy)] ">
                   Practical Guidance for Real Railway Agent Questions
                 </h2>
-                <p className="mt-3 text-base text-slate-600 sm:text-lg">
+                <p className="type-body mt-3 text-slate-600 ">
                   Explore in-depth topics crafted to provide educational clarity on everyday challenges.
                   All information serves as guidance; specific requirements should always be cross-checked
                   with active official railway directives.
@@ -682,7 +682,7 @@ export default function AboutPage() {
               <div className="shrink-0">
                 <Link
                   href="/guides"
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 text-sm font-bold text-[var(--navy)] shadow-2xs transition-colors hover:border-orange-300 hover:text-[#F36B21]"
+                  className="type-button inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-2.5 font-bold text-[var(--navy)] shadow-2xs transition-colors hover:border-orange-300 hover:text-[#F36B21]"
                 >
                   <BookOpen className="h-4 w-4 text-[#F36B21]" />
                   Explore All Guides
@@ -703,16 +703,16 @@ export default function AboutPage() {
                       <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100/70 text-[#F36B21] transition-colors group-hover:bg-[#F36B21] group-hover:text-white">
                         <Icon className="h-5 w-5" />
                       </span>
-                      <span className="rounded-md border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-bold text-slate-600">
+                      <span className="type-caption rounded-md border border-slate-200 bg-white px-2 py-0.5 font-bold text-slate-600">
                         {badge}
                       </span>
                     </div>
 
-                    <h3 className="mt-4 text-base font-extrabold text-[var(--navy)] group-hover:text-[#F36B21] transition-colors">
+                    <h3 className="type-subheading mt-4 text-[var(--navy)] group-hover:text-[#F36B21] transition-colors">
                       {title}
                     </h3>
 
-                    <p className="mt-2 text-xs leading-relaxed text-slate-600">
+                    <p className="type-body-small mt-2 leading-relaxed text-slate-600">
                       {description}
                     </p>
                   </div>
@@ -720,7 +720,7 @@ export default function AboutPage() {
                   <div className="mt-5 border-t border-slate-100 pt-3">
                     <Link
                       href={href}
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#F36B21] hover:underline"
+                      className="type-button inline-flex items-center gap-1.5 font-bold text-[#F36B21] hover:underline"
                     >
                       Read full guidance
                       <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
@@ -736,16 +736,16 @@ export default function AboutPage() {
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F36B21] text-white">
                       <Train className="h-5 w-5" />
                     </span>
-                    <span className="rounded-md border border-orange-300 bg-white px-2 py-0.5 text-[10px] font-bold text-[#F36B21]">
+                    <span className="type-caption rounded-md border border-orange-300 bg-white px-2 py-0.5 font-bold text-[#F36B21]">
                       Interactive Tool
                     </span>
                   </div>
 
-                  <h3 className="mt-4 text-base font-extrabold text-[var(--navy)] sm:text-lg">
+                  <h3 className="type-subheading mt-4 text-[var(--navy)] ">
                     Train Ticket Agent Fare &amp; Service Charge Calculator
                   </h3>
 
-                  <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                  <p className="type-body-small mt-2 leading-relaxed text-slate-600 ">
                     Quickly calculate base fares, applicable service commissions, PG charges, and total customer amounts in accordance with permitted railway ticketing fare structures.
                   </p>
                 </div>
@@ -753,7 +753,7 @@ export default function AboutPage() {
                 <div className="mt-5 border-t border-orange-100 pt-3">
                   <Link
                     href="/train-ticket-agent-fare-calculator"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#F36B21] hover:underline"
+                    className="type-button inline-flex items-center gap-1.5 font-bold text-[#F36B21] hover:underline"
                   >
                     Open Fare Calculator
                     <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
@@ -763,7 +763,7 @@ export default function AboutPage() {
             </div>
 
             {/* Bottom Note */}
-            <div className="mt-8 rounded-xl border border-slate-200 bg-[#f8fafc] p-4 text-center text-xs text-slate-500">
+            <div className="type-caption mt-8 rounded-xl border border-slate-200 bg-[#f8fafc] p-4 text-center text-slate-500">
               <span className="font-semibold text-slate-700">Educational Notice:</span> All articles, guides, and calculators are published solely for general informational purposes. Always confirm active fare slabs and terms via authorized channels.
             </div>
 
@@ -777,14 +777,14 @@ export default function AboutPage() {
           <div className="site-container">
             {/* Header: Left-aligned */}
             <div className="max-w-3xl text-left border-b border-orange-100/80 pb-6">
-              <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#F36B21]">
+              <span className="type-caption inline-flex items-center gap-1.5 font-extrabold uppercase tracking-wider text-[#F36B21]">
                 <Scale className="h-3.5 w-3.5" />
                 Ethical Principles &amp; Values
               </span>
-              <h2 className="mt-2 text-2xl font-[900] tracking-tight text-[var(--navy)] sm:text-3xl lg:text-[2.25rem]">
+              <h2 className="type-h2 mt-2 tracking-tight text-[var(--navy)] ">
                 Practical Advice, Clear Explanations, Responsible Decisions
               </h2>
-              <p className="mt-3 text-base text-slate-600 sm:text-lg">
+              <p className="type-body mt-3 text-slate-600 ">
                 How Nihal approaches guidance: genuine field experience, plain explanations,
                 and an uncompromising respect for applicable regulations.
               </p>
@@ -799,10 +799,10 @@ export default function AboutPage() {
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-100 text-[#F36B21]">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
-                  <h3 className="mt-3 text-sm font-extrabold text-[var(--navy)]">
+                  <h3 className="type-subheading mt-3 text-[var(--navy)]">
                     {title}
                   </h3>
-                  <p className="mt-2 text-xs leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-2 leading-relaxed text-slate-600">
                     {description}
                   </p>
                 </div>
@@ -827,25 +827,25 @@ export default function AboutPage() {
                       <ShieldCheck className="h-6 w-6" />
                     </span>
                     <div>
-                      <span className="text-xs font-bold uppercase tracking-wider text-[#F36B21]">Important Disclosures</span>
-                      <h2 className="text-xl font-[900] text-[var(--navy)] sm:text-2xl">
+                      <span className="type-caption  font-bold uppercase tracking-wider text-[#F36B21]">Important Disclosures</span>
+                      <h2 className="type-h2  text-[var(--navy)] ">
                         Clear Information. Honest Guidance.
                       </h2>
                     </div>
                   </div>
 
-                  <p className="mt-5 text-sm leading-relaxed text-slate-600 sm:text-base sm:leading-7">
+                  <p className="type-body-small mt-5 leading-relaxed text-slate-600 sm:leading-7">
                     RailAgents is an independent educational guidance platform associated with
                     Nihal Singh. We share informational perspectives to help agents and the public
                     understand common railway concepts, registration questions, and booking workflows.
                   </p>
 
-                  <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50/70 p-4 text-xs sm:text-sm leading-relaxed text-amber-900">
-                    <p className="font-bold flex items-center gap-1.5">
+                  <div className="type-caption mt-6 rounded-2xl border border-amber-200 bg-amber-50/70 p-4 leading-relaxed text-amber-900">
+                    <p className="type-body font-bold flex items-center gap-1.5">
                       <ShieldAlert className="h-4 w-4 text-amber-700" />
                       Independent Guidance Disclaimer:
                     </p>
-                    <p className="mt-1.5">
+                    <p className="type-body mt-1.5">
                       Neither RailAgents nor Nihal Singh represents Indian Railways, IRCTC, CRIS, or any
                       government ministry. We do not issue tickets directly, nor do we act as an official
                       regulatory body.
@@ -856,10 +856,10 @@ export default function AboutPage() {
                 {/* Right Column (7 cols): Detailed Points in Structured Cards */}
                 <div className="space-y-4 lg:col-span-7">
                   <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs">
-                    <h3 className="text-sm font-extrabold text-[var(--navy)]">
+                    <h3 className="type-subheading  text-[var(--navy)]">
                       Official Rule Authority &amp; Regular Updates
                     </h3>
-                    <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                    <p className="type-body-small mt-2 leading-relaxed text-slate-600 ">
                       Railway rules, booking conditions, service charges, tatkal timings, and cancellation
                       penalties are set by Indian Railways and authorized service providers. These guidelines
                       are subject to official circulars and regular updates. We strongly encourage all readers
@@ -868,10 +868,10 @@ export default function AboutPage() {
                   </div>
 
                   <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs">
-                    <h3 className="text-sm font-extrabold text-[var(--navy)]">
+                    <h3 className="type-subheading  text-[var(--navy)]">
                       Realistic Expectations &amp; Ethical Business
                     </h3>
-                    <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                    <p className="type-body-small mt-2 leading-relaxed text-slate-600 ">
                       RailAgents makes no representations or guarantees of confirmed ticket reservations,
                       registration approvals, business turnover, or specific refund outcomes. Responsible
                       agent work is grounded in personal integrity, proper documentation, and compliance
@@ -880,10 +880,10 @@ export default function AboutPage() {
                   </div>
 
                   <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-2xs">
-                    <h3 className="text-sm font-extrabold text-[var(--navy)]">
+                    <h3 className="type-subheading  text-[var(--navy)]">
                       Security, Privacy &amp; Credential Safety
                     </h3>
-                    <p className="mt-2 text-xs leading-relaxed text-slate-600 sm:text-sm">
+                    <p className="type-body-small mt-2 leading-relaxed text-slate-600 ">
                       RailAgents will never ask for your passenger passwords, booking OTPs, or confidential
                       banking credentials. All calculators, guides, and tutorials exist solely to educate and
                       safeguard operating agents against common scams and unauthorized shortcuts.
@@ -905,14 +905,14 @@ export default function AboutPage() {
 
               {/* Left Column (5 cols): Sticky Sidebar */}
               <div className="lg:col-span-5 lg:sticky lg:top-24">
-                <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-[#F36B21]">
+                <div className="type-caption inline-flex items-center gap-1.5 font-extrabold uppercase tracking-wider text-[#F36B21]">
                   <HelpCircle className="h-3.5 w-3.5" />
                   Frequently Asked Questions
                 </div>
-                <h2 className="mt-2 text-2xl font-[900] tracking-tight text-[var(--navy)] sm:text-3xl lg:text-[2.25rem]">
+                <h2 className="type-h2 mt-2 tracking-tight text-[var(--navy)] ">
                   Common Questions About Nihal Singh &amp; RailAgents
                 </h2>
-                <p className="mt-3 text-sm text-slate-600 sm:text-base leading-relaxed">
+                <p className="type-body-small mt-3 text-slate-600 leading-relaxed">
                   Clear, upfront answers regarding our mission, background, and how we assist rail agents with practical field guidance.
                 </p>
 
@@ -922,15 +922,15 @@ export default function AboutPage() {
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-orange-100 text-[#F36B21]">
                       <MessageCircle className="h-4 w-4" />
                     </span>
-                    <p className="text-sm font-bold text-[var(--navy)]">Have a different question?</p>
+                    <p className="type-body  font-bold text-[var(--navy)]">Have a different question?</p>
                   </div>
-                  <p className="mt-2 text-xs leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-2 leading-relaxed text-slate-600">
                     Reach out directly for experienced guidance on railway agent rules, booking workflows, and registrations.
                   </p>
                   <div className="mt-4 flex flex-wrap items-center gap-2.5">
                     <Link
                       href="/ask-nihal"
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-[var(--primary)] px-3.5 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#F36B21]"
+                      className="type-button inline-flex items-center gap-1.5 rounded-lg bg-[var(--primary)] px-3.5 py-2 font-bold text-white shadow-xs hover:bg-[#F36B21]"
                     >
                       Ask Nihal
                       <ArrowRight className="h-3 w-3" />
@@ -939,7 +939,7 @@ export default function AboutPage() {
                       href={whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3.5 py-2 text-xs font-bold text-[var(--navy)] hover:border-orange-300"
+                      className="type-button inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3.5 py-2 font-bold text-[var(--navy)] hover:border-orange-300"
                     >
                       WhatsApp
                     </a>
@@ -950,73 +950,73 @@ export default function AboutPage() {
               {/* Right Column (7 cols): FAQ Accordions */}
               <div className="space-y-4 lg:col-span-7">
                 <details className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs transition-colors open:border-orange-300 open:shadow-xs">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#F36B21]">
+                  <summary className="type-body flex cursor-pointer list-none items-center justify-between font-bold text-[var(--navy)] group-open:text-[#F36B21]">
                     <span>Who is Nihal Singh and what is his background?</span>
                     <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#F36B21] transition-transform group-open:rotate-180">
                       <ArrowRight className="h-4 w-4 rotate-90" />
                     </span>
                   </summary>
-                  <p className="mt-3.5 border-t border-slate-100 pt-3.5 text-sm leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-3.5 border-t border-slate-100 pt-3.5 leading-relaxed text-slate-600">
                     Nihal Singh is a fictional digital character and the digital face of RailAgents, created to share railway-related information and travel guidance. Nihal Singh does not represent a real individual or an official representative of Indian Railways or IRCTC.
                   </p>
                 </details>
 
                 <details className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs transition-colors open:border-orange-300 open:shadow-xs">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#F36B21]">
+                  <summary className="type-body flex cursor-pointer list-none items-center justify-between font-bold text-[var(--navy)] group-open:text-[#F36B21]">
                     <span>Is RailAgents an official Indian Railways or IRCTC website?</span>
                     <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#F36B21] transition-transform group-open:rotate-180">
                       <ArrowRight className="h-4 w-4 rotate-90" />
                     </span>
                   </summary>
-                  <p className="mt-3.5 border-t border-slate-100 pt-3.5 text-sm leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-3.5 border-t border-slate-100 pt-3.5 leading-relaxed text-slate-600">
                     No. RailAgents is an independent educational guidance website. We do not represent Indian Railways, IRCTC, or CRIS, nor do we issue tickets directly. All information is provided solely for educational reference and awareness.
                   </p>
                 </details>
 
                 <details className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs transition-colors open:border-orange-300 open:shadow-xs">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#F36B21]">
+                  <summary className="type-body flex cursor-pointer list-none items-center justify-between font-bold text-[var(--navy)] group-open:text-[#F36B21]">
                     <span>What kind of help can I find on this website?</span>
                     <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#F36B21] transition-transform group-open:rotate-180">
                       <ArrowRight className="h-4 w-4 rotate-90" />
                     </span>
                   </summary>
-                  <p className="mt-3.5 border-t border-slate-100 pt-3.5 text-sm leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-3.5 border-t border-slate-100 pt-3.5 leading-relaxed text-slate-600">
                     RailAgents offers in-depth guides covering authorized registration steps, Tatkal booking rules, ticket cancellation and refund policies, TDR filing procedures, fee structures, and how to avoid fraudulent software or unauthorized shortcuts.
                   </p>
                 </details>
 
                 <details className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs transition-colors open:border-orange-300 open:shadow-xs">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#F36B21]">
+                  <summary className="type-body flex cursor-pointer list-none items-center justify-between font-bold text-[var(--navy)] group-open:text-[#F36B21]">
                     <span>Can I ask Nihal Singh questions regarding railway agent work?</span>
                     <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#F36B21] transition-transform group-open:rotate-180">
                       <ArrowRight className="h-4 w-4 rotate-90" />
                     </span>
                   </summary>
-                  <p className="mt-3.5 border-t border-slate-100 pt-3.5 text-sm leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-3.5 border-t border-slate-100 pt-3.5 leading-relaxed text-slate-600">
                     Yes! Readers and operating agents can submit questions directly through the <Link href="/ask-nihal" className="font-semibold text-[#F36B21] underline">Ask Nihal page</Link> or connect with us on WhatsApp for realistic, experience-based answers.
                   </p>
                 </details>
 
                 <details className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs transition-colors open:border-orange-300 open:shadow-xs">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#F36B21]">
+                  <summary className="type-body flex cursor-pointer list-none items-center justify-between font-bold text-[var(--navy)] group-open:text-[#F36B21]">
                     <span>Are the guides and tools on RailAgents free to use?</span>
                     <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#F36B21] transition-transform group-open:rotate-180">
                       <ArrowRight className="h-4 w-4 rotate-90" />
                     </span>
                   </summary>
-                  <p className="mt-3.5 border-t border-slate-100 pt-3.5 text-sm leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-3.5 border-t border-slate-100 pt-3.5 leading-relaxed text-slate-600">
                     Yes, all educational articles, video tutorials, and interactive tools such as the <Link href="/train-ticket-agent-fare-calculator" className="font-semibold text-[#F36B21] underline">Agent Fare Calculator</Link> are 100% free to read and access.
                   </p>
                 </details>
 
                 <details className="group rounded-2xl border border-slate-200/90 bg-white p-5 shadow-2xs transition-colors open:border-orange-300 open:shadow-xs">
-                  <summary className="flex cursor-pointer list-none items-center justify-between text-base font-bold text-[var(--navy)] group-open:text-[#F36B21]">
+                  <summary className="type-body flex cursor-pointer list-none items-center justify-between font-bold text-[var(--navy)] group-open:text-[#F36B21]">
                     <span>How can I reach out to Nihal Singh for guidance?</span>
                     <span className="ml-4 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-100/70 text-[#F36B21] transition-transform group-open:rotate-180">
                       <ArrowRight className="h-4 w-4 rotate-90" />
                     </span>
                   </summary>
-                  <p className="mt-3.5 border-t border-slate-100 pt-3.5 text-sm leading-relaxed text-slate-600">
+                  <p className="type-body-small mt-3.5 border-t border-slate-100 pt-3.5 leading-relaxed text-slate-600">
                     You can submit your questions directly via our <Link href="/ask-nihal" className="font-semibold text-[#F36B21] underline">Ask Nihal form</Link> or connect through our verified WhatsApp channel for assistance.
                   </p>
                 </details>
@@ -1046,11 +1046,11 @@ export default function AboutPage() {
                 <HelpCircle className="h-7 w-7" />
               </div>
 
-              <h2 className="mt-4 text-2xl font-[900] tracking-tight text-[var(--navy)] sm:text-3xl lg:text-4xl">
+              <h2 className="type-h2 mt-4 tracking-tight text-[var(--navy)] ">
                 Have a Question About Railway Agent Work?
               </h2>
 
-              <p className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+              <p className="type-body mx-auto mt-3 max-w-2xl leading-relaxed text-slate-600 ">
                 Whether you&apos;re learning about the field or looking for clarity on a particular
                 railway-agent topic, start with the available guides or send your question to Nihal Singh.
               </p>
@@ -1067,7 +1067,7 @@ export default function AboutPage() {
 
                 <Link
                   href="/guides"
-                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-7 py-3.5 text-sm font-bold text-[var(--navy)] shadow-xs transition-colors hover:border-[#F36B21] hover:bg-[#fff9f4] hover:text-[#F36B21] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:w-auto"
+                  className="type-button inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-7 py-3.5 font-bold text-[var(--navy)] shadow-xs transition-colors hover:border-[#F36B21] hover:bg-[#fff9f4] hover:text-[#F36B21] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)] sm:w-auto"
                 >
                   <BookOpen className="h-4 w-4 text-[#F36B21]" />
                   Browse All Guides
@@ -1077,14 +1077,14 @@ export default function AboutPage() {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50/60 px-5 py-3.5 text-sm font-bold text-emerald-800 transition-colors hover:bg-emerald-100/70 sm:w-auto"
+                  className="type-button inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50/60 px-5 py-3.5 font-bold text-emerald-800 transition-colors hover:bg-emerald-100/70 sm:w-auto"
                 >
                   WhatsApp Query
                 </a>
               </div>
 
               {/* Bottom Feature Badges */}
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-orange-100/80 pt-6 text-xs font-semibold text-slate-500">
+              <div className="type-caption mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-orange-100/80 pt-6 font-semibold text-slate-500">
                 <span className="flex items-center gap-1.5">
                   <CheckCircle2 className="h-4 w-4 text-[#F36B21]" />
                   20 Years Practical Field Experience
@@ -1110,10 +1110,10 @@ export default function AboutPage() {
                 <Info aria-hidden="true" className="h-4 w-4" />
               </span>
               <div>
-                <h2 id="fictional-character-disclaimer" className="text-base font-bold text-[var(--navy)] sm:text-lg">
+                <h2 id="fictional-character-disclaimer" className="type-h2  text-[var(--navy)] ">
                   Disclaimer: Fictional Character
                 </h2>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base">
+                <p className="type-body-small mt-2 leading-relaxed text-slate-600 ">
                   Nihal Singh is a fictional digital character and the digital face of RailAgents, created to share railway-related information and travel guidance. Nihal Singh does not represent a real individual or an official representative of Indian Railways or IRCTC.
                 </p>
               </div>
