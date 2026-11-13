@@ -1,5 +1,9 @@
 "use client";
 
+import { getWhatsAppUrl } from "@/lib/whatsapp";
+
+import { useWhatsAppSettings } from "@/components/WhatsAppSettingsProvider";
+
 import {
   Fragment,
   useState,
@@ -147,6 +151,7 @@ export function TrainChartPreparationTime({
   initialBoardingCode?: string;
   basePath?: string;
 } = {}) {
+  const whatsappSettings = useWhatsAppSettings();
   // Hydration-safe mount flag
   const mounted = useSyncExternalStore(
     () => () => {},
@@ -473,12 +478,13 @@ export function TrainChartPreparationTime({
   };
 
   const handleWhatsAppShare = () => {
+    if (!whatsappSettings.enabled) return;
     if (!chartingData || !selectedStationInfo) return;
     const stn = selectedStationInfo.station;
     const firstIso = formatIsoDateTimeIST(stn.firstChartDateTime);
     const secondIso = formatIsoDateTimeIST(stn.secondChartDateTime);
 
-    const text = encodeURIComponent(
+    const text = (
       `🚂 *IRCTC Train Chart Preparation Timing*\n` +
         `• *Train:* ${chartingData.trainNumber} - ${chartingData.trainName}\n` +
         `• *Boarding Station:* ${stn.stationName} (${stn.stationCode})\n` +
@@ -489,7 +495,7 @@ export function TrainChartPreparationTime({
         `• *2nd (Final) Chart:* *${secondIso?.fullLabel || "Not available"}*\n` +
         `Checked on RailAgents.in`
     );
-    window.open(`https://api.whatsapp.com/send?text=${text}`, "_blank");
+    window.open(getWhatsAppUrl(text), "_blank");
   };
 
   return (
@@ -998,14 +1004,14 @@ export function TrainChartPreparationTime({
                   )}
                   {copied ? "Copied" : "Copy"}
                 </button>
-                <button
+                {whatsappSettings.enabled && (<button
                   type="button"
                   onClick={handleWhatsAppShare}
                   className="type-button inline-flex min-h-8 cursor-pointer items-center gap-1.5 rounded-sm border-[1.5px] border-[#FED7AA] bg-[#FFFFFF] px-2.5 font-bold text-[#171717] transition-colors hover:border-[#F36B21] hover:text-[#F36B21]"
                 >
                   <Share2 strokeWidth={2.25} className="h-3.5 w-3.5 text-[#F36B21]" />
                   Share
-                </button>
+                </button>)}
               </div>
             </div>
           </section>

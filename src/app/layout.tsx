@@ -1,7 +1,9 @@
+import { WhatsAppSettingsProvider } from "@/components/WhatsAppSettingsProvider";
+import { getWhatsAppSettings } from "@/lib/whatsapp-settings";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Inter } from "next/font/google";
-import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
+import { FloatingWhatsAppServer } from "@/components/FloatingWhatsAppServer";
 import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 import { siteConfig } from "@/config/site";
 import { PostHogProvider } from "./providers";
@@ -90,11 +92,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const whatsappSettings = await getWhatsAppSettings();
+
   return (
     <html
       lang="en-IN"
@@ -104,6 +108,7 @@ export default function RootLayout({
     
 <body className="min-h-full bg-[var(--background)] text-[var(--navy)]">
   <PostHogProvider>
+  <WhatsAppSettingsProvider settings={whatsappSettings}>
     <a href="#main-content" className="skip-link">
       Skip to main content
     </a>
@@ -116,11 +121,12 @@ export default function RootLayout({
     />
 
     {children}
-    <FloatingWhatsApp />
+  <FloatingWhatsAppServer settings={whatsappSettings} />
 
     <Suspense fallback={null}>
       <AnalyticsScripts />
     </Suspense>
+  </WhatsAppSettingsProvider>
   </PostHogProvider>
 </body>
 

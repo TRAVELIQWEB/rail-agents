@@ -1,3 +1,4 @@
+import { WhatsAppLink } from "@/components/WhatsAppSettingsProvider";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -72,10 +73,6 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
     timeZone: "UTC",
   });
 
-  const whatsappMessage = encodeURIComponent(
-    `Hi RailAgents, I have a question about: ${guide.title}. Please guide me.`
-  );
-  const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${whatsappMessage}`;
 
   // Other related guides in the same category or overall
   const relatedGuides = guides
@@ -348,15 +345,14 @@ export default async function GuideDetailPage({ params }: GuidePageProps) {
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2.5 shrink-0">
-                    <a
-                      href={whatsappUrl}
+                    <WhatsAppLink contextMessage={guide.title}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="type-button inline-flex min-h-11 items-center gap-2 rounded-xl bg-[#25D366] px-4 py-2.5 font-bold text-white shadow-sm hover:bg-[#20ba59] transition-all hover:scale-[1.02]"
                     >
                       <FaWhatsapp className="h-4 w-4" />
                       Chat on WhatsApp
-                    </a>
+                    </WhatsAppLink>
                     <Link
                       href="/ask-nihal"
                       className="type-button inline-flex min-h-11 items-center gap-1.5 rounded-xl border border-stone-300 bg-white px-4 py-2.5 font-bold text-stone-800 hover:bg-stone-50 transition-colors"

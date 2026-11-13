@@ -14,13 +14,11 @@ import {
   TrainFront,
 } from "lucide-react";
 import { railTools } from "@/config/tools";
-import { siteConfig } from "@/config/site";
+import { WhatsAppLink } from "@/components/WhatsAppSettingsProvider";
 import { MobileMenu } from "@/components/layout/MobileMenu";
 import { Logo } from "@/components/layout/Logo";
 import { InternalLink } from "@/components/ui/InternalLink";
 
-const message = encodeURIComponent(siteConfig.whatsapp.message);
-const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${message}`;
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -151,8 +149,7 @@ export function Header() {
 
         {/* Rightmost: WhatsApp Us Button */}
         <div className="hidden shrink-0 items-center justify-self-end min-[1080px]:flex">
-          <a
-            href={whatsappUrl}
+          <WhatsAppLink
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat with RailAgents on WhatsApp"
@@ -160,7 +157,7 @@ export function Header() {
           >
             <FaWhatsapp className="h-4.5 w-4.5 shrink-0" aria-hidden="true" />
             <span>WhatsApp Us</span>
-          </a>
+          </WhatsAppLink>
         </div>
 
         <MobileMenu />

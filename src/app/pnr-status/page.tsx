@@ -1,5 +1,8 @@
 "use client";
 
+import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { useWhatsAppSettings } from "@/components/WhatsAppSettingsProvider";
+
 import { AllToolsLink } from "@/components/tools/AllToolsLink";
 import { pnrJourneyNotice } from "@/lib/pnr-journey";
 import { isWaitingListStatus } from "@/lib/pnr-waitlist";
@@ -375,6 +378,7 @@ function CopyPnr({ pnr }: { pnr: string }) {
 }
 
 function SharePnrDetails({ createMessage }: { createMessage: () => string }) {
+  const whatsappSettings = useWhatsAppSettings();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
@@ -491,7 +495,7 @@ function SharePnrDetails({ createMessage }: { createMessage: () => string }) {
           <div className="flex flex-wrap items-center justify-end gap-2">
             <p role="status" aria-live="polite" className="mr-auto min-w-0 text-xs text-slate-200">{feedback}</p>
             <button type="button" onClick={copyMessage} className="min-h-9 rounded border border-slate-600 px-3 text-sm text-slate-200 hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-400">Copy Message</button>
-            <a href={`https://wa.me/?text=${encodeURIComponent(message)}`} target="_blank" rel="noopener noreferrer" aria-label="Send — continue to WhatsApp" className="inline-flex min-h-9 items-center justify-center gap-1.5 rounded bg-[#25D366] px-3 text-sm font-semibold text-[#071426] hover:bg-[#20bd5a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-400"><FaWhatsapp aria-hidden="true" className="h-4 w-4 shrink-0" />Send</a>
+            {whatsappSettings.enabled && (<a href={getWhatsAppUrl(message)} target="_blank" rel="noopener noreferrer" aria-label="Send — continue to WhatsApp" className="inline-flex min-h-9 items-center justify-center gap-1.5 rounded bg-[#25D366] px-3 text-sm font-semibold text-[#071426] hover:bg-[#20bd5a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-400"><FaWhatsapp aria-hidden="true" className="h-4 w-4 shrink-0" />Send</a>)}
           </div>
         </div>
       </dialog>

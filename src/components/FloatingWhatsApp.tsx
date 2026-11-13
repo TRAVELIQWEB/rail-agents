@@ -1,19 +1,29 @@
+
 "use client";
 
 import { usePathname } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
-import { siteConfig } from "@/config/site";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 
-const message = encodeURIComponent(siteConfig.whatsapp.message);
-const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${message}`;
+interface FloatingWhatsAppProps {
+  number: string;
+  message: string;
+}
 
-export function FloatingWhatsApp() {
+export function FloatingWhatsApp({
+  number,
+  message,
+}: FloatingWhatsAppProps) {
   const pathname = usePathname();
 
   // Do not show floating WhatsApp on admin pages
   if (pathname.startsWith("/admin")) {
     return null;
   }
+
+  // Generate WhatsApp URL using MongoDB settings
+  const whatsappUrl = getWhatsAppUrl(message, number);
+
   const isFareCalc =
     pathname === "/train-ticket-agent-fare-calculator" ||
     pathname === "/fare-calculator";
@@ -28,6 +38,7 @@ export function FloatingWhatsApp() {
         aria-hidden="true"
         className="whatsapp-pulse pointer-events-none absolute inset-0 rounded-full"
       />
+
       <a
         href={whatsappUrl}
         target="_blank"
@@ -35,11 +46,19 @@ export function FloatingWhatsApp() {
         aria-label="Chat with RailAgents on WhatsApp"
         className="relative flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_5px_18px_rgba(15,39,71,0.2),0_0_18px_rgba(37,211,102,0.18)] transition duration-200 ease-out hover:scale-105 hover:shadow-[0_7px_22px_rgba(15,39,71,0.24),0_0_22px_rgba(37,211,102,0.24)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#25D366] md:h-14 md:w-14"
       >
-        <FaWhatsapp aria-hidden="true" className="h-7 w-7 md:h-8 md:w-8" />
+        <FaWhatsapp
+          aria-hidden="true"
+          className="h-7 w-7 md:h-8 md:w-8"
+        />
       </a>
+
       <div className="type-body-small pointer-events-none absolute bottom-1/2 right-full mr-3 hidden w-max translate-y-1/2 translate-x-1 rounded-xl border border-[#f1dfcb] bg-white px-4 py-3 text-[var(--navy)] opacity-0 shadow-[0_8px_28px_rgba(15,39,71,0.14)] transition duration-200 group-hover:translate-x-0 group-hover:opacity-100 group-focus-within:translate-x-0 group-focus-within:opacity-100 md:block">
-        <p className="type-body font-bold">Need help?</p>
-        <p className="type-body-small mt-0.5 text-slate-600">Chat with us on WhatsApp</p>
+        <p className="type-body font-bold">
+          Need help?
+        </p>
+        <p className="type-body-small mt-0.5 text-slate-600">
+          Chat with us on WhatsApp
+        </p>
       </div>
     </div>
   );

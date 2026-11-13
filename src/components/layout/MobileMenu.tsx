@@ -6,10 +6,8 @@ import { Calculator, CalendarDays, Menu, Radio, TicketCheck, TrainFront, X } fro
 import { FaWhatsapp } from "react-icons/fa";
 import { InternalLink } from "@/components/ui/InternalLink";
 import { railTools } from "@/config/tools";
-import { siteConfig } from "@/config/site";
+import { WhatsAppLink } from "@/components/WhatsAppSettingsProvider";
 
-const message = encodeURIComponent(siteConfig.whatsapp.message);
-const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${message}`;
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -129,8 +127,7 @@ export function MobileMenu() {
           </nav>
 
           <div className="mt-3">
-            <a
-              href={whatsappUrl}
+            <WhatsAppLink
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsOpen(false)}
@@ -138,7 +135,7 @@ export function MobileMenu() {
             >
               <FaWhatsapp className="h-5 w-5 shrink-0" aria-hidden="true" />
               <span>WhatsApp Us</span>
-            </a>
+            </WhatsAppLink>
           </div>
         </div>
       ) : null}

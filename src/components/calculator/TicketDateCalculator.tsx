@@ -1,5 +1,9 @@
 "use client";
 
+import { getWhatsAppUrl } from "@/lib/whatsapp";
+
+import { useWhatsAppSettings } from "@/components/WhatsAppSettingsProvider";
+
 import { useState, useRef, useEffect, useMemo, useSyncExternalStore, type FormEvent } from "react";
 import styles from "./TicketDateCalculator.module.css";
 import { RailwayInformationAccordion } from "./RailwayInformationAccordion";
@@ -42,6 +46,7 @@ export interface RailwayStation {
 }
 
 export function TicketDateCalculator() {
+  const whatsappSettings = useWhatsAppSettings();
   const [fromInput, setFromInput] = useState<string>("");
   const [toInput, setToInput] = useState<string>("");
   const [fromCode, setFromCode] = useState("");
@@ -409,10 +414,11 @@ export function TicketDateCalculator() {
 
   // WhatsApp Share
   const handleWhatsAppShare = () => {
+    if (!whatsappSettings.enabled) return;
     if (!hasJourneyDate || !bookingStatus) return;
     const fromLabel = fromInput.trim() || "Origin";
     const toLabel = toInput.trim() || "Destination";
-    const text = encodeURIComponent(
+    const text = (
       `🚂 *IRCTC Ticket Booking Date Schedule*\n` +
       `• Route: ${fromLabel} ➔ ${toLabel}\n` +
       `• Journey Date: ${formatReadableDate(journeyDate)}\n` +
@@ -421,7 +427,7 @@ export function TicketDateCalculator() {
       `• Status: ${bookingStatus.title}\n` +
       `Calculated on RailAgents.in`
     );
-    window.open(`https://api.whatsapp.com/send?text=${text}`, "_blank");
+    window.open(getWhatsAppUrl(text), "_blank");
   };
 
   return (
@@ -982,14 +988,14 @@ export function TicketDateCalculator() {
                         <span>{copied ? "Copied" : "Copy"}</span>
                       </button>
 
-                      <button
+                      {whatsappSettings.enabled && (<button
                         type="button"
                         onClick={handleWhatsAppShare}
                         className="type-button h-11 px-2.5 rounded-lg border border-emerald-300 bg-emerald-50 font-bold text-emerald-800 hover:bg-emerald-100 flex items-center gap-1.5 cursor-pointer shadow-2xs"
                       >
                         <Share2 className="h-3 w-3 text-emerald-600" />
                         <span>WhatsApp</span>
-                      </button>
+                      </button>)}
 
                       <button
                         type="button"

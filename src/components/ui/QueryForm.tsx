@@ -2,7 +2,8 @@
 
 import { useState, type FormEvent } from "react";
 import { FileText, Lock, MessageCircle } from "lucide-react";
-import { siteConfig } from "@/config/site";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { useWhatsAppSettings } from "@/components/WhatsAppSettingsProvider";
 
 function getInitialPrefilledQuery(): string {
   if (typeof window === "undefined") return "";
@@ -11,6 +12,7 @@ function getInitialPrefilledQuery(): string {
 }
 
 export function QueryForm() {
+  const settings = useWhatsAppSettings();
   const [query, setQuery] = useState(getInitialPrefilledQuery);
   const [queryError, setQueryError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,6 +21,7 @@ export function QueryForm() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!settings.enabled) return;
     if (!query.trim()) {
       setQueryError("Please enter your question before continuing.");
       setHandoffOpened(false);
@@ -32,13 +35,11 @@ export function QueryForm() {
     setIsSubmitting(true);
 
     const message = [
-      "Hi Nihal Singh! 👋",
-      "I'm contacting you through RailAgents.in.",
+      settings.message,
       "",
       `My question: ${query}`,
     ].join("\n");
-    const params = new URLSearchParams({ text: message });
-    const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?${params.toString()}`;
+    const whatsappUrl = getWhatsAppUrl(message, settings.number);
     const chatWindow = window.open(whatsappUrl, "_blank");
     if (chatWindow) {
       chatWindow.opener = null;
@@ -134,7 +135,7 @@ export function QueryForm() {
         <div className="flex flex-col items-center justify-center gap-2.5 pt-1">
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !settings.enabled}
             className="type-button uiverse-send-btn focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
           >
             <div className="svg-wrapper-1">

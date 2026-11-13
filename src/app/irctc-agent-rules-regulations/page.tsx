@@ -1,3 +1,4 @@
+import { WhatsAppLink } from "@/components/WhatsAppSettingsProvider";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -128,9 +129,6 @@ const FAQS = [
 
 export default function IrctcAgentRulesPage() {
   const lastReviewedDate = "October 2026";
-  const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(
-    "Hi RailAgents, I have a question regarding IRCTC agent rules, compliance, or booking regulations. Please guide me."
-  )}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -1153,15 +1151,14 @@ export default function IrctcAgentRulesPage() {
                       <MessageCircle size={14} />
                       <span>Ask Nihal a Question</span>
                     </Link>
-                    <a
-                      href={whatsappUrl}
+                    <WhatsAppLink
                       target="_blank"
                       rel="noopener noreferrer"
                       className="type-button inline-flex items-center gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-2.5 font-bold text-emerald-800 hover:bg-emerald-100 transition-colors"
                     >
                       <MessageCircle size={14} className="text-emerald-600" />
                       <span>WhatsApp Guidance</span>
-                    </a>
+                    </WhatsAppLink>
                   </div>
                 </div>
               </section>

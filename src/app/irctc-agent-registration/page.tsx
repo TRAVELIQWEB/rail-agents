@@ -1,3 +1,4 @@
+import { WhatsAppLink } from "@/components/WhatsAppSettingsProvider";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -101,10 +102,6 @@ const guideLinks = [
 
 export default function IrctcAgentPage() {
   const lastReviewedDate = "October 2026";
-  const whatsappMessage = encodeURIComponent(
-    "Hi RailAgents, I have a question about IRCTC agent compliance and information. Please guide me.",
-  );
-  const whatsappUrl = `https://wa.me/${siteConfig.whatsapp.number}?text=${whatsappMessage}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -1010,15 +1007,14 @@ export default function IrctcAgentPage() {
                 >
                   Ask us a question <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Link>
-                <a
-                  href={whatsappUrl}
+                <WhatsAppLink
                   target="_blank"
                   rel="noopener noreferrer"
                   className="type-button inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#eadbce] bg-white/90 px-6 py-3 font-bold text-[var(--navy)] transition-colors hover:border-orange-300 hover:bg-white"
                 >
                   <MessageCircle aria-hidden="true" className="h-4 w-4 text-[var(--primary)]" />
                   Talk on WhatsApp
-                </a>
+                </WhatsAppLink>
               </div>
             </div>
           </div>
