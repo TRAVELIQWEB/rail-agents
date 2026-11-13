@@ -5,6 +5,7 @@ import { pnrJourneyNotice } from "@/lib/pnr-journey";
 import { isWaitingListStatus } from "@/lib/pnr-waitlist";
 import { Suspense, useEffect, useRef, useState, type FormEvent } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { FaWhatsapp } from "react-icons/fa";
 import {
   ArrowRight,
   Copy,
@@ -373,6 +374,131 @@ function CopyPnr({ pnr }: { pnr: string }) {
   );
 }
 
+function SharePnrDetails({ createMessage }: { createMessage: () => string }) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
+  const [message, setMessage] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const root = document.documentElement;
+    const body = document.body;
+    const rootOverflow = root.style.overflow;
+    const bodyOverflow = body.style.overflow;
+    const bodyPadding = body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - root.clientWidth;
+    if (scrollbarWidth > 0) {
+      body.style.paddingRight = `${parseFloat(window.getComputedStyle(body).paddingRight) + scrollbarWidth}px`;
+    }
+    root.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    return () => {
+      root.style.overflow = rootOverflow;
+      body.style.overflow = bodyOverflow;
+      body.style.paddingRight = bodyPadding;
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    const textarea = messageRef.current;
+    const dialog = dialogRef.current;
+    if (!textarea || !dialog || !isOpen) return;
+    const fitMessage = () => {
+      const scrollTop = textarea.scrollTop;
+      textarea.style.overflowY = "hidden";
+      // Measure actual wrapped content rather than reserving space for passengers.
+      textarea.style.height = "0px";
+      const surroundingHeight = dialog.scrollHeight - textarea.offsetHeight + 2;
+      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+      const modalHeight = Math.min(viewportHeight * 0.85, parseFloat(window.getComputedStyle(dialog).maxHeight));
+      const availableHeight = Math.max(0, modalHeight - surroundingHeight);
+      textarea.style.height = `${Math.min(Math.max(80, textarea.scrollHeight + 2), availableHeight)}px`;
+      textarea.style.overflowY = textarea.scrollHeight > textarea.clientHeight ? "auto" : "hidden";
+      textarea.scrollTop = scrollTop;
+    };
+    fitMessage();
+    let lastWidth = dialog.clientWidth;
+    const observer = new ResizeObserver(() => {
+      if (lastWidth !== dialog.clientWidth) {
+        lastWidth = dialog.clientWidth;
+        fitMessage();
+      }
+    });
+    observer.observe(dialog);
+    window.addEventListener("resize", fitMessage);
+    window.visualViewport?.addEventListener("resize", fitMessage);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", fitMessage);
+      window.visualViewport?.removeEventListener("resize", fitMessage);
+    };
+  }, [message, isOpen, feedback]);
+
+  async function copyMessage() {
+    try {
+      await navigator.clipboard.writeText(message);
+      setFeedback("Message copied.");
+    } catch {
+      setFeedback("Could not copy the message. Select the text and copy it manually.");
+    }
+  }
+
+  return (
+    <>
+      <button
+        ref={triggerRef}
+        type="button"
+        className="type-button inline-flex min-h-9 items-center rounded-lg bg-orange-500 px-3 py-2 font-bold text-white hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 print:hidden"
+        onClick={() => {
+          setMessage(createMessage());
+          setFeedback("");
+          dialogRef.current?.showModal();
+          setIsOpen(true);
+        }}
+      >
+        Share PNR Details
+      </button>
+      <dialog
+        ref={dialogRef}
+        aria-labelledby="pnr-share-title"
+        aria-describedby="pnr-share-description"
+        onClose={() => {
+          setIsOpen(false);
+          triggerRef.current?.focus({ preventScroll: true });
+        }}
+        className="fixed inset-0 m-auto max-h-[85dvh] w-[calc(100%-1.5rem)] max-w-xl overflow-hidden rounded-xl border border-slate-600 bg-[#111827] p-0 text-white shadow-xl backdrop:bg-[#071426]/85 open:flex open:flex-col print:hidden"
+      >
+        <div className="flex shrink-0 items-center gap-2 border-b border-slate-700 px-3 py-2 sm:px-4">
+          <FaWhatsapp aria-hidden="true" className="h-6 w-6 shrink-0 text-[#25D366]" />
+          <h2 id="pnr-share-title" className="text-base font-bold leading-tight text-white">Share PNR Details</h2>
+          <button type="button" onClick={() => dialogRef.current?.close()} className="ml-auto min-h-9 rounded border border-slate-600 px-3 text-sm text-slate-200 hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-400">Close</button>
+        </div>
+        <p id="pnr-share-description" className="shrink-0 px-3 py-1.5 text-xs text-slate-300 sm:px-4">Review or edit your message before sharing.</p>
+        <label htmlFor="pnr-share-message" className="sr-only">Message</label>
+        <textarea
+          ref={messageRef}
+          id="pnr-share-message"
+          autoFocus
+          value={message}
+          style={{ fontSize: "16px", lineHeight: "22px" }}
+          onChange={(event) => { setMessage(event.target.value); setFeedback(""); }}
+          className="mx-3 block min-h-0 w-[calc(100%-1.5rem)] resize-none overscroll-contain rounded-lg border border-slate-600 bg-[#2d323b] p-2.5 font-sans text-base text-white focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-400 sm:mx-4 sm:w-[calc(100%-2rem)]"
+        />
+        <div className="mt-1.5 shrink-0 border-t border-slate-700 px-3 py-2 sm:px-4">
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <p role="status" aria-live="polite" className="mr-auto min-w-0 text-xs text-slate-200">{feedback}</p>
+            <button type="button" onClick={copyMessage} className="min-h-9 rounded border border-slate-600 px-3 text-sm text-slate-200 hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-400">Copy Message</button>
+            <a href={`https://wa.me/?text=${encodeURIComponent(message)}`} target="_blank" rel="noopener noreferrer" aria-label="Send — continue to WhatsApp" className="inline-flex min-h-9 items-center justify-center gap-1.5 rounded bg-[#25D366] px-3 text-sm font-semibold text-[#071426] hover:bg-[#20bd5a] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-400"><FaWhatsapp aria-hidden="true" className="h-4 w-4 shrink-0" />Send</a>
+          </div>
+        </div>
+      </dialog>
+    </>
+  );
+}
+
 function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
   const outer = asRecord(response) ?? {};
   const record = asRecord(outer.data) ?? asRecord(outer.result) ?? asRecord(outer.pnrStatus) ?? outer;
@@ -687,6 +813,43 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
     return { label, tone, statusKind };
   };
 
+  // Use the same formatted values and confirmation labels as the result below.
+  // Generate only when opened so prediction updates never overwrite an edited draft.
+  const createShareMessage = () => {
+    const line = (label: string, value: string) => value === "—" || !value.trim() ? [] : [`${label}: ${value}`];
+    const transactionId = displayValue(pickValue(record, ["transactionId", "transaction_id", "txnId", "transactionNumber"]));
+    const chartLabel = chartState === "prepared" ? "Chart prepared." : chartState === "not_prepared" ? "Chart not prepared yet." : "Chart status unavailable.";
+    const trainHeading = [trainNumber, trainName].filter((value) => value !== "—" && value.trim()).join(" – ");
+    const routeLine = [...line("From", fromStation), ...line("To", toStation)].join(" → ");
+    const compactStatus = (value: string) => value.replace(/\s*\/\s*/g, "/").replace(/\s*[\r\n]+\s*/g, " ");
+    return [
+      "TRAIN TICKET DETAILS",
+      "",
+      `PNR: ${pnr}`,
+      ...line("Transaction ID", transactionId),
+      ...(trainHeading ? [trainHeading] : []),
+      ...line("Date", journeyDate(boardingDate !== "—" ? boardingDate : trainDate)),
+      ...(routeLine ? [routeLine] : []),
+      ...line("Boarding", boardingStation),
+      ...line("Reserved Upto", reservationUpto),
+      ...line("Class", journeyClass),
+      "",
+      `PASSENGER STATUS (${passengers.length})`,
+      ...passengerRows.map((passenger, index) => {
+        const booking = passenger.booking === "—" ? "Booking unavailable" : compactStatus(passenger.booking);
+        const current = passenger.current === "—" ? "Current status unavailable" : compactStatus(passenger.current);
+        const confirmation = getConfirmationDisplay(passenger).label.replace(/[✓✕]/g, "").trim();
+        return `${index + 1}. ${booking} → ${current} | ${confirmation}`;
+      }),
+      "",
+      ...line("Total Fare", totalFare),
+      `Chart: ${chartLabel}`,
+      ...line("Remarks", displayValue(pickValue(record, ["remarks", "remark"]))),
+      ...line("Train Status", displayStatus(pickValue(trainRecord ?? record, ["trainStatus", "runningStatus"]))),
+      "Passenger status may change after chart preparation.",
+    ].join("\n");
+  };
+
   return (
     <section
       aria-labelledby="pnr-result-title"
@@ -725,6 +888,7 @@ function PnrResult({ response, pnr }: { response: unknown; pnr: string }) {
                 <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
               </InternalLink>
             )}
+            {/^[0-9]{10}$/.test(pnr) && Object.keys(record).length > 0 && <SharePnrDetails createMessage={createShareMessage} />}
             <CopyPnr pnr={pnr} />
             <button
               type="button"
