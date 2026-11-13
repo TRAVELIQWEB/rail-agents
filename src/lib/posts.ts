@@ -3,21 +3,33 @@ import type { BlogPost, CreatePostInput, UpdatePostInput } from "@/types/blog";
 import clientPromise from "@/lib/mongodb";
 import type { Collection } from "mongodb";
 
-let isIndexEnsured = false;
+let indexPromise: Promise<void> | undefined;
 
 async function getPostsCollection(): Promise<Collection<BlogPost>> {
   const client = await clientPromise;
-  const collection = client.db("railagents").collection<BlogPost>("blogs");
+  return client.db("railagents").collection<BlogPost>("blogs");
+}
 
-  if (!isIndexEnsured) {
-    try {
-      await collection.createIndex({ slug: 1 }, { unique: true });
-      isIndexEnsured = true;
-    } catch (err) {
-      console.error("Failed to ensure unique index on blogs.slug:", err);
-    }
+// Reads/builds never initialize indexes. Explicit creates/updates require slug
+// uniqueness; an existing full unique index avoids needing index-write privileges.
+async function getWritablePostsCollection(): Promise<Collection<BlogPost>> {
+  const collection = await getPostsCollection();
+  if (!indexPromise) {
+    indexPromise = (async () => {
+      const indexes = await collection.listIndexes().toArray().catch((error: unknown) => {
+        if (error && typeof error === "object" && "code" in error && error.code === 26) return [];
+        throw error;
+      });
+      const hasUniqueSlug = indexes.some((index) => index.unique === true &&
+        Object.keys(index.key).length === 1 && [1, -1].includes(index.key.slug) &&
+        !index.sparse && !index.partialFilterExpression);
+      if (!hasUniqueSlug) await collection.createIndex({ slug: 1 }, { unique: true });
+    })().catch((error: unknown) => {
+      indexPromise = undefined;
+      throw error;
+    });
   }
-
+  await indexPromise;
   return collection;
 }
 
@@ -59,7 +71,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 }
 
 export async function createPost(input: CreatePostInput): Promise<BlogPost> {
-  const collection = await getPostsCollection();
+  const collection = await getWritablePostsCollection();
 
   if (await collection.findOne({ slug: input.slug })) {
     throw new Error(`A post with slug "${input.slug}" already exists.`);
@@ -84,7 +96,7 @@ export async function updatePost(
   id: string,
   input: UpdatePostInput
 ): Promise<BlogPost> {
-  const collection = await getPostsCollection();
+  const collection = await getWritablePostsCollection();
   const existing = await collection.findOne({ id });
 
   if (!existing) {

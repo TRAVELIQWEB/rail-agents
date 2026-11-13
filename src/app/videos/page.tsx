@@ -4,7 +4,8 @@ import { PlayCircle, ArrowRight } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { VideoGuidesList } from "@/components/videos/VideoGuidesList";
-import { getLatestVideos, getYouTubeChannelVideosUrl } from "@/lib/youtube";
+import { getLatestVideos } from "@/lib/youtube";
+import { getSocialLinks } from "@/lib/social-settings";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
 
 export default async function VideoGuidesPage() {
   const videos = await getLatestVideos(50);
-  const channelVideosUrl = getYouTubeChannelVideosUrl();
+  const channelVideosUrl = (await getSocialLinks()).youtube;
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [

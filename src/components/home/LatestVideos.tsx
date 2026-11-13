@@ -2,14 +2,15 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { VideoCard } from "@/components/ui/VideoCard";
 import {
   getLatestVideos,
-  getYouTubeChannelVideosUrl,
 } from "@/lib/youtube";
 import { SocialCards } from "@/components/home/SocialCards";
 import { PlayCircle } from "lucide-react";
+import { getSocialLinks } from "@/lib/social-settings";
 
 export async function LatestVideos() {
   const videos = await getLatestVideos(3);
-  const channelVideosUrl = getYouTubeChannelVideosUrl();
+  const social = await getSocialLinks();
+  const channelVideosUrl = social.youtube;
 
   return (
     <section className="relative overflow-hidden bg-[#fff9f5] py-8 sm:py-10 lg:py-12 2xl:py-14 wide:py-14">
@@ -72,7 +73,7 @@ export async function LatestVideos() {
             SOCIAL SECTION
         ========================== */}
 
-        <div className={videos.length > 0 ? "mt-8 sm:mt-10" : "mt-6"}>
+        {Object.values(social).some(Boolean) && (<div className={videos.length > 0 ? "mt-8 sm:mt-10" : "mt-6"}>
           <div className="relative overflow-hidden rounded-[32px] border border-[#f2e2d4] bg-white/80 px-5 py-6 shadow-[0_16px_45px_rgba(15,39,71,0.06)] backdrop-blur-xl sm:px-8 sm:py-8 lg:px-10 lg:py-9">
             {/* Background ambient glow */}
             <div
@@ -85,10 +86,10 @@ export async function LatestVideos() {
             />
 
             <div className="relative z-10">
-              <SocialCards />
+              <SocialCards links={social} />
             </div>
           </div>
-        </div>
+        </div>)}
       </div>
     </section>
   );

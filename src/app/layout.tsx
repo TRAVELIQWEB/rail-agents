@@ -1,5 +1,8 @@
 import { WhatsAppSettingsProvider } from "@/components/WhatsAppSettingsProvider";
 import { getWhatsAppSettings } from "@/lib/whatsapp-settings";
+import { getSocialLinks } from "@/lib/social-settings";
+import { SocialLinksProvider } from "@/components/SocialLinksProvider";
+import type { SocialLinks } from "@/lib/social";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Inter } from "next/font/google";
@@ -15,7 +18,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const structuredData = {
+function getStructuredData(social: SocialLinks) { return {
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -31,9 +34,9 @@ const structuredData = {
         height: 512,
       },
       sameAs: [
-        siteConfig.social.youtube,
-        siteConfig.social.instagram,
-        siteConfig.social.facebook,
+        social.youtube,
+        social.instagram,
+        social.facebook,
       ].filter(Boolean),
     },
     {
@@ -48,7 +51,7 @@ const structuredData = {
       publisher: { "@id": `${siteConfig.url}/#organization` },
     },
   ],
-};
+}; }
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -97,7 +100,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const whatsappSettings = await getWhatsAppSettings();
+  const [whatsappSettings, socialLinks] = await Promise.all([getWhatsAppSettings(), getSocialLinks()]);
+  const structuredData = getStructuredData(socialLinks);
 
   return (
     <html
@@ -105,9 +109,10 @@ export default async function RootLayout({
       className={`${inter.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-    
+
 <body className="min-h-full bg-[var(--background)] text-[var(--navy)]">
   <PostHogProvider>
+  <SocialLinksProvider links={socialLinks}>
   <WhatsAppSettingsProvider settings={whatsappSettings}>
     <a href="#main-content" className="skip-link">
       Skip to main content
@@ -127,6 +132,7 @@ export default async function RootLayout({
       <AnalyticsScripts />
     </Suspense>
   </WhatsAppSettingsProvider>
+  </SocialLinksProvider>
   </PostHogProvider>
 </body>
 

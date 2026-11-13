@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { unsealData } from "iron-session";
+import { isAdminUiPreviewEnabled, sessionOptions, type AdminSession } from "@/lib/auth";
+import { isAdminSessionValid } from "@/lib/admin-session-validation";
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -9,27 +12,54 @@ export async function proxy(request: NextRequest) {
       ? process.env.ADMIN_ENTRY_SECRET
       : undefined);
   const secretPath = rawSecretPath?.trim();
-  const sessionCookie = request.cookies.get("railagents_admin_session");
-  const hasSession = Boolean(sessionCookie?.value);
+  const isSecretEntry = Boolean(secretPath?.startsWith("/") && pathname === secretPath);
+  if (!isSecretEntry && pathname !== "/admin" && !pathname.startsWith("/admin/")) {
+    return NextResponse.next();
+  }
+
+  const sessionCookie = request.cookies.get(sessionOptions.cookieName);
+  let hasSession = isAdminUiPreviewEnabled();
+  if (!hasSession && sessionCookie?.value) {
+    try {
+      const session = await unsealData<{ admin?: AdminSession }>(sessionCookie.value, {
+        password: sessionOptions.password,
+        ttl: sessionOptions.ttl,
+      });
+      hasSession = await isAdminSessionValid(session.admin);
+    } catch {
+      // Malformed, expired and undecryptable cookies are unauthenticated.
+    }
+  }
+
+  function finish(response: NextResponse) {
+    if (!hasSession && sessionCookie) {
+      response.cookies.set(sessionOptions.cookieName, "", {
+        ...sessionOptions.cookieOptions,
+        path: "/",
+        maxAge: 0,
+      });
+    }
+    return response;
+  }
 
   // Private admin entry URL alias (when configured).
-  if (secretPath && secretPath.startsWith("/") && pathname === secretPath) {
-    return NextResponse.redirect(
+  if (isSecretEntry) {
+    return finish(NextResponse.redirect(
       new URL(hasSession ? "/admin/dashboard" : "/admin/login", request.url),
-    );
+    ));
   }
 
   // Allow the login page, redirecting an active session to the dashboard.
   if (pathname === "/admin/login") {
-    return hasSession
+    return finish(hasSession
       ? NextResponse.redirect(new URL("/admin/dashboard", request.url))
-      : NextResponse.next();
+      : NextResponse.next());
   }
 
   // Protect admin pages and keep the dashboard as the admin landing page.
   if (pathname === "/admin" || pathname.startsWith("/admin/")) {
     if (!hasSession) {
-      return NextResponse.redirect(new URL("/admin/login", request.url));
+      return finish(NextResponse.redirect(new URL("/admin/login", request.url)));
     }
 
     if (pathname === "/admin") {

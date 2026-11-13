@@ -65,3 +65,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Required release tools and regression sources (no generated audit evidence).
+!/scripts/
+/scripts/*
+!/scripts/migrate-whatsapp-settings.mjs
+!/tests/
+/tests/*
+!/tests/*.test.mjs
+!/tests/register-server-test-loader.mjs
+!/tests/server-test-loader.mjs
+/docs/whatsapp-smoke/

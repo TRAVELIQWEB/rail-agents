@@ -15,12 +15,14 @@ import {
   X,
   ShieldCheck,
   ExternalLink,
+  Settings2,
 } from "lucide-react";
 
 const NAV = [
   { href: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/admin/posts", icon: FileText, label: "All Posts" },
   { href: "/admin/posts/new", icon: PenSquare, label: "Create Post" },
+  { href: "/admin/global-variables", icon: Settings2, label: "Global Variables" },
 ];
 
 interface AdminShellProps {
@@ -47,6 +49,7 @@ export function AdminShell({ children, email }: AdminShellProps) {
 
   // Derive active page title & breadcrumbs
   const getPageInfo = () => {
+    if (pathname === "/admin/global-variables") return { title: "Global Variables", crumb: "Website Settings" };
     if (pathname === "/admin/dashboard") return { title: "Dashboard", crumb: "Overview" };
     if (pathname === "/admin/posts/new") return { title: "Create Post", crumb: "New Article" };
     if (pathname.includes("/edit")) return { title: "Edit Post", crumb: "Editor" };

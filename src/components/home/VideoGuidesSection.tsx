@@ -1,11 +1,11 @@
 import { ArrowRight, CirclePlay, ExternalLink, Play } from "lucide-react";
 import Image from "next/image";
-import { getLatestVideos, getYouTubeChannelVideosUrl } from "@/lib/youtube";
-import { siteConfig } from "@/config/site";
+import { getLatestVideos } from "@/lib/youtube";
+import { getSocialLinks } from "@/lib/social-settings";
 
 export async function VideoGuidesSection() {
   const videos = await getLatestVideos(3).catch(() => []);
-  const channelUrl = getYouTubeChannelVideosUrl() || siteConfig.social.youtube;
+  const channelUrl = (await getSocialLinks()).youtube;
 
   return (
     <section

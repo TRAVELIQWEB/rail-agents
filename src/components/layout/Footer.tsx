@@ -1,11 +1,11 @@
+"use client";
+
 import {
   FaFacebookF,
   FaInstagram,
-  FaLinkedinIn,
-  FaXTwitter,
   FaYoutube,
 } from "react-icons/fa6";
-import { siteConfig } from "@/config/site";
+import { useSocialLinks } from "@/components/SocialLinksProvider";
 import { railTools } from "@/config/tools";
 import { Logo } from "@/components/layout/Logo";
 import { InternalLink } from "@/components/ui/InternalLink";
@@ -25,15 +25,13 @@ const supportLinks = [
   { label: "Terms & Conditions", href: "/terms" },
 ];
 
-const socialLinks = [
-  { label: "YouTube", href: siteConfig.social.youtube, icon: FaYoutube, color: "#FF0000" },
-  { label: "Facebook", href: siteConfig.social.facebook, icon: FaFacebookF, color: "#1877F2" },
-  { label: "Instagram", href: siteConfig.social.instagram, icon: FaInstagram, color: "#E4405F" },
-  { label: "X", href: siteConfig.social.twitter, icon: FaXTwitter, color: "#FFFFFF" },
-  { label: "LinkedIn", href: siteConfig.social.linkedin, icon: FaLinkedinIn, color: "#0A66C2" },
-];
-
 export function Footer() {
+  const social = useSocialLinks();
+  const socialLinks = [
+    { label: "YouTube", href: social.youtube, icon: FaYoutube, color: "#FF0000" },
+    { label: "Facebook", href: social.facebook, icon: FaFacebookF, color: "#1877F2" },
+    { label: "Instagram", href: social.instagram, icon: FaInstagram, color: "#E4405F" },
+  ];
   const currentYear = new Date().getFullYear();
 
   return (
@@ -80,9 +78,9 @@ export function Footer() {
             <p className="type-body-small mt-3 max-w-[280px] leading-6 text-white/75">
               Follow us for the latest railway agent guides and updates.
             </p>
-            {siteConfig.social.youtube ? (
+            {social.youtube ? (
               <a
-                href={siteConfig.social.youtube}
+                href={social.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="type-button mt-3 inline-flex min-h-11 items-center rounded-lg bg-[var(--primary)] px-3.5 py-2.5 font-semibold text-white transition-colors hover:bg-[var(--primary-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"

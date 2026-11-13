@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { ArrowRight, Play, Heart, MessageCircle, Share2, Bookmark, ThumbsUp } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa6";
-import { siteConfig } from "@/config/site";
+import type { SocialLinks } from "@/lib/social";
 
-export function SocialCards() {
+export function SocialCards({ links }: { links: SocialLinks }) {
+  if (!Object.values(links).some(Boolean)) return null;
   return (
     <div className="w-full">
       {/* =========================
@@ -47,8 +48,9 @@ export function SocialCards() {
           3 SOCIAL CARDS GRID
       ========================== */}
       <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2 lg:gap-8 2xl:grid-cols-3">
-        
+
         {/* CARD 1: YOUTUBE */}
+        {links.youtube && (
         <div className="group relative flex flex-col justify-between overflow-hidden rounded-[28px] border border-[#fecaca] bg-gradient-to-br from-white via-[#fff8f8] to-[#fff0f0] p-6 sm:p-7 shadow-[0_10px_30px_rgba(239,68,68,0.05)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(239,68,68,0.12)]">
           {/* Background Glow */}
           <div className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-red-200/40 blur-2xl transition-opacity group-hover:opacity-80" />
@@ -81,7 +83,7 @@ export function SocialCards() {
 
               {/* Action Button */}
               <a
-                href={siteConfig.social.youtube}
+                href={links.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Subscribe on YouTube"
@@ -133,7 +135,9 @@ export function SocialCards() {
           </div>
         </div>
 
+        )}
         {/* CARD 2: INSTAGRAM */}
+        {links.instagram && (
         <div className="group relative flex flex-col justify-between overflow-hidden rounded-[28px] border border-[#f5d0fe] bg-gradient-to-br from-white via-[#fdf4ff] to-[#fae8ff] p-6 sm:p-7 shadow-[0_10px_30px_rgba(217,70,239,0.05)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(217,70,239,0.12)]">
           {/* Background Glow */}
           <div className="pointer-events-none absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-fuchsia-200/40 blur-2xl transition-opacity group-hover:opacity-80" />
@@ -166,7 +170,7 @@ export function SocialCards() {
 
               {/* Action Button */}
               <a
-                href={siteConfig.social.instagram}
+                href={links.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Follow on Instagram"
@@ -228,7 +232,9 @@ export function SocialCards() {
           </div>
         </div>
 
+        )}
         {/* CARD 3: FACEBOOK */}
+        {links.facebook && (
         <div className="group relative flex flex-col justify-between overflow-hidden rounded-[28px] border border-[#bae6fd] bg-gradient-to-br from-white via-[#f0f9ff] to-[#e0f2fe] p-6 sm:p-7 shadow-[0_10px_30px_rgba(2,132,199,0.05)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(2,132,199,0.12)]">
           {/* Background Glow */}
           <div className="pointer-events-none absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-sky-200/40 blur-2xl transition-opacity group-hover:opacity-80" />
@@ -261,7 +267,7 @@ export function SocialCards() {
 
               {/* Action Button */}
               <a
-                href={siteConfig.social.facebook}
+                href={links.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Join on Facebook"
@@ -317,6 +323,7 @@ export function SocialCards() {
           </div>
         </div>
 
+        )}
       </div>
     </div>
   );

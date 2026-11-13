@@ -172,11 +172,3 @@ export async function getLatestVideos(
     return [];
   }
 }
-
-export function getYouTubeChannelVideosUrl() {
-  const channelId = process.env.YOUTUBE_CHANNEL_ID;
-
-  if (!channelId) return null;
-
-  return `https://www.youtube.com/channel/${channelId}/videos`;
-}

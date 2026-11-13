@@ -8,13 +8,7 @@ import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa6";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { QueryForm } from "@/components/ui/QueryForm";
-import { siteConfig } from "@/config/site";
-
-const socialLinks = [
-  { label: "YouTube", href: siteConfig.social.youtube, icon: FaYoutube },
-  { label: "Instagram", href: siteConfig.social.instagram, icon: FaInstagram },
-  { label: "Facebook", href: siteConfig.social.facebook, icon: FaFacebookF },
-].filter(({ href }) => href);
+import { getSocialLinks } from "@/lib/social-settings";
 
 const features = [
   {
@@ -38,8 +32,14 @@ interface QueryPageProps {
   mode?: "ask-nihal" | "contact";
 }
 
-export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
+export async function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
   const isContact = mode === "contact";
+  const social = await getSocialLinks();
+  const socialLinks = [
+    { label: "YouTube", href: social.youtube, icon: FaYoutube },
+    { label: "Instagram", href: social.instagram, icon: FaInstagram },
+    { label: "Facebook", href: social.facebook, icon: FaFacebookF },
+  ];
 
   return (
     <div className="flex min-h-screen flex-col bg-[#fffdf9]">
@@ -144,7 +144,7 @@ export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
                 <div className="flex flex-col items-center sm:items-end gap-1.5 shrink-0 border-t border-slate-100 pt-3 sm:border-t-0 sm:pt-0">
                   <p className="type-body  font-bold text-[#0f2747]">Follow RailAgents</p>
                   <ul className="social-icon-list">
-                    {socialLinks.map(({ label, href, icon: Icon }) => (
+                    {socialLinks.map(({ label, href, icon: Icon }) => href ? (
                       <li key={label} className="social-icon-item">
                         <a
                           href={href}
@@ -159,7 +159,7 @@ export function QueryPage({ mode = "ask-nihal" }: QueryPageProps) {
                         </a>
                         <div className="social-tooltip">{label}</div>
                       </li>
-                    ))}
+                    ) : null)}
                   </ul>
                 </div>
               </div>
