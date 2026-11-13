@@ -330,7 +330,7 @@ export function BlogList({ posts, initialSearch = "" }: BlogListProps) {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search articles..."
-                  className="type-input h-10 w-full rounded-full border border-[#eadbce] bg-white pl-10 pr-9 font-medium text-[var(--navy)] shadow-xs outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-orange-100 placeholder:text-slate-400"
+                  className="type-input h-10 w-full rounded-full border border-[#eadbce] bg-white pl-10 pr-9 font-medium text-[var(--navy)] shadow-xs outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-orange-100 placeholder:text-slate-400 [&::-webkit-search-cancel-button]:hidden"
                 />
                 {search && (
                   <button
